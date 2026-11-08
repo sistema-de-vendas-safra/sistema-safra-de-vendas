@@ -2,6 +2,14 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · base lote 1
+
+- base/ficha-de-fatos.md v1, decidido (otavio: 2026-11-08). Criada conforme o plano (prompts/02-plano-da-base-resposta.md, parte 2): 62 campos, cada um com status; os campos em conflito ficam "em conflito · bloqueado para entrega até a decisão". Campo novo, aceito pelo Otávio: barra-de-resgates. Campo arrependimento conforme a #91. grafia-junior: vale o CTX; o design system será corrigido na próxima versão dele (Otávio).
+- base/decisoes.md v1, decidido (otavio: 2026-11-08, pela aprovação do plano). Registro #1 a #91. Sem texto em nenhuma fonte: #1 a #8, #10, #11, #13, #15, #17, #18, #21, #24, #28, #30 a #32, #34, #35, #47 (lista maior que a do plano: esses números só aparecem em faixas ou listas). Critério do Otávio: uma decisão só vira "substituída" quando a substituta for aprovada; por isso a #33 fica pendente-aprovacao com "substituição proposta em #85", e nenhuma das duas promessas vai para entrega antes da aprovação. Decisão nova #91: reembolso de 7 dias pela Hotmart; o art. 49 do CDC em venda para empresa fica com o advogado; não muda a #39.
+- base/lacunas.md v1, rascunho (otavio: pendente). Lacunas do CTX §10, os conflitos da parte 5 do plano e a lacuna nova outros-18 (art. 49 do CDC).
+- Glossário: a skill grill-with-docs instalada (mattpocock-skills 1.3.1) procura GLOSSARY.md na raiz, no formato de skills/engineering/domain-modeling/GLOSSARY-FORMAT.md. O glossário será GLOSSARY.md na raiz, com a linha _Fonte_ como extensão nossa (lote 3).
+- Revisão: dois revisores independentes. Corrigidos status fora da tabela, remissões à ficha que faltavam, a fonte de duracao e a pontuação das notas.
+
 ## 2026-11-08 · regras aprovadas
 
 - nucleo/regras/versionamento.md v1 para v2, status decidido (otavio: 2026-11-08). Motivo: aprovação do Otávio e nova seção "Forma e sentido" (correção de forma sobe a versão sem derrubar a aprovação; mudança de sentido volta para rascunho ou pendente-aprovacao; na dúvida, perguntar). Confirmados: versão como número inteiro e desatualizado como campo separado do status.
