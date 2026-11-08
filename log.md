@@ -21,6 +21,7 @@ Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. En
 - entregas/landings/landing-page-01/estrutura.md v1 para v2, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de documentos marcados (pergunta 4.5).
 - entregas/pautas/pauta-aprovacao-01.md v1, rascunho: passa a desatualizado: true, sem mudar versão nem conteúdo (cascata, passo 3); sobe de versão no commit da pauta.
 - Regra aplicada (pergunta 11.1): só volta a desatualizado: false o documento cujas dependências estão todas na versão atual e nenhuma marcada. base/mecanismo.md e base/oferta.md não foram tocados (pergunta 4.5).
+- Triagem 4.2 (grupo B, já decidido): confirmado pela seção 2, item 1, de prompts/04-decisoes-de-08-11-e-lead-score.md e pelas decisões #52 e #56 em base/decisoes.md; nada alterado. ficha-de-fatos#numero-de-entregas segue decidido (ficha v3) e o contrato segue aberto (lacuna-10, outros-06).
 
 ## 2026-11-08 · fim da fila (etapas 4 a 10)
 
