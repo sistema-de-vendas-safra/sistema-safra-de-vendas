@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 5 · funil-01
+
+- funis/funil-01/funil.md v1, pendente-aprovacao (otavio, junior e euclides: pendente). Novo. Depende da #90, pendente do Júnior e do Euclides. Não depende de oferta nem de mecanismo, que estão desatualizados. Perguntas 5.1 a 5.9 em prompts/05-fila-perguntas.md.
+- Revisão: um revisor independente. Corrigidos depende_de sem regra-seguranca e glossario, o id do glossário citado errado, a coluna de estados apresentada como regra do método (as definições viram proposta, 5.2), a linha do reels no MVP condicionada à ferramenta, a linha de pendência que misturava Análise e reunião e a chave de leitura da planilha, separada da chave do garçom.
+
 ## 2026-11-08 · etapa 4 · decisoes de 08-11 e lead score
 
 Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08/11/2026 e respostas às 9 perguntas da etapa 3). Resposta e perguntas em prompts/04-decisoes-de-08-11-e-lead-score-resposta.md e prompts/05-fila-perguntas.md (4.1 a 4.9).

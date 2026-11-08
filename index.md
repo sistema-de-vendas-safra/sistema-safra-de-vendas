@@ -44,7 +44,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## funis/
 
-- Nenhum funil ainda.
+- funil-01/funil.md · caminho do lead e do dado, porta de qualificação pelo lead score, status do SDR, metas, origens e links (UTMs) e contador de escassez (v1, pendente-aprovacao: depende da #90)
 
 ## entregas/
 

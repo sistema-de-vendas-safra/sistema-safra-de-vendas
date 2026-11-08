@@ -60,3 +60,61 @@ Detalhe em prompts/04-decisoes-de-08-11-e-lead-score-resposta.md.
    - *O que fiz:* pus uma observação em urgencia: ela vale para a oferta da Avançada, e a escassez da Análise gratuita segue ficha-de-fatos#barra-de-resgates. Também registrei que a contagem real depende do banco do funil-01 (#90, pendente).
    - *Recomendação:* confirmar a leitura.
    - *Se decidir diferente:* urgencia passa a citar as duas escassezes no próprio valor.
+
+## Etapa 5 · Funil-01
+
+Detalhe em funis/funil-01/funil.md.
+
+5.1. **Quem já aprovou o funil-01?**
+   - *Dúvida:* a #90 é do Otávio e está pendente do Júnior e do Euclides. O documento do funil é novo e ninguém o leu ainda.
+   - *O que fiz:* status pendente-aprovacao, com otavio, junior e euclides como pendente em aprovado_por.
+   - *Recomendação:* o Otávio aprova o documento com data; o Júnior e o Euclides aprovam junto com a #90, na pauta da etapa 7.
+   - *Se decidir diferente:* se o Otávio quiser o funil só como seu, aprovado_por fica só com ele, e o status continua pendente-aprovacao enquanto a #90 estiver pendente.
+
+5.2. **O que conta como cada estágio no funil-01, e qual é o relógio.**
+   - *Dúvida:* o método dá os nomes (captado, pré-qualificado, agendado, realizado, venda), mas não diz o que cada um é neste funil. O relógio é contado da entrada do lead (#41), sem dizer qual é a entrada nem o prazo do funil-01.
+   - *O que fiz:* propus captado = terminou o quiz com contato; pré-qualificado = faixa A, ou faixa B depois da confirmação do SDR; agendado, realizado e venda pela reunião com o Júnior. Deixei o relógio sem prazo.
+   - *Recomendação:* aceitar o mapa; a entrada do lead é o fim do quiz; o prazo do relógio é calibrado depois das primeiras safras, como manda o método.
+   - *Se decidir diferente:* muda a tabela de estágios do funil e, com ela, o que cada meta por etapa mede.
+
+5.3. **Os passos que o método não nomeia: nutrição, não compareceu, produto vendido e número de tentativas.**
+   - *Dúvida:* eliminatórios e faixa C vão para a nutrição, que não tem nome de estágio nem de estado, nem canal ou conteúdo definidos. Quem falta à reunião não tem nome. A venda não diz se foi IASV ou Essencial. O número de tentativas até abandonado é o da operação do Júnior (ficha-de-fatos#tentativas-ate-abandonado), e o do funil-01 não está escrito.
+   - *O que fiz:* não pus nenhum nome novo na lista fechada. Deixei marcados como proposta: "nutrição" para eliminatórios e faixa C; quem não compareceu continua em agendado, com estado tentativa; um campo de produto ao lado do estágio venda. Não escrevi número de tentativas.
+   - *Recomendação:* aceitar "nutrição" como estado (é situação do contato, não posição no funil); aceitar o não comparecimento como agendado e tentativa; aceitar o campo de produto; usar o número da operação do Júnior só depois que ele confirmar que a regra segue valendo.
+   - *Se decidir diferente:* a lista fechada do SDR e a planta do banco (etapa 6) mudam juntas.
+
+5.4. **Onde mora a planilha do SDR, e quem a acessa.**
+   - *Dúvida:* a regra de segurança diz que dado pessoal só fica no banco e na planilha do SDR, nunca no Google Drive. Uma planilha Google mora no Drive. E a #95 diz que só o Otávio acessa o sistema no MVP, mas o SDR precisa abrir a planilha.
+   - *O que fiz:* escrevi que onde a planilha mora e como o SDR a acessa estão em aberto. Não escolhi ferramenta.
+   - *Recomendação:* decidir se a planilha do SDR é exceção registrada à regra do Drive (com acesso só do SDR e do Otávio) ou se fica em outro lugar; e registrar que a #95 vale para o sistema, com o SDR acessando só a planilha.
+   - *Se decidir diferente:* muda o passo 4 do caminho do dado e, se for exceção, nucleo/regras/seguranca.md e conexoes.md sobem de versão.
+
+5.5. **As etiquetas dos links e a etiqueta fora da lista.**
+   - *Dúvida:* o prompt pede nomes fixos para as origens, sem dizer quais parâmetros usar nem o que fazer com etiqueta desconhecida.
+   - *O que fiz:* propus duas etiquetas, utm_source com o nome da origem e utm_campaign com funil-01. Etiqueta fora da lista não é gravada como origem (o lead entra com a origem em branco).
+   - *Recomendação:* aceitar as duas etiquetas e a origem em branco, para não criar nomes novos sem querer.
+   - *Se decidir diferente:* muda a tabela de origens; se a etiqueta desconhecida tiver de ser guardada, a planta do banco ganha um campo para ela.
+
+5.6. **A palavra-chave dos reels e a ferramenta que manda a mensagem.**
+   - *Dúvida:* a palavra-chave não está decidida. A ferramenta que lê o comentário e manda a mensagem com o link não está em conexoes.md, e a Meta está fora do MVP lá.
+   - *O que fiz:* descrevi o mecanismo, deixei a palavra-chave e a ferramenta em aberto.
+   - *Recomendação:* o Otávio escolhe uma palavra curta, sem acento, que caiba no tom dos reels; e registra a ferramenta em conexoes.md antes de ligar, com a menor permissão que resolve.
+   - *Se decidir diferente:* se não houver ferramenta no MVP, a linha de reels fica reservada, como a de meta-ads.
+
+5.7. **O que conta como uma análise gratuita usada no contador.**
+   - *Dúvida:* ficha-de-fatos#barra-de-resgates conta "as análises gratuitas reais já usadas", sem dizer o que é uma análise usada no funil-01.
+   - *O que fiz:* não escrevi a regra no funil; marquei como proposta.
+   - *Recomendação:* conta uma por pessoa que terminou o quiz e recebeu o diagnóstico, inclusive eliminatórios e faixa C (todos recebem a Análise, #92); quem refaz o quiz não conta de novo.
+   - *Se decidir diferente:* se contar só quem passou pela porta, o contador sobe mais devagar e o campo da ficha ganha essa definição.
+
+5.8. **A Implementação Essencial: quem oferece e quando.**
+   - *Dúvida:* a ficha diz só que ela é oferecida depois do não à Avançada. Quem oferece e se é na mesma reunião ou num contato seguinte só aparece em `oferta`, que está desatualizada. O preço está em conflito e o desenho, em revisão.
+   - *O que fiz:* escrevi só "depois do não, e só depois dele", com o preço bloqueado. Não me apoiei em `oferta`.
+   - *Recomendação:* decidir junto com a atualização de `oferta` (4.5) e com lacuna-03.
+   - *Se decidir diferente:* o passo 6 do caminho do lead ganha quem e quando.
+
+5.9. **O que acontece depois da última análise gratuita.**
+   - *Dúvida:* depois de ficha-de-fatos#analises-gratuitas, a Análise é cobrada (ficha-de-fatos#analise-valor). O funil não diz como o lead paga nem em que ponto do quiz.
+   - *O que fiz:* citei os campos e deixei a cobrança fora do caminho do lead.
+   - *Recomendação:* desenhar a cobrança antes de o contador chegar perto do limite, numa versão 2 do funil.
+   - *Se decidir diferente:* nada muda agora; o caminho do lead ganha um passo quando a cobrança for desenhada.
