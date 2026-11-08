@@ -51,6 +51,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - landings/ · vazio
 - quizzes/ · vazio
 - emails/ · vazio
+- pautas/README.md · para que serve a pasta de pautas
+- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v1, rascunho)
 
 ## dados/
 

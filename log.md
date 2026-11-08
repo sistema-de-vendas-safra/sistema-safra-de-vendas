@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 7 · pauta de aprovacao
+
+- entregas/pautas/README.md e entregas/pautas/pauta-aprovacao-01.md v1, rascunho (otavio: pendente). Novos. 26 itens para decidir em três partes (o que trava o funil-01, primeira venda e agenda, conteúdo e postura), adiados e dois itens para informar (#92 e #93). Inclui o reembolso de 7 dias pela Hotmart e o risco da Análise na semana 1, sem solução inventada. Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 7.1 a 7.9.
+- Revisão: um revisor independente e uma rodada de correção. Corrigidos a justificativa do item do nome público e da duração (7.9), uma recomendação do sistema apresentada como posição do Otávio no item da oferta, a origem da posição sobre credenciais (só a resposta 8), a falta da meta e verba de mídia e dos pontos a validar da engenharia reversa, o parcelamento subido para a parte que trava o funil, ids de campo e siglas tirados do corpo.
+
 ## 2026-11-08 · etapa 6 · planta do banco
 
 - dados/planta/planta.md v1, rascunho (otavio: pendente). Novo. Perguntas 6.1 a 6.9 em prompts/05-fila-perguntas.md.

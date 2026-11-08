@@ -176,3 +176,61 @@ Detalhe em dados/planta/planta.md.
    - *O que fiz:* marquei os onze com desatualizado: true, sem mudar conteúdo nem versão, como manda nucleo/regras/versionamento.md, "Cascata".
    - *Recomendação:* em cada um, só atualizar a versão de `lacunas` no depende_de para 4 e voltar desatualizado para false, subindo a versão como correção de forma: a lacuna nova (outros-23) não muda nada do que eles dizem. Enquanto isso, eles não servem de base para entrega nova, o que trava as etapas 8 a 10 se não forem atualizados antes.
    - *Se decidir diferente:* se o Otávio preferir que só o funil-01 fique marcado, os outros dez voltam a desatualizado: false sem mudar a versão.
+
+## Etapa 7 · Pauta de aprovação para o Júnior e o Euclides
+
+Detalhe em entregas/pautas/pauta-aprovacao-01.md.
+
+7.1. **Os números na pauta impressa.**
+   - *Dúvida:* a pauta cita preço, prazos, vagas e quantidades só pelo campo da ficha de fatos (por exemplo, "ficha de fatos, arrependimento"). Numa reunião, o Júnior e o Euclides vão precisar ver os valores, e alguns itens só fazem sentido com eles (prazo do reembolso, semana da entrega 1, quantidade de calls em grupo, preço da Essencial). Pelo mesmo motivo, os nomes de opção que trazem um prazo no próprio nome (a proposta de instalação rápida da Essencial, em ficha-de-fatos#downsell-desenho; o plano de ação do quiz; a duração do serviço, em ficha-de-fatos#duracao) ficaram descritos sem o número.
+   - *O que fiz:* nenhum valor copiado; no corpo, o item diz só que o valor está na ficha de fatos, e o nome do campo vai na linha Referência do item.
+   - *Recomendação:* na hora de imprimir, gerar uma folha anexa, fora do repositório ou como exportação, com os valores lidos da ficha de fatos na versão do dia, campo por campo; a pauta continua sem valores.
+   - *Se decidir diferente:* se os valores puderem ir no corpo da pauta, ela ganha os números e passa a ser revista a cada versão nova da ficha (a cascata já marca isso pelo depende_de).
+
+7.2. **O reembolso pela Hotmart e a Análise na primeira semana.**
+   - *Dúvida:* o reembolso sem justificativa (ficha-de-fatos#arrependimento, #91) e a entrega 1 na semana 1 (ficha-de-fatos#quando-entrega-1, #72) se sobrepõem: o cliente pode receber a Análise completa e pedir o dinheiro de volta dentro do prazo. Nenhum documento da base registra solução. Também não está escrito se a Análise cobrada depois das gratuitas (ficha-de-fatos#analise-valor) passa pela Hotmart e tem o mesmo reembolso.
+   - *O que fiz:* o item 11 descreve o risco, diz "nenhuma opção registrada na base", traz a posição registrada do Otávio sobre o reembolso (#91) e deixa o risco com "o Otávio decide antes da reunião". Nenhuma solução proposta na pauta.
+   - *Recomendação:* levar o risco à reunião só como risco e levar o mesmo ponto ao advogado que vai revisar o contrato (lacuna-10, outros-18), antes da primeira venda. Qualquer solução que mexa no momento da entrega 1 mexe na #72, que é do Júnior com o Otávio, e volta para a aprovação deles.
+   - *Se decidir diferente:* se o Otávio trouxer uma proposta de solução, ela entra no item 11 como opção registrada (com decisão ou proposta numerada) e a pauta sobe de versão.
+
+7.3. **A ordem e os grupos da pauta.**
+   - *Dúvida:* o pedido dá a ordem do que trava o funil-01; o resto não tem ordem escrita.
+   - *O que fiz:* Parte 1 (trava o funil-01): #90, lead score, consentimento e promessa do quiz, plano de ação do quiz, promessa, design system, Análise e reunião, nome e assinatura, credenciais com as tentativas até abandonado (ficha-de-fatos#tentativas-ate-abandonado; o funil-01 usa esse número, 5.3) e parcelamento (a pergunta "Posso parcelar?" está nas perguntas frequentes da landing-page-01, conflito-15). Parte 2 (primeira venda e agenda): reembolso, engenharia reversa e teto de reuniões (com os demais pontos da lacuna-01 como "a validar"), meta e verba de mídia (lacuna-19), calls em grupo, Essencial, oferta e Ficha do Serviço, decisões da oferta. Parte 3 (conteúdo e postura). Parte 4, adiados (#84). Parte 5, para informar (#92 e #93). A Essencial (último passo do funil-01) e o teto de reuniões do Júnior (agenda de quem liga) ficaram na Parte 2, porque o funil pode começar sem eles.
+   - *Recomendação:* aceitar; se a reunião for curta, levar só as Partes 1 e 5 e o item 11.
+   - *Se decidir diferente:* muda só a ordem e a numeração dos itens.
+
+7.4. **O que ficou fora da pauta.**
+   - *Dúvida:* algumas lacunas citam o Júnior ou o Euclides sem que eles decidam: o "AVS" citado pelo Júnior e o fechamento que o Euclides queria fazer na reunião de 07/11 (lacuna-22, quem decide não registrado); o contrato (lacuna-10, quem decide não registrado); a margem do cliente para o lucro por lead (lacuna-09); a validação com donos (lacuna-25, entrou só como "próximo passo" no item 16); o prazo de guarda dos dados (outros-23, advogado); F7, o curso e a Júlia (outros-13, confirmação sem dono).
+   - *O que fiz:* deixei fora, porque nenhuma fonte diz que são do Júnior ou do Euclides nem traz a marca "levar ao Júnior".
+   - *Recomendação:* acrescentar à pauta, como perguntas de esclarecimento, o "AVS" e o fechamento do Euclides de 07/11, que só eles podem explicar.
+   - *Se decidir diferente:* entram como itens novos na Parte 3, com "o Otávio decide antes da reunião".
+
+7.5. **As opções dos itens 3 e 4 (quiz) e as respostas do item 25.**
+   - *Dúvida:* conflito-09 e conflito-10 não têm proposta escrita, só os dois lados. No quiz, as regras de provas-e-conformidade (decidido pelo Otávio) pedem consentimento e vedam percentual, mas a posição do Otávio sobre o quiz em si não está registrada.
+   - *O que fiz:* no item 3, em vez de opções, "os dois lados registrados" (o quiz como está, sem publicar, ou ajustado às regras), com "o Otávio decide antes da reunião" e a nota de que as regras já decididas apontam para o ajuste. No item 4, "aprovar, ajustar ou recusar". No item 25 (confirmações do Júnior), não há decisão: as respostas possíveis (confirmar, corrigir ou dizer que não há comprovante) não vêm da base e o item diz isso.
+   - *Recomendação:* o Otávio registrar, antes da reunião, a posição de ajustar o quiz às regras (consentimento com a finalidade e sem promessa percentual), porque manter impede a publicação.
+   - *Se decidir diferente:* muda só a linha da posição do Otávio nos itens 3 e 4.
+
+7.6. **A pergunta 4.5 antes da reunião.**
+   - *Dúvida:* a 4.5 (a demonstração com os números do prospect continua na reunião de venda ou passa para o quiz) é do Otávio, mas, se passar para o quiz, o mecanismo muda de sentido e volta para a aprovação do Júnior e do Euclides.
+   - *O que fiz:* não pus a 4.5 como item da pauta; o item 16 traz uma linha "Atenção": a oferta precisa ser atualizada nesse ponto, e a opção é "aprovar depois da atualização". A posição do Otávio no item é só a registrada (ele aprovou a oferta em 08/11).
+   - *Recomendação:* o Otávio responder a 4.5 antes da reunião; se a demonstração passar para o quiz, entra um item novo na Parte 1 (aprovação do mecanismo revisto).
+   - *Se decidir diferente:* sem a 4.5 respondida, o item 16 vai à reunião só como leitura, sem pedir aprovação da oferta.
+
+7.7. **Quem aprova a pauta, e para onde vão as respostas.**
+   - *Dúvida:* a pauta não é decisão; é o roteiro da reunião.
+   - *O que fiz:* aprovado_por só com o Otávio (pendente); status rascunho. A seção "Depois da reunião" diz que as respostas voltam para decisoes com a palavra de quem decidiu.
+   - *Recomendação:* o Otávio aprova a pauta antes da reunião; depois dela, um prompt próprio registra as respostas (decisões novas ou aprovações das pendentes, como #85, #89, #90 e #98) e aplica a cascata.
+   - *Se decidir diferente:* se a pauta tiver de ser aprovada também pelos dois, eles entram em aprovado_por e o status vira pendente-aprovacao.
+
+7.8. **Os itens 23 e 26 e o bônus da Análise da base.**
+   - *Dúvida:* a fala do Júnior (outros-19) e a tese da Triad (#82) são decisões do Otávio confirmadas ou validadas pelo Júnior; o valor apresentado do bônus da Análise da base (4.3) foi recomendado para esta pauta.
+   - *O que fiz:* pus os três na pauta (itens 23, 26 e dentro do 17), com "o Otávio decide antes da reunião".
+   - *Recomendação:* manter a fala do Júnior e o bônus; levar a tese da Triad só depois de o texto existir.
+   - *Se decidir diferente:* sai o item 26, ou os três, sem mudar o resto.
+
+7.9. **Por que o nome público da Análise, a duração e quem conduz a reunião com o Júnior entram na pauta.**
+   - *Dúvida:* pelo conflito-02, quem decide é o Otávio (#59 a #62 são dele). A recomendação do plano aprovado de levar aos dois (prompts/02-plano-da-base-resposta.md) e o documento mestre online (decisão 4) falam só do valor da Análise, que a #92 já decidiu. Nenhuma fonte manda o nome, a duração ou quem conduz para o Júnior e o Euclides.
+   - *O que fiz:* mantive o item 7 na pauta, com "o Otávio decide antes da reunião" e a justificativa de que a reunião de venda é feita pelo Júnior (#51; ficha-de-fatos#quem-faz-a-reuniao): a duração e quem conduz mexem na agenda dele. Tirei a atribuição ao plano e ao documento mestre.
+   - *Recomendação:* o Otávio decidir o nome público sozinho, antes da reunião, e levar aos dois só a duração e quem conduz, porque dependem da agenda do Júnior.
+   - *Se decidir diferente:* se o Otávio decidir os três sozinho, o item 7 sai da Parte 1 e vira um item da Parte 5 (para informar); se quiser os três com os dois, o item fica como está.
