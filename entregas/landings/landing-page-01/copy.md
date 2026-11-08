@@ -1,6 +1,6 @@
 ---
 id: landing-page-01-copy
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: landing-page-01-briefing
-    versao: 2
+    versao: 3
   - id: tom-de-voz
     versao: 3
   - id: glossario
@@ -44,7 +44,7 @@ O texto da landing-page-01, seção por seção, na ordem do briefing (`landing-
 
 **Status.** Rascunho, avisando que pode mudar. A página existe por causa da #90, pendente do Júnior e do Euclides, e cita o Euclides nas calls em grupo (9.10): por isso os dois estão em aprovado_por. A voz se apoia no `tom-de-voz`, pendente do Júnior. A copy ainda não passou pelo teste com donos do perfil (lacuna-25). Nada aqui vai ao ar antes do quiz-01 publicável (conflito-09) e da revisão de advogado (`provas-e-conformidade`).
 
-**Documentos desatualizados.** Esta copy se apoia em documentos marcados desatualizados (tom-de-voz, glossario, provas-e-conformidade, persona, promessa, entregas-do-servico, funil-01, lead-score, pela cascata de lacunas v4) e precisa ser revista depois da pergunta 6.9; usa `mecanismo` (só o título da Big Idea, #48, e a ordem de revelação) e `oferta` (só a troca pelo caso documentado, no FAQ), e precisa ser revista depois da 4.5. Nada sobre o papel da Análise foi tirado de `mecanismo` nem de `oferta`: vale a #92 e a ficha.
+**Documentos desatualizados.** Esta copy se apoia em documentos que seguem marcados desatualizados por cadeia da pergunta 4.5 (landing-page-01-briefing, tom-de-voz, glossario, provas-e-conformidade, promessa e funil-01; regra provisória 11.1); usa `mecanismo` (só o título da Big Idea, #48, e a ordem de revelação) e `oferta` (só a troca pelo caso documentado, no FAQ), e precisa ser revista depois da 4.5. Nada sobre o papel da Análise foi tirado de `mecanismo` nem de `oferta`: vale a #92 e a ficha.
 
 **Como ler.**
 - `{{ficha-de-fatos#campo}}`: o fato entra pelo campo da ficha, nunca copiado. `{{ficha-de-fatos#nomes-das-entregas:n}}` é o item n da lista do campo, exatamente como está lá.

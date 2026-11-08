@@ -1,6 +1,6 @@
 ---
 id: landing-page-01-briefing
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -34,7 +34,7 @@ depende_de:
   - id: lead-score
     versao: 2
   - id: pauta-aprovacao-01
-    versao: 1
+    versao: 2
   - id: planta-do-banco
     versao: 2
 desatualizado: true
@@ -46,7 +46,7 @@ O ponto de partida da landing-page-01 do funil-01: para que ela serve, para quem
 
 **Status.** Rascunho. A landing-page-01 existe por causa da #90, pendente do Júnior e do Euclides; enquanto isso, ela só pode ser feita como rascunho, avisando que pode mudar (base/decisoes.md, "Enquanto a #90 estiver pendente"; nucleo/regras/versionamento.md). O Otávio ainda não leu este briefing.
 
-**Documentos desatualizados.** Este briefing se apoia em documentos marcados desatualizados (persona, promessa, tom-de-voz, provas-e-conformidade, entregas-do-servico, design-system, glossario, funil-01 e lead-score, pela cascata de lacunas v4) e precisa ser revisto depois da pergunta 6.9; usa também `mecanismo` e `oferta`, e precisa ser revisto depois da 4.5. De `mecanismo` e `oferta` nada sobre o papel da Análise foi tirado: nesse ponto valem a #92 e a ficha de fatos.
+**Documentos desatualizados.** Este briefing usa `mecanismo` e `oferta`, desatualizados pela pergunta 4.5, e se apoia em documentos que seguem marcados por cadeia deles (promessa, tom-de-voz, provas-e-conformidade, design-system, glossario, funil-01, planta-do-banco e pauta-aprovacao-01; regra provisória 11.1); precisa ser revisto depois da 4.5. De `mecanismo` e `oferta` nada sobre o papel da Análise foi tirado: nesse ponto valem a #92 e a ficha de fatos.
 
 **Como ler.**
 - Fatos pelo id do campo em `ficha-de-fatos` (nenhum valor copiado); decisões por #n; pendências pelo id de `lacunas`; perguntas da fila pelo número (prompts/05-fila-perguntas.md).

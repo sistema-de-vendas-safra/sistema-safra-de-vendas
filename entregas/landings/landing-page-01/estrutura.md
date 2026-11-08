@@ -1,14 +1,14 @@
 ---
 id: landing-page-01-estrutura
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: landing-page-01-copy
-    versao: 2
+    versao: 3
   - id: landing-page-01-briefing
-    versao: 2
+    versao: 3
   - id: funil-01
     versao: 2
   - id: planta-do-banco
@@ -40,7 +40,7 @@ A estrutura da landing-page-01: a ordem das seções, a hierarquia de cada uma, 
 
 **Design bloqueado.** Nada aqui define cor, fonte, tamanho de letra, espaçamento, estilo nem componente visual do design system: tudo isso espera o conflito-08. Este documento fala só de ordem, hierarquia e comportamento.
 
-**Documentos desatualizados.** Esta estrutura se apoia em documentos marcados desatualizados (funil-01, provas-e-conformidade, design-system, persona, tom-de-voz, pela cascata de lacunas v4) e precisa ser revista depois da pergunta 6.9.
+**Documentos desatualizados.** Esta estrutura se apoia em documentos que seguem marcados desatualizados por cadeia da pergunta 4.5 (landing-page-01-copy, landing-page-01-briefing, funil-01, planta-do-banco, provas-e-conformidade, design-system e tom-de-voz; regra provisória 11.1) e precisa ser revista depois da 4.5.
 
 **Como ler.**
 - Os nomes das seções e os rótulos (Título, Sobretítulo, Botão...) são os da copy.

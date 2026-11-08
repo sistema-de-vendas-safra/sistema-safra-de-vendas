@@ -8,7 +8,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - index.md · este mapa
 - log.md · histórico de alterações e pendências
 - conexoes.md · contas e serviços (sem chaves)
-- GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido)
+- GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido; desatualizado)
 - prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta)
 
 ## nucleo/
@@ -34,23 +34,23 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - metodo.md · o Sistema de Vendas Safra e a Gestão de Leads por Safra, com as regras do método (v3, decidido)
 - mecanismo.md · problema, solução, Big Idea, analogia e crença (v1, aprovado; frase filosófica pendente; desatualizado: o papel da Análise muda pela #92)
 - oferta.md · a oferta montada, citando os valores pela ficha (v1, pendente-aprovacao do Júnior e do Euclides; desatualizado: #92)
-- promessa.md · a promessa de 08/11 nas duas versões e a de 23/10 como histórico (v3, pendente-aprovacao do Júnior e do Euclides)
+- promessa.md · a promessa de 08/11 nas duas versões e a de 23/10 como histórico (v3, pendente-aprovacao do Júnior e do Euclides; desatualizado)
 - entregas-do-servico.md · as entregas com nome oficial, o que cada uma é e o critério de pronto (v3, decidido)
 - persona.md · Rafa, o Dono-Closer: dores, ganhos, crenças, citações com ID e grau de evidência (v3, decidido)
-- tom-de-voz.md · voz, grafia, vocabulário, o que nunca dizer, frases gastas (v3, pendente-aprovacao do Júnior)
-- provas-e-conformidade.md · provas que existem, [PROVA REAL] do que falta, regras de CDC, CONAR, LGPD e Código Civil (v3, decidido)
-- design-system/design-system.md · ficha do design system v1.0, que aponta para fontes/ e registra os conflitos e as divergências decididas (v3, rascunho)
+- tom-de-voz.md · voz, grafia, vocabulário, o que nunca dizer, frases gastas (v3, pendente-aprovacao do Júnior; desatualizado)
+- provas-e-conformidade.md · provas que existem, [PROVA REAL] do que falta, regras de CDC, CONAR, LGPD e Código Civil (v3, decidido; desatualizado)
+- design-system/design-system.md · ficha do design system v1.0, que aponta para fontes/ e registra os conflitos e as divergências decididas (v3, rascunho; desatualizado)
 - lead-score.md · nota de 0 a 100 e faixas A, B e C para a fila do SDR (v2, pendente-aprovacao do Júnior e do Euclides)
 
 ## funis/
 
-- funil-01/funil.md · caminho do lead e do dado, porta de qualificação pelo lead score, status do SDR, metas, origens e links (UTMs) e contador de escassez (v2, pendente-aprovacao: depende da #90)
+- funil-01/funil.md · caminho do lead e do dado, porta de qualificação pelo lead score, status do SDR, metas, origens e links (UTMs) e contador de escassez (v2, pendente-aprovacao: depende da #90; desatualizado)
 
 ## entregas/
 
-- landings/landing-page-01/briefing.md · briefing da landing-page-01: básico, estrutura de partida pelo wireframe corrigido, direcionamentos de copy, UX e design, bloqueios (v2, rascunho)
-- landings/landing-page-01/copy.md · copy da landing-page-01, seção por seção, com fatos por {{ficha-de-fatos#campo}} e bloqueios marcados (v2, rascunho; otavio, junior e euclides: pendente)
-- landings/landing-page-01/estrutura.md · estrutura UX da landing-page-01: ordem, hierarquia, primeira tela no celular, botões, caminho até o quiz, carregamento e erro, acessibilidade; sem estilo, design bloqueado (v2, rascunho)
+- landings/landing-page-01/briefing.md · briefing da landing-page-01: básico, estrutura de partida pelo wireframe corrigido, direcionamentos de copy, UX e design, bloqueios (v3, rascunho; desatualizado)
+- landings/landing-page-01/copy.md · copy da landing-page-01, seção por seção, com fatos por {{ficha-de-fatos#campo}} e bloqueios marcados (v3, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- landings/landing-page-01/estrutura.md · estrutura UX da landing-page-01: ordem, hierarquia, primeira tela no celular, botões, caminho até o quiz, carregamento e erro, acessibilidade; sem estilo, design bloqueado (v3, rascunho; desatualizado)
 - quizzes/ · vazio
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
@@ -58,7 +58,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## dados/
 
-- planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê (v2, rascunho)
+- planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê (v2, rascunho; desatualizado)
 - paineis/ · vazio
 
 ## aprendizados/
