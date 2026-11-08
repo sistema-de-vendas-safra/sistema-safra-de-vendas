@@ -1,0 +1,468 @@
+{
+  "$meta": {
+    "name": "Sistema de Vendas Safra — Design Tokens",
+    "version": "1.0.0",
+    "note": "Fonte única de tokens. O CSS (src/styles/tokens.generated.css) é gerado a partir deste arquivo por scripts/generate-tokens.mjs. Não edite o CSS gerado."
+  },
+  "color": {
+    "brand": [
+      {
+        "id": "noite",
+        "name": "Verde-noite",
+        "hex": "#0A100D",
+        "source": "identidade",
+        "role": "Fundo principal da marca. Base das versões negativas e da maior parte das superfícies."
+      },
+      {
+        "id": "carvao",
+        "name": "Carvão",
+        "hex": "#121915",
+        "source": "identidade",
+        "role": "Superfície sobre o Verde-noite. Também é o tom do descritor “Sistema de vendas” na versão positiva."
+      },
+      {
+        "id": "gelo",
+        "name": "Gelo",
+        "hex": "#E5ECE7",
+        "source": "identidade",
+        "role": "Fundo claro e cor do logotipo negativo. Texto principal sobre fundos escuros."
+      },
+      {
+        "id": "nevoa",
+        "name": "Névoa",
+        "hex": "#CDD6D1",
+        "source": "identidade",
+        "role": "Neutro secundário. Tom do descritor “Sistema de vendas” na versão negativa."
+      },
+      {
+        "id": "menta",
+        "name": "Menta",
+        "hex": "#8BD6B1",
+        "source": "identidade",
+        "role": "Acento principal. Fundo alternativo do logotipo, rótulos, destaques e ações primárias."
+      },
+      {
+        "id": "safra",
+        "name": "Verde Safra",
+        "hex": "#309367",
+        "source": "identidade",
+        "role": "Acento profundo. Dados, gráficos e grandes áreas de cor sem texto pequeno sobre ela."
+      }
+    ],
+    "extension": [
+      {
+        "id": "noite-850",
+        "name": "Noite 850",
+        "hex": "#0E1511",
+        "role": "Fundo da navegação lateral."
+      },
+      {
+        "id": "carvao-700",
+        "name": "Carvão 700",
+        "hex": "#18221D",
+        "role": "Superfície elevada (hover de cards, células destacadas)."
+      },
+      {
+        "id": "carvao-600",
+        "name": "Carvão 600",
+        "hex": "#1F2B25",
+        "role": "Superfície de controle (inputs, trilhas de progresso)."
+      },
+      {
+        "id": "linha",
+        "name": "Linha",
+        "hex": "#25312B",
+        "role": "Bordas e divisores sobre fundo escuro."
+      },
+      {
+        "id": "linha-forte",
+        "name": "Linha forte",
+        "hex": "#35453C",
+        "role": "Bordas de controles e estados de hover."
+      },
+      {
+        "id": "texto-2",
+        "name": "Texto secundário",
+        "hex": "#A7B3AC",
+        "role": "Texto de apoio sobre fundo escuro."
+      },
+      {
+        "id": "texto-3",
+        "name": "Texto terciário",
+        "hex": "#7F8C85",
+        "role": "Metadados e legendas (mín. 14 px)."
+      },
+      {
+        "id": "menta-300",
+        "name": "Menta 300",
+        "hex": "#A9E2C6",
+        "role": "Hover da ação primária."
+      },
+      {
+        "id": "safra-700",
+        "name": "Safra 700",
+        "hex": "#1F6B4A",
+        "role": "Texto e ícones em verde sobre fundos claros."
+      },
+      {
+        "id": "nevoa-600",
+        "name": "Névoa 600",
+        "hex": "#5E6B64",
+        "role": "Texto secundário sobre fundos claros."
+      }
+    ],
+    "semantic": [
+      {
+        "id": "sucesso",
+        "name": "Sucesso",
+        "hex": "#8BD6B1",
+        "onLight": "#1F6B4A",
+        "role": "Confirmações e metas atingidas. Reaproveita a Menta."
+      },
+      {
+        "id": "atencao",
+        "name": "Atenção",
+        "hex": "#E3C27C",
+        "onLight": "#7A5A12",
+        "role": "Prazos próximos e etapas que pedem ação."
+      },
+      {
+        "id": "erro",
+        "name": "Erro",
+        "hex": "#EC8E7E",
+        "onLight": "#9A3324",
+        "role": "Erros de validação e falhas."
+      },
+      {
+        "id": "info",
+        "name": "Informação",
+        "hex": "#9EC6D8",
+        "onLight": "#28566B",
+        "role": "Avisos neutros e dicas."
+      }
+    ],
+    "proportion": [
+      {
+        "id": "noite",
+        "value": 55
+      },
+      {
+        "id": "carvao",
+        "value": 20
+      },
+      {
+        "id": "gelo",
+        "value": 12
+      },
+      {
+        "id": "nevoa",
+        "value": 6
+      },
+      {
+        "id": "menta",
+        "value": 5
+      },
+      {
+        "id": "safra",
+        "value": 2
+      }
+    ]
+  },
+  "font": {
+    "family": {
+      "sans": {
+        "value": "Geist",
+        "source": "identidade",
+        "role": "Família oficial: títulos, texto corrido, números e rótulos."
+      },
+      "mono": {
+        "value": "Geist Mono",
+        "source": "extensao",
+        "role": "Tokens, códigos e cotas técnicas (as cotas da construção do símbolo usam monoespaçada)."
+      }
+    },
+    "weight": [
+      {
+        "id": "light",
+        "value": 300,
+        "source": "identidade",
+        "role": "Números e rótulos"
+      },
+      {
+        "id": "regular",
+        "value": 400,
+        "source": "identidade",
+        "role": "Texto corrido"
+      },
+      {
+        "id": "medium",
+        "value": 500,
+        "source": "extensao",
+        "role": "Interface: botões, abas, cabeçalhos de tabela"
+      },
+      {
+        "id": "semibold",
+        "value": 600,
+        "source": "extensao",
+        "role": "Subtítulos e títulos de componentes"
+      },
+      {
+        "id": "bold",
+        "value": 700,
+        "source": "identidade",
+        "role": "Títulos"
+      }
+    ],
+    "scale": [
+      {
+        "id": "display",
+        "size": 72,
+        "mobile": 44,
+        "lineHeight": 1,
+        "tracking": -0.04,
+        "weight": 700,
+        "use": "Capas e aberturas"
+      },
+      {
+        "id": "h1",
+        "size": 52,
+        "mobile": 36,
+        "lineHeight": 1.05,
+        "tracking": -0.035,
+        "weight": 700,
+        "use": "Título de página"
+      },
+      {
+        "id": "h2",
+        "size": 36,
+        "mobile": 28,
+        "lineHeight": 1.12,
+        "tracking": -0.025,
+        "weight": 700,
+        "use": "Título de seção"
+      },
+      {
+        "id": "h3",
+        "size": 24,
+        "mobile": 21,
+        "lineHeight": 1.25,
+        "tracking": -0.015,
+        "weight": 600,
+        "use": "Subtítulo e título de card"
+      },
+      {
+        "id": "h4",
+        "size": 18,
+        "mobile": 17,
+        "lineHeight": 1.35,
+        "tracking": -0.01,
+        "weight": 600,
+        "use": "Título de componente"
+      },
+      {
+        "id": "body-lg",
+        "size": 18,
+        "mobile": 17,
+        "lineHeight": 1.65,
+        "tracking": 0,
+        "weight": 400,
+        "use": "Texto de abertura"
+      },
+      {
+        "id": "body",
+        "size": 16,
+        "mobile": 16,
+        "lineHeight": 1.65,
+        "tracking": 0,
+        "weight": 400,
+        "use": "Texto corrido"
+      },
+      {
+        "id": "small",
+        "size": 14,
+        "mobile": 14,
+        "lineHeight": 1.55,
+        "tracking": 0,
+        "weight": 400,
+        "use": "Apoio, legendas e tabelas"
+      },
+      {
+        "id": "label",
+        "size": 12,
+        "mobile": 12,
+        "lineHeight": 1.4,
+        "tracking": 0.18,
+        "weight": 300,
+        "use": "Rótulos em caixa alta, tracking aberto"
+      },
+      {
+        "id": "number-xl",
+        "size": 64,
+        "mobile": 44,
+        "lineHeight": 1,
+        "tracking": -0.03,
+        "weight": 300,
+        "use": "Indicador principal"
+      },
+      {
+        "id": "number-lg",
+        "size": 36,
+        "mobile": 30,
+        "lineHeight": 1.05,
+        "tracking": -0.02,
+        "weight": 300,
+        "use": "Indicadores em cards"
+      }
+    ]
+  },
+  "space": [
+    {
+      "id": "0",
+      "value": 0
+    },
+    {
+      "id": "1",
+      "value": 4
+    },
+    {
+      "id": "2",
+      "value": 8
+    },
+    {
+      "id": "3",
+      "value": 12
+    },
+    {
+      "id": "4",
+      "value": 16
+    },
+    {
+      "id": "5",
+      "value": 24
+    },
+    {
+      "id": "6",
+      "value": 32
+    },
+    {
+      "id": "7",
+      "value": 48
+    },
+    {
+      "id": "8",
+      "value": 64
+    },
+    {
+      "id": "9",
+      "value": 96
+    },
+    {
+      "id": "10",
+      "value": 128
+    }
+  ],
+  "radius": [
+    {
+      "id": "none",
+      "value": 0,
+      "use": "Grafismos, divisores, imagens sangradas"
+    },
+    {
+      "id": "xs",
+      "value": 4,
+      "use": "Badges e tags"
+    },
+    {
+      "id": "sm",
+      "value": 8,
+      "use": "Botões e inputs"
+    },
+    {
+      "id": "md",
+      "value": 12,
+      "use": "Cards e alertas"
+    },
+    {
+      "id": "lg",
+      "value": 20,
+      "use": "Modais e blocos de destaque"
+    },
+    {
+      "id": "full",
+      "value": 999,
+      "use": "Indicadores circulares, avatares e pílulas"
+    }
+  ],
+  "border": [
+    {
+      "id": "hairline",
+      "value": 1,
+      "use": "Divisores e contornos de cards"
+    },
+    {
+      "id": "control",
+      "value": 1,
+      "use": "Inputs e botões secundários"
+    },
+    {
+      "id": "emphasis",
+      "value": 2,
+      "use": "Foco e seleção"
+    }
+  ],
+  "grid": [
+    {
+      "id": "desktop",
+      "min": 1024,
+      "columns": 12,
+      "gutter": 24,
+      "margin": 64,
+      "maxWidth": 1200
+    },
+    {
+      "id": "tablet",
+      "min": 640,
+      "columns": 8,
+      "gutter": 20,
+      "margin": 40,
+      "maxWidth": 1023
+    },
+    {
+      "id": "mobile",
+      "min": 0,
+      "columns": 4,
+      "gutter": 16,
+      "margin": 20,
+      "maxWidth": 639
+    }
+  ],
+  "motion": {
+    "duration": [
+      {
+        "id": "fast",
+        "value": 120,
+        "use": "Hover e foco"
+      },
+      {
+        "id": "base",
+        "value": 200,
+        "use": "Abrir e fechar elementos"
+      },
+      {
+        "id": "slow",
+        "value": 360,
+        "use": "Entrada de modais e indicadores"
+      }
+    ],
+    "easing": [
+      {
+        "id": "standard",
+        "value": "cubic-bezier(0.2, 0, 0, 1)"
+      },
+      {
+        "id": "exit",
+        "value": "cubic-bezier(0.4, 0, 1, 1)"
+      }
+    ]
+  }
+}

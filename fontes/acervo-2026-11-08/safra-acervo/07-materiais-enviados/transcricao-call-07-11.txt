@@ -1,0 +1,925 @@
+Transcrição automática (Whisper small) · Reunião Zoom de Euclides Vieira · 07/11/2026, 17h03 · 1h04
+Participantes: Otavio, Junior Neves, Euclides Vieira. Nomes e termos podem ter erros de transcrição.
+
+[00:00:00] É, aquela vez o meu continuou gravando quando ele me colocou de olho.
+[00:00:04] É, agora eu botei e vai gravar. Deixa eu te falar uma coisa...
+[00:00:07] Eu acho que essa independente da decisão de vamos construir um CRM ou não,
+[00:00:16] talvez para essa primeira fase de validação a gente não precisa ter um CRM pronto,
+[00:00:23] nem vender um CRM porque eu acho que o vender o CRM ele cria uma nova objeção que é do cara assim, caramba.
+[00:00:29] Eu vou ter que trocar todo o meu CRM para ele e isso já tem um custo, ele não entende.
+[00:00:34] Não, não, não precisa. Dá para a gente usar o CRM do cara, mas eu não quero deixar de ter, porque vai parecer que eu tenho um negócio pela metade, entendeu?
+[00:00:44] Sim, mas eu vou até trazer aqui porque é importante. E assim, tudo que eu trago aqui, cara, é um direcionamento, é uma interpretação do que tu traz.
+[00:00:58] mas e tu tem que validar é o que o clídeis falou cara é aqui tu que dá a palavra final então é isso
+[00:01:06] se tu der ok é isso mas é importante que se não for isso diga não é isso e tu dê a direção de pra
+[00:01:13] onde seja né porque senão pode acontecer de a gente passou por tudo isso ah beleza tal mas
+[00:01:19] daí quanto vai se aprofundar tu acha que é outra coisa e daí nós estamos fazendo uma coisa
+[00:01:24] está vendendo outra coisa lá, saca?
+[00:01:26] Então é importante a gente
+[00:01:28] validar isso aqui, entender se é isso aqui mesmo,
+[00:01:31] não é bem isso aí, aí tu direciona
+[00:01:33] pra onde a gente vai. Então aqui,
+[00:01:35] o que a gente vai vender
+[00:01:37] nesse primeiro momento,
+[00:01:39] as entregas são essas que
+[00:01:41] estão na tela aqui.
+[00:01:43] E aí o que entra...
+[00:01:45] Peraí, eu vou ter que mandar alguma coisa aqui.
+[00:01:47] Oi?
+[00:01:54] que é como a gente vai, como a gente vai vingindo com o Paris de 5 mil e como a gente
+[00:01:57] vê essa tecnologia depois para continuar implementado no sistema.
+[00:01:59] A gente vai ter isso no meu e o acabe, era mais para te apresentar e a gente vai dar contigo.
+[00:02:01] Então eu vou te dar uma desprezação.
+[00:02:02] Aí eu vou dar uma volta a gente vai te...
+[00:02:03] O que ele falou?
+[00:02:06] O que ele falou?
+[00:02:07] Falou que a gente tem que falar de produto também, que ele já falou com você.
+[00:02:09] Você tem que falar...
+[00:02:10] É, era isso, né?
+[00:02:11] As entregas, né?
+[00:02:12] Então eu vou até pegar o outro que eu acho que tá mais...
+[00:02:16] Eu acho que aqui tá mais...
+[00:02:23] Dá pra ver melhor aqui onde que estão os entregáveis.
+[00:02:27] Onde é que você tá fazendo isso aí?
+[00:02:29] do cloud também.
+[00:02:30] Esse site aí de soul.
+[00:02:32] Ah não, porque é meu domínio, sou o story daí, eu faço um soul.
+[00:02:37] Ah, tu pedi pra ele.
+[00:02:38] É, e fica online daí, se quem quiser acessar.
+[00:02:42] Mas olha, então aqui nós estamos aqui, são os 90 dias, são as 13 semanas.
+[00:02:49] Então, nas três primeiras, até a terceira semana, é análise estratégica das safas.
+[00:02:58] Eu até mudei esses nomes aqui, mas aqui está com os nomes antigos.
+[00:03:01] Então, a análise estratégica da SAF é o quê?
+[00:03:03] Estou a entrar no negócio do cara e entender o que que ele tem ali.
+[00:03:07] Enfim, tu vai entender o negócio do cara, né?
+[00:03:12] A segunda entrega é essa implementação da infraestrutura.
+[00:03:16] Então, cara, qual que é a infraestrutura necessária para o cara operar o sistema de vendas?
+[00:03:22] Então, vai ter parâmetros ali de...
+[00:03:24] de quanto tempo que é a safra, como que vai o CRM dele vai ficar configurado, né?
+[00:03:34] A entrega 3, aí é um playbook de comunicação, que é o que é porra, é como que o cara vai fazer essa comunicação
+[00:03:45] com os leads dele, né? Então, porra, no primeiro contato é isso, no segundo contato é isso.
+[00:03:51] o 4 que é recuperação de ativos. Então entender de tudo que ele já tem dentro da casa dele e cara como que a gente pode recuperar esses líderes e retrabalhar eles dentro do nosso sistema né então é meio que preparar a casa dele para que ele faça dinheiro com os líderes que ele já tem.
+[00:04:11] peraí, me perdi aqui
+[00:04:13] isso é dentro dos 90 dias ou é...
+[00:04:15] é dentro dos 90 dias
+[00:04:17] as 13 semanas
+[00:04:19] que falou 90 dias
+[00:04:21] e achei que os 90 dias era a primeira barra
+[00:04:23] aqui é as 3 primeiras semanas
+[00:04:25] tá por semana, são 13 semanas
+[00:04:27] então primeira semana
+[00:04:29] na análise estratégica das safas
+[00:04:31] é entender o que é o negócio dele
+[00:04:33] implementação
+[00:04:36] da infraestrutura, então é preparar
+[00:04:38] o que ele tem lá
+[00:04:40] e possa utilizar esse sistema, então, por, preparar CRM,
+[00:04:43] daí, infraestrutura, então, por, sei lá,
+[00:04:46] o cara precisa das UTM...
+[00:04:48] Pô, tu, ajustando já ou não?
+[00:04:50] Claro, claro.
+[00:04:52] Acho que pode ser...
+[00:04:53] Primeira semana, uma semana só.
+[00:04:55] Só para não parecer, você vai ficar três semanas...
+[00:04:58] Tá, tá. Uma semana...
+[00:05:01] É, porque eu pensei que como vão entrar, sei lá,
+[00:05:05] dez pessoas no primeiro momento,
+[00:05:07] nesse primeiro momento é tu que vai fazer isso de dar uma gordura pra que
+[00:05:11] se lá imagina se a gente...
+[00:05:13] Mas é a primeira semana que é assim, isso eu faço na primeira cal, já resolvi em duas horas, eu faço essa análise.
+[00:05:21] Tá, então nessa...
+[00:05:23] Então é a primeira semana, a partir do momento da primeira cal, dá ali diante que vai começar a contar, entram?
+[00:05:29] Tá, então essa análise estratégica da Saphra faz a semana 1, beleza.
+[00:05:35] Aí eu puxo o resto para trás aqui então.
+[00:05:38] Semana na semana dois a gente vai
+[00:05:43] preparo do solo colheita plantio entre.
+[00:05:47] Aqui eu botei aqui ó nessa semana.
+[00:05:50] É aqui estaria na semana quatro.
+[00:05:51] Mas aí a gente puxa para trás a implementação da infraestrutura.
+[00:05:55] Então é o que eu tinha chamado antes de preparação do solo.
+[00:05:59] Então é como se fosse o setup para começar a operar.
+[00:06:03] Então se tiver sei lá daí tu que vai dizer o que precisa dentro disso né como que vai ser
+[00:06:09] cada um desses entregáveis o que que tu vai fazer né tangibilizar aqui ele tá de maneira
+[00:06:14] genérica mas aí a gente vai ter que entender o que exatamente que que com que configura essa
+[00:06:21] entrega né então o que cara vamos fazer o seguinte vamos fazer uma mega entrega uma
+[00:06:27] entrega poda porque essa eu vejo muita gente reclamando com razão que contrata e
+[00:06:34] passa tem passa tem passa tempo não é fazer nada porque vamos lá eu eu faço
+[00:06:39] até o cara começar a colocar em prática é papo de três dias de trabalho eu não
+[00:06:45] preciso demorar três semanas para fazer o trabalho três dias tá ok ok o
+[00:06:52] trabalho mais pesado é por estar tudo organizado tudo pronto e a
+[00:06:56] metodologia pronta agora é olhar o dia a dia para otimizar o mais pesado é
+[00:07:02] otimização você não entendeu direito aqui na primeira semana a gente analisou e
+[00:07:06] pô você não entendeu direito aqui então mexe nisso agora analisa mais uma
+[00:07:09] semana tipo o facebook tráfego pago lá você demora em três dias você você
+[00:07:14] cria criativo você edita você faz aqui você cria as campanhas você sobe tudo
+[00:07:18] lá e tal em três dias você faz tá a a otimização é meses ali de
+[00:07:24] de otimização. Então seria ó aqui eu tava considerado
+[00:07:28] ó então assim ó o que eu vou eu vou te dizer o que que são essas entregas e daí faz sentido
+[00:07:33] se empacotar as entregas pode ser eu vou entregar tudo isso no mesmo dia pode até ser mas faz
+[00:07:39] sentido empacotar as entregas em diferente porque aumenta a percepção de valor do cara
+[00:07:45] né mas então porque ó isso que falou da otimização ela tava é ser o que era o que era
+[00:07:52] da tipo uma canseira no cara.
+[00:07:54] Aham.
+[00:07:55] Não pode ser.
+[00:07:56] Eu quero falar pra ele assim ó, a primeira cal já faz 3 horas de cal.
+[00:08:01] Aí amanhã tem mais uma cal de 3 horas, depois da manhã já tem mais uma cal de 3
+[00:08:05] horas.
+[00:08:06] Eu faço tipo duas dessa por dia, tá ligado?
+[00:08:08] Ah, entendi.
+[00:08:09] Então ó, só vamos pensar se aí eu posso mostrar aqui que eu acho que aí fica mais
+[00:08:14] fácil de ver.
+[00:08:18] Que são os pacotes.
+[00:08:19] A análise estratégica das safras, tu faz numa...
+[00:08:22] Tu faz numa... numa...
+[00:08:24] Em uma corda 3 horas.
+[00:08:26] Sabe o que a gente podia fazer?
+[00:08:28] Não pensar em tempo agora.
+[00:08:30] Pensar em o que precisa ser feito.
+[00:08:32] Fazer uma engenha e reversa.
+[00:08:34] Do que precisa ser feito.
+[00:08:36] Tá?
+[00:08:37] Mas aí tipo coisa prática mesmo.
+[00:08:39] Daí a gente calcula quanto tempo vai demorar cada...
+[00:08:41] Cada coisa dessa.
+[00:08:42] Então por exemplo.
+[00:08:44] A primeira coisa é entender como é que a operação dele.
+[00:08:46] Ok?
+[00:08:48] Eu preciso de uma, duas horas para entender isso, mas não vamos falar de tempo agora.
+[00:08:52] Você quiser anotar isso?
+[00:08:53] Tem tempo.
+[00:08:54] Não, não, está gravando aqui aí.
+[00:08:56] Então, a primeira coisa é entender como é a cooperação dele.
+[00:08:59] Entendi como é a cooperação dele.
+[00:09:01] É, não só a cooperação, mas como que é o CRM, como que está lá escrito, como
+[00:09:06] é que é cada coluna, como que é o processo de trabalho do SDR, como é
+[00:09:12] o processo de trabalho do Closer, como que é o script, como é que... o que
+[00:09:17] como é que o que que ele tem de dados e tal uma de nós vamos usar disso aí eu vou precisar me
+[00:09:26] organizar e eu vou precisar escrever mudanças que é essa um negócio personalizado e não preciso
+[00:09:32] dele nesse momento tá então para escrever mudanças vamos lá eu vou precisar vamos colocar um tempo
+[00:09:38] aqui dois dias de pausa para escrever essas mudanças aí vou para a primeira implementação
+[00:09:46] de mudanças eu já vou para implementar então aí eu vou precisar de duas a três horas de
+[00:09:53] cal para a implementação de mudanças tá o que que o que que o que que é o tangível dessa
+[00:09:59] implementação de mudanças é mudar como que tá as colunas do crm dele mudar como que é
+[00:10:08] eu não preciso na verdade não preciso necessariamente fazer eu posso como se fosse uma
+[00:10:16] aula dando como tarefa para ele fazer depois, entendeu? Tá, para ele não, para o time dele,
+[00:10:23] porque... É, para o cliente fazer, quem vai fazer, aí ele decide lá. Tá. E aí,
+[00:10:31] a gente gera isso em documento, deixa para eles, está gravado também, para eles consultar.
+[00:10:35] Aí, detalhe, a gente pode fazer sabe o quê? Criar uma ferramenta que é simples de
+[00:10:40] fazer, dia, que ele vai fazer pergunta, como é que é isso aqui mesmo? O que
+[00:10:44] que tem que fazer, o que o Júnior estava quis dizer com isso?
+[00:10:46] Entendi.
+[00:10:48] Me entrega um meiazinha, que ficou assim,
+[00:10:52] ah, estou com dúvida como é que eu faço isso?
+[00:10:54] Ela vai lá e diz.
+[00:10:55] Como se fosse um suportzinho além do grupo do WhatsApp ali, né?
+[00:10:57] Que vai sair a apota dentro do grupo.
+[00:10:59] Uhum.
+[00:11:01] Tendo um CS dentro do grupo respondendo,
+[00:11:03] e eu fico de olho e...
+[00:11:07] e tirando...
+[00:11:09] Você falou que era para fazer tal coisa,
+[00:11:11] só que eu estou com dúvida nessa aqui,
+[00:11:13] o próprio, o próprio IA vai puxar a reunião que a gente teve, mais um conteúdo que ela
+[00:11:22] já sabe disso, o que que é a safra e vai responder.
+[00:11:24] Tá, me diz uma coisa, esse grupo de WhatsApp é, daí é tu, o teu time com o cara e o
+[00:11:33] time do cara.
+[00:11:34] Isso, isso aí.
+[00:11:36] Tá, não é de todos, não é de todos, tipo assim, cada cliente vai ter um grupo.
+[00:11:41] Cada cliente vai ter um grupo.
+[00:11:42] Tá.
+[00:11:43] Beleza.
+[00:11:44] Então eu já passei para implementar. Aí eu vou dar uma semana para ele implementar isso aí.
+[00:11:50] Então isso seria, a gente pode considerar que é isso que tu está falando, seria esse segundo entregável
+[00:12:00] que é a implementação da infraestrutura. É, isso aí. Eu passei para ele aqui que é a implementação.
+[00:12:06] Beleza, tudo é o caminho aí ele executa.
+[00:12:10] Só que daqui uma semana ele tem uma reunião com o que?
+[00:12:14] Para mostrar os novos dados.
+[00:12:17] Aí tem um detalhe que a gente vai precisar é plugar os dados
+[00:12:23] porque vai ficar... ele não vai trazer os dados certo.
+[00:12:26] Mas aí é isso aqui, o painel de safras.
+[00:12:28] Que daí é o plug para ele ter uma visão como tem no teu CRM.
+[00:12:33] Então, mas a gente vai ter que fornecer isso para os caras.
+[00:12:36] Não, sim, sim. Isso aqui a gente está pensando que a gente vai fornecer esse panel.
+[00:12:40] Essa aqui é aquela ideia que o Clídeos falou.
+[00:12:43] Independente de lá na frente a gente vai ter um CRM próprio,
+[00:12:46] no primeiro momento a gente trabalha com isso,
+[00:12:48] que daí é conectar os dados do cara
+[00:12:52] nessa IA que vai ser o painel de safras dele.
+[00:12:54] Que daí ele vai ter a mesma vista que tu tem no teu CRM,
+[00:12:58] só que vai puxar os dados das fontes de informação dele, das fontes de dados dele.
+[00:13:03] Isso.
+[00:13:04] É o painel de safas, é.
+[00:13:07] Então a gente tá alinhado com o que tá aqui ainda.
+[00:13:10] Boa. Aí a gente basicamente o solo tá pronto ali.
+[00:13:16] Eu já vou analisar, vou ver o que ele fez de errado, o que ele fez de certo e tal.
+[00:13:20] E o solo vai estar teoricamente pronto.
+[00:13:23] Aí eu vou pra ações de implementação,
+[00:13:27] que a gente pode chamar de growth hacker, de ações de implementação,
+[00:13:32] mais específicas na ação do SDR, na ação do...
+[00:13:40] Eu acho que aí pode ser...
+[00:13:42] Eu acho que pode estar dentro disso aqui, que é o playbook de comunicação pessoas
+[00:13:47] e a régua de contatos e os roteiros do time.
+[00:13:49] Então assim, é o que ele faz com os caras.
+[00:13:52] Então tipo assim, primeiro contato é isso,
+[00:13:54] segundo contato vem duas horas depois,
+[00:13:56] terceiro contato vem quatro horas depois.
+[00:13:58] Se o cara respondeu e respondi isso,
+[00:14:00] ele não respondeu e respondi aquilo.
+[00:14:02] É isso aí. Aí na outra semana eu já tenho uma reunião para ver o que a gente conversou lá nos
+[00:14:08] primeiros dias já para ver agora essa nova fase, esse novo jeito de olhar para os dados
+[00:14:15] e já ver também como que foi o atendimento. Eu preciso saber a quantidade de pessoas que foram
+[00:14:21] atendidas, como é que foi o atendimento, quantas vezes que retornou para cada contato.
+[00:14:26] Eu acho que isso que tu está falando já aí seria essa entrega aqui ó, treinamento para
+[00:14:31] para a otimização da conversão.
+[00:14:33] Daí é uma reunião semanal com análise do que o cara está fazendo,
+[00:14:37] de como ele está operando, que aqui seria este treinamento,
+[00:14:40] que daí vai até o fim, que a ideia é uma colça semanal,
+[00:14:43] que não precisa ser contigo,
+[00:14:45] aí a ideia é que seja com um gestor de safras,
+[00:14:50] que ele possa estar capacitando o time e orientando.
+[00:14:54] Aqui está certo, aqui faltou isso.
+[00:14:56] Ele vai olhar o que o cara está fazendo
+[00:14:58] e dizer o que que ele fez de certo, o que ele fez de errado,
+[00:15:00] de forma geral em 15 dias tem que ser entregue tudo e a partir daí começa só
+[00:15:11] extreina aqui de otimização só otimização então tipo assim ó essa
+[00:15:18] entrega análise das safras implementação de infraestrutura playbook de
+[00:15:23] de cor, por exemplo, o oito o oito não o sete tem que estar no lugar do três lá
+[00:15:29] entende não esse dá que ser em lugar do três o seis treinamento para o time tá
+[00:15:37] peraí peraí toda parte de treinamento toda parte teórica tem que ser entregue
+[00:15:42] nos 15 primeiros 15 dias isso ótimo ótimo ótimo não perfeito isso aqui
+[00:15:47] e o ajuste aí de ir para frente é só chicote junto com junto com beleza eu vou
+[00:15:56] puxar esse daqui ó esse set vem para a preparação do solo então o playbook de
+[00:16:00] gestão de vendas que também é o sys aí é quase como se fosse o manual
+[00:16:07] destruções né do sistema todo é o que seria um curso num playbook né e isso
+[00:16:12] aqui também pode alimentar uma e a que o cara pode consultar
+[00:16:15] qualquer momento.
+[00:16:17] Oh sabe aquele aquela série.
+[00:16:21] O sócio. O sócio que era uma do.
+[00:16:26] É um careca o marcos LeMond.
+[00:16:30] Não não não conheço essa.
+[00:16:33] Abre e abre uma nova aba e pesquisa aí o sócio marcos LeMond.
+[00:16:46] Lembres ali ó.
+[00:16:49] Nunca viu essa série.
+[00:16:49] Eu nunca vi.
+[00:16:51] Nossa, é animal, tá?
+[00:16:53] Vou massa, eu não conheci, eu vou ver.
+[00:16:55] Você aprende muito sobre empreendedorismo, muito.
+[00:17:00] Porra, essa porra que tá nessa.
+[00:17:02] Ele abre o carro.
+[00:17:04] Eu lembro, antigamente eu assistia no Facebook,
+[00:17:06] porque tinham os episódios de graça lá no Facebook.
+[00:17:08] Esse cara é super famoso aqui nos Estados Unidos.
+[00:17:14] Vou massa, massa, vou lá.
+[00:17:16] Mas qual que é a ideia aí do funcionário?
+[00:17:18] Ele faz.
+[00:17:20] Ele pega, várias empresas mandam carta para ele e tal.
+[00:17:22] carta para ele e tal, ele vai lá e aí ele tem uma tese daquela tese antiga de
+[00:17:30] mágico lá que é processos, pessoas e produtos, sabe?
+[00:17:35] E aí ele fala assim ó, eu vou ser por sete dias o líder supremo dessa empresa, eu posso fazer o que eu quiser,
+[00:17:46] literalmente o que eu quiser e eu vou colocar que eu vou comprar primeiro ele faz uma oferta
+[00:17:55] né ele pergunta assim ó eu quero comprar 50% da sua empresa por 300 mil dólares então
+[00:18:04] todos os episódios ele faz uma oferta em todo episódio ele faz uma oferta de compra alguns
+[00:18:09] ele não quer comprar alguns ele ele vê que tem muita confusão então ele acaba não
+[00:18:13] comprando ele não compra, mas alguns ele compra. Quando ele compra, aí ele fala assim
+[00:18:18] ó, você vai pegar o check aqui, mas você vai me dar a empresa por sete dias, quem vai
+[00:18:24] mandar nela, 100% dela, eu vou mandar embora, eu vou fazer o que eu quiser na sembrinha.
+[00:18:29] Aí o cara vai lá e assina, concorda. Aí ele toca o terror, mete uma reta, faz o terror
+[00:18:35] lá. Então é meio que isso, ó, por 90 dias eu vou mandar no seu comercial.
+[00:18:39] Ótimo, legal, legal. Aí...
+[00:18:43] Eu vou ser o gerente de vendas.
+[00:18:44] Tu tá pensando em... Porque no primeiro momento eu tinha pensado em...
+[00:18:49] que tu ia ter três caos só com os caras. Eu já tô vendo que vai ser...
+[00:18:53] Eu vou ter três caos. Não, não. Aí detalhe, eu vou ter três caos.
+[00:18:56] Três caos individuais. Todas as outras é em grupo.
+[00:18:59] Imagina eu sentado na puta da mesa e todos os li...
+[00:19:03] todas as outras empresas me apresentando resultado.
+[00:19:06] Isso daqui, então, esse treinamento para a otimização da conversão pode ser contigo,
+[00:19:15] mas com todos os clientes.
+[00:19:16] Daí tu vai pegar casos específicos que servem para todo mundo porque eu sistema o mesmo.
+[00:19:21] Então, a partir do momento que está todo mundo na mesma página, tudo serve para todo
+[00:19:24] mundo.
+[00:19:25] Ótimo, ótimo.
+[00:19:26] Então eu vou trazer isso porque aí são mais calls contigo, são 3, 1 a 1, mais
+[00:19:31] mais sei lá por 90 dias uma por semana vai dar quase mais umas 10
+[00:19:36] calls contigo que daí é em grupo é isso aí
+[00:19:40] por ótimo ótimo ótimo ótimo não só comigo né comigo que o clites
+[00:19:45] isso isso com vocês dois aqui ó então eu vou puxar isso aqui pra cá aí essa
+[00:19:54] parte de recuperação de ativos eu acho interessante porque para trazer ideia
+[00:19:58] de que tem dinheiro parado que nós vamos recuperar,
+[00:20:00] só que isso vai entrar no pipeline do cara junto com os novos leads,
+[00:20:04] só que dentro do sistema de safras.
+[00:20:06] Vai recuperar os caras e vão passar a voltar a trabalhar
+[00:20:10] dentro do sistema de safras.
+[00:20:12] Sim. O que a gente pode colocar lá no modo visual?
+[00:20:15] Entra lá naquela parte visual de novo lá.
+[00:20:17] Peraí. Aqui, ó.
+[00:20:20] A gente pode colocar assim, ó, tipo ali na primeira...
+[00:20:23] De uma a duas...
+[00:20:26] Na primeira, segunda semana.
+[00:20:27] de uma a duas semanas.
+[00:20:30] Escreve de um jeito até que chama atenção nós vamos entregar toda
+[00:20:34] toda a nossa arsenal de conhecimento.
+[00:20:39] Aí a partir dali é a gente pode você pode colocar
+[00:20:43] assim uma linha vermelha.
+[00:20:45] É o momento de crise que é o momento de mudanças onde vai ter gente
+[00:20:48] que vai desistir de gente que vai reclamar a gente que vai não sei o que lá lá lá.
+[00:20:52] Mas quem eu sou o gerente comercial.
+[00:20:54] depois vai ser um período, você vai fazer os calcos aí de período, você vai colocar um período amarelo
+[00:21:02] que é um período onde as pessoas vão começar a aceitar e começar a achar que talvez realmente vai dar resultado
+[00:21:09] e o período verde, aí deixa o período verde no finalzinho dos 90 dias, um pedaço menor
+[00:21:16] tipo como se fosse ali as últimas três semanas
+[00:21:20] é o amarelo é um período pouco maior o vermelho é o maior de todos
+[00:21:26] não desculpa o vermelho é é vamos colocar em portanto acho que o vermelho o vermelho seria
+[00:21:35] como se fosse aqui ó tipo assim análise estratégica e preparação do solo que é o set up o vermelho
+[00:21:41] a colheita começa o amarelo o set up ainda não é vermelho o vermelho começa depois tipo assim
+[00:21:47] tá na sua mão semana que vem você tem que me entregar que você arrumou tudo que você
+[00:21:50] precisa de ser. Então então olha só essa análise estratégica é quando tu entra a preparação
+[00:21:57] do solo que quando o cara já tem a responsabilidade de fazer todo o setup como tu indicou é o
+[00:22:01] vermelho. Isso tá ali em diante. E aí é a maior parte de trabalho dele que ele vai ter
+[00:22:08] que fazer coisas diferentes do que ele tá acostumado a fazer. É vamos colocar
+[00:22:12] que por centavos 25% vermelho 70 60% amarelo 60 30 amarelo vai dar 60 70 85 15% verde que
+[00:22:32] daí é onde a gente diz pro cara só aqui agora só te jogar mais dinheiro porque no verde
+[00:22:40] é basicamente assim onde ele tá me dando tchau que é no finalzinho que ele tá pronto
+[00:22:44] para escalar, né? Aí...
+[00:22:46] Aqui você está me dando tchau, ou você está falando assim...
+[00:22:49] Gostei tanto que eu quero que você continue com a gente aqui.
+[00:22:52] Aham, aham.
+[00:22:53] Não, ótimo.
+[00:22:54] Mas o mais importante é que a gente está alinhado
+[00:22:59] nessa configuração de entregas, né?
+[00:23:01] Eu vou fazer esses ajustes aí de datas e de empacotamento aqui.
+[00:23:05] Mas basicamente é isso, né?
+[00:23:07] É, só deixa embolado, bem embolado assim as coisas.
+[00:23:11] com as vezes, o início deixa claro que em 15 dias não vão entregar tudo e dá ali
+[00:23:19] em diante coloca essas frases de impacto também. Não é tipo assim, por exemplo,
+[00:23:23] durante 90 dias. Em 15 dias o cara já começa a colher os resultados, né? Porque com 15 dias
+[00:23:32] o sistema está instalado depois de acompanhamento, né? Acompanhamento, otimização e
+[00:23:36] Exatamente.
+[00:23:38] Ótimo, ótimo.
+[00:23:40] Beleza, porra.
+[00:23:42] Agora fechou os circuitos aqui.
+[00:23:45] Tem alinhamento.
+[00:23:47] E as ferramentas que a gente for fazer, tudo a piscel.
+[00:23:50] Isso é.
+[00:23:52] Daí, o que eu pensei?
+[00:23:54] Estava até falando com o Euclides sobre isso.
+[00:23:56] O painel de safras ali,
+[00:23:58] que vai ser uma solução de tecnologia,
+[00:24:02] ele opera...
+[00:24:04] tipo assim, dentro desses 90 dias ele tá incluso, mas depois se for embora,
+[00:24:10] o cara continuar com aquilo tem uma recorrência mensal e aí dentro dessa
+[00:24:14] recorrência mensal, lógico, a gente vai ter que pensar depois nisso como um produto,
+[00:24:18] a gente vai ter tempo pra isso, mas aí dentro dessa recorrência mensal,
+[00:24:22] pode entrar tudo aquilo que a gente conversou de tecnologia, de inteligência artificial,
+[00:24:27] o Maiaque vai analisar todas as conversas dele, né?
+[00:24:31] No começo, a gente pode oferecer isso para ele como um aperitivo, né?
+[00:24:39] E depois que a gente vai embora, ele paga para continuar tendo acesso àquilo, né?
+[00:24:45] É, mais ou menos isso a ideia.
+[00:24:48] Peraí.
+[00:24:53] Porque tem duas coisas, tá?
+[00:24:55] Tem o painel de safas, que é o que ele vai ver, que é só uma visão dentro do sistema.
+[00:25:02] e dentro disso pode existir os...
+[00:25:05] Eu tinha chamado antes e também tinha colocado como entregável
+[00:25:10] e o meu clídeo despediu para tirar e eu achei que fez sentido.
+[00:25:13] Quero que a gente chamou de mecanização da safra.
+[00:25:16] Então assim, no começo quem vai fazer os contatos é o SDR do cara.
+[00:25:21] Depois que mecaniza...
+[00:25:23] Vamos lá, depois de 90 dias ou até antes,
+[00:25:27] ele já pode contratar as ferramentas que a gente vai disponível.
+[00:25:31] provavelmente o SDR vai ser o primeiro, o Social Cellar vai ser o segundo.
+[00:25:35] Então ele pode contratar, ele pode alugar essas ferramentas
+[00:25:41] e ele pode também manter o nosso acompanhamento em grupo, se ele quiser.
+[00:25:48] Tá, mas o acompanhamento em grupo não é isso aqui, não é esse entregável aqui que já tá previsto?
+[00:25:55] Então, depois de 90 dias, você tá falando.
+[00:25:57] Ah tá, ele continua no...
+[00:25:59] Ele continua. Só que daí.
+[00:26:02] Tô pensando aqui. É.
+[00:26:12] Cara, o ideal é que não fosse mais comigo, Taliano.
+[00:26:15] É o ideal.
+[00:26:16] É assim, ó, eu já pensava que esse treinamento de otimização,
+[00:26:20] a partir desse treinamento aqui, talvez o primeiro poder,
+[00:26:24] o primeiro em grupo e o último poder ser contigo.
+[00:26:27] Mas eu acho que não faz sentido
+[00:26:29] que toda semana está entrando para fazer esse trabalho, sabe.
+[00:26:33] É, depois a gente vê e tal.
+[00:26:40] É lógico, para as primeiras 10, pode ter cem vezes.
+[00:26:43] A gente pode colocar na promessa que não é comigo, que é com o nosso gerente comercial,
+[00:26:50] mas aí pode ser que eu entregue, continue entregando durante o tempo, mas deixa prometido
+[00:26:55] que não entra, não?
+[00:26:56] É, a promessa contigo é isso aqui, ó.
+[00:27:01] Essa parte aqui que a gente tá chamando de mentoria um a um, tipo assim, é a
+[00:27:05] da metoria daí vai ser entre junho o sócio e o red comercial se ele tiver né aí vão ser as três né
+[00:27:13] aí tu falou a primeira é tipo assim nos primeiros dias tu já vai fazer essas essas essas duas
+[00:27:20] qualas e uma no final isso é tá é a gente promete isso aqui no início isso aqui pode até
+[00:27:31] você participar como overdeliver, mas a promessa não é essa, né?
+[00:27:36] A promessa que essa parte de treinamento...
+[00:27:38] Do primeiro 90 dias eu tô dentro, ele vai ter mais do que eu.
+[00:27:42] Ele pode ter mais gente, pode ter uma reunião a mais com alguém da equipe,
+[00:27:45] pode ter reunião a mais com eu, Clitz.
+[00:27:47] Mas os primeiros 90 dias é eu, Clitz.
+[00:27:50] Tá.
+[00:27:51] E depois, se ele quiser continuar aqui, daí não é contigo.
+[00:27:55] Que não é com o meu, mas pode ser que seja eu também, entendeu?
+[00:27:58] Aí a gente vai ver.
+[00:27:59] Tá, não, beleza.
+[00:28:00] Isso aí é detalhe.
+[00:28:01] Isso aí não vai fazer uma grande diferença.
+[00:28:04] Aí, aqui, aqui eu botei o que é o sistema, né?
+[00:28:12] O que que compõe o sistema, né?
+[00:28:15] Eu tinha a Tete mostrado, mas aqui a gente colocou como visual, né?
+[00:28:19] Cara, não sei por que, mas parece que tá tudo meio que no canto, assim.
+[00:28:22] Pô, pode ser.
+[00:28:25] Melhorou?
+[00:28:26] É, tá agora tá maior, mas tá pulado direito, sabe?
+[00:28:29] Deixa eu mais se entrar.
+[00:28:30] Então pode diminuir.
+[00:28:35] Aí isso boa.
+[00:28:37] Aí o que que é o sistema é essa mentalidade de vendas
+[00:28:41] as três inteligências que a inteligência humana inteligência de mercado
+[00:28:44] inteligência oficial processos dados e tecnologia.
+[00:28:49] Tudo isso compõe o sistema de vendas safra.
+[00:28:52] Aí dentro da mentalidade de vendas entra
+[00:28:56] o método proprietário que é a gestão de leads por safra que é o
+[00:28:59] diferencial do método.
+[00:29:02] Sim.
+[00:29:02] Aí cara, naquele documento do DocMaster, eu desdobrei várias narrativas que tu já pode me dar feedback, tu já pode inclusive.
+[00:29:13] Eu peguei a pedir você dar uma pesquisada se tinha alguém importante no mercado que já vê os leads dessa forma por safra.
+[00:29:23] Não tem, eu pesquisei. Foi uma das primeiras pesquisas que eu fiz.
+[00:29:28] igual a isso não tem, falando de sistema de vendas.
+[00:29:32] Tem um cara que vende uma parada que tem sistema no nome,
+[00:29:36] mas ele não trabalha o significado de sistema na narrativa dele, sabe?
+[00:29:41] E a maioria pega coisas isoladas, como, por exemplo,
+[00:29:45] o Groff Machine Lyle fala de processo, entendeu? É processo, tem processo.
+[00:29:49] E processo, gosta de ter processo, mas processo é um dos elementos do nosso sistema de vendas.
+[00:29:54] assim comparando os os os até aqui a cara se tu quiser dar uma explorada nesse aqui
+[00:30:01] ó quando aqui tem uma análise bem interessante aqui ó junho dos concorrentes tá nessa aba
+[00:30:12] aqui de concorrentes cara fala sobre todos os concorrentes aqui e aquilo vale a pena
+[00:30:17] dar uma explorada para entender quem são os concorrentes diretos e tal mas assim eu
+[00:30:21] analisei as ofertas de hi ticket dos principais concorrentes e o que tá a gente está oferecendo
+[00:30:26] é o que tem de mais robusto, se o cara fizer uma comparação, a nossa oferta é mais robusta.
+[00:30:31] Cara, aqui a gente tá falando do Antônio, lembra?
+[00:30:36] Do Antônio da Silva.
+[00:30:39] Ele vai quebrar de novo, tá?
+[00:30:40] É, eu acho que ali eu não sei como é que tá hoje, mas eu acompanhei ele há algum
+[00:30:46] tempo e eu tô vendo ele mudar de produto muito.
+[00:30:51] E se ele mudar de produto é porque ele não tá entregando valor com que ele entregava antes.
+[00:30:55] A galera está insatisfeita de novo com esse negócio que ele inventou de
+[00:30:59] a gente vai vender outro produto aí, sabe?
+[00:31:02] É cara, porque é difícil né, Júlio?
+[00:31:05] Pô, tu sabe, não é fácil né?
+[00:31:08] Montar um time redondinho, provavelmente ele tem um vendedor que vende 10 produtos diferentes
+[00:31:15] E aí o cara nunca...
+[00:31:17] Mimão, dificilmente alguém que não está muito versado no que é o produto vai ser um bom vendedor, né?
+[00:31:26] Imagina, tu vem de carro, tu vem de caminhão, tu vem de passagem aérea, tu vem de...
+[00:31:34] O cara não vai se especializar em nada, né? E eu acredito que seja isso, cara. É o mesmo problema de agência, né?
+[00:31:41] O cara paga para uma agência, a agência tem um cara bom e o cara bom coloca os estagiários
+[00:31:47] para ela entender o cara.
+[00:31:49] Aí um estagiário faz, porra, cinco clientes.
+[00:31:54] Tipo assim, o cara paga 15 palpa agência, daí a agência vai lá, paga quatro pila para
+[00:31:59] o copywriter, o copywriter escreve para seis clientes.
+[00:32:02] Não vai ser bom, cara, não tem como ser bom, é impossível ser bom, tá ligado?
+[00:32:06] Exatamente.
+[00:32:07] Agora a IA treinada, personalizada, ela fica boa.
+[00:32:11] E aí, cara, é capaz de estar o time do cara, né?
+[00:32:14] Que é diferente, né?
+[00:32:16] É.
+[00:32:17] Então beleza.
+[00:32:20] Tá.
+[00:32:21] Deixa eu ver o que mais...
+[00:32:22] Não, então é isso, cara.
+[00:32:23] Aí o que que era...
+[00:32:25] O que que era o que a gente tinha que conversar?
+[00:32:27] Ah, não, vamos voltar ali pra Tese da Tríade.
+[00:32:30] Vamos explorar essa questão do Grofe aí.
+[00:32:33] Tu acha que o Grofe já entra na Tese?
+[00:32:37] Eu acho que entra.
+[00:32:38] E principalmente o Hacking.
+[00:32:39] Eu pensei até em Tríade Hacking.
+[00:32:41] Mas como nome o que que é?
+[00:32:43] Não é como não como não é tipo assim aqui nessa no logo ali tava a tria de
+[00:32:50] deixa eu ver a matria de marketing né poderia ser tria de hacking
+[00:32:56] deixa eu ver se tenho logo aqui tá faltando foto nossa aí tá porque tá muito
+[00:33:02] relacionada a gente essa não eu até pedi eu até pedi pra julha e até
+[00:33:08] mandei no grupo lá que a gente precisa de foto fotos tua com grandes
+[00:33:12] clientes em grandes lançamentos e fotos do Euclides. Então se tiver foto que te
+[00:33:16] agonego, foto culpado do Marçal, porque nesse espaço aqui tem um espaço aqui que a gente...
+[00:33:23] eu fiz aquela imagem lá, lógico, o designer vai trabalhar aqui, né?
+[00:33:27] Mas como é que funciona a empresa? Vendendo sem sistema o dono
+[00:33:33] arremessa a lídia, traz de lídia, a maioria cai fora de vez em quando não acerta.
+[00:33:36] O cara vendado é que como funciona o sistema de venda é safra.
+[00:33:41] O dono coloca cada litro na esteira e acompanha tudo na tela.
+[00:33:45] O sistema leva o litro por etapa até o closer e o closer só fecha a venda.
+[00:33:49] É isso aí.
+[00:33:52] Aqui eu tenho uma tese de closer, que o closer não tem que convencer.
+[00:33:57] Se o closer tiver que convencer alguma coisa, é porque o marketing não fez o trabalho.
+[00:34:01] O trabalho de convencer é do marketing, do venedor.
+[00:34:07] E tu sabe que nesse mercado que a gente concorre,
+[00:34:11] os caras têm a tese contrária.
+[00:34:12] Eles dizem assim, ó, que eles falam do lado do lado do lado.
+[00:34:16] E assim, não, hoje em dia o closer é tirador de pedido.
+[00:34:20] Não, o closer tem que ser vendedor.
+[00:34:22] Então assim, a gente vai contra o mercado.
+[00:34:24] Assim, não, o closer tem que realmente ser...
+[00:34:26] Se tu tem um sistema, o closer é tirador de pedido mesmo.
+[00:34:29] É esse o trabalho dele.
+[00:34:31] Porque se tu precisar das habilidades de venda do closer,
+[00:34:33] aí tu tá enrolado, porque aí tu vai ter que...
+[00:34:35] só vai funcionar se tiver um bom vendedor e o sistema não precisa de um bom cara que faça o que tem que ser feito
+[00:34:42] né exatamente aqui ó nessa parte aqui ó você ainda não conhece o sistema de venda safra mas conhece o que ele faz
+[00:34:50] aí aqui é autoridade daí aqui a ideia é ter a foto de vocês com os grandes grandes players que vocês atenderam
+[00:34:58] Ah, isso tu já puder separar fotos, que sejam fotos de autoridade, já pode mandar pra
+[00:35:05] gente que a gente manda pro designer.
+[00:35:07] Ah, mano, acho que a gente queria puriar as fotos mesmo.
+[00:35:11] É, pode ser também.
+[00:35:12] Porque eu não tenho muita foto.
+[00:35:15] Não, eu também, cara, eu sou o pior tirador de foto, eu precisar de... até mesmo, cara,
+[00:35:23] O meu swipe, o próprio particular, eu falho muito porque eu faço páginas de venda,
+[00:35:28] por exemplo, pra caralho, eu não tiro um print, não tenho as páginas pra mostrar.
+[00:35:33] É, eu acho que a gente pode pegar, fazer umas fotos massa com a A,
+[00:35:38] e pode colocar talvez aquele vídeo lá que o Clídes sempre mostra na sua união.
+[00:35:43] Ah, aquele vídeo lá é massa, aquele vídeo lá é massa.
+[00:35:47] Dá pra colocar na página.
+[00:35:48] É.
+[00:35:51] Dá pra fazer umas paradas assim, entendeu?
+[00:35:52] Uhum.
+[00:35:53] Tá ficando muito legal essa cor branco, verde, tá ficando muito bom.
+[00:36:00] Ficou, ficou legal mesmo.
+[00:36:04] Deixa eu pensar aqui cara.
+[00:36:06] Eu vou interromper aqui.
+[00:36:09] Vamos pensar na tese da Tríade agora.
+[00:36:12] Vai me falando cara, me fala o que tu pensa, me fala mais sobre qual eu tô avisando
+[00:36:16] desse groove aí que aí eu vou amanhã cara, amanhã eu vou revisar tudo.
+[00:36:23] Ah, eu ia te falar, cara, me manda o repositório onde tu fez aquele...
+[00:36:29] O quiz lá, que aí eu faço os ajustes que precisar, pô.
+[00:36:34] Tá.
+[00:36:36] Porque aí eu deixo ele redondinho,
+[00:36:38] ele redondinho dentro do funil que a gente tá construindo.
+[00:36:43] Eu preciso só saber como que eu faço isso.
+[00:36:45] Tu tem no GitHub?
+[00:36:48] É, eu estou vendo aqui o que eu fiz ele.
+[00:36:51] Ou então, cara, mesmo pro Cloud,
+[00:36:53] Pede para o Cloud fazer o download e manda para mim que aí eu resolvo no Cloud que tu fez
+[00:37:02] pede para ele fazer o download de todos os arquivos em Zip provavelmente ok HTML deve ser né
+[00:37:50] Vê aí se você consegue acessar
+[00:37:53] Não aqui deu c... peraí
+[00:38:31] Não, se deu cessão não encontrado eu acho que só fica no teu
+[00:38:38] Vê agora, é isso aí
+[00:38:39] Peraí.
+[00:38:41] Ou o Down F5 na melhor de cada vez o site.
+[00:38:44] Peraí.
+[00:38:56] Ó, a sessão de Júnior Neve é somente leitura.
+[00:39:00] Pronto para criar algo por conta própria?
+[00:39:04] Deixa eu ver.
+[00:39:05] É, eu não consigo mexer, é só leitura.
+[00:39:14] Eu consigo abrir, mas não consigo mexer, mas deixa eu ver uma parada aqui, peraí.
+[00:39:19] Pede para ele fazer, tipo assim, fazer o...
+[00:39:22] Diz que tu quer fazer o download do artefato.
+[00:39:26] A versão... Pede para fazer o download da versão completa do artefato.
+[00:39:33] Que eu acho que ele vai preparar todos os arquivos, daí eu consigo abrir aqui no meu Clode.
+[00:39:39] Nossa, ele me perguntou quem vai mexer. O Otávio, primeira opção, Otávio?
+[00:41:10] Sério?
+[00:41:11] Como ele sabe?
+[00:41:13] Ele está vendo tudo que nós estamos fazendo, tudo que nós estamos falando.
+[00:41:18] Então, ele falou que tem um botão aqui de compartilhar, mas onde que tem esse botão de compartilhar?
+[00:41:43] Deixa eu ver uma parada.
+[00:42:10] Tinha um...
+[00:43:55] Pronto, achei.
+[00:43:57] Porque é só um ajuste de funeo que é tranquilo de fazer.
+[00:44:31] Eu vou fazer amanhã.
+[00:44:32] Aí com a página de vendas com o quiz definido, a gente já pode começar a gerar leite porra.
+[00:44:41] É, você tem que pegar esse arquivo e fazer as mudanças.
+[00:45:24] É, não, beleza. Já fiz o download aqui.
+[00:45:26] Eu vou fazer, mas eu vou fazer isso.
+[00:45:28] Oi.
+[00:46:13] Beleza. O que é que é a pergunta que você tinha me feito?
+[00:46:15] Não, era só aquela questão do Groove, me fala mais um pouquinho da tua visão
+[00:46:19] que eu vou puxar daí para fechar a tese da Tríade, né?
+[00:46:24] Aham.
+[00:46:25] Mas aí pode me falando livremente, me vai me falando da tua visão sobre isso,
+[00:46:30] sobre Groove, eu já tenho bastante coisa, porque outra vez a gente conversou bastante, né?
+[00:46:34] Mas me fala um pouquinho mais aí que depois eu destilo isso
+[00:46:40] se transforma no documento que aí tu disse, sim ou não?
+[00:46:44] Tá, vamos lá. Eu tô abrindo meu curso aqui, mas basicamente eu acredito que o Growth Hacker
+[00:46:57] é alguém que vai entrar num negócio pra justamente ver onde que tá o furo que ninguém
+[00:47:05] tá vendo, sabe? Onde que tem espaço pra crescer sem aumentar a timbre, sem aumentar
+[00:47:11] a verba sem fazer nada só com otimização da que tem onde que não onde que dá onde
+[00:47:17] como é que faz para colocar mais dinheiro no caixa só com otimização e o máximo
+[00:47:21] resultado com o mínimo esforço né é com o mínimo esforço não com o mesmo esforço
+[00:47:27] sem esforço não não sem esforço com o mesmo esforço isso e sem sem esforço
+[00:47:34] adicional digamos assim em força adicional é maximizar resultado fazendo a
+[00:47:40] Aham, bom.
+[00:47:48] Eu não sei se tu já leu aquele livro que é de...
+[00:47:54] chama Growth Hacking mesmo.
+[00:47:56] Tá ligado.
+[00:48:00] Lá...
+[00:48:02] Mas lá é legal porque...
+[00:48:04] Deixa eu até ver aqui, eu tenho ele no Kindle aqui.
+[00:48:06] Lá ele traz um...
+[00:48:10] alguma coisa que a gente pode chupar.
+[00:48:14] Peraí.
+[00:48:16] Ó, vamos lá.
+[00:48:17] Tem uma minha aula aqui de...
+[00:48:19] Eu não sei nem o que do aula.
+[00:48:22] Fala pessoal, tudo bem?
+[00:48:23] Seja bem-vindos a mais uma aula da formação
+[00:48:26] Estratégista e Growth Hacker.
+[00:48:28] Meu nome é Carlos Téles e eu pareci do nada aqui pra vocês.
+[00:48:30] Vocês estavam tendo uma aula com o Junior Neves.
+[00:48:31] E de nada parecem estar aqui falando pra vocês.
+[00:48:33] Eu sou Carlos Téles, trabalho com o Junior já há mais de dois anos.
+[00:48:34] Eu participei junto com ele.
+[00:48:35] Foi uma questão de imprevisto que aconteceu aí na vida do Junior.
+[00:48:37] Se você já compõe a vida dele pra você, saiba.
+[00:48:39] Mas é bem pra lá que ele volte e regrava essas aulas aqui pra vocês, tá?
+[00:48:41] Mas independente, eu vou trazer aqui a mesma visão,
+[00:48:43] o mesmo conteúdo pra deixar claro pra vocês
+[00:48:44] como funciona esse universo de estratégia e golfe-hack.
+[00:48:46] Hoje nós vamos falar sobre o que é a produção golfe-hack.
+[00:48:49] Primeiro a gente precisa fazer um panorama do mercado do marketing digital.
+[00:48:51] A gente sabe que todas as empresas, geralmente as empresas que estão de olho no futuro,
+[00:48:54] com o olho no progresso,
+[00:48:54] elas estão de olho em ferramentas e forma...
+[00:48:56] Tá ouvindo aí?
+[00:48:57] Tô.
+[00:48:58] ...de uma maneira exponencial.
+[00:48:59] Isso não é possível crescer de uma maneira exponencial,
+[00:49:01] se de fato você começar a prestar atenção a detalhes
+[00:49:02] que às vezes se passa despercebido na maioria dos casos,
+[00:49:04] na maioria das empresas.
+[00:49:05] Então as empresas estão faturando,
+[00:49:06] estão naquele posicionamento de conseguir bons resultados,
+[00:49:08] mas chega uma hora que elas se encontram estagnadas.
+[00:49:10] É nesse momento em que aparece a produção golfe-hack.
+[00:49:12] Porque todas as empresas precisam de um novo olhar para que elas possam se tornar exponenciais.
+[00:49:16] O jogo não é só do crescimento, é se tornar exponencial.
+[00:49:18] E o Grofer Hacker vem exatamente nessa mesma onda.
+[00:49:20] Porque ele faz com que a gente deixe de maneira clara ferramentas e formas de enxergar oportunidades
+[00:49:24] dentro das opções da empresa e dos mecanismos que já existem dentro da empresa
+[00:49:27] para fazer com que elas sejam exponenciais.
+[00:49:29] Para que você encontre pequenas brechas, pequenas oportunidades no meio do caminho
+[00:49:32] que faça com que elas consigam encontrar ali os dados e as formas para poder crescer de maneira exponencial.
+[00:49:36] O Grofer Hacker na verdade não trabalha com achismos, ele não trabalha com sorte, vamos dizer assim.
+[00:49:41] Não é uma sacada de sorte que vai fazer com que você dê uma vaica de nada na empresa ou nos negócios.
+[00:49:44] O que vai fazer com que você encontre essa guinada é o trabalho minucioso de alguns detalhes que vai acontecer
+[00:49:48] durante o percurso que vai fazer com que você realmente encontre os resultados que você ameja.
+[00:49:51] Então, a curva de resultados de um golf hack nunca é aquela curva da sorte.
+[00:49:54] Você está indo numa linha para a lista crescendo e aí você dá um tipo de crescimento,
+[00:49:56] depois você desce um pouquinho e continua crescendo.
+[00:49:57] Dificilmente isso acontece quando você trabalha nessa posição de golf hack.
+[00:49:59] Quando você trabalha de uma maneira correta nessa área, você precisa ver de uma maneira exponencial.
+[00:50:02] Ou seja, você vai analisar os mecanismos que a empresa já usa, as coisas que ela já utiliza
+[00:50:05] e faz com que ela cresça exponencial de uma maneira suave e razoável.
+[00:50:08] Só que ela não cresce pouco, ela cresce exponencial.
+[00:50:09] Então, geralmente, uma estratégia, um materialismo que você analisa durante um período
+[00:50:12] é bem prova que ele se destaca de uma vez muito rápida.
+[00:50:13] E qual a diferença? Que ele não cai de maneira rápida.
+[00:50:15] Porque não foi sorte. Ele caiu porque foi consistente, foi estudado,
+[00:50:17] foi metrificado todo o processo até você conseguiu o resultado.
+[00:50:19] Tá, Carlos? Como é que eu entendo essa profissão na prática?
+[00:50:21] Na prática, essa profissão é a prova da gente forma.
+[00:50:23] A profissão, GovHack, ele tem profissionais que estão de olho
+[00:50:25] nas pequenas brechas no que acontece em dia de emprego.
+[00:50:27] Então, a gente precisa o quê?
+[00:50:28] analisar, metrificar e ver todas as oportunidades que acontecem em um ambiente.
+[00:50:31] Então não é uma coisa que você vai pegar de uma área específica, não é só olhando para de marketing por exemplo.
+[00:50:34] De repente você precisa olhar para uma área de estratégia, você precisa olhar para uma área de administrativo,
+[00:50:38] de repente você precisa olhar mais para uma área de adivendas, depois você precisa olhar para uma área de aquisição.
+[00:50:41] Essa aquisição é o olhar para todos os anguentes.
+[00:50:43] Deixe-me de golf porque ele tem um universo global, ele precisa olhar para todos os lados,
+[00:50:45] todos os trucos que te cercam para você se abastecer essas informações
+[00:50:48] e de uma maneira analítica você poder organizar, estruturar e também colocar o objetivo, claro, de onde você quer chegar.
+[00:50:52] E com base nisso, nas pequenas oportunidades que às vezes fazem as perseguidas,
+[00:50:54] você consegue fazer uma boa estratégia,
+[00:50:55] consegue unir um bom produto, uma boa ideia
+[00:50:57] para fazer com que tudo se torne exponencial.
+[00:50:58] As áreas que mais utiliza o Golf Hacker, por exemplo,
+[00:51:00] é as áreas que trabalham com o cárfego pago, por exemplo.
+[00:51:02] Você consegue utilizar muito das características do tráfego pago
+[00:51:04] para você poder ter resultados através dos seus investimentos
+[00:51:06] e, através desses investimentos, analisar as pequenas brechas.
+[00:51:08] O mercado todo faz investimentos em tráfego pago
+[00:51:10] e também tem retorno sobre ele.
+[00:51:11] Mas são pouquíssimas as empresas que prestem atenção aos detalhes.
+[00:51:13] Prestem atenção naquelas coisas que estão passando a ser despercebidas no mercado
+[00:51:15] mas que, de certa forma, está ali o tempo inteiro.
+[00:51:17] E aí sim que você consegue ter um resultado exponencial.
+[00:51:18] Existem várias outras opções que você pode utilizar
+[00:51:20] como ferramenta para o Grof Hacking, como o TMI Marketing,
+[00:51:22] as opções de automações,
+[00:51:23] as opções que passam com que você às vezes elimine.
+[00:51:26] Olha só, eu tenho aqui no livro,
+[00:51:28] uma coisa interessante aqui, ó.
+[00:51:30] Ciclo do Grof Hacking.
+[00:51:32] Análise, ideação, priorização e teste.
+[00:51:37] E depois, as quatro áreas, um, dois, três,
+[00:51:42] quatro áreas de hacking.
+[00:51:45] Aquisição, ativação, retenção e monetização.
+[00:51:53] Da onde é o livro?
+[00:51:55] É do livro, do livro, é, chama Hacking Growth.
+[00:51:59] Aquisição, aquisição.
+[00:52:03] Porque aí, cara, tipo, assim, como tu falou, não é realmente?
+[00:52:11] Atração, vendas e entrega?
+[00:52:16] é porra é o requisito básico de uma empresa, todo empresa faz, não tem como ter uma empresa
+[00:52:21] que não faça isso né, mas talvez se a gente for para um caminho de falar em aquisição,
+[00:52:27] ativação, e isso não para o safra, isso para a triad como em todo né, aquisição,
+[00:52:34] ativação, retenção e monetização, talvez seja um caminho diferente do que está sendo
+[00:52:42] de ofertado no mercado, né?
+[00:52:45] Então, transformar um estrategista...
+[00:52:47] Pra vocês, os dois pontos...
+[00:52:48] Por que você deve entrar na profissão
+[00:52:50] de estrategista e growth?
+[00:52:52] Vou trazer os dois ambientes pra vocês,
+[00:52:54] que eu preciso ser sincero aqui.
+[00:52:55] Então, você é bem sincero mesmo, tá?
+[00:52:57] Existem vários pontos que nós podemos utilizar
+[00:52:59] pra entrar na profissão de estrategista e growth hacker.
+[00:53:03] Um dos pontos mais importantes que eu não enxergo, né?
+[00:53:05] É que como é que seja uma profissão minuciosa,
+[00:53:07] que exige atenção a vários detalhes?
+[00:53:08] É uma profissão que você pode trabalhar
+[00:53:09] de onde você quiser.
+[00:53:10] Ou seja, você tem liberdade geográfica.
+[00:53:12] Cara, esse curso é muito bom, mano.
+[00:53:15] Puta merda.
+[00:53:16] Não porra, eu me lembro, cara.
+[00:53:17] O demo explorado é bom, é muito completo, né?
+[00:53:19] Tem muita coisa, né?
+[00:53:20] Tem que voltar a vender esse curso, cara.
+[00:53:22] Não, eu ia até dizer o defeito desse curso, é que ele tem coisa demais, sabe?
+[00:53:26] Ele é muito grande, né?
+[00:53:28] Tem tudo, né?
+[00:53:29] Cara, eu tenho que voltar a mexer nesse curso, porque depois que a gente botar
+[00:53:34] esse negócio pra rodar, vai ver gente interessada em que ele montar um negócio parecido
+[00:53:37] com o nosso.
+[00:53:38] E esse curso, a pessoa pode abrir um negócio igual ao nosso.
+[00:53:41] Aham.
+[00:53:42] Nós podemos até criar uma espécie de franquia, sabe?
+[00:53:45] Aham.
+[00:53:46] Seja bem-vindo ao Móluo de Negócio.
+[00:53:54] Nesse modo, o meu objetivo aqui é fazer você ter um novo eubino,
+[00:53:57] que é um negócio. Então, de novo, você que já tem um negócio,
+[00:53:59] já trabalha com isso, quer te pedir, tem você...
+[00:54:01] O que eu vou fazer? Eu vou fazer isso amanhã também.
+[00:54:06] Eu vou pensar na tese. Eu já tenho aqui a ideia,
+[00:54:10] mas eu vou pensar na tese direcionando pro growth como um diferencial.
+[00:54:16] para o growth para o hacking, né?
+[00:54:18] Mas aí talvez a gente saia dessa ativação, vendas, atração, vendas e coisa e vai para
+[00:54:31] a parada mais de growth, de hack mesmo, né?
+[00:54:34] De growth, hacking.
+[00:54:35] E cara, é uma linha editorial legal pra caramba porque é muito interessante, né?
+[00:54:41] Nesse livro aqui ele fala várias das estratégias de growth das grandes empresas.
+[00:54:47] Ele fala do Dropbox, fala do Airbnb, tem vários cases.
+[00:54:54] Esse cara que escreve o livro, ele era o cara de marketing do Dropbox,
+[00:54:58] que eles fizeram a estratégia de growth, que ninguém fazia essa parada de convite.
+[00:55:04] Tipo, quer experimentar o negócio?
+[00:55:07] Pô, mas não tem. E aí gerou aquele fomo.
+[00:55:09] Todo mundo queria um convite para experimentar o Dropbox.
+[00:55:12] E aí ele criou um...
+[00:55:14] Pô, um videozinho que viralizou e aí todo mundo queria aquilo, mas ninguém tinha acesso.
+[00:55:19] Saca?
+[00:55:20] Aí eles iam liberar.
+[00:55:21] Olha, quem já tem acesso... Tem dois convites para distribuir.
+[00:55:25] Aí os caras começaram a vender os convites para distribuir, saca?
+[00:55:28] Hum-hum.
+[00:55:29] E muita história legal para contar sobre isso.
+[00:55:32] E realmente, cara, é um espaço que ainda não está...
+[00:55:36] bem ocupado, né? Mas tu acha que como tese de mercado e posicionamento para a
+[00:55:44] tríade pode ser o o o hacking? Aham, com certeza.
+[00:55:51] Então eu vou trabalhar isso, legal? Gosto. Só que, Dio, a gente tem que vender a ideia de que ninguém sabe fazer essa parada, entendeu?
+[00:55:58] Sim, sim, sim, sim, sim, sim, sim. É, aí é... Não, aí é... É legal. Aí trazer todo esse lance,
+[00:56:04] do ciclo, análise, deação, priorização e teste.
+[00:56:08] Então, até mesmo a gente pode trazer isso,
+[00:56:11] daí a gente vai ter que colocar essas camadas dentro dos produtos.
+[00:56:14] Então, a gente pode já trazer essa camada de hacking
+[00:56:18] para os nossos entregáveis.
+[00:56:20] Então, ali aquele primeiro análise estratégica das safras
+[00:56:24] pode ser ciclo inicial de growth hacking,
+[00:56:28] que a gente vai fazer uma análise, uma ideação,
+[00:56:32] uma priorização e partir pros testes.
+[00:56:36] E aí é isso, é um ciclo, né? Vou até te mostrar até aqui, ó.
+[00:56:49] Ciclo do Groove, tá vendo?
+[00:56:53] Analise, ideiação, priorização e teste.
+[00:56:57] Aí...
+[00:57:03] Foi isso aqui, ó.
+[00:57:05] Aí aqui, ó, o guia do Groove.
+[00:57:10] Aí é...
+[00:57:11] Pô, cara, isso aqui é...
+[00:57:14] Ó.
+[00:57:15] Hacking pra aquisição, hacking pra ativação,
+[00:57:18] hacking para a retenção e hacking para a monetização. Não quer dizer que todos esses
+[00:57:23] isso vai estar no produto de vendas, mas dentro de tudo que a gente vende porque isso aqui
+[00:57:28] está relacionado. Aquisição. Aquisição é atração, ativação. Ativação é fazer
+[00:57:35] o cara usar porque daí ele vem muito da parada de software. Então assim cara, o cara tem
+[00:57:40] que usar o software para ele continuar pagando. Então tem que ter ativação, ele tem
+[00:57:43] tem que gerar valor em cima daquilo.
+[00:57:46] Retensão, como que esse cara fica, né?
+[00:57:48] Imonetização, da imonetização é dentro, o cara já é cliente.
+[00:57:52] Como que eu tiro uma adinha desse cara?
+[00:57:54] Fazendo um crosshair, fazendo um upsell, botando mais produtos.
+[00:58:02] O legal desse curso aqui é os comentar, mano.
+[00:58:05] É muito comentar, cara.
+[00:58:07] No curso, né? Porque tinha muita ativação e retenção, né?
+[00:58:12] Os caras assistiam e assistiam mais, né?
+[00:58:15] E outra coisa que é legal, que é onde eu vejo, assim, que tem um diferencial.
+[00:58:19] Geralmente, quando é curso, eu crio, cara, um jeito que é muito simples da pessoa entender, sabe?
+[00:58:26] Fica fácil de entender.
+[00:58:27] Complexo, fica fácil de entender.
+[00:58:30] Porque eu crio um mapa mental, eu vou pegando lá do tipo assim, desde o comandar.
+[00:58:37] O que é pé? O que é perno? O que é dedo? Qual é a função das pernas?
+[00:58:41] É uma formação completa do profissional de marketing.
+[00:58:45] É.
+[00:58:46] Porque tu passa com o RENG, passa com social media.
+[00:58:51] Isso é quase uma universidade.
+[00:58:53] Esse curso na verdade são vários cursos em um.
+[00:58:55] É uma formação.
+[00:58:57] É porque é uma tese que eu tinha, que eu tenho até hoje, que um growth hacker,
+[00:59:06] Ele pode ser... Ele pode ser...
+[00:59:13] Generalista em muitas coisas, mas tem cinco coisas dentro do mundo digital
+[00:59:19] que são as mais importantes, que é... Trafogo Pago, o generalista...
+[00:59:23] Um, um...
+[00:59:26] Em redes sociais.
+[00:59:28] Então tem um curso de Trafogo Pago, tem um curso de redes sociais.
+[00:59:31] Em copy.
+[00:59:32] Aí tem um... Então tem um curso de cópula dentro.
+[00:59:35] em NeuroMarketing, então tem um curso de marketing lá dentro e qual que é o outro aqui?
+[00:59:49] NeuroMarketing e Brainy.
+[00:59:53] Brainy.
+[00:59:54] É.
+[00:59:55] Eu botaria mais uma, botaria mais uma, que é análise de dados, mais uma perna.
+[01:00:05] É, porque tu tem análise de dados aqui, né?
+[01:00:09] É, mas eu acho que é uma das grandes falhas.
+[01:00:14] Eu acho que se fosse olhar tipo assim, cara, todo cliente que eu entro,
+[01:00:19] se eu for dizer a maior falha dos caras, ele não olhar para dados.
+[01:00:23] O que não tem, na verdade, é que não olha.
+[01:00:25] Eu acho que está mais para gerenciamento de dados, né?
+[01:00:28] É, é, é.
+[01:00:31] Ele tem os dados, né?
+[01:00:34] Ele recebe os dados, mas ele não trata, não analisa,
+[01:00:37] não gera insight não geração a partir dos dados né é eu entrei numa
+[01:00:43] hora cara para dar uma consultoria os cara meu irmão tem uma vende uma porga
+[01:00:47] doação de 22 conto aí gerando lead para black friday e os caras porra eles
+[01:00:55] vendem essa black friday os caras vão vender milhão aí tem lá o cara ele
+[01:01:02] tem quatro páginas rodando ele tem um monte criativo mas aí qual é os
+[01:01:06] criativo quem é que está vindo esses criativos eu não sabe ele não tem um sistema que
+[01:01:11] permita ele saber quais são os leads realmente qualificados assim ele só olha custo por lead
+[01:01:18] ao criativo que tem o melhor custo por lead ele escala mas ele não está sabendo que tipo
+[01:01:22] de cliente está vindo daquele criativo aí fomos dar uma olhada lá ele estava escalando
+[01:01:27] um criativo que estava com custo por lead baixo mas que estava traindo estudantes
+[01:01:32] de medicina veterinária e não é o pra ele não vai vender pra estudante porque uma
+[01:01:36] apogadação é para requisito que ela tá formada, tá ligado?
+[01:01:39] Sim.
+[01:01:40] E aí os caras fazem essas coisas, ah não esse criativo tá muito bom, tá trazendo um
+[01:01:44] lead aqui a 22 reais.
+[01:01:45] Tá aí, que lead tá trazendo, ah não sei, daí fomos fulsar lá pô, mas esse criativo
+[01:01:50] tá trazendo estudante, pode desligar esse criativo aí.
+[01:01:56] Eu inventei cada coisa, mano, nesses anos aí.
+[01:01:59] Eu inventei a basicamente a profissão social media, a gente foi um dos primeiros
+[01:02:02] A gente precisa falar, profissão social media, arquiteto de brainer eu criei essa profissão.
+[01:02:08] O growth hack já tinha mas eu posso dizer que...
+[01:02:12] E falou sobre isso né, porque ninguém falava né?
+[01:02:15] Ninguém falava, eu fiz acho que foi um dos primeiros cursos de growth hack, foi o meu.
+[01:02:20] Eu me lembro cara, era na stage não era?
+[01:02:23] Aham.
+[01:02:24] É, eu me lembro, eu assinei a stage um tempo.
+[01:02:28] A gente vendeu cara.
+[01:02:30] A gente vendeu esse curso e depois colocou dentro da MBA do Flávio Augusto e recebi
+[01:02:39] mensagem até hoje de gente falando que a MBA só valeu a pena um claro discurso.
+[01:02:42] Porra cara e assim ó ainda não tipo assim não tem um só sem a porra um player posicionado
+[01:02:51] como Groovrack não tem, entendeu?
+[01:02:55] Não, não tem.
+[01:02:56] Eu era esse cara.
+[01:02:58] Não, mas a gente pode pode recuperar isso e voltar a investir nisso.
+[01:03:02] Você vê?
+[01:03:03] É assim, voltar a investir nesse posicionamento, porque é um território que tu já operou e
+[01:03:09] que tipo faz todo sentido, né?
+[01:03:12] E aí o curso mesmo, a mãe, a gente pode botar esse curso para vender de novo,
+[01:03:16] para que no momento que a gente começar a voltar a falar sobre isso, né?
+[01:03:20] Tem mais alguma coisa que a gente precisa bater aqui?
+[01:03:22] Não, não, não.
+[01:03:23] Aí eu já tenho tudo que eu preciso de ti.
+[01:03:25] Eu vou aí, eu vou por mãe.
+[01:03:27] Eu vou mergulhar.
+[01:03:28] Você vai esperar ou eu quis voltar?
+[01:03:31] Não, eu vou conversar com ele porque eu também seis e meio tenho que meter o pé,
+[01:03:34] que eu já tinha marcado as seis horas com a minha mulher,
+[01:03:36] eu já tá na minha orelha aqui.
+[01:03:38] Mas se tu quiser ir, vai e aí eu...
+[01:03:40] Não, é que...
+[01:03:41] Eu ia fazer uma chamada com uma expert que tá querendo que a enchilance ela,
+[01:03:46] aí eu ia te chamar pra, se você queria participar, mas eu faço aqui também
+[01:03:50] porque agora é cinco, né?
+[01:03:52] Não, seis agora.
+[01:03:53] Agora é seis, seis e dez, seis e sete.
+[01:03:55] Ah, não, então...
+[01:03:57] Então dá tchau lá pro Eclides, tá?
+[01:03:58] Fala depois que...
+[01:04:00] O que falta pra ele?
+[01:04:02] Não, eu acho que ele queria...
+[01:04:03] Eu não sei o que ele queria fazer, o fechamento.
+[01:04:06] Eu vou até perguntar pra ele aqui.
+[01:04:07] Mas tu vai entrar nessa aí, eu resolvo com ele aqui.
+[01:04:10] Eu nem vou entrar, eu vou só ligar pra ela.
+[01:04:12] Vou ficar aqui com o computador aqui, eu vou ligar pra ela, tá?
+[01:04:14] Tá.
+[01:04:16] Qualquer coisa, você me chama aí.
+[01:04:18] Não, fechou então.
+[01:04:19] Vou terminar de gravar aqui.

@@ -1,0 +1,14 @@
+Sistema de Vendas Safra — pacote de identidade
+
+01-logotipo   Arquivos oficiais do logotipo e do símbolo (SVG e PNG).
+              negativo = para fundos escuros · positivo = para fundos claros.
+02-apresentacao  Apresentação aprovada da identidade (PDF).
+03-tokens     Variáveis de cor, tipografia, espaçamento e raio.
+
+Regras essenciais
+- Não redesenhe, distorça, recolora ou aplique efeitos ao logotipo.
+- Use sempre os vetores (SVG) quando possível.
+- Tipografia oficial: Geist (títulos, texto, números e rótulos).
+- Paleta oficial: #0A100D #121915 #E5ECE7 #CDD6D1 #8BD6B1 #309367.
+
+Documentação completa: design system do Sistema de Vendas Safra.

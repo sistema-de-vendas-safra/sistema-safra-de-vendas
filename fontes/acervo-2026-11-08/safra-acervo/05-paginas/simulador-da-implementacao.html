@@ -1,0 +1,788 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Simulador da Implementação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Caderno de campo: folha quadriculada, a régua de safras como peça principal, coluna única de leitura */
+:root {
+  --papel: #EDF0E8;
+  --quadricula: #E0E5D9;
+  --superficie: #F8FAF4;
+  --tinta: #1D2A21;
+  --tinta-suave: #56635A;
+  --linha: #C6CEBF;
+  --milho: #B57A06;
+  --milho-fundo: #C98A0B24;
+  --broto: #2C7A47;
+  --broto-fundo: #2C7A4722;
+  --base: #8E998F;
+  --base-fundo: #8E998F26;
+  --foco: #1E5FBF;
+  --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --texto: "Public Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #121813; --quadricula: #19211B; --superficie: #18201A; --tinta: #E4EAE1; --tinta-suave: #A2AEA5;
+    --linha: #2D382F; --milho: #E2A93A; --milho-fundo: #E2A93A2B; --broto: #5DB37D; --broto-fundo: #5DB37D29;
+    --base: #77837A; --base-fundo: #77837A33; --foco: #7FB0FF; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #121813; --quadricula: #19211B; --superficie: #18201A; --tinta: #E4EAE1; --tinta-suave: #A2AEA5;
+  --linha: #2D382F; --milho: #E2A93A; --milho-fundo: #E2A93A2B; --broto: #5DB37D; --broto-fundo: #5DB37D29;
+  --base: #77837A; --base-fundo: #77837A33; --foco: #7FB0FF; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--papel);
+  background-image:
+    linear-gradient(var(--quadricula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--quadricula) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+.folha { max-width: 960px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.05; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: clamp(3rem, 9vw, 5.6rem); }
+h2 { font-size: clamp(2rem, 5vw, 2.8rem); }
+h3 { font-size: 1.5rem; font-weight: 600; }
+p { margin: 0; }
+.lead { font-size: 1.15rem; max-width: 62ch; color: var(--tinta); }
+.nota { font-size: 0.875rem; color: var(--tinta-suave); max-width: 70ch; }
+section { display: grid; gap: 20px; }
+.cabeca { display: grid; gap: 12px; }
+
+/* Hero */
+.abertura { display: grid; gap: 18px; }
+.controles { display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: end; }
+.campo { display: grid; gap: 6px; }
+.campo label { font-size: 0.875rem; font-weight: 600; color: var(--tinta-suave); }
+select, input[type="number"] {
+  font: inherit; color: var(--tinta); background: var(--superficie);
+  border: 1px solid var(--linha); border-radius: 6px; padding: 8px 10px; min-width: 0;
+}
+input[type="range"] { accent-color: var(--broto); width: 220px; max-width: 100%; }
+.regua-mat { display: flex; align-items: center; gap: 12px; }
+.regua-mat output { font-family: var(--display); font-weight: 800; font-size: 1.6rem; min-width: 4.5ch; font-variant-numeric: tabular-nums; }
+.tese { font-size: 1.25rem; font-weight: 500; max-width: 64ch; min-height: 3.2em; }
+.tese strong { font-weight: 700; }
+.grafico-wrap { overflow-x: auto; background: var(--superficie); border: 1px solid var(--linha); border-radius: 10px; padding: 16px 12px 8px; }
+#grafico { display: block; width: 100%; min-width: 680px; height: auto; }
+#grafico text { font-family: var(--texto); fill: var(--tinta); }
+#grafico .mes { font-family: var(--display); font-weight: 600; font-size: 15px; fill: var(--tinta-suave); }
+#grafico .rotulo { font-size: 13px; font-weight: 600; }
+#grafico .tipo { font-size: 11px; fill: var(--tinta-suave); }
+#grafico .data { font-size: 12px; font-variant-numeric: tabular-nums; }
+#grafico .grade { stroke: var(--quadricula); stroke-width: 1; }
+#grafico .dia90 { stroke: var(--tinta-suave); stroke-width: 1.25; stroke-dasharray: 4 4; }
+#grafico .faixa-impl { fill: var(--milho-fundo); stroke: var(--milho); stroke-width: 1; }
+#grafico .faixa-haas { fill: var(--broto-fundo); stroke: var(--broto); stroke-width: 1; stroke-dasharray: 4 3; }
+#grafico .faixa-txt { font-family: var(--display); font-weight: 800; font-size: 15px; }
+.e-base { --cor: var(--base); --cor-fundo: var(--base-fundo); }
+.e-impl { --cor: var(--milho); --cor-fundo: var(--milho-fundo); }
+.e-haas { --cor: var(--broto); --cor-fundo: var(--broto-fundo); }
+#grafico .capt { fill: var(--cor); }
+#grafico .matur { fill: var(--cor-fundo); stroke: var(--cor); stroke-width: 1; }
+#grafico .fecho { fill: var(--cor); }
+.legenda { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 0.875rem; color: var(--tinta-suave); }
+.legenda span { display: inline-flex; align-items: center; gap: 8px; }
+.amostra { width: 14px; height: 14px; border-radius: 3px; background: var(--cor); display: inline-block; }
+
+/* Jornada */
+.regua { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)) minmax(0, 1.7fr); gap: 6px 4px; }
+.regua .sem { font-family: var(--display); font-weight: 600; font-size: 0.95rem; color: var(--tinta-suave); text-align: center; font-variant-numeric: tabular-nums; }
+.fase {
+  font: inherit; font-size: 0.85rem; font-weight: 600; text-align: left; color: var(--tinta);
+  background: var(--cor-fundo); border: 1px solid var(--cor); border-radius: 6px;
+  padding: 7px 8px; cursor: pointer; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.fase:hover { background: var(--cor); color: var(--superficie); }
+.fase[aria-pressed="true"] { background: var(--cor); color: var(--superficie); }
+.f-analise, .f-preparo { --cor: var(--tinta-suave); --cor-fundo: var(--base-fundo); }
+.f-colheita { --cor: var(--milho); --cor-fundo: var(--milho-fundo); }
+.f-plantio, .f-gsaas { --cor: var(--broto); --cor-fundo: var(--broto-fundo); }
+.marcos { display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 0.875rem; color: var(--tinta-suave); }
+.marcos b { color: var(--tinta); font-weight: 600; }
+.detalhe { background: var(--superficie); border: 1px solid var(--linha); border-radius: 10px; padding: 24px; display: grid; gap: 16px; }
+.detalhe .quando { color: var(--tinta-suave); font-size: 0.95rem; }
+.entregas { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.entregas li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding-top: 12px; border-top: 1px solid var(--linha); }
+.entregas .nome { font-weight: 700; min-width: 0; }
+.entregas .sem-entrega { font-size: 0.875rem; color: var(--tinta-suave); text-align: right; white-space: nowrap; }
+.entregas .pronto { grid-column: 1 / -1; font-size: 0.95rem; color: var(--tinta-suave); }
+
+/* Duas colunas */
+.duas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.duas ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.duas h3 { margin-bottom: 8px; }
+
+/* GSAAS */
+.niveis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.nivel { border: 1px solid var(--linha); border-radius: 10px; padding: 20px; display: grid; gap: 10px; background: var(--superficie); }
+.nivel.alvo { border: 2px solid var(--broto); }
+.nivel .preco { font-family: var(--display); font-weight: 800; font-size: 2rem; font-variant-numeric: tabular-nums; }
+.nivel .preco small { font-family: var(--texto); font-weight: 500; font-size: 0.85rem; color: var(--tinta-suave); }
+.nivel ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: 0.95rem; }
+.selo { justify-self: start; font-size: 0.8rem; font-weight: 700; color: var(--broto); }
+.regras { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; max-width: 70ch; }
+.origem { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; max-width: 78ch; font-size: 0.95rem; }
+.origem b { font-weight: 700; }
+.grupo .nota { margin-top: 2px; }
+
+/* Conta */
+.cenarios, .precos { display: flex; flex-wrap: wrap; gap: 8px; }
+.cenarios button, .precos button {
+  font: inherit; font-weight: 600; font-size: 0.95rem; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--tinta); border: 1px solid var(--linha);
+}
+.precos button { font-size: 0.875rem; padding: 6px 12px; }
+.cenarios button[aria-pressed="true"], .precos button[aria-pressed="true"] { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
+.conta { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 24px; align-items: start; }
+.entradas { display: grid; gap: 18px; }
+.grupo { display: grid; gap: 10px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.grupo legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
+.linha-campo { display: grid; grid-template-columns: minmax(0, 1fr) 8.5rem; gap: 12px; align-items: center; font-size: 0.95rem; }
+.linha-campo input { width: 100%; text-align: right; font-variant-numeric: tabular-nums; }
+details.premissas summary { cursor: pointer; font-weight: 600; color: var(--tinta-suave); }
+details.premissas[open] summary { margin-bottom: 10px; }
+.saidas { display: grid; gap: 16px; background: var(--superficie); border: 1px solid var(--linha); border-radius: 10px; padding: 24px; }
+.saida { display: grid; gap: 2px; }
+.saida .rot { font-size: 0.9rem; color: var(--tinta-suave); }
+.saida .val { font-family: var(--display); font-weight: 800; font-size: 2.1rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.saida .det { font-size: 0.875rem; color: var(--tinta-suave); }
+.barra-valor { display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: var(--base-fundo); }
+.barra-valor .b-impl { background: var(--milho); }
+.barra-valor .b-haas { background: var(--broto); }
+.barra-legenda { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.85rem; color: var(--tinta-suave); }
+.barra-legenda span { display: inline-flex; gap: 6px; align-items: center; }
+.regime { border-top: 1px solid var(--linha); padding-top: 16px; display: grid; gap: 12px; }
+.regime-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+.regime-grade .val { font-size: 1.6rem; }
+.alerta { font-size: 0.95rem; font-weight: 600; }
+.alerta.ruim { color: var(--milho); }
+
+/* Decisões */
+.decisoes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: d; }
+.decisoes li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; }
+.decisoes input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--broto); }
+.decisoes label { cursor: pointer; }
+.decisoes input:checked + label { color: var(--tinta-suave); text-decoration: line-through; }
+.hipoteses { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+footer { border-top: 1px solid var(--linha); padding-top: 20px; }
+
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media (max-width: 760px) {
+  .duas, .niveis, .conta { grid-template-columns: minmax(0, 1fr); }
+  .regime-grade { grid-template-columns: minmax(0, 1fr); }
+  .fase { font-size: 0.75rem; padding: 6px 5px; }
+  .regua .sem { font-size: 0.8rem; }
+}
+</style>
+
+<div class="folha">
+
+  <header class="abertura">
+    <h1>Simulador da Implementação</h1>
+    <p class="lead">Noventa dias para instalar o Sistema de Vendas Safra no comercial de quem já tem leads e time de vendas. Depois, o GSAAS (Gestão de Safra as a Service) acompanha cada safra nova até a colheita.</p>
+    <p class="nota">Simulador interno da Triad para a Implementação Avançada do Sistema de Vendas Safra. Nomes, etapas e as 8 entregas seguem a Ficha do Serviço de 01/11. Sem lançamento: a venda vem do funil perpétuo, que entra no ar em 10/11, e o pagamento é pela Hotmart. Horas, custos e o GSAAS ainda estão em discussão.</p>
+  </header>
+
+  <section aria-labelledby="t-relogio">
+    <div class="cabeca">
+      <h2 id="t-relogio">O relógio das safras</h2>
+      <p class="nota">Cada mês de captação é uma safra, com relógio próprio. Mude o início do contrato e a maturação do negócio para ver o que fecha dentro da implementação e o que fica para o GSAAS. A data de início da turma ainda está em aberto; os meses abaixo são só para simular.</p>
+    </div>
+    <div class="controles">
+      <div class="campo">
+        <label for="inicio">Contrato começa em</label>
+        <select id="inicio"></select>
+      </div>
+      <div class="campo">
+        <label for="maturacao">Maturação do negócio</label>
+        <div class="regua-mat">
+          <input type="range" id="maturacao" min="30" max="120" step="15" value="90">
+          <output id="mat-saida" for="maturacao">90 dias</output>
+        </div>
+      </div>
+    </div>
+    <p class="tese" id="tese" aria-live="polite"></p>
+    <div class="grafico-wrap">
+      <svg id="grafico" viewBox="0 0 900 340" role="img" aria-label="Linha do tempo das safras herdadas e novas"></svg>
+    </div>
+    <div class="legenda">
+      <span class="e-base"><i class="amostra"></i>Já fechada antes do contrato: vira o número de antes</span>
+      <span class="e-impl"><i class="amostra"></i>Fecha dentro da implementação</span>
+      <span class="e-haas"><i class="amostra"></i>Fecha no GSAAS</span>
+    </div>
+    <p class="nota">Barra cheia: mês de captação. Barra clara: maturação. Losango: fechamento. A maturação de 90 dias é a regra do painel do Júnior; o relógio de cada cliente sai da Análise Estratégica das Safras.</p>
+  </section>
+
+  <section aria-labelledby="t-jornada">
+    <div class="cabeca">
+      <h2 id="t-jornada">Treze semanas, quatro etapas e o GSAAS depois</h2>
+      <p class="nota">Escolha uma etapa para ver as entregas e como se decide que cada uma está pronta. Os números são os das 8 entregas da Ficha do Serviço.</p>
+    </div>
+    <div class="regua" id="regua"></div>
+    <div class="marcos">
+      <span><b>Semana 3:</b> Análise Estratégica apresentada ao dono</span>
+      <span><b>Semana 7:</b> balanço de 45 dias com o Júnior</span>
+      <span><b>Semana 13:</b> Relatório de Produtividade</span>
+    </div>
+    <div class="detalhe" id="detalhe" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="t-quem">
+    <h2 id="t-quem">Para quem é</h2>
+    <p class="nota">Critérios da Ficha do Serviço de 01/11.</p>
+    <div class="duas">
+      <div>
+        <h3>Entra</h3>
+        <ul>
+          <li>Fatura de R$ 150 mil a R$ 1,5 milhão por mês.</li>
+          <li>Recebe leads todo mês, cerca de 100 ou mais (a validar).</li>
+          <li>Já tem time de vendas: duas ou mais pessoas vendendo, o dono incluído.</li>
+          <li>Tem o histórico dos leads dos últimos 3 meses, em CRM ou planilha.</li>
+          <li>Aceita registrar todo lead e dar 1 hora por semana ao Treinamento para Otimização da Conversão, a reunião semanal de safra.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Não entra</h3>
+        <ul>
+          <li>Quem não tem leads chegando: precisa de marketing antes.</li>
+          <li>Quem quer curso ou conteúdo para assistir, e não a implementação dentro da própria operação.</li>
+          <li>Quem quer que alguém venda por ele.</li>
+          <li>Quem vende sem conversa, no balcão ou no e-commerce.</li>
+          <li>Quem não dá acesso aos dados nem tem base legal para contatar os próprios leads.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-gsaas">
+    <div class="cabeca">
+      <h2 id="t-gsaas">GSAAS: Gestão de Safra as a Service</h2>
+      <p class="nota">A gestão de safra por assinatura, que acompanha as safras plantadas na implementação até o fechamento. É opcional e agora inclui a Mecanização da Safra, os agentes de IA. O nível do meio é o que a Ficha do Serviço de 01/11 descreve, com preço de partida em hipótese; os níveis Básico e com operação são hipóteses da Ficha de 23/10. Níveis, preço e prazo mínimo ainda estão em aberto.</p>
+    </div>
+    <div class="niveis">
+      <article class="nivel">
+        <h3>GSAAS Básico</h3>
+        <p class="preco">R$ 8 mil <small>por mês</small></p>
+        <ul>
+          <li>Treinamento para Otimização da Conversão quinzenal com o responsável pela operação</li>
+          <li>Relatório mensal de safras</li>
+          <li>Manutenção do CRM e do painel</li>
+        </ul>
+      </article>
+      <article class="nivel alvo">
+        <span class="selo">Nível alvo</span>
+        <h3>GSAAS</h3>
+        <p class="preco">R$ 15 mil <small>por mês</small></p>
+        <ul>
+          <li>4 reuniões semanais de safra com o time</li>
+          <li>8 calls analisadas, com devolutiva</li>
+          <li>Relatório mensal: safras abertas, fechadas, metas batidas e onde agir</li>
+          <li>Manutenção do CRM e do painel</li>
+          <li>Mecanização da Safra: agentes de IA de lembrete de reunião, acompanhamento por WhatsApp e tarefa diária do vendedor</li>
+          <li>Revisão trimestral com o Júnior</li>
+        </ul>
+      </article>
+      <article class="nivel">
+        <h3>GSAAS com operação</h3>
+        <p class="preco"><small>a partir de</small> R$ 22 mil <small>por mês</small></p>
+        <ul>
+          <li>Tudo do GSAAS</li>
+          <li>Colheita contínua e agendamento feitos por SDR e IA da Triad</li>
+        </ul>
+      </article>
+    </div>
+    <ul class="regras">
+      <li>Mês a mês, com aviso de 30 dias e sem multa.</li>
+      <li>CRM e agentes inclusos enquanto o serviço estiver ativo.</li>
+      <li>Ao sair, o cliente leva a exportação completa dos dados e o Playbook da Gestão de Vendas por Safra. Nenhum acesso fica retido.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="t-conta">
+    <div class="cabeca">
+      <h2 id="t-conta">A conta</h2>
+      <p class="nota">A implementação paga a montagem e a aquisição; o lucro mora na continuidade. Escolha um cenário ou mude qualquer premissa. Só entram vendas da Implementação Avançada: a Implementação Essencial, o downsell, fica fora desta conta e não conta para as 10 vagas.</p>
+      <p class="nota"><strong>A Mecanização da Safra foi para o GSAAS. As premissas de horas da implementação ainda estão a recalcular sem ela.</strong></p>
+    </div>
+    <div class="cenarios" role="group" aria-label="Cenários">
+      <button type="button" data-cenario="conservador" aria-pressed="false">Conservador</button>
+      <button type="button" data-cenario="base" aria-pressed="true">Base</button>
+      <button type="button" data-cenario="otimista" aria-pressed="false">Otimista</button>
+    </div>
+    <ul class="origem">
+      <li><b>Conservador:</b> o funil do leilão do Júnior em julho, outro produto e a única referência real que existe: 12,8% de pré-qualificação, 16% de agendamento e 36% de fechamento sobre as reuniões. O leilão não registrou o comparecimento à parte, então entra a meta de 75%; se os 36% já forem sobre reuniões agendadas, este cenário fica mais duro que o real. Custo por lead de R$ 90, o meio da faixa.</li>
+      <li><b>Base:</b> as metas do Júnior para o funil, ditas na call de 19/10: 50% pré-qualifica, 50% agenda, 75% comparece e 20% fecha, cerca de 3,75% de lead em venda. Custo por lead de R$ 90, o meio da faixa de R$ 30 a R$ 150 que agências citam para alto ticket B2B no Meta, referência indicativa e não medida.</li>
+      <li><b>Otimista:</b> as mesmas metas do Júnior, com o custo por lead no piso da faixa, R$ 30.</li>
+      <li>Nos três, as novas Avançadas por mês depois da turma, a parte que segue para o GSAAS e os meses de GSAAS são hipóteses de trabalho, sem dado; a conta pede pelo menos metade no GSAAS. Tudo isso é hipótese até o funil perpétuo, no ar a partir de 10/11, medir custo por lead e etapas reais.</li>
+    </ul>
+    <div class="conta">
+      <form class="entradas" id="entradas" novalidate>
+        <fieldset class="grupo">
+          <legend>Preço</legend>
+          <div class="linha-campo"><label for="p-impl1">Avançada, nas 10 primeiras vendas (R$)</label><input type="number" id="p-impl1" min="0" step="1000" value="45000"></div>
+          <div class="linha-campo"><label for="p-impl2">Avançada, da 11ª venda em diante (R$)</label><input type="number" id="p-impl2" min="0" step="1000" value="60000"></div>
+          <div class="linha-campo"><label for="p-haas">GSAAS por mês (R$, hipótese)</label><input type="number" id="p-haas" min="0" step="500" value="15000"></div>
+          <p class="nota">Preços decididos: R$ 45 mil para as 10 primeiras vagas e R$ 60 mil depois. A turma fecha na 10ª venda da Avançada, sem reduzir vagas.</p>
+        </fieldset>
+        <fieldset class="grupo">
+          <legend>Do lead à venda</legend>
+          <div class="linha-campo"><label for="cpl">Custo por lead (R$)</label><input type="number" id="cpl" min="0" step="5" value="90"></div>
+          <div class="linha-campo"><label for="pre">Leads que pré-qualificam (%)</label><input type="number" id="pre" min="0" max="100" step="0.1" value="50"></div>
+          <div class="linha-campo"><label for="agd">Pré-qualificados que agendam (%)</label><input type="number" id="agd" min="0" max="100" step="0.1" value="50"></div>
+          <div class="linha-campo"><label for="cmp">Agendados que comparecem (%)</label><input type="number" id="cmp" min="0" max="100" step="0.1" value="75"></div>
+          <div class="linha-campo"><label for="fec">Reuniões que fecham (%)</label><input type="number" id="fec" min="0" max="100" step="0.1" value="20"></div>
+          <div class="linha-campo"><label for="dur">Reunião com a Análise da call (minutos)</label><input type="number" id="dur" min="0" step="5" value="45"></div>
+          <p class="nota">Ninguém entra no CRM sem pré-qualificação, e o Júnior faz as reuniões e fecha no começo. A conta supõe uma reunião por prospect: a Análise Estratégica das Safras na versão da call, de 30 a 45 minutos; o padrão usa o teto. Se o fechamento pedir uma segunda reunião, a agenda cresce.</p>
+        </fieldset>
+        <fieldset class="grupo">
+          <legend>Venda e continuidade</legend>
+          <div class="linha-campo"><label for="com">Comissão sobre o preço (%)</label><input type="number" id="com" min="0" max="100" step="1" value="10"></div>
+          <div class="linha-campo"><label for="dias">Dias para fechar a turma das 10 vagas</label><input type="number" id="dias" min="1" step="1" value="30"></div>
+          <div class="linha-campo"><label for="novos">Novas Avançadas por mês, depois da turma</label><input type="number" id="novos" min="0" step="1" value="3"></div>
+          <div class="linha-campo"><label for="cont">Seguem para o GSAAS (%)</label><input type="number" id="cont" min="0" max="100" step="5" value="50"></div>
+          <div class="linha-campo"><label for="meses">Meses médios de GSAAS</label><input type="number" id="meses" min="0" step="1" value="6"></div>
+          <p class="nota">A comissão de 10% é a da Oferta, a mesma na Avançada e na Essencial. Os 30 dias são a meta de trabalho: 10 vendas em 30 dias.</p>
+        </fieldset>
+        <details class="premissas">
+          <summary>Premissas de horas e custo</summary>
+          <fieldset class="grupo">
+            <div class="linha-campo"><label for="h-ger">Horas de gerente por implementação</label><input type="number" id="h-ger" min="0" step="1" value="59"></div>
+            <div class="linha-campo"><label for="h-ana">Horas de analista por implementação</label><input type="number" id="h-ana" min="0" step="1" value="42"></div>
+            <div class="linha-campo"><label for="h-tec">Horas de tecnologia por implementação</label><input type="number" id="h-tec" min="0" step="1" value="70"></div>
+            <div class="linha-campo"><label for="h-ger-m">Horas de gerente por mês no GSAAS</label><input type="number" id="h-ger-m" min="0" step="1" value="14"></div>
+            <div class="linha-campo"><label for="c-ger">Custo da hora do gerente (R$)</label><input type="number" id="c-ger" min="0" step="10" value="150"></div>
+            <div class="linha-campo"><label for="c-ana">Custo da hora do analista (R$)</label><input type="number" id="c-ana" min="0" step="10" value="80"></div>
+            <div class="linha-campo"><label for="c-tec">Custo da hora de tecnologia (R$)</label><input type="number" id="c-tec" min="0" step="10" value="120"></div>
+            <div class="linha-campo"><label for="ferr">Ferramentas por cliente por mês (R$)</label><input type="number" id="ferr" min="0" step="100" value="1000"></div>
+            <div class="linha-campo"><label for="agentes">Agentes da Mecanização da Safra por cliente do GSAAS, por mês (R$, a levantar com a Cyntia)</label><input type="number" id="agentes" min="0" step="100" value="0"></div>
+            <div class="linha-campo"><label for="imp">Impostos (%)</label><input type="number" id="imp" min="0" max="60" step="0.5" value="13"></div>
+            <div class="linha-campo"><label for="tx-impl">Taxa de pagamento na implementação (%)</label><input type="number" id="tx-impl" min="0" max="30" step="0.5" value="4"></div>
+            <div class="linha-campo"><label for="tx-haas">Taxa de pagamento no GSAAS (%)</label><input type="number" id="tx-haas" min="0" max="30" step="0.5" value="2"></div>
+          </fieldset>
+          <p class="nota">Horas, custo da hora, ferramentas, impostos e taxas são as premissas da Ficha do Serviço anterior, a revisar com o Euclides e a Cyntia. As horas de tecnologia ainda contam a Mecanização da Safra e ficam para recalcular depois. A taxa da Hotmart está em negociação. No GSAAS, analista e tecnologia somam 4 horas cada por mês. O custo dos agentes entra como R$ 0 até a Cyntia levantar o valor, então a margem do GSAAS ainda não está fechada. As 112 horas produtivas por mês de cada gerente de safra (cerca de 26 por semana) e as horas do Júnior por cliente são premissas do simulador, a revisar. As horas do Júnior não entram no custo.</p>
+        </details>
+      </form>
+      <div class="saidas" aria-live="polite">
+        <div class="precos" role="group" aria-label="Preço da venda mostrada">
+          <button type="button" data-preco="p-impl1" aria-pressed="true">Venda nas 10 primeiras vagas</button>
+          <button type="button" data-preco="p-impl2" aria-pressed="false">Venda da 11ª em diante</button>
+        </div>
+        <div class="saida">
+          <span class="rot">Mídia por venda</span>
+          <span class="val" id="o-midia"></span>
+          <span class="det" id="o-midia-det"></span>
+        </div>
+        <div class="saida">
+          <span class="rot">Cada venda pede</span>
+          <span class="val" id="o-leads"></span>
+          <span class="det" id="o-leads-det"></span>
+        </div>
+        <div class="saida">
+          <span class="rot">Agenda do Júnior por venda</span>
+          <span class="val" id="o-agenda"></span>
+          <span class="det" id="o-agenda-det"></span>
+        </div>
+        <div class="saida">
+          <span class="rot" id="o-impl-rot">Implementação, depois da aquisição</span>
+          <span class="val" id="o-impl"></span>
+          <span class="det" id="o-impl-det"></span>
+        </div>
+        <div class="saida">
+          <span class="rot">GSAAS, margem por mês</span>
+          <span class="val" id="o-haas"></span>
+          <span class="det" id="o-haas-det"></span>
+        </div>
+        <div class="saida">
+          <span class="rot">Valor esperado por cliente</span>
+          <span class="val" id="o-cliente"></span>
+          <div class="barra-valor" aria-hidden="true"><div class="b-impl" id="b-impl"></div><div class="b-haas" id="b-haas"></div></div>
+          <div class="barra-legenda"><span class="e-impl"><i class="amostra"></i>Implementação</span><span class="e-haas"><i class="amostra"></i>GSAAS</span></div>
+        </div>
+        <div class="regime">
+          <span class="rot" id="o-turma-tit"></span>
+          <div class="regime-grade">
+            <div class="saida"><span class="rot">Receita bruta da turma</span><span class="val" id="o-t-receita"></span><span class="det" id="o-t-receita-det"></span></div>
+            <div class="saida"><span class="rot">Sobra da turma, depois da aquisição</span><span class="val" id="o-t-sobra"></span></div>
+            <div class="saida"><span class="rot">Mídia da turma</span><span class="val" id="o-t-midia"></span><span class="det">A verba de mídia ainda está em aberto</span></div>
+            <div class="saida"><span class="rot">Leads para fechar a turma</span><span class="val" id="o-t-leads"></span><span class="det" id="o-t-leads-det"></span></div>
+            <div class="saida"><span class="rot">Reuniões do Júnior por semana</span><span class="val" id="o-t-reun"></span><span class="det" id="o-t-reun-det"></span></div>
+            <div class="saida"><span class="rot">Gerentes de safra para as 10 juntas</span><span class="val" id="o-t-ger"></span><span class="det">Pré-requisito: prontos antes de a turma encher</span></div>
+          </div>
+          <p class="nota" id="o-analise"></p>
+        </div>
+        <div class="regime">
+          <span class="rot" id="o-regime-tit"></span>
+          <div class="regime-grade">
+            <div class="saida"><span class="rot">Receita bruta por mês</span><span class="val" id="o-receita"></span></div>
+            <div class="saida"><span class="rot">Margem por mês</span><span class="val" id="o-margem"></span></div>
+            <div class="saida"><span class="rot">Gerentes de safra necessários</span><span class="val" id="o-gerentes"></span><span class="det">112 horas produtivas por mês cada</span></div>
+            <div class="saida"><span class="rot">Horas do Júnior por mês</span><span class="val" id="o-junior"></span><span class="det" id="o-junior-det"></span></div>
+          </div>
+          <p class="nota">Depois da 10ª venda, a Análise da call passa a custar R$ 4.997 (decidido). Isso deve mudar o funil e trazer receita própria; sem dado de quantos prospects pagam, a conta usa o mesmo funil e não soma essa receita.</p>
+          <p class="alerta" id="o-alerta"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-decidir">
+    <div class="cabeca">
+      <h2 id="t-decidir">Para decidir</h2>
+      <p class="nota">As decisões em aberto que mexem na conta. Marque o que já foi decidido. A marcação fica só neste navegador.</p>
+    </div>
+    <ul class="decisoes" id="decisoes"></ul>
+    <h3>Hipóteses a validar</h3>
+    <ul class="hipoteses">
+      <li>Pelo menos metade dos clientes segue para o GSAAS. É a hipótese que sustenta a conta.</li>
+      <li>As safras herdadas, trabalhadas com a nova régua, fecham acima do número de antes dentro dos 90 dias.</li>
+      <li>A implementação cabe em cerca de 180 horas (a recalcular sem a Mecanização da Safra).</li>
+      <li>Um gerente de safra sustenta 2 implementações e 5 clientes do GSAAS ao mesmo tempo.</li>
+      <li>Cerca de 100 leads por mês é o mínimo para a análise por etapa funcionar.</li>
+      <li>O funil novo chega perto das metas do Júnior: 50% de pré-qualificação, 50% de agendamento, 75% de comparecimento e 20% de fechamento. O leilão de julho, outro produto, fez 12,8% de pré-qualificação.</li>
+      <li>O custo por lead no Meta fica entre R$ 30 e R$ 150, a faixa que agências citam para alto ticket B2B. É referência indicativa, não medida.</li>
+      <li>A agenda do Júnior aguenta as reuniões da turma no prazo escolhido. Ele faz as reuniões e fecha no começo, e o teto semanal ainda não foi definido.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p class="nota">Base: Ficha do Serviço e Oferta v1.7 de 01/11/2026, Doc Mestre do Funil e CONTEXTO do projeto 4.2, com as decisões até 01/11/2026. Os números do funil vêm da call de brainstorming de 19/10 (metas do Júnior, leilão de julho, a frase sobre quanto pagar em lead) e da pesquisa de persona de setembro (faixa de custo por lead). Nenhum número aqui é resultado de cliente; todos são premissas para decidir. O contrato descreve só o escopo das 8 entregas, sem nenhuma promessa de resultado.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var DIA = 864e5;
+  var MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  var MESES_LONGOS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+  // ---------- Relógio das safras ----------
+  var selInicio = document.getElementById('inicio');
+  var rngMat = document.getElementById('maturacao');
+  var outMat = document.getElementById('mat-saida');
+  var svg = document.getElementById('grafico');
+  var tese = document.getElementById('tese');
+
+  for (var i = 0; i < 8; i++) {
+    var d = new Date(Date.UTC(2026, 10 + i, 1));
+    var opt = document.createElement('option');
+    opt.value = d.getUTCFullYear() + '-' + d.getUTCMonth();
+    opt.textContent = MESES_LONGOS[d.getUTCMonth()] + ' de ' + d.getUTCFullYear();
+    if (d.getUTCFullYear() === 2027 && d.getUTCMonth() === 0) opt.selected = true;
+    selInicio.appendChild(opt);
+  }
+
+  function rotMes(t) { var d = new Date(t); return MESES[d.getUTCMonth()]; }
+  function rotData(t) { var d = new Date(t); return d.getUTCDate() + ' ' + MESES[d.getUTCMonth()]; }
+  function plural(n, um, varios) { return n === 1 ? um : varios; }
+
+  function desenhar() {
+    var partes = selInicio.value.split('-');
+    var y = +partes[0], m = +partes[1];
+    var mat = +rngMat.value;
+    outMat.textContent = mat + ' dias';
+
+    var inicio = Date.UTC(y, m, 1);
+    var fimImpl = inicio + 89 * DIA;
+    var eixoIni = Date.UTC(y, m - 4, 1);
+    var eixoFim = Date.UTC(y, m + 8, 1);
+    var ESQ = 170, LARG = 700;
+    var X = function (t) { return ESQ + (t - eixoIni) / (eixoFim - eixoIni) * LARG; };
+
+    var linhas = [];
+    for (var k = -4; k <= 2; k++) {
+      var cIni = Date.UTC(y, m + k, 1);
+      var cFim = Date.UTC(y, m + k + 1, 1);
+      var fecha = cFim + (mat - 1) * DIA;
+      var estado = fecha < inicio ? 'base' : (fecha <= fimImpl ? 'impl' : 'haas');
+      linhas.push({ k: k, cIni: cIni, cFim: cFim, fecha: fecha, estado: estado });
+    }
+
+    var h = [];
+    // faixas de fase
+    h.push('<rect class="faixa-impl" x="' + X(inicio) + '" y="6" width="' + (X(fimImpl + DIA) - X(inicio)) + '" height="28" rx="5"/>');
+    h.push('<text class="faixa-txt" x="' + (X(inicio) + X(fimImpl + DIA)) / 2 + '" y="25" text-anchor="middle">Implementação</text>');
+    h.push('<rect class="faixa-haas" x="' + X(fimImpl + DIA) + '" y="6" width="' + (ESQ + LARG - X(fimImpl + DIA)) + '" height="28" rx="5"/>');
+    h.push('<text class="faixa-txt" x="' + (X(fimImpl + DIA) + ESQ + LARG) / 2 + '" y="25" text-anchor="middle">GSAAS</text>');
+    // meses
+    for (var j = 0; j <= 12; j++) {
+      var t = Date.UTC(y, m - 4 + j, 1);
+      h.push('<line class="grade" x1="' + X(t) + '" x2="' + X(t) + '" y1="62" y2="318"/>');
+      if (j < 12) {
+        var mt = Date.UTC(y, m - 4 + j, 15);
+        h.push('<text class="mes" x="' + X(mt) + '" y="54" text-anchor="middle">' + rotMes(mt) + '</text>');
+      }
+    }
+    h.push('<line class="dia90" x1="' + X(fimImpl + DIA) + '" x2="' + X(fimImpl + DIA) + '" y1="36" y2="318"/>');
+
+    linhas.forEach(function (r, idx) {
+      var yy = 86 + idx * 34;
+      var cls = 'e-' + r.estado;
+      var dC = new Date(r.cIni);
+      var nome = 'Safra de ' + MESES[dC.getUTCMonth()] + '/' + dC.getUTCFullYear();
+      var tipo = r.k < 0 ? 'herdada' : 'nova, plantada no contrato';
+      h.push('<g class="' + cls + '">');
+      h.push('<text class="rotulo" x="0" y="' + (yy - 1) + '">' + nome + '</text>');
+      h.push('<text class="tipo" x="0" y="' + (yy + 13) + '">' + tipo + '</text>');
+      h.push('<rect class="capt" x="' + X(r.cIni) + '" y="' + (yy - 7) + '" width="' + (X(r.cFim) - X(r.cIni)) + '" height="14" rx="2"/>');
+      h.push('<rect class="matur" x="' + X(r.cFim) + '" y="' + (yy - 7) + '" width="' + Math.max(0, X(r.fecha) - X(r.cFim)) + '" height="14" rx="2"/>');
+      var xf = X(r.fecha);
+      h.push('<path class="fecho" d="M' + xf + ' ' + (yy - 8) + 'l8 8l-8 8l-8 -8z"/>');
+      var dir = xf > ESQ + LARG - 40;
+      h.push('<text class="data" x="' + (dir ? xf - 12 : xf + 12) + '" y="' + (yy + 4) + '"' + (dir ? ' text-anchor="end"' : '') + '>' + rotData(r.fecha) + '</text>');
+      h.push('</g>');
+    });
+    svg.innerHTML = h.join('');
+
+    // frase
+    var nBase = linhas.filter(function (r) { return r.estado === 'base'; }).length;
+    var impl = linhas.filter(function (r) { return r.estado === 'impl'; });
+    var haas = linhas.filter(function (r) { return r.estado === 'haas'; });
+    var implNovas = impl.filter(function (r) { return r.k >= 0; }).length;
+    var txt = '';
+    if (impl.length) {
+      txt += '<strong>' + impl.length + ' ' + plural(impl.length, 'safra fecha', 'safras fecham') + ' dentro da implementação</strong> e ' + plural(impl.length, 'mostra', 'mostram') + ' o resultado dos 90 dias';
+      txt += implNovas ? ' (' + implNovas + ' ' + plural(implNovas, 'delas plantada', 'delas plantadas') + ' já no contrato). ' : '. ';
+    }
+    if (haas.length) {
+      var p = haas[0].fecha, u = haas[haas.length - 1].fecha;
+      txt += '<strong>' + haas.length + ' ' + plural(haas.length, 'fecha', 'fecham') + ' no GSAAS</strong>, entre ' + rotData(p) + ' e ' + rotData(u) + '.';
+    } else {
+      txt += 'Com maturação de ' + mat + ' dias, nenhuma safra fica para depois: o GSAAS começa já com tudo colhido.';
+    }
+    if (nBase) txt += ' ' + nBase + ' ' + plural(nBase, 'safra já fechada antes do contrato vira', 'safras já fechadas antes do contrato viram') + ' o número de antes.';
+    tese.innerHTML = txt;
+  }
+  selInicio.addEventListener('change', desenhar);
+  rngMat.addEventListener('input', desenhar);
+  desenhar();
+
+  // ---------- Jornada ----------
+  var FASES = [
+    { id: 'analise', rotulo: 'Análise Estratégica', nome: 'Análise Estratégica das Safras', de: 1, ate: 3, cls: 'f-analise', quando: 'Semanas 1 a 3',
+      texto: 'As safras dos últimos 3 a 6 meses analisadas de trás para frente: em que etapa cada uma travou e quantos leads estão parados. O relógio de maturação do negócio é calculado com os dados do cliente.',
+      entregas: [['1. Análise Estratégica das Safras', 'semana 3', 'Apresentada ao dono, que aprovou as metas de cada etapa.']] },
+    { id: 'preparo', rotulo: 'Preparo do solo', nome: 'Preparo do solo', de: 3, ate: 6, cls: 'f-preparo', quando: 'Semanas 3 a 6',
+      texto: 'Primeiro o solo, depois o adubo. O CRM passa a organizar a operação por safra, com estágios que só avançam e estados com regra: perdido só quando o lead diz não. Depois vêm a régua de contato e o painel.',
+      entregas: [['2. Implementação da Infraestrutura', 'semana 4', 'O CRM organizado por safra: todo lead novo entra com safra, etapa e situação por 5 dias úteis seguidos.'],
+                 ['3. Playbook de Comunicação Persuasiva', 'semana 5', 'A régua de contato e os roteiros, aprovados pelo responsável e em uso pelo time.'],
+                 ['5. Painel de Safras', 'semana 6', 'Atualiza sozinho e é lido na reunião semanal.']] },
+    { id: 'colheita', rotulo: 'Colheita', nome: 'Colheita', de: 5, ate: 13, cls: 'f-colheita', quando: 'Semanas 5 a 13',
+      texto: 'Com o CRM e a régua prontos, o time do cliente volta a falar com os leads das safras herdadas que nunca disseram não, com os roteiros do Playbook de Comunicação Persuasiva. É o primeiro resultado comparável ao número de antes. O contato depende da base legal do cliente.',
+      entregas: [['4. Recuperação de Ativos', 'semanas 5 a 13', 'Os leads antigos que nunca disseram não, em ordem de prioridade, até cada um ter uma situação final.']] },
+    { id: 'plantio', rotulo: 'Plantio', nome: 'Plantio', de: 6, ate: 13, cls: 'f-plantio', quando: 'Semanas 6 a 13',
+      texto: 'As safras novas entram com relógio e meta por etapa, e começa o Treinamento para Otimização da Conversão, a reunião semanal de safra, com o gerente de safra e o responsável pela operação.',
+      entregas: [['6. Treinamento para Otimização da Conversão', 'semanas 6 a 13', '8 reuniões de 1 hora e 2 calls analisadas por semana, com 8 atas de decisões e responsáveis.'],
+                 ['7. Playbook da Gestão de Vendas por Safra', 'semana 12', 'Entregue e revisado com o responsável, para o time seguir com ou sem a Triad.'],
+                 ['8. Relatório de Produtividade', 'semana 13', 'Safras antigas comparadas com o número de antes, indicadores das novas e a data em que cada uma termina, apresentados pelo Júnior.']] },
+    { id: 'gsaas', rotulo: 'GSAAS', nome: 'GSAAS: Gestão de Safra as a Service', de: 14, ate: 14, cls: 'f-gsaas', quando: 'Do mês 4 em diante, opcional',
+      texto: 'O GSAAS acompanha as safras plantadas até o fechamento. O Relatório de Produtividade já mostra a data em que cada uma termina.',
+      entregas: [['Treinamento para Otimização da Conversão', 'todo mês', '4 reuniões com o time e 8 calls com devolutiva.'],
+                 ['Relatório mensal de safras', 'todo mês', 'Safras abertas, fechadas, metas atingidas e onde agir.'],
+                 ['Manutenção do CRM e do painel', 'todo mês', 'O CRM por safra e o Painel de Safras seguem certos e lidos na reunião.'],
+                 ['Mecanização da Safra', 'todo mês', 'Agentes de IA de lembrete de reunião, acompanhamento por WhatsApp e tarefa diária do vendedor.'],
+                 ['Revisão com o Júnior', 'a cada trimestre', 'Análise das safras fechadas e metas da próxima.']] }
+  ];
+  var regua = document.getElementById('regua');
+  var detalhe = document.getElementById('detalhe');
+  var html = [];
+  for (var s = 1; s <= 13; s++) html.push('<span class="sem" style="grid-column:' + s + '">' + s + '</span>');
+  html.push('<span class="sem" style="grid-column:14">Depois</span>');
+  FASES.forEach(function (f) {
+    html.push('<button type="button" class="fase ' + f.cls + '" data-fase="' + f.id + '" aria-pressed="false" style="grid-column:' + f.de + ' / ' + (f.ate + 1) + '" title="' + f.nome + ', ' + f.quando.toLowerCase() + '">' + f.rotulo + '</button>');
+  });
+  regua.innerHTML = html.join('');
+
+  function escolher(id) {
+    var f = FASES.filter(function (x) { return x.id === id; })[0];
+    regua.querySelectorAll('.fase').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.fase === id ? 'true' : 'false'); });
+    var lista = f.entregas.map(function (e) {
+      return '<li><span class="nome">' + e[0] + '</span><span class="sem-entrega">' + e[1] + '</span><span class="pronto">Pronto quando: ' + e[2] + '</span></li>';
+    }).join('');
+    detalhe.innerHTML = '<div><h3>' + f.nome + '</h3><p class="quando">' + f.quando + '</p></div><p>' + f.texto + '</p><ul class="entregas">' + lista + '</ul>';
+  }
+  regua.addEventListener('click', function (e) {
+    var b = e.target.closest('.fase');
+    if (b) escolher(b.dataset.fase);
+  });
+  escolher('analise');
+
+  // ---------- A conta ----------
+  // Cenários: funil (custo por lead e etapas) e continuidade. As fontes de cada número estão escritas na página.
+  var CENARIOS = {
+    conservador: { cpl: 90, pre: 12.8, agd: 16, cmp: 75, fec: 36, novos: 2, cont: 30, meses: 4 },
+    base: { cpl: 90, pre: 50, agd: 50, cmp: 75, fec: 20, novos: 3, cont: 50, meses: 6 },
+    otimista: { cpl: 30, pre: 50, agd: 50, cmp: 75, fec: 20, novos: 4, cont: 70, meses: 9 }
+  };
+  var VAGAS = 10;            // a turma fecha na 10ª venda da Avançada
+  var HORAS_GERENTE_MES = 112;
+  var DIAS_MES = 30;
+  var JUNIOR_TETO_FRASE = 5000; // "3, 4, 5 mil reais" em lead, para um produto de R$ 60 mil
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  var num1 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+  var num2 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
+  function v(id) { var n = parseFloat(document.getElementById(id).value); return isFinite(n) ? n : 0; }
+  function pct(id) { return Math.min(100, Math.max(0, v(id))) / 100; }
+  function put(id, txt) { document.getElementById(id).textContent = txt; }
+  var precoVista = 'p-impl1';
+
+  function calcular() {
+    var imp = v('imp') / 100, txImpl = v('tx-impl') / 100, txHaas = v('tx-haas') / 100;
+    var p1 = v('p-impl1'), p2 = v('p-impl2'), pHaas = v('p-haas');
+    var pVista = v(precoVista);
+    var ferr = v('ferr');
+    var com = pct('com');
+    var custoImpl = v('h-ger') * v('c-ger') + v('h-ana') * v('c-ana') + v('h-tec') * v('c-tec') + 3 * ferr;
+
+    // Funil: do lead à venda
+    var pre = pct('pre'), agd = pct('agd'), cmp = pct('cmp'), fec = pct('fec');
+    var conv = pre * agd * cmp * fec;
+    var cpl = v('cpl');
+    var temVenda = conv > 0;
+    var leadsVenda = temVenda ? 1 / conv : 0;
+    var midia = temVenda ? cpl / conv : 0;
+    var realizadas = temVenda ? 1 / fec : 0;
+    var agendadas = temVenda ? 1 / (fec * cmp) : 0;
+    var horaReuniao = v('dur') / 60;
+    var hReal = realizadas * horaReuniao, hAgenda = agendadas * horaReuniao;
+
+    function margem(p) { return p * (1 - imp - txImpl) - custoImpl; }
+    function sobra(p) { return margem(p) - p * com - midia; }
+
+    var liqHaas = pHaas * (1 - imp - txHaas);
+    var custoHaas = v('h-ger-m') * v('c-ger') + 4 * v('c-ana') + 4 * v('c-tec') + ferr + v('agentes');
+    var margHaas = liqHaas - custoHaas;
+    var cont = pct('cont');
+    var meses = v('meses');
+    var valHaas = cont * meses * margHaas;
+
+    // Uma venda, no preço escolhido
+    var margVista = margem(pVista), sobraVista = sobra(pVista);
+    var valCliente = sobraVista + valHaas;
+    if (temVenda) {
+      put('o-midia', brl.format(midia));
+      put('o-midia-det', brl.format(cpl) + ' por lead dividido por ' + num2.format(conv * 100) + '% de lead em venda. Para um produto de R$ 60 mil, o Júnior disse que dá para pagar "3, 4, 5 mil reais" em lead; aqui a frase é lida como mídia por venda' + (midia > JUNIOR_TETO_FRASE ? ', e esta mídia passa desse teto.' : ', e esta mídia cabe nesse teto.'));
+      put('o-leads', num1.format(leadsVenda) + ' leads');
+      put('o-leads-det', num1.format(leadsVenda * pre) + ' pré-qualificados, ' + num1.format(agendadas) + ' reuniões agendadas e ' + num1.format(realizadas) + ' realizadas.');
+      put('o-agenda', num1.format(hAgenda) + ' h');
+      put('o-agenda-det', num1.format(agendadas) + ' reuniões agendadas de ' + num1.format(v('dur')) + ' minutos, contando quem não comparece; ' + num1.format(hReal) + ' h em reuniões que acontecem.');
+    } else {
+      ['o-midia', 'o-leads', 'o-agenda'].forEach(function (id) { put(id, 'sem venda'); });
+      ['o-midia-det', 'o-leads-det', 'o-agenda-det'].forEach(function (id) { put(id, 'Com alguma etapa em 0%, o funil não fecha venda.'); });
+    }
+    put('o-impl-rot', 'Implementação a ' + brl.format(pVista) + ', depois da aquisição');
+    put('o-impl', brl.format(sobraVista));
+    put('o-impl-det', 'Margem antes da aquisição: ' + brl.format(margVista) + (pVista ? ' (' + num1.format(margVista / pVista * 100) + '% da receita)' : '') + '. Aquisição: ' + brl.format(pVista * com) + ' de comissão e ' + brl.format(midia) + ' de mídia.');
+    put('o-haas', brl.format(margHaas));
+    put('o-haas-det', (pHaas ? num1.format(margHaas / pHaas * 100) + '% da mensalidade' : '') + (v('agentes') ? '' : '. Sem o custo dos agentes, ainda a levantar com a Cyntia.'));
+    put('o-cliente', brl.format(valCliente));
+    var a = Math.max(0, sobraVista), b = Math.max(0, valHaas), tot = a + b || 1;
+    document.getElementById('b-impl').style.width = (a / tot * 100) + '%';
+    document.getElementById('b-haas').style.width = (b / tot * 100) + '%';
+
+    // A turma das 10 vagas, sempre no preço das 10 primeiras vendas
+    var dias = Math.max(1, v('dias'));
+    var semanasTurma = dias / 7;
+    put('o-turma-tit', 'A turma das ' + VAGAS + ' vagas, a ' + brl.format(p1) + ', fechada em ' + num1.format(dias) + ' dias');
+    put('o-t-receita', brl.format(VAGAS * p1));
+    put('o-t-receita-det', VAGAS + ' vendas da Avançada; a Essencial não entra');
+    put('o-t-sobra', brl.format(VAGAS * sobra(p1)));
+    put('o-t-midia', temVenda ? brl.format(VAGAS * midia) : 'sem venda');
+    put('o-t-leads', temVenda ? num1.format(VAGAS * leadsVenda) : 'sem venda');
+    put('o-t-leads-det', temVenda ? num1.format(VAGAS * leadsVenda / dias) + ' por dia. A conta do Júnior para a verba do começo é de 10 a 20 leads por dia.' : '');
+    put('o-t-reun', temVenda ? num1.format(VAGAS * agendadas / semanasTurma) : 'sem venda');
+    put('o-t-reun-det', temVenda ? num1.format(VAGAS * agendadas) + ' agendadas e ' + num1.format(VAGAS * realizadas) + ' realizadas no total; ' + num1.format(VAGAS * hAgenda / semanasTurma) + ' h de agenda por semana.' : '');
+    put('o-t-ger', num1.format(VAGAS * v('h-ger') / 3 / HORAS_GERENTE_MES));
+    put('o-analise', temVenda ? 'Nas 10 primeiras vagas, as ' + num1.format(VAGAS * realizadas) + ' Análises da call que a turma pede são gratuitas para todos, apresentadas com o valor de R$ 4.997. Não há receita de Análise na turma.' : '');
+
+    // Em regime, depois da turma, no preço da 11ª venda em diante
+    var novos = v('novos');
+    var implAtivas = novos * 3;
+    var haasAtivos = novos * cont * meses;
+    var receita = novos * p2 + haasAtivos * pHaas;
+    var margemMes = novos * sobra(p2) + haasAtivos * margHaas;
+    var horasGer = implAtivas * v('h-ger') / 3 + haasAtivos * v('h-ger-m');
+    var gerentes = horasGer / HORAS_GERENTE_MES;
+    var hVendasMes = novos * hAgenda;
+    var horasJr = novos * 10 + haasAtivos * 1 + hVendasMes;
+    put('o-regime-tit', 'Depois da turma, a ' + brl.format(p2) + ', com ' + num1.format(novos) + ' ' + plural(novos, 'nova Avançada', 'novas Avançadas') + ' por mês: ' + num1.format(implAtivas) + ' implementações ativas e ' + num1.format(haasAtivos) + ' clientes no GSAAS');
+    put('o-receita', brl.format(receita));
+    put('o-margem', brl.format(margemMes));
+    put('o-gerentes', num1.format(gerentes));
+    put('o-junior', num1.format(horasJr) + ' h');
+    put('o-junior-det', '10 por implementação (os encontros das semanas 3, 7 e 13; premissa a revisar), 1 por cliente do GSAAS e ' + num1.format(hVendasMes) + ' de reuniões de venda (' + num1.format(novos * agendadas / (DIAS_MES / 7)) + ' por semana)');
+
+    var al = document.getElementById('o-alerta');
+    if (!temVenda) { al.textContent = 'Com alguma etapa do funil em 0%, não há venda para calcular.'; al.className = 'alerta ruim'; }
+    else if (sobraVista < 0) { al.textContent = 'Com essas premissas, cada implementação a ' + brl.format(pVista) + ' dá prejuízo depois da aquisição. A conta depende inteira do GSAAS.'; al.className = 'alerta ruim'; }
+    else if (valHaas < sobraVista) { al.textContent = 'A continuidade rende menos que a implementação: o negócio vive de vender implementação, e a margem dela é fina.'; al.className = 'alerta ruim'; }
+    else { al.textContent = 'O GSAAS responde por ' + num1.format(b / tot * 100) + '% do valor de cada cliente.'; al.className = 'alerta'; }
+  }
+
+  var botoes = document.querySelectorAll('.cenarios button');
+  botoes.forEach(function (bt) {
+    bt.addEventListener('click', function () {
+      var c = CENARIOS[bt.dataset.cenario];
+      Object.keys(c).forEach(function (k) { document.getElementById(k).value = c[k]; });
+      botoes.forEach(function (x) { x.setAttribute('aria-pressed', x === bt ? 'true' : 'false'); });
+      calcular();
+    });
+  });
+
+  var botoesPreco = document.querySelectorAll('.precos button');
+  botoesPreco.forEach(function (bt) {
+    bt.addEventListener('click', function () {
+      precoVista = bt.dataset.preco;
+      botoesPreco.forEach(function (x) { x.setAttribute('aria-pressed', x === bt ? 'true' : 'false'); });
+      calcular();
+    });
+  });
+
+  var CAMPOS_CENARIO = Object.keys(CENARIOS.base);
+  document.getElementById('entradas').addEventListener('input', function (e) {
+    if (CAMPOS_CENARIO.indexOf(e.target.id) >= 0) botoes.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    calcular();
+  });
+  document.getElementById('entradas').addEventListener('submit', function (e) { e.preventDefault(); });
+  calcular();
+
+  // ---------- Decisões ----------
+  var DECISOES = [
+    'GSAAS: um nível ou três, o preço com os agentes dentro (hoje, hipótese de R$ 15 mil por mês), o custo dos agentes por cliente (a levantar com a Cyntia) e se é mês a mês ou com prazo mínimo.',
+    'Tecnologia nos clientes fundadores: CRM da Triad, CRM do cliente ou GoHighLevel.',
+    'Quem são os gerentes de safra: cerca de 2 para as 10 implementações juntas, prontos antes de a turma encher. A turma fecha na 10ª venda da Avançada e não reduz vagas (decidido).',
+    'Volume mínimo de leads e de pessoas vendendo para aceitar o cliente.',
+    'Agenda do Júnior: teto de reuniões por semana e quem agenda (SDR ou agente de WhatsApp).',
+    'Verba de mídia e a conta reversa das 10 vendas, quando os primeiros dias do funil derem custo por lead e etapas reais.',
+    'Parcelamento e taxa da Hotmart (a conta usa 4% na implementação e 2% no GSAAS).',
+    'Horas de tecnologia da implementação sem a Mecanização da Safra (fica para depois, por decisão do Otavio).'
+  ];
+  var CHAVE = 'simulador-implementacao-decisoes-v3';
+  var marcadas = {};
+  try { marcadas = JSON.parse(localStorage.getItem(CHAVE) || '{}') || {}; } catch (e) { marcadas = {}; }
+  var ul = document.getElementById('decisoes');
+  ul.innerHTML = DECISOES.map(function (txt, i) {
+    return '<li><input type="checkbox" id="dec-' + i + '"' + (marcadas[i] ? ' checked' : '') + '><label for="dec-' + i + '">' + txt + '</label></li>';
+  }).join('');
+  ul.addEventListener('change', function (e) {
+    if (e.target.type !== 'checkbox') return;
+    marcadas[e.target.id.replace('dec-', '')] = e.target.checked;
+    try { localStorage.setItem(CHAVE, JSON.stringify(marcadas)); } catch (err) {}
+  });
+})();
+</script>
+</body></html>

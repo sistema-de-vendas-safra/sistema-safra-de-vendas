@@ -1,0 +1,493 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "Artboard-m1rm.dc.html": {
+   "h": 600,
+   "title": "Artboard 1",
+   "w": 800,
+   "x": 0,
+   "y": 0
+  },
+  "Main.dc.html": {
+   "expand": "fill",
+   "h": 5100,
+   "is_interactive": true,
+   "title": "Desktop 1/6 · Hero e Sistema de Vendas",
+   "w": 1440,
+   "x": 0,
+   "y": 0
+  },
+  "Mobile.dc.html": {
+   "h": 6160,
+   "is_interactive": true,
+   "title": "Celular 1/6 · Hero e Sistema de Vendas",
+   "w": 390,
+   "x": 1520,
+   "y": 0
+  },
+  "Parte-2.dc.html": {
+   "expand": "fill",
+   "h": 4040,
+   "is_interactive": true,
+   "title": "Desktop 2/6 · Big Idea e O que é o sistema",
+   "w": 1440,
+   "x": 0,
+   "y": 5220
+  },
+  "Mobile-2.dc.html": {
+   "h": 5200,
+   "is_interactive": true,
+   "title": "Celular 2/6 · Big Idea e O que é o sistema",
+   "w": 390,
+   "x": 1520,
+   "y": 6280
+  },
+  "Parte-3.dc.html": {
+   "expand": "fill",
+   "h": 3810,
+   "is_interactive": true,
+   "title": "Desktop 4/6 · 90 dias e Painel",
+   "w": 1440,
+   "x": 0,
+   "y": 12090
+  },
+  "Mobile-3.dc.html": {
+   "h": 5940,
+   "is_interactive": true,
+   "title": "Celular 4/6 · 90 dias e Painel",
+   "w": 390,
+   "x": 1520,
+   "y": 15060
+  },
+  "Parte-4.dc.html": {
+   "expand": "fill",
+   "h": 3350,
+   "is_interactive": true,
+   "title": "Desktop 5/6 · Para quem é e Análise",
+   "w": 1440,
+   "x": 0,
+   "y": 16020
+  },
+  "Mobile-4.dc.html": {
+   "h": 4380,
+   "is_interactive": true,
+   "title": "Celular 5/6 · Para quem é e Análise",
+   "w": 390,
+   "x": 1520,
+   "y": 21120
+  },
+  "Parte-5.dc.html": {
+   "expand": "fill",
+   "h": 1030,
+   "is_interactive": true,
+   "title": "Desktop 6/6 · Perguntas frequentes",
+   "w": 1440,
+   "x": 0,
+   "y": 19490
+  },
+  "Mobile-5.dc.html": {
+   "h": 1470,
+   "is_interactive": true,
+   "title": "Celular 6/6 · Perguntas frequentes",
+   "w": 390,
+   "x": 1520,
+   "y": 25620
+  },
+  "Hero-B.dc.html": {
+   "expand": "fill",
+   "h": 920,
+   "is_interactive": true,
+   "title": "Desktop · Hero versão B",
+   "w": 1440,
+   "x": -1560,
+   "y": 0
+  },
+  "Mobile-Hero-B.dc.html": {
+   "h": 1160,
+   "is_interactive": true,
+   "title": "Celular · Hero versão B",
+   "w": 390,
+   "x": -2030,
+   "y": 0
+  },
+  "Parte-2b.dc.html": {
+   "expand": "fill",
+   "h": 2590,
+   "is_interactive": true,
+   "title": "Desktop 3/6 · Credenciais",
+   "w": 1440,
+   "x": 0,
+   "y": 9380
+  },
+  "Mobile-2b.dc.html": {
+   "h": 3340,
+   "is_interactive": true,
+   "title": "Celular 3/6 · Credenciais",
+   "w": 390,
+   "x": 1520,
+   "y": 11600
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-11-01T21:50:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "noteOrder": [
+  "nota-contador",
+  "nota-cta",
+  "nota-qualificador",
+  "nota-imagem",
+  "nota-s2-diagrama",
+  "nota-s2-conta",
+  "nota-s2-cartoes",
+  "nota-s3-horta",
+  "nota-s3-cor",
+  "nota-s4-numero",
+  "nota-s4-fotos",
+  "nota-s5-sistema",
+  "nota-s5-cuidados",
+  "nota-s6-painel",
+  "nota-s6-cuidados",
+  "nota-s8-analise",
+  "nota-s8-cuidados",
+  "nota-s10-faq",
+  "nota-s10-confirmar",
+  "nota-s10-quem-vende",
+  "titulo-hero",
+  "nota-revisao",
+  "nota-header",
+  "nota-s3-automatico",
+  "nota-s4-depoimento",
+  "nota-partes",
+  "nota-s8-fomo",
+  "nota-s8-pdv",
+  "nota-botoes",
+  "titulo-hero-b",
+  "nota-hero-b",
+  "nota-hero-b-cuidados",
+  "nota-s2-junior",
+  "nota-s2-deming",
+  "nota-s2-ilustracao",
+  "nota-s2-estilo",
+  "nota-s2-layout",
+  "nota-s7-paraquem",
+  "nota-s7-criterios",
+  "nota-s3b-sistema",
+  "nota-s3b-cuidados"
+ ],
+ "notes": {
+  "nota-contador": {
+   "fill": "orange",
+   "text": "Contador: neste wireframe, o incremento é simulado. No ar, só com o total comprovado e uma fonte de dados real alimentando o número. [PROVA REAL]",
+   "w": 340,
+   "x": 1990,
+   "y": 300
+  },
+  "nota-cta": {
+   "fill": "teal",
+   "text": "Um único botão primário na dobra. Leva ao quiz de pré-qualificação.",
+   "w": 340,
+   "x": 1990,
+   "y": 960
+  },
+  "nota-header": {
+   "fill": "blue",
+   "text": "Cabeçalho fixo: o botão de contorno não disputa com o botão cheio do hero, mas fica ao alcance em toda a rolagem. No canvas ele não gruda; gruda na página aberta.",
+   "w": 360,
+   "x": 2370,
+   "y": 520
+  },
+  "nota-imagem": {
+   "fill": "blue",
+   "text": "Imagem do hero (03/11): vista aérea, ao anoitecer, de uma fazenda de pivôs circulares. Cada círculo está num estágio de cultivo, como safras rodando ao mesmo tempo, e as estradas iluminadas ligam todos num só sistema. A colheitadeira de luz laranja colhe o círculo maduro e conversa com a cor dos botões. O contador fica no alto escuro, sem cobrir a lavoura. Gerada no Magnific. No celular a imagem sai e o contador fica como um cartão logo abaixo do botão.",
+   "w": 340,
+   "x": 1990,
+   "y": 640
+  },
+  "nota-qualificador": {
+   "fill": "green",
+   "text": "01 · Hero. Qualificador em destaque, antes da headline: só segue lendo quem vende acima de R$ 5 mil e fatura mais de R$ 100 mil por mês.",
+   "w": 340,
+   "x": 1990,
+   "y": 0
+  },
+  "nota-revisao": {
+   "fill": "teal",
+   "text": "Revisão geral (01/11): cabeçalho fixo com o botão \"Fazer a Análise\"; faixa \"O Sistema de Vendas Safra foi desenvolvido nos bastidores de\" logo abaixo do hero, sem o R$ 600 mi para não brigar com o contador; setas de perda em vermelho e de ganho em verde nos cartões da seção 2; horta sem o erro \"none\" e com o eixo legível no celular; \"colhe no dia 30\" como frase de impacto; espaço reservado para o primeiro caso; régua com a marca \"Sua conta\".",
+   "w": 360,
+   "x": 2370,
+   "y": 0
+  },
+  "nota-s10-confirmar": {
+   "fill": "orange",
+   "text": "Confirmar antes de ir ao ar: o gerente de safra toda semana (#12, ainda sem nome); o prazo de 7 dias nos termos da Hotmart, com advogado; o mínimo de time (\"alguém vendendo além do dono\"); o que fica com o cliente se ele não seguir no GSAAS, se o CRM for o da Triad; parcelamento e data de início.",
+   "w": 340,
+   "x": 1990,
+   "y": 19926
+  },
+  "nota-s10-faq": {
+   "fill": "green",
+   "text": "09 · Perguntas frequentes. As barreiras da persona, na ordem de força: mentoria que vira Zoom, o sênior que some depois da assinatura, quem vende, encaixe, exposição diante dos pares, vagas, parcelamento e o depois. \"Tem garantia?\" saiu (04/11). Uma aberta por vez; a primeira já vem aberta. A seção da Oferta saiu da página (03/11): preço e condições ficam para a conversa.",
+   "w": 340,
+   "x": 1990,
+   "y": 19496
+  },
+  "nota-s10-quem-vende": {
+   "fill": "blue",
+   "text": "\"Quem faz as vendas\" responde de frente o que a concorrência deixa na letra miúda: a colheita é do time do cliente (#14).",
+   "w": 340,
+   "x": 1990,
+   "y": 20366
+  },
+  "nota-s2-cartoes": {
+   "fill": "blue",
+   "text": "Três cartões espelham as três promessas da headline: vender gastando menos, vender mais e vender mais vezes.",
+   "w": 340,
+   "x": 1990,
+   "y": 4465
+  },
+  "nota-s2-conta": {
+   "fill": "orange",
+   "text": "Barras: números redondos, com o selo de exemplo ilustrativo sempre visível. Nunca viram prova nem resultado de cliente.",
+   "w": 340,
+   "x": 1990,
+   "y": 4001
+  },
+  "nota-s2-diagrama": {
+   "fill": "green",
+   "text": "02 · Sistema de Vendas. Headline (04/11): \"Ações isoladas somam peças. Sistema de Vendas multiplica vendas.\", em vermelho e verde, com a linha de leitura do quadro embaixo. Diagrama: as mesmas peças dos dois lados. De um lado, soltas e cada uma com o seu número; do outro, ligadas num ciclo que acende etapa por etapa, com a recompra voltando ao começo. O card da Harvard saiu da página.",
+   "w": 340,
+   "x": 1990,
+   "y": 3173
+  },
+  "nota-s3-automatico": {
+   "fill": "orange",
+   "text": "\"Trabalha todos os leads de maneira automática\" virou \"o sistema diz quem chamar e quando\": nos 90 dias, a implementação instala a régua e o CRM; os agentes que fazem o contato sozinhos estão no GSAAS. Se o automático for confirmado dentro da implementação, a frase pode voltar.",
+   "w": 340,
+   "x": 1990,
+   "y": 6128
+  },
+  "nota-s3-cor": {
+   "fill": "orange",
+   "text": "Vermelho só para o que se perde: o corte do dia 30, os leads que morreram, o que ficou na mesa e a rúcula. Verde para o que se colhe.",
+   "w": 340,
+   "x": 1990,
+   "y": 5768
+  },
+  "nota-s3-horta": {
+   "fill": "green",
+   "text": "03 · Big Idea. A metáfora nasce aqui: cada lead é uma planta, a venda é a colheita. A página abre mostrando a Gestão Mensal de Leads, com a Gestão de Leads por Safra embaçada ao lado. A chave (ou um toque no lado embaçado) inverte o embaçado. Na mensal, os leads 2 e 3 param de ser cultivados e morrem: 1 de 3 colhido (vendido) e 2 de 3 na mesa. Na safra, 3 de 3.",
+   "w": 340,
+   "x": 1990,
+   "y": 5248
+  },
+  "nota-s4-fotos": {
+   "fill": "blue",
+   "text": "Mosaico: cinco fotos reais de Euclides e Junior com os players, todas em placeholder, com legendas provisórias. Cada foto precisa de autorização de uso de imagem de quem aparece, e Grupo Primo é marca de terceiro.",
+   "w": 340,
+   "x": 1990,
+   "y": 9758
+  },
+  "nota-s4-numero": {
+   "fill": "orange",
+   "text": "04 · Credenciais. R$ 579 mi+ agora bate com o contador do hero. Esse número, o R$ 120 mi+ e cada nome só vão ao ar com comprovante guardado (CDC, art. 30, e CONAR).",
+   "w": 340,
+   "x": 1990,
+   "y": 9338
+  },
+  "nota-s5-cuidados": {
+   "fill": "orange",
+   "text": "Conferir com a Cyntia o uso real de IA nas entregas 1, 3, 5 e 8. A oferta, a apresentação e o contrato ainda falam em 8 entregas; aqui a mentoria é a 9.",
+   "w": 340,
+   "x": 1990,
+   "y": 12631
+  },
+  "nota-s5-sistema": {
+   "fill": "green",
+   "text": "05 · Os 90 dias. As entregas aparecem como um sistema: quatro fases ligadas por setas, um anel tracejado que leva do relatório de volta à análise, a mentoria correndo ao lado do começo ao fim e o GSAAS depois, opcional. Os botões de peça acendem as entregas que instalam aquela peça e apagam as outras.",
+   "w": 340,
+   "x": 1990,
+   "y": 11803
+  },
+  "nota-s6-cuidados": {
+   "fill": "orange",
+   "text": "Agentes de IA só com o selo GSAAS. A avaliação de calls mostra objeções e próximos passos, sem nota nem minuto exato, até o CRM do Junior fazer isso de verdade.",
+   "w": 340,
+   "x": 1990,
+   "y": 14681
+  },
+  "nota-s6-painel": {
+   "fill": "green",
+   "text": "06 · Painel. Dois perfis e onze telas, no modelo do print. As telas giram sozinhas até o visitante tocar numa delas. A janela leva sempre o selo de dados de exemplo; os nomes e números ali são fictícios.",
+   "w": 340,
+   "x": 1990,
+   "y": 14241
+  },
+  "nota-s8-analise": {
+   "fill": "green",
+   "text": "08 · Análise. Destino de todos os botões da página (âncora #analise). Três passos, o último com o Junior. O relatório de exemplo conversa com a seção 2 (agendamento 25% contra 50%). Selo de valor fecha a seção.",
+   "w": 340,
+   "x": 1990,
+   "y": 17096
+  },
+  "nota-s8-cuidados": {
+   "fill": "orange",
+   "text": "Valor da Análise: a página diz R$ 497 e o CONTEXTO registra R$ 4.997 (#62). A gratuidade agora é \"promoção de lançamento\": ela precisa de um fim real (data ou quantidade), e a Análise precisa passar mesmo a ser cobrada depois.",
+   "w": 340,
+   "x": 1990,
+   "y": 17546
+  },
+  "titulo-hero": {
+   "kind": "title1",
+   "maxW": 1910,
+   "text": "Página de vendas IASV Safra · desktop e celular, em seis partes",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "nota-s4-depoimento": {
+   "fill": "orange",
+   "text": "Depoimento do Junior: só vai ao ar com três coisas. (1) Confirmação de que a gestão por safra rodava na operação do Marçal: as fontes do projeto descrevem a leitura por safra como recente, rodando no leilão desde julho de 2026. (2) Autorização para usar o nome de Pablo Marçal e do Grupo Primo em propaganda (Código Civil, art. 18). (3) Prova de \"o maior nome\" e de \"maiores lançamentos\", ou a troca por \"um dos maiores\".",
+   "w": 340,
+   "x": 1990,
+   "y": 10523
+  },
+  "nota-partes": {
+   "fill": "teal",
+   "text": "O canvas limita cada prancha a 8.000 px de altura, e a página tem quase 20 mil no desktop e mais de 26 mil no celular. Por isso ela está em seis partes, lidas de cima para baixo. Cada parte é editável. Os botões de \"Fazer a Análise\" só pulam para a seção da Análise na página montada.",
+   "w": 360,
+   "x": 2370,
+   "y": 1000
+  },
+  "nota-s8-fomo": {
+   "fill": "green",
+   "text": "08 · \"81% das Análises gratuitas já foram resgatadas\" está como exemplo. Só vai ao ar com um número fixo de Análises gratuitas na promoção e a contagem real de resgates; um 81% parado na página é escassez falsa (CDC, art. 37, e CONAR). A virada do mês usa o calendário de verdade.",
+   "w": 340,
+   "x": 2370,
+   "y": 17106
+  },
+  "nota-s8-pdv": {
+   "fill": "blue",
+   "text": "PDV-90 é entrega nova da Análise: confirmar com o Junior que o time entrega o plano na conversa de 60 minutos ou logo depois. O funil de perda usa 1.000 leads de exemplo, com as mesmas taxas do relatório.",
+   "w": 340,
+   "x": 2370,
+   "y": 17546
+  },
+  "nota-botoes": {
+   "fill": "teal",
+   "text": "Botões (03/11): laranja #FF8400, em tríade com o verde #00FF87 (120° de distância no círculo de cores), com texto preto, borda inferior em relevo, brilho e a seta num círculo. Sai do botão verde de canto cortado do design system. Embaixo de cada um, uma barra menor e centralizada: \"Restam 19%\" acima dela, à direita, piscando; \"81% das Análises gratuitas já foram resgatadas\" abaixo, à esquerda. O card da Análise segue a mesma ordem. O número é exemplo e, no ar, vem da contagem real.",
+   "w": 360,
+   "x": 2370,
+   "y": 1500
+  },
+  "titulo-hero-b": {
+   "kind": "title1",
+   "maxW": 1910,
+   "text": "Hero · versão B, para teste contra a A",
+   "w": 240,
+   "x": -2030,
+   "y": -300
+  },
+  "nota-hero-b": {
+   "fill": "green",
+   "w": 360,
+   "x": -1560,
+   "y": 1040,
+   "text": "Hero B (04/11). Abre pelo lucro oculto nos leads que nunca disseram não, com a segunda frase do título um pouco menor, e desce a promessa para o subtítulo, com os três ganhos em verde. Imagem, contador, botão, barra e faixa iguais aos da versão A, para o teste medir só a copy."
+  },
+  "nota-hero-b-cuidados": {
+   "fill": "orange",
+   "w": 360,
+   "x": -1180,
+   "y": 1040,
+   "text": "Antes de testar: o qualificador da B pede leads, time e vendas acima de R$ 10 mil, e não fala em faturar R$ 100 mil por mês. A versão A, a pergunta \"Funciona no meu negócio?\" e o CONTEXTO falam em R$ 5 mil e R$ 100 mil."
+  },
+  "nota-s2-junior": {
+   "fill": "green",
+   "w": 340,
+   "x": 1990,
+   "y": 1188,
+   "text": "02 · Headline nova (04/11), a partir do pedido do Junior: \"94%* dos problemas de vendas são problemas de Sistema de Vendas.\", com a fonte embaixo e, ao lado, o quadro do \"não é\" nas frases do jeito que o dono pensa."
+  },
+  "nota-s2-deming": {
+   "fill": "orange",
+   "w": 340,
+   "x": 1990,
+   "y": 1460,
+   "text": "Risco do 94%: Deming falou de empresas em geral, não de vendas, e o número é a estimativa da experiência dele, não um estudo. A nota de rodapé hoje cita só Deming e o livro; lida junto com a headline, atribui a ele um dado de vendas que ele não deu (CONAR e CDC, art. 37). Recomendo voltar o \"Adaptado de\". Conferir a página da citação na edição usada antes de ir ao ar."
+  },
+  "nota-s2-ilustracao": {
+   "fill": "green",
+   "w": 340,
+   "x": 1990,
+   "y": 1902,
+   "text": "02 · Ilustração das argolas (04/11), ideia do Junior na call, em duas imagens geradas no Magnific. Em cima, como funciona na sua empresa: numa feira cyberpunk, debaixo do letreiro \"Tente a sorte\", o dono vendado arremessa argolas da caixa de leads e quase todas caem longe da vareta da venda. Embaixo, no Sistema de Vendas Safra: o mesmo dono, com visor e painel, põe a argola na esteira; ela passa por três portais e sai verde; a closer só põe na vareta, já cheia. Só duas pessoas embaixo, para não parecer que sistema é ter mais gente. A planta na parede é a ideia do blueprint."
+  },
+  "nota-s2-estilo": {
+   "fill": "blue",
+   "w": 360,
+   "x": 2370,
+   "y": 1902,
+   "text": "Estilo: cinematográfico cyberpunk, noite de chuva, neon, no verde, vermelho e laranja da página. O mesmo homem nas duas cenas (a segunda foi gerada com a primeira como referência). Os textos LEADS, VENDA e Tente a sorte estão dentro da imagem. Os vultos atrás do vidro, na segunda cena, são a rua; se incomodarem, dá para tirar numa edição. As imagens servem de base para o criativo em vídeo que vocês comentaram."
+  },
+  "nota-s2-layout": {
+   "fill": "teal",
+   "w": 360,
+   "x": 2370,
+   "y": 2350,
+   "text": "Revisão de layout da seção 2 (04/11): os dois parágrafos viraram duas colunas, com fio vermelho (ações isoladas) e verde (sistema), preparando o confronto; as imagens perderam as etiquetas que repetiam as do diagrama; imagens e diagrama formam um bloco só, e \"As mesmas peças, ligadas.\" passou a abrir o diagrama; os valores das barras não quebram mais no celular. Nenhum texto mudou."
+  },
+  "nota-s7-paraquem": {
+   "fill": "green",
+   "w": 340,
+   "x": 1990,
+   "y": 16040,
+   "text": "07 · Para quem é (04/11). Entrou no lugar da calculadora de Recuperação de Ativos. Duas colunas tiradas da Ficha do Serviço e da persona: quem é (dono que decide, venda consultiva, leads todo mês, gente vendendo, quer instalação e não curso) e quem não é (sem leads, quer curso, quer que vendam por ele, vende sem conversa, não abre os números, quer fórmula ou garantia). Fecha chamando para a Análise, que vem logo abaixo."
+  },
+  "nota-s7-criterios": {
+   "fill": "orange",
+   "w": 340,
+   "x": 1990,
+   "y": 16490,
+   "text": "Critérios a alinhar: a página usa venda acima de R$ 5 mil e faturamento acima de R$ 100 mil por mês, como o hero A e o FAQ. A Ficha do Serviço e a persona falam em venda acima de R$ 10 mil, faturamento de R$ 150 mil a R$ 1,5 milhão por mês, cerca de 100 leads por mês e o histórico dos últimos 3 meses. O hero B usa R$ 10 mil. Escolher um número só e repetir nos quatro lugares."
+  },
+  "nota-s3b-sistema": {
+   "fill": "green",
+   "w": 340,
+   "x": 1990,
+   "y": 8000,
+   "text": "03b · O que é o Sistema de Vendas Safra (07/11). Responde à ponte do fim da seção 3 (\"apenas um dos componentes\"), antes das credenciais. As sete peças da decisão #69 em volta do Sistema de Vendas Safra, num anel com pulsos indo de cada peça ao centro. Ao lado, o cartão da Gestão de Leads por Safra como método proprietário e a lista com uma linha por peça, tirada das entregas que instalam cada uma. Fecha apontando para o filtro de peças em \"Como funciona\". As credenciais foram para a prancha 3/6, porque no celular a parte 2 passaria do limite de 8.000 px."
+  },
+  "nota-s3b-cuidados": {
+   "fill": "orange",
+   "w": 340,
+   "x": 1990,
+   "y": 8420,
+   "text": "Inteligência Artificial: a linha diz que a IA ajuda a ler as safras, montar os roteiros e alimentar o painel, e que os agentes que falam com o lead sozinhos ficam no GSAAS. Conferir com a Cyntia, junto com as entregas 1, 3, 5 e 8. \"Método proprietário\" segue a decisão #69; não dizer que o método é inédito no mundo (análise por coorte já existe)."
+  }
+ },
+ "order": [
+  "Mobile-Hero-B.dc.html",
+  "Hero-B.dc.html",
+  "Artboard-m1rm.dc.html",
+  "Main.dc.html",
+  "Mobile.dc.html",
+  "Parte-2.dc.html",
+  "Mobile-2.dc.html",
+  "Parte-2b.dc.html",
+  "Mobile-2b.dc.html",
+  "Parte-3.dc.html",
+  "Mobile-3.dc.html",
+  "Parte-4.dc.html",
+  "Mobile-4.dc.html",
+  "Parte-5.dc.html",
+  "Mobile-5.dc.html"
+ ],
+ "pages": [],
+ "title": "Página de vendas IASV Safra · wireframe"
+}

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Página de vendas · parte 4</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@600;700;800&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<main style="background: #07070D; color: #F4F5F1; font-family: Geist, system-ui, sans-serif; min-height: 100%;"><section aria-label="Para quem é" style="border-top: 1px solid #262833;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(56px, 7vw, 112px) clamp(16px, 4.4vw, 64px); display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px);">
+
+<div style="display: flex; flex-direction: column; gap: 20px; max-width: 960px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">Para quem é</span>
+<h2 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 4vw, 60px); line-height: 1; letter-spacing: -0.01em; text-wrap: balance;">Antes de pedir a Análise, veja se o sistema <span style="color: #00FF87;">é para você</span>.</h2>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr)); gap: 16px;">
+<div style="min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2.4vw, 32px); border-radius: 16px; background: #0E0F16; border: 1px solid rgba(0, 255, 135, 0.45);">
+<p style="margin: 0 0 6px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.2; letter-spacing: 0.02em; color: #00FF87;">Para quem é</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Você é dono ou sócio e decide sobre o comercial.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Vende produtos ou serviços com ticket acima de R$ 5.000,00</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Fatura mais de R$ 100 mil por mês.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Já recebe leads todo mês, de anúncio, evento ou indicação.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Já tem gente vendendo além de você.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 255, 135, 0.55); border-radius: 50%; background: rgba(0, 255, 135, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Quer o sistema instalado dentro da sua operação, e não mais um curso ou mentoria.</span></li>
+</ul>
+</div>
+<div style="min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2.4vw, 32px); border-radius: 16px; background: #0E0F16; border: 1px solid rgba(255, 84, 104, 0.4);">
+<p style="margin: 0 0 6px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.2; letter-spacing: 0.02em; color: #FF5468;">Para quem não é</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Ainda não tem leads chegando. Antes, precisa de marketing.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Quer aula, curso ou conteúdo para assistir.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Quer que alguém venda no seu lugar.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Vende sem conversa, no balcão ou no e-commerce.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Não topa abrir os números do seu comercial.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.25vw, 18px); line-height: 1.4;">Procura fórmula pronta ou promessa de resultado garantido.</span></li>
+</ul>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;">
+<p style="margin: 0; max-width: 46ch; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.5; color: rgba(244, 245, 241, 0.88);">Se você se reconheceu em “Para quem é”, o próximo passo é a Análise.</p>
+<div style="display: inline-flex; flex-direction: column; align-items: stretch; gap: 16px; max-width: 100%;"><a href="#analise" style="display: inline-flex; align-items: center; gap: 14px; max-width: 100%; min-height: 64px; box-sizing: border-box; padding: 16px 28px; background: #FF8400; color: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; border-radius: 12px; box-shadow: 0 5px 0 #A85600, 0 16px 36px rgba(255, 132, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); cursor: pointer;">Faça uma Análise Estratégica do seu Sistema de Vendas<span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #07070D;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span></a><div style="align-self: center; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 5px; text-align: left;"><span style="align-self: flex-end; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; opacity: {{pulso}}; transition: opacity 0.2s ease;">Restam 19%</span><div style="position: relative; height: 5px; border-radius: 3px; background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.4); overflow: hidden;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 81%; background: linear-gradient(90deg, rgba(255, 84, 104, 0.55), #FF5468);"></span><span style="position: absolute; left: 81%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #F4F5F1;"></span></div><span style="font-size: 12px; line-height: 1.35; color: rgba(244, 245, 241, 0.8);"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 14px; color: #FF5468;">81%</span> das Análises gratuitas já foram resgatadas</span></div></div>
+</div>
+
+</div>
+</section>
+
+<section id="analise" aria-label="Análise Estratégica do seu Sistema de Vendas" style="border-top: 1px solid #262833;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(56px, 7vw, 112px) clamp(16px, 4.4vw, 64px); display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px);">
+
+<div style="display: flex; flex-direction: column; gap: 20px; max-width: 980px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">Análise Estratégica do seu Sistema de Vendas</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #ff5468"><b>GRATUITO POR POUCO TEMPO!</b></span>
+<h2 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 4vw, 60px); line-height: 1; letter-spacing: -0.01em; text-wrap: balance;">Traga os números do seu último mês. <span style="color: #00FF87;">A gente mostra onde a sua venda quebra.</span></h2>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: clamp(28px, 4vw, 56px);">
+
+<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column;">
+<div style="display: flex; gap: 18px;">
+<div style="display: flex; flex-direction: column; align-items: center;"><span style="flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid #00FF87; border-radius: 50%; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 18px; color: #00FF87;">1</span><span style="flex: 1; width: 2px; min-height: 24px; background: rgba(0, 255, 135, 0.4);"></span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0 32px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 20px; text-transform: uppercase;">Responda o diagnóstico</span><span style="font-size: 16px; line-height: 1.5; color: rgba(244, 245, 241, 0.85);">Em poucos minutos, para ver se o sistema faz sentido para o seu negócio.</span></div>
+</div>
+<div style="display: flex; gap: 18px;">
+<div style="display: flex; flex-direction: column; align-items: center;"><span style="flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid #00FF87; border-radius: 50%; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 18px; color: #00FF87;">2</span><span style="flex: 1; width: 2px; min-height: 24px; background: rgba(0, 255, 135, 0.4);"></span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0 32px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 20px; text-transform: uppercase;">Traga os números</span><span style="font-size: 16px; line-height: 1.5; color: rgba(244, 245, 241, 0.85);">Leads, agendamentos, reuniões e vendas do último mês.</span></div>
+</div>
+<div style="display: flex; gap: 18px;">
+<div style="display: flex; flex-direction: column; align-items: center;"><span style="flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid #00FF87; border-radius: 50%; background: #00FF87; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 18px; color: #07070D;">3</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 8px 0 0;">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 20px; text-transform: uppercase;">CONVERSE COM O TIME DE JUNIOR NEVES</span>
+<span style="font-size: 16px; line-height: 1.5; color: rgba(244, 245, 241, 0.85);">Uma conversa de 60 minutos.</span>
+<div style="display: flex; align-items: center; gap: 12px;"><span style="flex-shrink: 0; width: 52px; height: 52px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px dashed #3A3D4A; border-radius: 50%; background: #171922;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8A8D96" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path></svg></span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Foto · Junior Neves</span></div>
+</div>
+</div>
+<p style="margin: 28px 0 0; padding: 18px 20px; border: 1px solid #262833; border-radius: 12px; background: #0E0F16; font-size: 16px; line-height: 1.55; color: rgba(244, 245, 241, 0.88);">Se fizer sentido, a gente mostra como instalar o sistema. <span style="color: #F4F5F1; font-weight: 500;">Se não fizer, você sai com o diagnóstico na mão.</span></p>
+</div>
+
+<div style="flex: 1.2 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+<div style="display: flex; flex-direction: column; border: 1px solid #262833; border-radius: 16px; background: #0E0F16; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 12px; padding: 16px 20px; border-bottom: 1px solid #262833; background: #171922;">
+<div style="display: flex; align-items: center; gap: 12px; min-width: 0;"><span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(0, 255, 135, 0.12);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 13h6M9 17h4"></path></svg></span><span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; text-transform: uppercase;">O que você leva da conversa</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Relatório da sua última safra</span></span></div>
+<span style="padding: 3px 8px; border: 1px dashed #8A8D96; border-radius: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Exemplo</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; padding: 18px 20px; border-bottom: 1px solid rgba(255, 84, 104, 0.35); background: linear-gradient(180deg, rgba(255, 84, 104, 0.12) 0%, rgba(255, 84, 104, 0.03) 100%);">
+<span style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 500;"><span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; color: #FF5468;">1 · </span>Onde a sua venda quebra</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #FF5468;">Leads perdidos</span></span>
+<div style="display: flex; flex-direction: column; gap: 4px;">
+<div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent;"><span style="flex: 0 1 132px; min-width: 0; display: flex; flex-direction: column; gap: 1px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244, 245, 241, 0.7);">Leads do mês</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: #8A8D96;">1.000</span></span><span style="flex: 1 1 auto; min-width: 50px; display: flex; justify-content: center;"><span style="width: 100%; min-width: 8px; height: 20px; border-radius: 4px; background: rgba(255, 84, 104, 0.55);"></span></span><span style="flex: 0 0 64px;"></span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent;"><span style="flex: 0 1 132px; min-width: 0; display: flex; flex-direction: column; gap: 1px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244, 245, 241, 0.7);">Pré-qualificação</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: #8A8D96;">500 seguem</span></span><span style="flex: 1 1 auto; min-width: 50px; display: flex; justify-content: center;"><span style="width: 50%; min-width: 8px; height: 20px; border-radius: 4px; background: rgba(255, 84, 104, 0.55);"></span></span><span style="flex: 0 0 64px; text-align: right; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 17px; color: #FF5468;">−500</span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; background: rgba(255, 84, 104, 0.14); border: 1px solid rgba(255, 84, 104, 0.5);"><span style="flex: 0 1 132px; min-width: 0; display: flex; flex-direction: column; gap: 1px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #F4F5F1;">Agendamento<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.5" role="img" aria-label="A maior perda entre os qualificados" style="flex-shrink: 0;"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.5"></path></svg></span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: #8A8D96;">125 seguem</span></span><span style="flex: 1 1 auto; min-width: 50px; display: flex; justify-content: center;"><span style="width: 12.5%; min-width: 8px; height: 20px; border-radius: 4px; background: rgba(255, 84, 104, 1);"></span></span><span style="flex: 0 0 64px; text-align: right; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 17px; color: #FF5468;">−375</span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent;"><span style="flex: 0 1 132px; min-width: 0; display: flex; flex-direction: column; gap: 1px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244, 245, 241, 0.7);">Comparecimento</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: #8A8D96;">94 seguem</span></span><span style="flex: 1 1 auto; min-width: 50px; display: flex; justify-content: center;"><span style="width: 9.4%; min-width: 8px; height: 20px; border-radius: 4px; background: rgba(255, 84, 104, 0.55);"></span></span><span style="flex: 0 0 64px; text-align: right; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 17px; color: #FF5468;">−31</span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent;"><span style="flex: 0 1 132px; min-width: 0; display: flex; flex-direction: column; gap: 1px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244, 245, 241, 0.7);">Fechamento</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: #8A8D96;">19 vendas</span></span><span style="flex: 1 1 auto; min-width: 50px; display: flex; justify-content: center;"><span style="width: 1.9%; min-width: 8px; height: 20px; border-radius: 4px; background: rgba(255, 84, 104, 0.55);"></span></span><span style="flex: 0 0 64px; text-align: right; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 17px; color: #FF5468;">−75</span></div>
+</div>
+<p style="margin: 4px 0 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(20px, 2vw, 26px); line-height: 1.1; text-transform: uppercase; color: #FF5468;">981 de cada 1.000 leads ficam pelo caminho.</p>
+<span style="font-size: 14px; line-height: 1.45; color: rgba(244, 245, 241, 0.75);">Entre os leads qualificados, a maior perda está no agendamento: 375 leads que você pagou e ninguém levou até a reunião.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; padding: 18px 20px; border-bottom: 1px solid #262833;">
+<div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 15px; font-weight: 500;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; color: #00FF87;">2 · </span>Potencial de dinheiro a sacar (sem comprar mais leads)</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(44px, 4.4vw, 60px); line-height: 0.95; color: #00FF87;">R$ 300 mil</span></div>
+<span style="max-width: 22ch; font-size: 14px; line-height: 1.45; color: rgba(244, 245, 241, 0.75);">em leads que você já pagou e que nunca disseram não</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 18px 20px;">
+<span style="font-size: 15px; font-weight: 500;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; color: #00FF87;">3 · </span>O seu PDV-90 (Plano de Desenvolvimento de Vendas de 90 dias)</span>
+<div style="position: relative; margin: 6px 10px 8px 4px;">
+<span aria-hidden="true" style="position: absolute; inset: 10px -8px -8px 10px; border-radius: 8px; background: #8A8D96; transform: rotate(2.2deg);"></span>
+<span aria-hidden="true" style="position: absolute; inset: 4px -3px -3px 4px; border-radius: 8px; background: #C4C6BF; transform: rotate(1deg);"></span>
+<div style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 14px; border-radius: 8px; background: #F4F5F1; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px;"><span style="padding: 4px 9px; border-radius: 5px; background: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 0.04em; color: #00FF87;">PDV-90</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #4A4D55;">Preparado para [sua empresa]</span></div>
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(18px, 1.7vw, 22px); line-height: 1.05; text-transform: uppercase; color: #07070D;">Plano de Desenvolvimento de Vendas · 90 dias</span>
+<div style="position: relative;">
+<div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; filter: blur(5px); user-select: none; pointer-events: none;">
+<div style="display: flex; flex-direction: column; gap: 5px; padding-bottom: 4px;"><span style="display: block; width: 92%; height: 6px; border-radius: 3px; background: #D6D7D1;"></span><span style="display: block; width: 78%; height: 6px; border-radius: 3px; background: #D6D7D1;"></span></div>
+<div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid #D6D7D1;"><span style="flex-shrink: 0; padding: 3px 7px; border-radius: 4px; background: #07070D; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #00FF87; white-space: nowrap;">Dias 1 a 30</span><span style="font-size: 13px; line-height: 1.4; color: #1C1E25;">Régua de contato para os leads que não agendaram</span></div>
+<div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid #D6D7D1;"><span style="flex-shrink: 0; padding: 3px 7px; border-radius: 4px; background: #07070D; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #00FF87; white-space: nowrap;">Dias 31 a 60</span><span style="font-size: 13px; line-height: 1.4; color: #1C1E25;">Metas por etapa e rito semanal do time</span></div>
+<div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid #D6D7D1;"><span style="flex-shrink: 0; padding: 3px 7px; border-radius: 4px; background: #07070D; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #00FF87; white-space: nowrap;">Dias 61 a 90</span><span style="font-size: 13px; line-height: 1.4; color: #1C1E25;">Recuperação das safras antigas</span></div>
+</div>
+<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;"><span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #07070D; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>O seu plano sai na Análise</span></div>
+</div>
+<div style="display: flex; justify-content: space-between; gap: 10px; padding-top: 8px; border-top: 1px solid #D6D7D1; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #6A6D75;"><span>Página 1</span><span>Exemplo</span></div>
+</div>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-top: 1px solid rgba(0, 255, 135, 0.3); background: rgba(0, 255, 135, 0.08); font-size: 15px; font-weight: 600; color: #00FF87;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true" style="flex-shrink: 0;"><path d="M4 12.5l5 5L20 6.5"></path></svg>O relatório é seu, comprando ou não.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 18px; padding: clamp(20px, 2.4vw, 28px); border: 1px solid rgba(0, 255, 135, 0.5); border-radius: 16px; background: linear-gradient(180deg, rgba(0, 255, 135, 0.1) 0%, rgba(0, 255, 135, 0.02) 100%);">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 20px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Análise Estratégica</span><span style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(22px, 2.2vw, 30px); line-height: 1; color: #8A8D96; text-decoration: line-through; text-decoration-color: #FF5468; text-decoration-thickness: 3px;">R$ 497</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(40px, 4.4vw, 60px); line-height: 0.95; text-transform: uppercase; color: #00FF87;">Gratuita</span></span></div>
+<span style="max-width: 24ch; font-size: 15px; line-height: 1.45; color: rgba(244, 245, 241, 0.88);">na promoção de lançamento.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 6px 12px;"><span style="padding: 2px 6px; border: 1px dashed #8A8D96; border-radius: 5px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Exemplo</span><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; opacity: {{pulso}}; transition: opacity 0.2s ease;">Restam 19%</span></div>
+<div style="position: relative; height: 14px; border-radius: 7px; background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.45); overflow: hidden;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 81%; background: linear-gradient(90deg, rgba(255, 84, 104, 0.55), #FF5468);"></span><span style="position: absolute; left: 81%; top: 0; bottom: 0; width: 3px; margin-left: -1px; background: #F4F5F1; opacity: {{pulso}}; transition: opacity 0.85s ease;"></span></div>
+<span style="font-size: 15px; line-height: 1.4;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 26px; color: #FF5468;">81%</span> das Análises gratuitas já foram resgatadas</span>
+</div>
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid rgba(255, 84, 104, 0.45); border-radius: 12px; background: rgba(255, 84, 104, 0.08);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2.5M9 2h6"></path></svg><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.9);"><span style="font-weight: 600; color: #FF5468;">O seu mês vira em {{diasMes}} {{diasRot}} e {{horasMes}} {{horasRot}}.</span> Na gestão mensal, quem não comprar até lá vira passado.</span></div>
+<a href="#analise" style="display: flex; justify-content: space-between; align-items: center; gap: 14px; max-width: 100%; min-height: 64px; box-sizing: border-box; padding: 16px 24px; background: #FF8400; color: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; border-radius: 12px; box-shadow: 0 5px 0 #A85600, 0 16px 36px rgba(255, 132, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); cursor: pointer;">Faça uma Análise Estratégica do seu Sistema de Vendas<span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #07070D;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span></a>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; line-height: 1.5; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Quando a promoção de lançamento acabar, a Análise passa a custar R$ 497.</span>
+</div>
+</div>
+
+</div>
+
+</div>
+</section>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3350}}'>
+class Component extends DCLogic {
+  base() {
+    return 57932448337;
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const s = this.state || {};
+      const atual = s.total || this.base();
+      const etapa = ((s.etapa || 0) + 1) % 6;
+      const tick = (s.tick || 0) + 1;
+      let modo = s.modo || 'mensal';
+      if (!s.fixo && tick % 5 === 0) {
+        modo = modo === 'mensal' ? 'safra' : 'mensal';
+      }
+      let tela = s.tela || 'g1';
+      if (!s.telaFixa && tick % 6 === 0) {
+        const lista = (s.perfil || 'gestor') === 'gestor' ? ['g1', 'g2', 'g3', 'g4', 'g5', 'g6'] : ['v1', 'v2', 'v3', 'v4', 'v5'];
+        tela = lista[(lista.indexOf(tela) + 1) % lista.length];
+      }
+      this.setState({ total: atual + 37 + Math.floor(Math.random() * 2400), aceso: !s.aceso, etapa: etapa, tick: tick, modo: modo, tela: tela });
+    }, 900);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  escala() {
+    let w = 1440;
+    try { w = window.innerWidth || 1440; } catch (e) { w = 1440; }
+    const pad = Math.max(16, Math.min(0.044 * w, 64));
+    const pad2 = Math.max(16, Math.min(0.02 * w, 24));
+    const coluna = w >= 1000 ? (Math.min(w, 1280) - 2 * pad - 16) / 2 : w - 2 * pad;
+    return Math.max(0.4, Math.min(1, (coluna - 2 * pad2 - 2) / 480));
+  }
+  renderVals() {
+    const s = this.state || {};
+    const total = s.total || this.base();
+    const inteiro = Math.floor(total / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const centavos = String(total % 100).padStart(2, '0');
+    const pulso = s.aceso ? 0.3 : 1;
+    const escala = this.escala();
+    const vals = {
+      inteiro: inteiro,
+      centavos: centavos,
+      pulso: pulso,
+      escala: escala,
+      palcoL: Math.round(480 * escala),
+      palcoA: Math.round(460 * escala),
+      puxaLista: escala >= 0.99 ? -64 : 0
+    };
+    const safra = s.modo === 'safra';
+    vals.mensalOn = safra ? 'false' : 'true';
+    vals.safraOn = safra ? 'true' : 'false';
+    vals.bgM = safra ? 'transparent' : '#262833';
+    vals.fgM = safra ? '#8A8D96' : '#F4F5F1';
+    vals.bgS = safra ? '#00FF87' : 'transparent';
+    vals.fgS = safra ? '#07070D' : '#8A8D96';
+    vals.verMensal = () => this.setState({ modo: 'mensal', fixo: true });
+    vals.verSafra = () => this.setState({ modo: 'safra', fixo: true });
+    vals.corteOp = safra ? 0 : 1;
+    vals.f2 = safra ? 66.67 : 33.33;
+    vals.f3 = safra ? 100 : 33.33;
+    vals.corVerde = safra ? '#00FF87' : 'rgba(0, 255, 135, 0.28)';
+    vals.imgFiltro = safra ? 'none' : 'grayscale(1) brightness(0.5)';
+    vals.statusCor = safra ? '#00FF87' : '#8A8D96';
+    vals.st2 = safra ? 'Colhido no dia 60' : 'Arrancado verde';
+    vals.st3 = safra ? 'Colhida no dia 90' : 'Arrancada verde';
+    vals.colhido = safra ? '3 de 3' : '1 de 3';
+    vals.colhidoCor = safra ? '#00FF87' : '#F4F5F1';
+    const cru = (v, d) => (v === undefined || v === null ? d : v);
+    const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : 0; };
+    const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    vals.inLeads = cru(s.leads, '800');
+    vals.inTicket = cru(s.ticket, '15000');
+    vals.inVendas = cru(s.vendas, '10');
+    vals.inM1 = cru(s.m1, '50');
+    vals.inM2 = cru(s.m2, '50');
+    vals.inM3 = cru(s.m3, '75');
+    vals.inM4 = cru(s.m4, '20');
+    const taxa = (num(vals.inM1) / 100) * (num(vals.inM2) / 100) * (num(vals.inM3) / 100) * (num(vals.inM4) / 100);
+    const vendasPot = num(vals.inLeads) * taxa;
+    const potencial = vendasPot * num(vals.inTicket);
+    const colhidoR = num(vals.inVendas) * num(vals.inTicket);
+    vals.rPotencial = fmt(potencial);
+    vals.rColhido = fmt(colhidoR);
+    vals.rCampo = fmt(Math.max(0, potencial - colhidoR));
+    vals.vendasPot = (Math.round(vendasPot * 10) / 10).toString().replace('.', ',');
+    vals.colhidoPct = potencial > 0 ? Math.min(100, (colhidoR / potencial) * 100) : 100;
+    const mult = Math.max(0, potencial - colhidoR) / 45000;
+    vals.multPos = Math.round(Math.min(mult, 5) / 5 * 1000) / 10;
+    vals.multTxt = (mult >= 10 ? Math.round(mult).toString() : (Math.round(mult * 10) / 10).toString().replace('.', ',')) + ' vezes';
+    vals.multCor = mult >= 3 ? '#00FF87' : '#F4F5F1';
+    vals.mudaLeads = (e) => this.setState({ leads: e.target.value });
+    vals.mudaTicket = (e) => this.setState({ ticket: e.target.value });
+    vals.mudaVendas = (e) => this.setState({ vendas: e.target.value });
+    vals.mudaM1 = (e) => this.setState({ m1: e.target.value });
+    vals.mudaM2 = (e) => this.setState({ m2: e.target.value });
+    vals.mudaM3 = (e) => this.setState({ m3: e.target.value });
+    vals.mudaM4 = (e) => this.setState({ m4: e.target.value });
+    const metasAbertas = !!s.metasAbertas;
+    vals.metasAbertas = metasAbertas;
+    vals.metasFechadas = !metasAbertas;
+    vals.ajustarAberto = metasAbertas ? 'true' : 'false';
+    vals.rotuloAjustar = metasAbertas ? 'Fechar' : 'Ajustar';
+    vals.alternaMetas = () => this.setState({ metasAbertas: !metasAbertas });
+    const perfil = s.perfil || 'gestor';
+    const gestor = perfil === 'gestor';
+    const tela = s.tela || 'g1';
+    vals.isG = gestor;
+    vals.isV = !gestor;
+    vals.pfG = gestor ? 'true' : 'false';
+    vals.pfV = gestor ? 'false' : 'true';
+    vals.pbG = gestor ? '#00FF87' : 'transparent';
+    vals.pfcG = gestor ? '#07070D' : '#8A8D96';
+    vals.pbV = gestor ? 'transparent' : '#00FF87';
+    vals.pfcV = gestor ? '#8A8D96' : '#07070D';
+    vals.verGestor = () => this.setState({ perfil: 'gestor', tela: 'g1', telaFixa: true });
+    vals.verVendedor = () => this.setState({ perfil: 'vendedor', tela: 'v1', telaFixa: true });
+    const nomes = {
+      g1: 'Painel de Safras', g2: 'Onde a safra trava', g3: 'Leads que nunca disseram não', g4: 'Reunião de safra', g5: 'Avaliação de calls', g6: 'Agentes de IA',
+      v1: 'Contatos de hoje', v2: 'Relógio do lead', v3: 'Roteiro de cada tentativa', v4: 'Histórico do lead', v5: 'Feedback das calls'
+    };
+    vals.telaNome = nomes[tela] || '';
+    Object.keys(nomes).forEach((id) => {
+      const ativa = tela === id;
+      vals['t' + id] = ativa;
+      vals['bd_' + id] = ativa ? '#00FF87' : '#262833';
+      vals['bg_' + id] = ativa ? 'rgba(0, 255, 135, 0.07)' : '#0E0F16';
+      vals['tt_' + id] = ativa ? '#00FF87' : '#F4F5F1';
+      vals['sel_' + id] = () => this.setState({ tela: id, telaFixa: true });
+    });
+    const peca = s.peca || 'tudo';
+    const pecas = ['ment', 'hum', 'merc', 'ia', 'proc', 'dados', 'tec'];
+    const modulos = {
+      op1: ['dados', 'merc', 'ia', 'proc'],
+      op2: ['tec', 'proc'],
+      op3: ['ment', 'hum', 'merc', 'ia', 'proc'],
+      op4: ['ment', 'hum', 'proc'],
+      op5: ['dados', 'ia', 'tec'],
+      op6: ['ment', 'hum', 'merc', 'dados'],
+      op7: ['proc', 'ment'],
+      op8: ['dados', 'hum', 'merc', 'ia'],
+      op9: ['ment'],
+      opG: ['ia', 'tec']
+    };
+    Object.keys(modulos).forEach((k) => {
+      vals[k] = peca === 'tudo' || modulos[k].indexOf(peca) >= 0 ? 1 : 0.22;
+    });
+    ['tudo'].concat(pecas).forEach((k) => {
+      const ativa = peca === k;
+      vals['la_' + k] = ativa ? 'true' : 'false';
+      vals['lb_' + k] = ativa ? '#00FF87' : 'transparent';
+      vals['lf_' + k] = ativa ? '#07070D' : '#8A8D96';
+      vals['lr_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['ver_' + k] = () => this.setState({ peca: k });
+    });
+    pecas.forEach((k) => {
+      const ativa = peca === k;
+      vals['pc_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['pb_' + k] = ativa ? 'rgba(0, 255, 135, 0.1)' : 'transparent';
+      vals['pt_' + k] = ativa ? '#00FF87' : '#8A8D96';
+    });
+    const etapa = s.etapa || 0;
+    for (let i = 0; i < 6; i++) {
+      const ativo = i === etapa;
+      vals['b' + i] = ativo ? '#00FF87' : '#262833';
+      vals['s' + i] = ativo ? '0 0 0 5px rgba(0, 255, 135, 0.16)' : 'none';
+      vals['t' + i] = ativo ? '#00FF87' : '#F4F5F1';
+      vals['c' + i] = ativo ? '#00FF87' : 'rgba(0, 255, 135, 0.35)';
+    }
+    const ladoSafra = s.lado === 'safra';
+    vals.ovM = ladoSafra ? 1 : 0;
+    vals.peM = ladoSafra ? 'auto' : 'none';
+    vals.ovS = ladoSafra ? 0 : 1;
+    vals.peS = ladoSafra ? 'none' : 'auto';
+    vals.revelaM = () => this.setState({ lado: 'mensal', virou: true });
+    vals.revelaS = () => this.setState({ lado: 'safra', virou: true });
+    vals.alternaLado = () => this.setState({ lado: ladoSafra ? 'mensal' : 'safra', virou: true });
+    vals.chaveOn = ladoSafra ? 'true' : 'false';
+    vals.chaveX = ladoSafra ? 'translateX(28px)' : 'translateX(0)';
+    vals.trilhoCor = ladoSafra ? 'rgba(0, 255, 135, 0.85)' : 'rgba(255, 84, 104, 0.85)';
+    vals.trilhoBorda = ladoSafra ? '#00FF87' : '#FF5468';
+    vals.corLabM = ladoSafra ? '#8A8D96' : '#F4F5F1';
+    vals.corLabS = ladoSafra ? '#00FF87' : '#8A8D96';
+    vals.dicaOp = s.virou ? 0.35 : pulso;
+    const agora = new Date();
+    const virada = new Date(agora.getFullYear(), agora.getMonth() + 1, 1);
+    const faltam = Math.max(0, virada - agora);
+    const dias = Math.floor(faltam / 86400000);
+    const horas = Math.floor((faltam % 86400000) / 3600000);
+    vals.diasMes = dias;
+    vals.diasRot = dias === 1 ? 'dia' : 'dias';
+    vals.horasMes = horas;
+    vals.horasRot = horas === 1 ? 'hora' : 'horas';
+    const faq = s.faq === undefined ? 0 : s.faq;
+    for (let i = 0; i < 9; i++) {
+      const aberta = faq === i;
+      vals['fq' + i] = aberta;
+      vals['fa' + i] = aberta ? 'true' : 'false';
+      vals['fr' + i] = aberta ? 'rotate(45deg)' : 'rotate(0deg)';
+      vals['fc' + i] = aberta ? '#00FF87' : '#F4F5F1';
+      vals['fb' + i] = aberta ? '#00FF87' : '#262833';
+      vals['ft' + i] = () => this.setState({ faq: aberta ? -1 : i });
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

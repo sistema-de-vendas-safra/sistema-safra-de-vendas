@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Página de vendas · parte 1</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@600;700;800&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<main style="background: #07070D; color: #F4F5F1; font-family: Geist, system-ui, sans-serif; min-height: 100%;">
+
+<div style="position: sticky; top: 0; z-index: 30; border-bottom: 1px solid #262833; background: rgba(7, 7, 13, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+<header style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: 12px clamp(16px, 4.4vw, 64px); display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+<div style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 36px; border: 1px dashed #8A8D96; border-radius: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Logo</div>
+<a href="#analise" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; box-sizing: border-box; padding: 10px 16px; border: 1px solid #FF8400; border-radius: 8px; color: #FF8400; box-shadow: 0 0 0 3px rgba(255, 132, 0, 0.14); font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;">Fazer a Análise<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.5" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></a>
+</header>
+</div>
+
+<section aria-label="Abertura" style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(28px, 4vw, 56px) clamp(16px, 4.4vw, 64px) clamp(48px, 5vw, 80px); display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 4vw, 56px);">
+
+<div style="flex: 1.4 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px;">
+
+<div style="align-self: flex-start; max-width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; padding: 16px 20px; border: 1px solid rgba(0, 255, 135, 0.4); border-radius: 12px; background: #0E0F16;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">Exclusivo para empresários que</span>
+<div style="display: flex; flex-wrap: wrap; gap: 10px 28px;">
+<span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; line-height: 1.4;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg>Vendem produtos ou serviços acima de R$ 5.000</span>
+<span style="display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; line-height: 1.4;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"></path></svg>Faturam mais de R$ 100.000 por mês</span>
+</div>
+</div>
+
+<h1 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(28px, 2.95vw, 44px); line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance;">Em 90 dias instalamos o Sistema de Vendas Safra no seu negócio para você <span style="color: #00FF87;">vender gastando menos, vender mais e vender mais vezes</span> para os atuais clientes.</h1>
+
+<p style="margin: 0; max-width: 62ch; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55; color: rgba(244, 245, 241, 0.8);">E ainda te ajudamos a recolher todo o dinheiro que já deveria estar no seu bolso, mas está oculto pela ineficácia do seu atual sistema de vendas <span style="color: #F4F5F1; font-weight: 500;">(sem precisar mudar uma vírgula no seu marketing nem gastar 1 real extra com leads).</span></p>
+
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 4px;">
+<div style="display: inline-flex; flex-direction: column; align-items: stretch; gap: 16px; max-width: 100%;"><a href="#analise" style="display: inline-flex; align-items: center; gap: 14px; max-width: 100%; min-height: 64px; box-sizing: border-box; padding: 16px 28px; background: #FF8400; color: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; border-radius: 12px; box-shadow: 0 5px 0 #A85600, 0 16px 36px rgba(255, 132, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); cursor: pointer;">Faça uma Análise Estratégica do seu Sistema de Vendas<span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #07070D;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span></a><div style="align-self: center; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 5px; text-align: left;"><span style="align-self: flex-end; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; opacity: {{pulso}}; transition: opacity 0.2s ease;">Restam 19%</span><div style="position: relative; height: 5px; border-radius: 3px; background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.4); overflow: hidden;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 81%; background: linear-gradient(90deg, rgba(255, 84, 104, 0.55), #FF5468);"></span><span style="position: absolute; left: 81%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #F4F5F1;"></span></div><span style="font-size: 12px; line-height: 1.35; color: rgba(244, 245, 241, 0.8);"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 14px; color: #FF5468;">81%</span> das Análises gratuitas já foram resgatadas</span></div></div>
+</div>
+
+</div>
+
+<div style="flex: 1 1 420px; min-width: 0;">
+<figure style="margin: 0; position: relative; aspect-ratio: {{heroProporcao}}; border: 1px solid #262833; border-radius: 16px; overflow: hidden; background: #0E0F16;">
+<img src="/_blob/b3fe384f2be7d9ef33ed28c0f4f3047f" alt="Vista aérea, ao anoitecer, de uma fazenda de pivôs circulares, cada círculo num estágio de cultivo, todos ligados por estradas iluminadas; uma colheitadeira de luz laranja colhe o círculo maduro" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: {{heroImg}};">
+<div style="position: {{heroPos}}; left: 0; right: 0; top: 0; box-sizing: border-box; padding: clamp(18px, 1.8vw, 26px) clamp(18px, 1.8vw, 28px) {{heroPadB}}; display: flex; flex-direction: column; gap: 12px; background: linear-gradient(180deg, rgba(7, 7, 13, 0.92) 0%, rgba(7, 7, 13, 0.7) 62%, rgba(7, 7, 13, 0) 100%);">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 8px; border: 1px solid rgba(255, 84, 104, 0.5); border-radius: 6px; background: rgba(255, 84, 104, 0.12); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #FF5468;"><span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FF5468; opacity: {{pulso}};"></span>Ao vivo</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #F4F5F1;">Total gerado pelo Sistema de Vendas Safra</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 10px; white-space: nowrap; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;">
+<span style="font-size: clamp(20px, 1.8vw, 26px); color: #00FF87;">R$</span>
+<span style="font-size: clamp(26px, 2.6vw, 38px); letter-spacing: -0.01em; color: #F4F5F1;">{{inteiro}}<span style="color: #8A8D96;">,{{centavos}}</span></span>
+</div>
+</div>
+</figure>
+</div>
+
+</section>
+
+<div aria-label="O Sistema de Vendas Safra foi desenvolvido nos bastidores de" style="border-top: 1px solid #262833; background: #0E0F16;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: 22px clamp(16px, 4.4vw, 64px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px;">
+<span style="flex: 1 1 100%; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">O Sistema de Vendas Safra foi desenvolvido nos bastidores de</span>
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 26px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(15px, 1.4vw, 19px); letter-spacing: 0.03em; text-transform: uppercase; color: rgba(244, 245, 241, 0.72);">
+<span>Thiago Finch</span><span>Pablo Marçal</span><span>Thiago Nigro</span><span>Bruno Perini</span><span>Paulo Vieira</span><span>Camila Vieira</span>
+</div>
+</div>
+</div>
+
+<section aria-label="Todo problema de vendas é um problema de Sistema de Vendas" style="border-top: 1px solid #262833;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(56px, 7vw, 112px) clamp(16px, 4.4vw, 64px); display: flex; flex-direction: column; gap: clamp(40px, 5vw, 72px);">
+
+<div style="display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px);">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 4vw, 64px);">
+
+<div style="flex: 1.15 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">Por que a venda fica cara</span>
+<h2 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 3.6vw, 52px); line-height: 1.04; letter-spacing: -0.01em; text-wrap: balance;"><span style="display: block; font-size: clamp(96px, 11vw, 168px); line-height: 0.84; letter-spacing: -0.03em; color: #00FF87;">94%<sup style="font-size: 0.4em; vertical-align: top; position: relative; top: 0.12em; margin-left: 0.04em;">*</sup></span>dos problemas de vendas são problemas de <span style="color: #00FF87;">Sistema de Vendas</span>.</h2>
+<p style="margin: 0; max-width: 60ch; padding-left: 14px; border-left: 2px solid #262833; font-size: 12px; line-height: 1.5; color: #8A8D96">* W. Edwards Deming, o pai da qualidade. No livro <i>Out of the Crisis</i></p>
+</div>
+
+<div style="flex: 1 1 400px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2.4vw, 32px); border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<p style="margin: 0 0 6px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.2; letter-spacing: 0.01em;">Quando a venda trava, quase nunca é o que parece.</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> o seu vendedor.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> falta de poder de persuasão.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> o script de vendas.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> contratar um vendedor melhor.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> falta de técnica para quebrar objeção.</span></li>
+<li style="display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid #262833;"><span aria-hidden="true" style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 84, 104, 0.55); border-radius: 50%; background: rgba(255, 84, 104, 0.1);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"></path></svg></span><span style="font-size: clamp(16px, 1.3vw, 19px); line-height: 1.35;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: #FF5468;">Não é</span> falta de lead.</span></li>
+</ul>
+</div>
+
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 28px clamp(32px, 4vw, 64px);">
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 18px; border-top: 2px solid rgba(255, 84, 104, 0.75);"><p style="margin: 0; max-width: 62ch; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55; color: rgba(244, 245, 241, 0.8);">As empresas quando buscam mais vendas fazem ações isoladas:<b> mais anúncio, script novo, outro closer.</b>&nbsp;É o <b><i>pior Sistema de Vendas que pode existir, pois não há sinergia entre as ações.</i></b></p></div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 18px; border-top: 2px solid rgba(0, 255, 135, 0.75);"><p style="margin: 0; max-width: 62ch; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.55; color: rgba(244, 245, 241, 0.8);">Em um <b><i>Sistema de Vendas Ideal,</i></b>&nbsp;cada etapa alimenta a próxima e nenhum lead sai da lista antes de dizer sim ou não. Por isso as etapas não se somam. <span style="color: rgb(244, 245, 241); font-weight: 500">Elas se multiplicam.</span></p></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: clamp(28px, 3.4vw, 48px);">
+<div style="display: flex; flex-direction: column; gap: 16px;">
+<figure style="margin: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; padding: clamp(10px, 1.8vw, 22px); border: 1px solid rgba(255, 84, 104, 0.4); border-radius: 16px; background: #0E0F16;">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(15px, 1.3vw, 18px); line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; color: #F4F5F1;">Como funciona na sua empresa</span></div>
+<img src="/_blob/c39c472920bd9d369ddfdb5a096a15fd" alt="Numa feira cyberpunk à noite, debaixo de chuva e de um letreiro neon escrito Tente a sorte, um empresário de olhos vendados arremessa argolas laranja tiradas de uma caixa marcada Leads. Quase todas caem no chão, longe da vareta marcada Venda, que tem uma única argola verde." style="display: block; width: 100%; height: auto; aspect-ratio: 2400 / 1018; object-fit: cover; border-radius: 10px; background: #0A0B12;">
+<figcaption style="margin: 0; max-width: 70ch; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: rgba(244, 245, 241, 0.82);">Vendado, sem um sistema, o dono arremessa lead atrás de lead. A maioria cai fora. De vez em quando, um acerta.</figcaption>
+</figure>
+<figure style="margin: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; padding: clamp(10px, 1.8vw, 22px); border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 16px; background: #0E0F16;">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(15px, 1.3vw, 18px); line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; color: #00FF87;">Como funciona no Sistema de Vendas Safra</span></div>
+<img src="/_blob/0caa71aef80b5e405f53dc93486c5e7e" alt="O mesmo empresário, agora com um visor verde, num console com gráficos, coloca uma argola na esteira marcada Leads. A esteira passa por três portais verdes e as argolas saem verdes; no fim, a closer pega cada argola e põe na vareta marcada Venda, já cheia. Na parede, a planta do sistema." style="display: block; width: 100%; height: auto; aspect-ratio: 2400 / 1018; object-fit: cover; border-radius: 10px; background: #0A0B12;">
+<figcaption style="margin: 0; max-width: 70ch; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: rgba(244, 245, 241, 0.82);">O dono coloca cada lead na esteira e acompanha tudo na tela. O sistema leva o lead, etapa por etapa, até o closer. O closer só fecha a venda.</figcaption>
+</figure>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px;">
+<div style="display: flex; flex-direction: column; gap: 14px;">
+<h3 style="margin: 0; max-width: 900px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(26px, 3vw, 44px); line-height: 1.04; letter-spacing: -0.01em; text-wrap: balance;"><span style="display: block"><span style="color: rgb(255, 84, 104)">Ações isoladas</span> são ineficazes.</span><span style="display: block"><span style="color: rgb(0, 255, 135)">Sistema de Vendas</span> multiplica vendas.</span></h3>
+
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 16px;">
+
+<div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; padding: clamp(16px, 2vw, 24px); border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; text-align: start"><span style="font-family: &quot;Geist Mono&quot;, monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(138, 141, 150)">Ações isoladas</span><span style="font-family: &quot;Geist Mono&quot;, monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(138, 141, 150)">NÃO HÁ SINERGIA<br>BAIXA EFICÁCIA</span></div>
+<div style="flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: space-around; gap: 28px 16px;">
+<div style="justify-self: start; display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border: 1px dashed #3A3D4A; border-radius: 12px; background: #171922; transform: rotate(-2deg);">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-transform: uppercase;">Anúncio</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Mede leads</span>
+</div>
+<div style="align-self: end; justify-self: center; display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A8D96" stroke-width="2" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Lead sem resposta</div>
+<div style="align-self: center; justify-self: center; display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A8D96" stroke-width="2" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Reunião que não aconteceu</div>
+<div style="justify-self: end; display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border: 1px dashed #3A3D4A; border-radius: 12px; background: #171922; transform: rotate(2deg);">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-transform: uppercase;">SDR</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Mede reuniões</span>
+</div>
+<div style="justify-self: center; display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border: 1px dashed #3A3D4A; border-radius: 12px; background: #171922; transform: rotate(1.5deg);">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-transform: uppercase;">Closer</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Mede vendas do mês</span>
+</div>
+<div style="align-self: end; justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A8D96" stroke-width="2" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Cliente que ninguém procurou</div>
+<div style="justify-self: start; display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border: 1px dashed #3A3D4A; border-radius: 12px; background: #171922; transform: rotate(-1.5deg);">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-transform: uppercase;">Pós-venda</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Sem dono</span>
+</div>
+<div style="align-self: end; justify-self: end; display: flex; flex-direction: column; gap: 6px;">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #FF5468;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Vendas mais caras</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #FF5468;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Ticket médio menor</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #FF5468;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Baixo LTV</span>
+</div>
+</div>
+</div>
+
+<div style="flex: 1 1 420px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; padding: clamp(16px, 2vw, 24px); border: 1px solid rgba(0, 255, 135, 0.4); border-radius: 16px; background: #0E0F16;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; text-align: end"><span style="font-family: &quot;Geist Mono&quot;, monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(0, 255, 135)">Sistema de Vendas</span><span style="font-family: &quot;Geist Mono&quot;, monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(138, 141, 150)">Cada etapa alimenta a próxima<br>MÁXIMA EFICÁCIA</span></div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<div style="width: {{palcoL}}px; height: {{palcoA}}px;">
+<div style="position: relative; width: 480px; height: 460px; transform: scale({{escala}}); transform-origin: top left;">
+<div style="position: absolute; left: 70px; top: 60px; width: 340px; height: 340px; box-sizing: border-box; border: 2px solid rgba(0, 255, 135, 0.22); border-radius: 50%;"></div>
+<div style="position: absolute; left: 313px; top: 71px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(30deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c0}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 398px; top: 218px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(90deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c1}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 313px; top: 365px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(150deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c2}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 143px; top: 365px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(210deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c3}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 58px; top: 218px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(270deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c4}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 143px; top: 71px; width: 24px; height: 24px; border-radius: 50%; background: #0E0F16; display: flex; align-items: center; justify-content: center; transform: rotate(330deg);"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l6 5-6 5" fill="none" stroke="{{c5}}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position: absolute; left: 166px; top: 30px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b0}}; box-shadow: {{s0}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t0}};">Anúncio</div>
+<div style="position: absolute; left: 313px; top: 115px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b1}}; box-shadow: {{s1}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t1}};"><span>Pré-<br>qualificação</span></div>
+<div style="position: absolute; left: 313px; top: 285px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b2}}; box-shadow: {{s2}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t2}};">Agendamento</div>
+<div style="position: absolute; left: 166px; top: 370px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b3}}; box-shadow: {{s3}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t3}};">Reunião</div>
+<div style="position: absolute; left: 19px; top: 285px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b4}}; box-shadow: {{s4}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t4}};">Venda</div>
+<div style="position: absolute; left: 19px; top: 115px; width: 148px; height: 60px; box-sizing: border-box; padding: 6px 8px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 12px; background: #171922; border: 1px solid {{b5}}; box-shadow: {{s5}}; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: {{t5}};">Recompra</div>
+<div style="position: absolute; left: 150px; top: 140px; width: 180px; height: 180px; box-sizing: border-box; padding: 22px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 50%; border: 1px solid #262833; background: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 18px; line-height: 1.1; text-transform: uppercase;"><span>A venda alimenta a <span style="color: #00FF87;">próxima venda</span></span></div>
+</div>
+</div>
+</div>
+<div style="position: relative; z-index: 1; display: flex; justify-content: flex-end; margin-top: {{puxaLista}}px;">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #00FF87;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Vendas mais baratas</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #00FF87;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Maior ticket médio</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; color: #00FF87;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.8" aria-hidden="true" style="flex-shrink: 0;"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Alto LTV</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px;">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px;">
+<h3 style="margin: 0; max-width: 820px; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.2vw, 32px); line-height: 1.1; text-wrap: balance; color: #f4f5f1">Mais anúncio multiplica o custo. PENSAR EM <i>SISTEMA DE VENDAS&nbsp;</i><span style="color: rgb(0, 255, 135)">multiplica O LUCRO</span>.</h3>
+<span style="padding: 4px 10px; border: 1px dashed #8A8D96; border-radius: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Exemplo ilustrativo</span>
+</div>
+<div style="border: 1px solid #262833; border-radius: 16px; background: #0E0F16; overflow: hidden;">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding: 20px 24px; border-bottom: 1px solid #262833;">
+<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.02em; text-transform: uppercase;">Hoje</span>
+<span style="font-size: 15px; font-weight: 500; color: rgba(244, 245, 241, 0.8);">20 vendas</span>
+</div>
+<div style="flex: 2 1 380px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Anúncio</span><span style="font-size: 14px; font-weight: 500; white-space: nowrap;">R$ 50 mil</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 50%; height: 100%; border-radius: 6px; background: #8A8D96;"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Custo por venda</span><span style="font-size: 14px; font-weight: 500; white-space: nowrap;">R$ 2.500</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 75%; height: 100%; border-radius: 6px; background: #8A8D96;"></div></div></div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding: 20px 24px; border-bottom: 1px solid #262833;">
+<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.02em; text-transform: uppercase;">Dobrar o anúncio</span>
+<span style="font-size: 15px; font-weight: 500; color: rgba(244, 245, 241, 0.8);">30 vendas</span>
+</div>
+<div style="flex: 2 1 380px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Anúncio</span><span style="font-size: 14px; font-weight: 500; white-space: nowrap;">R$ 100 mil</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 100%; height: 100%; border-radius: 6px; background: #8A8D96;"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: &quot;Geist Mono&quot;, monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(138, 141, 150)">Custo por venda</span><span style="font-size: 14px; font-weight: 500; white-space: nowrap;">R$ 3.333</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 100%; height: 100%; border-radius: 6px; background: #8A8D96;"></div></div></div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding: 20px 24px; background: rgba(0, 255, 135, 0.06);">
+<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 4px;"><span style="letter-spacing: 0.02em; text-transform: uppercase"><font color="#00ff87" face="Saira, Arial Narrow, sans-serif"><b>PENSAR COMO SISTEMA<br></b></font><span style="color: rgb(244, 245, 241); font-family: Geist, system-ui, sans-serif; font-size: 15px; font-weight: 500">40 vendas</span></span></div>
+<div style="flex: 2 1 380px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Anúncio</span><span style="font-size: 14px; font-weight: 500; white-space: nowrap;">R$ 50 mil</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 50%; height: 100%; border-radius: 6px; background: #00FF87;"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Custo por venda</span><span style="font-size: 14px; font-weight: 500; color: #00FF87; white-space: nowrap;">R$ 1.250</span></div><div style="height: 10px; border-radius: 6px; background: #171922;"><div style="width: 38%; height: 100%; border-radius: 6px; background: #00FF87;"></div></div></div>
+</div>
+</div>
+
+</div>
+<p style="margin: 0; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.5; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Números redondos para mostrar a conta. Não é resultado de cliente nem previsão.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px;">
+<h3 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.2vw, 32px); line-height: 1.1; text-wrap: balance;">Ação isolada piora os três números do seu caixa.</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 16px;">
+
+<div style="flex: 1 1 260px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Na ação isolada</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.01em; text-transform: uppercase;">Custo por venda</span><span style="font-size: 14px; color: #8A8D96;">Quanto custa cada venda</span></div>
+<span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5468;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.5" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Sobe</span>
+</div>
+<div style="height: 1px; background: #262833;"></div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">No sistema</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; text-transform: uppercase;">Vender gastando menos</span><span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #00FF87;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Cai</span></div>
+</div>
+
+<div style="flex: 1 1 260px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Na ação isolada</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.01em; text-transform: uppercase;">Ticket médio</span><span style="font-size: 14px; color: #8A8D96;">Quanto entra em cada venda</span></div>
+<span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5468;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.5" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Cai</span>
+</div>
+<div style="height: 1px; background: #262833;"></div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">No sistema</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; text-transform: uppercase;">Vender mais</span><span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #00FF87;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Sobe</span></div>
+</div>
+
+<div style="flex: 1 1 260px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; padding: 24px; border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Na ação isolada</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.01em; text-transform: uppercase;">LTV</span><span style="font-size: 14px; color: #8A8D96;">Quanto cada cliente compra no tempo</span></div>
+<span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5468;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF5468" stroke-width="2.5" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>Cai</span>
+</div>
+<div style="height: 1px; background: #262833;"></div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">No sistema</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.1; text-transform: uppercase;">Vender mais vezes</span><span style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #00FF87;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>Sobe</span></div>
+</div>
+
+</div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+<div style="display: inline-flex; flex-direction: column; align-items: stretch; gap: 16px; max-width: 100%;"><a href="#analise" style="display: inline-flex; align-items: center; gap: 14px; max-width: 100%; min-height: 64px; box-sizing: border-box; padding: 16px 28px; background: #FF8400; color: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; border-radius: 12px; box-shadow: 0 5px 0 #A85600, 0 16px 36px rgba(255, 132, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); cursor: pointer;">Faça uma Análise Estratégica do seu Sistema de Vendas<span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #07070D;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span></a><div style="align-self: center; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 5px; text-align: left;"><span style="align-self: flex-end; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; opacity: {{pulso}}; transition: opacity 0.2s ease;">Restam 19%</span><div style="position: relative; height: 5px; border-radius: 3px; background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.4); overflow: hidden;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 81%; background: linear-gradient(90deg, rgba(255, 84, 104, 0.55), #FF5468);"></span><span style="position: absolute; left: 81%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #F4F5F1;"></span></div><span style="font-size: 12px; line-height: 1.35; color: rgba(244, 245, 241, 0.8);"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 14px; color: #FF5468;">81%</span> das Análises gratuitas já foram resgatadas</span></div></div>
+</div>
+
+</div>
+</section>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5100}}'>
+class Component extends DCLogic {
+  base() {
+    return 57932448337;
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const s = this.state || {};
+      const atual = s.total || this.base();
+      const etapa = ((s.etapa || 0) + 1) % 6;
+      const tick = (s.tick || 0) + 1;
+      let modo = s.modo || 'mensal';
+      if (!s.fixo && tick % 5 === 0) {
+        modo = modo === 'mensal' ? 'safra' : 'mensal';
+      }
+      let tela = s.tela || 'g1';
+      if (!s.telaFixa && tick % 6 === 0) {
+        const lista = (s.perfil || 'gestor') === 'gestor' ? ['g1', 'g2', 'g3', 'g4', 'g5', 'g6'] : ['v1', 'v2', 'v3', 'v4', 'v5'];
+        tela = lista[(lista.indexOf(tela) + 1) % lista.length];
+      }
+      this.setState({ total: atual + 37 + Math.floor(Math.random() * 2400), aceso: !s.aceso, etapa: etapa, tick: tick, modo: modo, tela: tela });
+    }, 900);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  escala() {
+    let w = 1440;
+    try { w = window.innerWidth || 1440; } catch (e) { w = 1440; }
+    const pad = Math.max(16, Math.min(0.044 * w, 64));
+    const pad2 = Math.max(16, Math.min(0.02 * w, 24));
+    const coluna = w >= 1000 ? (Math.min(w, 1280) - 2 * pad - 16) / 2 : w - 2 * pad;
+    return Math.max(0.4, Math.min(1, (coluna - 2 * pad2 - 2) / 480));
+  }
+  renderVals() {
+    const s = this.state || {};
+    const total = s.total || this.base();
+    const inteiro = Math.floor(total / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const centavos = String(total % 100).padStart(2, '0');
+    const pulso = s.aceso ? 0.3 : 1;
+    const escala = this.escala();
+    const celular = typeof window !== 'undefined' && window.innerWidth < 760;
+    const heroVals = { heroImg: celular ? 'none' : 'block', heroProporcao: celular ? 'auto' : '4 / 5', heroPos: celular ? 'relative' : 'absolute', heroPadB: celular ? 'clamp(18px, 1.8vw, 26px)' : '56px' };
+    const vals = {
+      inteiro: inteiro,
+      centavos: centavos,
+      pulso: pulso,
+      escala: escala,
+      heroImg: heroVals.heroImg,
+      heroProporcao: heroVals.heroProporcao,
+      heroPos: heroVals.heroPos,
+      heroPadB: heroVals.heroPadB,
+      palcoL: Math.round(480 * escala),
+      palcoA: Math.round(460 * escala),
+      puxaLista: escala >= 0.99 ? -64 : 0
+    };
+    const safra = s.modo === 'safra';
+    vals.mensalOn = safra ? 'false' : 'true';
+    vals.safraOn = safra ? 'true' : 'false';
+    vals.bgM = safra ? 'transparent' : '#262833';
+    vals.fgM = safra ? '#8A8D96' : '#F4F5F1';
+    vals.bgS = safra ? '#00FF87' : 'transparent';
+    vals.fgS = safra ? '#07070D' : '#8A8D96';
+    vals.verMensal = () => this.setState({ modo: 'mensal', fixo: true });
+    vals.verSafra = () => this.setState({ modo: 'safra', fixo: true });
+    vals.corteOp = safra ? 0 : 1;
+    vals.f2 = safra ? 66.67 : 33.33;
+    vals.f3 = safra ? 100 : 33.33;
+    vals.corVerde = safra ? '#00FF87' : 'rgba(0, 255, 135, 0.28)';
+    vals.imgFiltro = safra ? 'none' : 'grayscale(1) brightness(0.5)';
+    vals.statusCor = safra ? '#00FF87' : '#8A8D96';
+    vals.st2 = safra ? 'Colhido no dia 60' : 'Arrancado verde';
+    vals.st3 = safra ? 'Colhida no dia 90' : 'Arrancada verde';
+    vals.colhido = safra ? '3 de 3' : '1 de 3';
+    vals.colhidoCor = safra ? '#00FF87' : '#F4F5F1';
+    const cru = (v, d) => (v === undefined || v === null ? d : v);
+    const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : 0; };
+    const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    vals.inLeads = cru(s.leads, '800');
+    vals.inTicket = cru(s.ticket, '15000');
+    vals.inVendas = cru(s.vendas, '10');
+    vals.inM1 = cru(s.m1, '50');
+    vals.inM2 = cru(s.m2, '50');
+    vals.inM3 = cru(s.m3, '75');
+    vals.inM4 = cru(s.m4, '20');
+    const taxa = (num(vals.inM1) / 100) * (num(vals.inM2) / 100) * (num(vals.inM3) / 100) * (num(vals.inM4) / 100);
+    const vendasPot = num(vals.inLeads) * taxa;
+    const potencial = vendasPot * num(vals.inTicket);
+    const colhidoR = num(vals.inVendas) * num(vals.inTicket);
+    vals.rPotencial = fmt(potencial);
+    vals.rColhido = fmt(colhidoR);
+    vals.rCampo = fmt(Math.max(0, potencial - colhidoR));
+    vals.vendasPot = (Math.round(vendasPot * 10) / 10).toString().replace('.', ',');
+    vals.colhidoPct = potencial > 0 ? Math.min(100, (colhidoR / potencial) * 100) : 100;
+    const mult = Math.max(0, potencial - colhidoR) / 45000;
+    vals.multPos = Math.round(Math.min(mult, 5) / 5 * 1000) / 10;
+    vals.multTxt = (mult >= 10 ? Math.round(mult).toString() : (Math.round(mult * 10) / 10).toString().replace('.', ',')) + ' vezes';
+    vals.multCor = mult >= 3 ? '#00FF87' : '#F4F5F1';
+    vals.mudaLeads = (e) => this.setState({ leads: e.target.value });
+    vals.mudaTicket = (e) => this.setState({ ticket: e.target.value });
+    vals.mudaVendas = (e) => this.setState({ vendas: e.target.value });
+    vals.mudaM1 = (e) => this.setState({ m1: e.target.value });
+    vals.mudaM2 = (e) => this.setState({ m2: e.target.value });
+    vals.mudaM3 = (e) => this.setState({ m3: e.target.value });
+    vals.mudaM4 = (e) => this.setState({ m4: e.target.value });
+    const metasAbertas = !!s.metasAbertas;
+    vals.metasAbertas = metasAbertas;
+    vals.metasFechadas = !metasAbertas;
+    vals.ajustarAberto = metasAbertas ? 'true' : 'false';
+    vals.rotuloAjustar = metasAbertas ? 'Fechar' : 'Ajustar';
+    vals.alternaMetas = () => this.setState({ metasAbertas: !metasAbertas });
+    const perfil = s.perfil || 'gestor';
+    const gestor = perfil === 'gestor';
+    const tela = s.tela || 'g1';
+    vals.isG = gestor;
+    vals.isV = !gestor;
+    vals.pfG = gestor ? 'true' : 'false';
+    vals.pfV = gestor ? 'false' : 'true';
+    vals.pbG = gestor ? '#00FF87' : 'transparent';
+    vals.pfcG = gestor ? '#07070D' : '#8A8D96';
+    vals.pbV = gestor ? 'transparent' : '#00FF87';
+    vals.pfcV = gestor ? '#8A8D96' : '#07070D';
+    vals.verGestor = () => this.setState({ perfil: 'gestor', tela: 'g1', telaFixa: true });
+    vals.verVendedor = () => this.setState({ perfil: 'vendedor', tela: 'v1', telaFixa: true });
+    const nomes = {
+      g1: 'Painel de Safras', g2: 'Onde a safra trava', g3: 'Leads que nunca disseram não', g4: 'Reunião de safra', g5: 'Avaliação de calls', g6: 'Agentes de IA',
+      v1: 'Contatos de hoje', v2: 'Relógio do lead', v3: 'Roteiro de cada tentativa', v4: 'Histórico do lead', v5: 'Feedback das calls'
+    };
+    vals.telaNome = nomes[tela] || '';
+    Object.keys(nomes).forEach((id) => {
+      const ativa = tela === id;
+      vals['t' + id] = ativa;
+      vals['bd_' + id] = ativa ? '#00FF87' : '#262833';
+      vals['bg_' + id] = ativa ? 'rgba(0, 255, 135, 0.07)' : '#0E0F16';
+      vals['tt_' + id] = ativa ? '#00FF87' : '#F4F5F1';
+      vals['sel_' + id] = () => this.setState({ tela: id, telaFixa: true });
+    });
+    const peca = s.peca || 'tudo';
+    const pecas = ['ment', 'hum', 'merc', 'ia', 'proc', 'dados', 'tec'];
+    const modulos = {
+      op1: ['dados', 'merc', 'ia', 'proc'],
+      op2: ['tec', 'proc'],
+      op3: ['ment', 'hum', 'merc', 'ia', 'proc'],
+      op4: ['ment', 'hum', 'proc'],
+      op5: ['dados', 'ia', 'tec'],
+      op6: ['ment', 'hum', 'merc', 'dados'],
+      op7: ['proc', 'ment'],
+      op8: ['dados', 'hum', 'merc', 'ia'],
+      op9: ['ment'],
+      opG: ['ia', 'tec']
+    };
+    Object.keys(modulos).forEach((k) => {
+      vals[k] = peca === 'tudo' || modulos[k].indexOf(peca) >= 0 ? 1 : 0.22;
+    });
+    ['tudo'].concat(pecas).forEach((k) => {
+      const ativa = peca === k;
+      vals['la_' + k] = ativa ? 'true' : 'false';
+      vals['lb_' + k] = ativa ? '#00FF87' : 'transparent';
+      vals['lf_' + k] = ativa ? '#07070D' : '#8A8D96';
+      vals['lr_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['ver_' + k] = () => this.setState({ peca: k });
+    });
+    pecas.forEach((k) => {
+      const ativa = peca === k;
+      vals['pc_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['pb_' + k] = ativa ? 'rgba(0, 255, 135, 0.1)' : 'transparent';
+      vals['pt_' + k] = ativa ? '#00FF87' : '#8A8D96';
+    });
+    const etapa = s.etapa || 0;
+    for (let i = 0; i < 6; i++) {
+      const ativo = i === etapa;
+      vals['b' + i] = ativo ? '#00FF87' : '#262833';
+      vals['s' + i] = ativo ? '0 0 0 5px rgba(0, 255, 135, 0.16)' : 'none';
+      vals['t' + i] = ativo ? '#00FF87' : '#F4F5F1';
+      vals['c' + i] = ativo ? '#00FF87' : 'rgba(0, 255, 135, 0.35)';
+    }
+    const ladoSafra = s.lado === 'safra';
+    vals.ovM = ladoSafra ? 1 : 0;
+    vals.peM = ladoSafra ? 'auto' : 'none';
+    vals.ovS = ladoSafra ? 0 : 1;
+    vals.peS = ladoSafra ? 'none' : 'auto';
+    vals.revelaM = () => this.setState({ lado: 'mensal', virou: true });
+    vals.revelaS = () => this.setState({ lado: 'safra', virou: true });
+    vals.alternaLado = () => this.setState({ lado: ladoSafra ? 'mensal' : 'safra', virou: true });
+    vals.chaveOn = ladoSafra ? 'true' : 'false';
+    vals.chaveX = ladoSafra ? 'translateX(28px)' : 'translateX(0)';
+    vals.trilhoCor = ladoSafra ? 'rgba(0, 255, 135, 0.85)' : 'rgba(255, 84, 104, 0.85)';
+    vals.trilhoBorda = ladoSafra ? '#00FF87' : '#FF5468';
+    vals.corLabM = ladoSafra ? '#8A8D96' : '#F4F5F1';
+    vals.corLabS = ladoSafra ? '#00FF87' : '#8A8D96';
+    vals.dicaOp = s.virou ? 0.35 : pulso;
+    const faq = s.faq === undefined ? 0 : s.faq;
+    for (let i = 0; i < 9; i++) {
+      const aberta = faq === i;
+      vals['fq' + i] = aberta;
+      vals['fa' + i] = aberta ? 'true' : 'false';
+      vals['fr' + i] = aberta ? 'rotate(45deg)' : 'rotate(0deg)';
+      vals['fc' + i] = aberta ? '#00FF87' : '#F4F5F1';
+      vals['fb' + i] = aberta ? '#00FF87' : '#262833';
+      vals['ft' + i] = () => this.setState({ faq: aberta ? -1 : i });
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

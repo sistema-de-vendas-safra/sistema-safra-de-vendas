@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Página de vendas · parte 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@600;700;800&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<main style="background: #07070D; color: #F4F5F1; font-family: Geist, system-ui, sans-serif; min-height: 100%;"><section aria-label="Você já pagou pelas suas próximas vendas" style="border-top: 1px solid #262833;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(56px, 7vw, 112px) clamp(16px, 4.4vw, 64px); display: flex; flex-direction: column; gap: clamp(48px, 6vw, 96px);">
+
+<div style="display: flex; flex-direction: column; gap: 20px; max-width: 960px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">SISTEMA DE VENDAS SAFRA</span>
+<h2 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(34px, 4.6vw, 68px); line-height: 1; letter-spacing: -0.01em; text-wrap: balance;">Você já pagou pelas suas <span style="color: #00FF87;">próximas vendas</span>.</h2>
+<p style="margin: 0; max-width: 46ch; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5; color: rgba(244, 245, 241, 0.85);">Chegou a hora de sacar o dinheiro que já existe no seu cemitério de leads.</p>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 64ch;">
+<p style="margin: 0; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55; color: rgba(244, 245, 241, 0.85);">Todo mês, o seu time corre atrás do lead novo. No dia 30, quem ainda não comprou fica para trás e ninguém volta a falar com ele. Ele não disse não. Só parou de ser trabalhado.</p>
+<p style="margin: 0; padding-left: 16px; border-left: 2px solid #FF5468; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55; color: #F4F5F1;"><strong style="font-weight: 600;">Isso é gestão mensal de leads.</strong> E ela deixa dinheiro na mesa todo mês, em leads que você já pagou para ter.</p>
+<p style="margin: 0; padding-left: 16px; border-left: 2px solid #00FF87; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55; color: #F4F5F1;">A saída é a <span style="color: #00FF87; font-weight: 600;">gestão de leads por safra</span>: cada lead trabalhado no tempo dele, até a venda.</p>
+</div>
+</div>
+
+<div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; padding: clamp(16px, 2.4vw, 32px); border: 1px solid #262833; border-radius: 16px; background: #0E0F16;">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8D96;">Os leads de um mesmo mês, em 90 dias</span>
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: clamp(20px, 2vw, 28px); line-height: 1.1; text-transform: uppercase;">Cada lead é uma planta. <span style="color: #00FF87;">A venda é a colheita.</span></span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #00FF87; opacity: {{dicaOp}}; transition: opacity 0.6s ease;">Vire a chave e compare<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2.5" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg></span>
+<button type="button" role="switch" aria-checked="{{chaveOn}}" aria-label="Alternar entre Gestão Mensal de Leads e Gestão de Leads por Safra" onClick="{{alternaLado}}" style="display: inline-flex; align-items: center; gap: 12px; padding: 10px 16px; border: 1px solid #262833; border-radius: 999px; background: #07070D; cursor: pointer;">
+<span style="max-width: 11ch; text-align: right; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.1; letter-spacing: 0.02em; text-transform: uppercase; color: {{corLabM}}; transition: color 0.3s ease;">Gestão Mensal de Leads</span>
+<span style="flex-shrink: 0; position: relative; width: 60px; height: 32px; box-sizing: border-box; border-radius: 16px; border: 1px solid {{trilhoBorda}}; background: {{trilhoCor}}; transition: background 0.3s ease, border-color 0.3s ease;"><span style="position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #F4F5F1; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); transform: {{chaveX}}; transition: transform 0.3s ease;"></span></span>
+<span style="max-width: 11ch; text-align: left; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 13px; line-height: 1.1; letter-spacing: 0.02em; text-transform: uppercase; color: {{corLabS}}; transition: color 0.3s ease;">Gestão de Leads por Safra</span>
+</button>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 16px;">
+<div style="flex: 1 1 420px; min-width: 0; position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; padding: clamp(16px, 2vw, 24px); border: 1px solid rgba(255, 84, 104, 0.35); border-radius: 14px; background: #07070D; overflow: hidden;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px;">
+<span style="padding: 5px 10px; border: 1px solid #FF5468; border-radius: 6px; background: rgba(255, 84, 104, 0.12); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5468;">Gestão Mensal de Leads</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">O mês fecha no dia 30</span>
+</div>
+<div style="position: relative; height: 40px;">
+<span style="left: 0; position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 0</span>
+<span style="left: 33.33%; transform: translateX(-50%); position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 30</span>
+<span style="position: absolute; left: 33.33%; top: 0; transform: translateX(-50%); white-space: nowrap; padding: 2px 8px; border-radius: 6px; background: rgba(255, 84, 104, 0.14); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5468;">O mês virou</span>
+<span style="left: 66.67%; transform: translateX(-50%); position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 60</span>
+<span style="right: 0; position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 90</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/0353e1e058b5390bffac8d824ab34611" alt="Rúcula" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833;">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 1</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Rúcula</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronta em uns 30 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 33.33%; border-radius: 6px; background: #00FF87;"></div>
+<div style="position: absolute; left: 33.33%; top: -8px; bottom: -8px; width: 2px; margin-left: -1px; background: #FF5468;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #00FF87;">Colhido (vendido) no dia 30</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/76a53918cbb17f7e846e55a74efa2bad" alt="Morango" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833; filter: grayscale(1) brightness(0.5);">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 2</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Morango</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronto em uns 60 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 33.33%; top: 0; bottom: 0; width: 33.34%; box-sizing: border-box; border: 1px dashed #8A8D96; border-left: 0; border-radius: 0 6px 6px 0;"></div>
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 33.33%; border-radius: 6px; background: rgba(0, 255, 135, 0.28);"></div>
+<div style="position: absolute; left: 33.33%; top: -8px; bottom: -8px; width: 2px; margin-left: -1px; background: #FF5468;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #FF5468;">Parou de ser cultivado e morreu</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/946cb5274834e752ec39862bc08046b4" alt="Melancia" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833; filter: grayscale(1) brightness(0.5);">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 3</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Melancia</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronta em uns 90 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 33.33%; top: 0; bottom: 0; width: 66.67%; box-sizing: border-box; border: 1px dashed #8A8D96; border-left: 0; border-radius: 0 6px 6px 0;"></div>
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 33.33%; border-radius: 6px; background: rgba(0, 255, 135, 0.28);"></div>
+<div style="position: absolute; left: 33.33%; top: -8px; bottom: -8px; width: 2px; margin-left: -1px; background: #FF5468;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #FF5468;">Parou de ser cultivado e morreu</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid #262833;">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 12px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Colhido (vendido)</span>
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(34px, 3.4vw, 48px); line-height: 1; text-transform: uppercase; color: #F4F5F1;">1 de 3</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.88);"><span style="color: #FF5468; font-weight: 600;">2 de 3 ficaram na mesa.</span> Você pagou pelos três leads e vendeu para um.</p>
+</div>
+<button type="button" onClick="{{revelaM}}" aria-label="Mostrar a Gestão Mensal de Leads" style="position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; border: 0; border-radius: 14px; cursor: pointer; background: rgba(14, 15, 22, 0.5); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); opacity: {{ovM}}; pointer-events: {{peM}}; transition: opacity 0.5s ease; color: #F4F5F1;">
+<span style="width: 40px; height: 3px; border-radius: 2px; background: #FF5468;"></span>
+<span style="max-width: 12ch; text-align: center; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(28px, 2.8vw, 40px); line-height: 1; text-transform: uppercase; text-wrap: balance;">Gestão Mensal de Leads</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid rgba(244, 245, 241, 0.3); border-radius: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #F4F5F1;">Ver este lado<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F4F5F1" stroke-width="2.5" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span>
+</button>
+</div>
+<div style="flex: 1 1 420px; min-width: 0; position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; padding: clamp(16px, 2vw, 24px); border: 1px solid rgba(0, 255, 135, 0.4); border-radius: 14px; background: #07070D; overflow: hidden;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px;">
+<span style="padding: 5px 10px; border: 1px solid #00FF87; border-radius: 6px; background: rgba(0, 255, 135, 0.1); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #00FF87;">Gestão de leads por safra</span>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Cada lead no tempo dele</span>
+</div>
+<div style="position: relative; height: 40px;">
+<span style="left: 0; position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 0</span>
+<span style="left: 33.33%; transform: translateX(-50%); position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 30</span>
+<span style="left: 66.67%; transform: translateX(-50%); position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 60</span>
+<span style="right: 0; position: absolute; bottom: 0; white-space: nowrap; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Dia 90</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/0353e1e058b5390bffac8d824ab34611" alt="Rúcula" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833;">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 1</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Rúcula</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronta em uns 30 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 33.33%; border-radius: 6px; background: #00FF87;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #00FF87;">Colhido (vendido) no dia 30</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/76a53918cbb17f7e846e55a74efa2bad" alt="Morango" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833;">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 2</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Morango</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronto em uns 60 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 66.67%; border-radius: 6px; background: #00FF87;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #00FF87;">Colhido (vendido) no dia 60</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<img src="/_blob/946cb5274834e752ec39862bc08046b4" alt="Melancia" style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; object-fit: cover; border: 1px solid #262833;">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Lead 3</span><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; text-transform: uppercase;">Melancia</span></div>
+<span style="margin-left: auto; text-align: right; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Pronta em uns 90 dias</span>
+</div>
+<div style="position: relative; height: 12px; border-radius: 6px; background: #171922;">
+<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 6px; background: #00FF87;"></div>
+</div>
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #00FF87;">Colhido (vendido) no dia 90</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid #262833;">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 12px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8D96;">Colhido (vendido)</span>
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(34px, 3.4vw, 48px); line-height: 1; text-transform: uppercase; color: #00FF87;">3 de 3</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.88);"><span style="color: #00FF87; font-weight: 600;">Nada fica na mesa.</span> Cada lead é trabalhado até dizer sim ou não.</p>
+</div>
+<button type="button" onClick="{{revelaS}}" aria-label="Mostrar a Gestão de Leads por Safra" style="position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; border: 0; border-radius: 14px; cursor: pointer; background: rgba(14, 15, 22, 0.5); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); opacity: {{ovS}}; pointer-events: {{peS}}; transition: opacity 0.5s ease; color: #F4F5F1; width: 533px; height: 624px">
+<span style="width: 40px; height: 3px; border-radius: 2px; background: #00FF87;"></span>
+<span style="max-width: 12ch; text-align: center; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(28px, 2.8vw, 40px); line-height: 1; text-transform: uppercase; text-wrap: balance;">Gestão de Leads por Safra</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid rgba(244, 245, 241, 0.3); border-radius: 6px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #F4F5F1;">Ver este lado<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F4F5F1" stroke-width="2.5" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span>
+</button>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(28px, 4vw, 64px);">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: clamp(16px, 2vw, 28px);">
+<p style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(40px, 5.6vw, 84px); line-height: 0.96; letter-spacing: -0.01em; text-wrap: balance;">Venda de alto ticket é <span style="color: #00FF87;">melancia</span>.</p>
+<p style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(26px, 3vw, 44px); line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance; color: rgba(244, 245, 241, 0.9);">E você trata seus leads como <span style="color: #FF5468;">rúcula</span>.</p>
+</div>
+<figure style="flex: 0 1 440px; min-width: 0; margin: 0; position: relative; aspect-ratio: 1 / 1; border: 1px solid #262833; border-radius: 16px; overflow: hidden; background: #0E0F16;">
+<img src="/_blob/946cb5274834e752ec39862bc08046b4" alt="Melancia madura cortada ao meio" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+<div style="position: absolute; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border: 1px solid rgba(255, 84, 104, 0.5); border-radius: 10px; background: rgba(7, 7, 13, 0.85);"><img src="/_blob/0353e1e058b5390bffac8d824ab34611" alt="" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; color: #FF5468;">Tratada<br>como rúcula</span></div>
+</figure>
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;">
+<p style="margin: 0; max-width: 44ch; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5; color: rgba(244, 245, 241, 0.85);">No Sistema de Vendas Safra, todo lead é trabalhado até a venda, no tempo dele. O sistema diz quem chamar e quando.</p>
+<p style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(36px, 5vw, 76px); line-height: 1; letter-spacing: -0.01em; color: #00FF87; text-wrap: balance;">Perdido é só quem disse não.</p>
+<div style="padding-top: 12px;">
+<div style="display: inline-flex; flex-direction: column; align-items: stretch; gap: 16px; max-width: 100%;"><a href="#analise" style="display: inline-flex; align-items: center; gap: 14px; max-width: 100%; min-height: 64px; box-sizing: border-box; padding: 16px 28px; background: #FF8400; color: #07070D; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.25; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; border-radius: 12px; box-shadow: 0 5px 0 #A85600, 0 16px 36px rgba(255, 132, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); cursor: pointer;">Faça uma Análise Estratégica do seu Sistema de Vendas<span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #07070D;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF8400" stroke-width="2.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span></a><div style="align-self: center; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 5px; text-align: left;"><span style="align-self: flex-end; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #00FF87; opacity: {{pulso}}; transition: opacity 0.2s ease;">Restam 19%</span><div style="position: relative; height: 5px; border-radius: 3px; background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.4); overflow: hidden;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 81%; background: linear-gradient(90deg, rgba(255, 84, 104, 0.55), #FF5468);"></span><span style="position: absolute; left: 81%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #F4F5F1;"></span></div><span style="font-size: 12px; line-height: 1.35; color: rgba(244, 245, 241, 0.8);"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 14px; color: #FF5468;">81%</span> das Análises gratuitas já foram resgatadas</span></div></div>
+</div>
+<p style="margin: clamp(24px, 3vw, 40px) 0 0; max-width: 24ch; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(24px, 2.8vw, 40px); line-height: 1.04; letter-spacing: -0.01em; text-wrap: balance;">A gestão de leads por safra é apenas <span style="color: #00FF87;">um dos componentes</span> do Sistema de Vendas Safra.</p>
+</div>
+
+</div>
+</section>
+
+<section aria-label="O que é o Sistema de Vendas Safra" style="border-top: 1px solid #262833;">
+<div style="max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: clamp(56px, 7vw, 112px) clamp(16px, 4.4vw, 64px); display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px);">
+
+<div style="display: flex; flex-direction: column; gap: 20px; max-width: 980px;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">O que é o Sistema de Vendas Safra</span>
+<h2 style="margin: 0; font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 3.8vw, 56px); line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance;">Sete peças ligadas. <span style="color: #00FF87;">Um só Sistema de Vendas.</span></h2>
+<p style="margin: 0; max-width: 56ch; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5; color: rgba(244, 245, 241, 0.85);">Ação isolada mexe numa peça de cada vez. O Sistema de Vendas Safra liga as sete: o que uma aprende, a outra usa. Em 90 dias, a gente instala todas no seu comercial.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 4vw, 64px);">
+
+<div style="flex: 1 1 420px; min-width: 0; display: flex; justify-content: center;">
+<div role="img" aria-label="Diagrama: as sete peças em volta do Sistema de Vendas Safra, todas ligadas ao centro" style="position: relative; width: 100%; max-width: 540px; aspect-ratio: 1 / 1;">
+<svg viewBox="0 0 100 100" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;">
+<circle cx="50" cy="50" r="47" fill="none" stroke="#171922" stroke-width="0.3"></circle>
+<circle cx="50" cy="50" r="38" fill="none" stroke="#262833" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" r="38" fill="none" stroke="#00FF87" stroke-opacity="0.55" stroke-width="0.5" stroke-dasharray="1 3"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="80s" repeatCount="indefinite"></animateTransform></circle>
+<line x1="50" y1="50" x2="50.0" y2="12.0" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="79.71" y2="26.31" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="87.05" y2="58.46" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="66.49" y2="84.24" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="33.51" y2="84.24" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="12.95" y2="58.46" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<line x1="50" y1="50" x2="20.29" y2="26.31" stroke="#00FF87" stroke-opacity="0.22" stroke-width="0.35"></line>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="0.00s" repeatCount="indefinite" path="M 50.0 12.0 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="0.00s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="0.45s" repeatCount="indefinite" path="M 79.71 26.31 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="0.45s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="0.90s" repeatCount="indefinite" path="M 87.05 58.46 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="0.90s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="1.35s" repeatCount="indefinite" path="M 66.49 84.24 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="1.35s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="1.80s" repeatCount="indefinite" path="M 33.51 84.24 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="1.80s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="2.25s" repeatCount="indefinite" path="M 12.95 58.46 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="2.25s" repeatCount="indefinite"></animate></circle>
+<circle r="0.9" fill="#00FF87" opacity="0"><animateMotion dur="3.2s" begin="2.70s" repeatCount="indefinite" path="M 20.29 26.31 L 50 50"></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="3.2s" begin="2.70s" repeatCount="indefinite"></animate></circle>
+</svg>
+<div style="position: absolute; left: 50%; top: 50%; width: 38%; aspect-ratio: 1 / 1; transform: translate(-50%, -50%); box-sizing: border-box; padding: 7%; border: 1px solid #00FF87; border-radius: 50%; background: radial-gradient(circle at 50% 40%, rgba(0, 255, 135, 0.2) 0%, #0E0F16 72%); box-shadow: 0 0 48px rgba(0, 255, 135, 0.22); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(13px, 1vw + 8px, 22px); line-height: 1.02; text-transform: uppercase; text-wrap: balance;">Sistema de Vendas Safra</span></div>
+<span style="position: absolute; left: 50.0%; top: 12.0%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Mentalidade<br>de Vendas</span>
+<span style="position: absolute; left: 79.71%; top: 26.31%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Inteligência<br>Humana</span>
+<span style="position: absolute; left: 87.05%; top: 58.46%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Inteligência<br>de Mercado</span>
+<span style="position: absolute; left: 66.49%; top: 84.24%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Inteligência<br>Artificial</span>
+<span style="position: absolute; left: 33.51%; top: 84.24%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Processos</span>
+<span style="position: absolute; left: 12.95%; top: 58.46%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Dados</span>
+<span style="position: absolute; left: 20.29%; top: 26.31%; transform: translate(-50%, -50%); box-sizing: border-box; max-width: 27%; padding: 6px 8px; border: 1px solid rgba(0, 255, 135, 0.45); border-radius: 10px; background: #0E0F16; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: clamp(9px, 0.4vw + 7px, 12px); line-height: 1.25; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; color: #F4F5F1; white-space: nowrap;">Tecnologia</span>
+</div>
+</div>
+
+<div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+<div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 20px 24px; border: 1px solid rgba(0, 255, 135, 0.5); border-radius: 14px; background: radial-gradient(120% 140% at 0% 0%, rgba(0, 255, 135, 0.12) 0%, rgba(14, 15, 22, 0) 60%), #0E0F16;">
+<span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #00FF87;">O método proprietário</span>
+<span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(22px, 2vw, 28px); line-height: 1.05; text-transform: uppercase;">Gestão de Leads por Safra</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: rgba(244, 245, 241, 0.88);">Cada mês de captação vira uma safra, com relógio contado do dia em que cada lead entra e meta para cada etapa. É o que mostra de qual safra vem cada venda e onde ela quebra.</p>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); column-gap: 28px;">
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, &quot;Arial Narrow&quot;, sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase">Mentalidade de Vendas</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8)">O time trabalha cada lead até o sim ou o não definitivo, com data marcada para cada contato.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Inteligência Humana</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">Quem vende, treinado toda semana na reunião de safra e na análise das calls.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Inteligência de Mercado</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">O que o seu cliente pergunta e objeta vira roteiro e argumento.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Inteligência Artificial</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">Ajuda a ler as safras, montar os roteiros e alimentar o painel. Os agentes que falam com o lead sozinhos chegam no GSAAS.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Processos</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">A régua de contato, as regras do CRM e o rito semanal, tudo por escrito no playbook.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Dados</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">Cada número com a safra de onde veio, contra a meta de etapa que você aprovou.</span></span></li>
+<li style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid #262833;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink: 0; margin-top: 4px;"><circle cx="6" cy="6" r="4.5" fill="none" stroke="#00FF87" stroke-width="1.5"></circle><circle cx="6" cy="6" r="1.6" fill="#00FF87"></circle></svg><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;"><span style="font-family: Saira, 'Arial Narrow', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase;">Tecnologia</span><span style="font-size: 15px; line-height: 1.5; color: rgba(244, 245, 241, 0.8);">O CRM montado por safra e o painel conectado às suas ferramentas.</span></span></li>
+<li style="display: flex; align-items: center; padding: 14px 0; border-top: 1px solid #262833;"><span style="font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; line-height: 1.5; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8D96;">Em "Como funciona", mais abaixo, você toca em cada peça e vê as entregas que a instalam.</span></li>
+</ul>
+</div>
+
+</div>
+
+</div>
+</section>
+
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4040}}'>
+class Component extends DCLogic {
+  base() {
+    return 57932448337;
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const s = this.state || {};
+      const atual = s.total || this.base();
+      const etapa = ((s.etapa || 0) + 1) % 6;
+      const tick = (s.tick || 0) + 1;
+      let modo = s.modo || 'mensal';
+      if (!s.fixo && tick % 5 === 0) {
+        modo = modo === 'mensal' ? 'safra' : 'mensal';
+      }
+      let tela = s.tela || 'g1';
+      if (!s.telaFixa && tick % 6 === 0) {
+        const lista = (s.perfil || 'gestor') === 'gestor' ? ['g1', 'g2', 'g3', 'g4', 'g5', 'g6'] : ['v1', 'v2', 'v3', 'v4', 'v5'];
+        tela = lista[(lista.indexOf(tela) + 1) % lista.length];
+      }
+      this.setState({ total: atual + 37 + Math.floor(Math.random() * 2400), aceso: !s.aceso, etapa: etapa, tick: tick, modo: modo, tela: tela });
+    }, 900);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  escala() {
+    let w = 1440;
+    try { w = window.innerWidth || 1440; } catch (e) { w = 1440; }
+    const pad = Math.max(16, Math.min(0.044 * w, 64));
+    const pad2 = Math.max(16, Math.min(0.02 * w, 24));
+    const coluna = w >= 1000 ? (Math.min(w, 1280) - 2 * pad - 16) / 2 : w - 2 * pad;
+    return Math.max(0.4, Math.min(1, (coluna - 2 * pad2 - 2) / 480));
+  }
+  renderVals() {
+    const s = this.state || {};
+    const total = s.total || this.base();
+    const inteiro = Math.floor(total / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const centavos = String(total % 100).padStart(2, '0');
+    const pulso = s.aceso ? 0.3 : 1;
+    const escala = this.escala();
+    const vals = {
+      inteiro: inteiro,
+      centavos: centavos,
+      pulso: pulso,
+      escala: escala,
+      palcoL: Math.round(480 * escala),
+      palcoA: Math.round(460 * escala),
+      puxaLista: escala >= 0.99 ? -64 : 0
+    };
+    const safra = s.modo === 'safra';
+    vals.mensalOn = safra ? 'false' : 'true';
+    vals.safraOn = safra ? 'true' : 'false';
+    vals.bgM = safra ? 'transparent' : '#262833';
+    vals.fgM = safra ? '#8A8D96' : '#F4F5F1';
+    vals.bgS = safra ? '#00FF87' : 'transparent';
+    vals.fgS = safra ? '#07070D' : '#8A8D96';
+    vals.verMensal = () => this.setState({ modo: 'mensal', fixo: true });
+    vals.verSafra = () => this.setState({ modo: 'safra', fixo: true });
+    vals.corteOp = safra ? 0 : 1;
+    vals.f2 = safra ? 66.67 : 33.33;
+    vals.f3 = safra ? 100 : 33.33;
+    vals.corVerde = safra ? '#00FF87' : 'rgba(0, 255, 135, 0.28)';
+    vals.imgFiltro = safra ? 'none' : 'grayscale(1) brightness(0.5)';
+    vals.statusCor = safra ? '#00FF87' : '#8A8D96';
+    vals.st2 = safra ? 'Colhido no dia 60' : 'Arrancado verde';
+    vals.st3 = safra ? 'Colhida no dia 90' : 'Arrancada verde';
+    vals.colhido = safra ? '3 de 3' : '1 de 3';
+    vals.colhidoCor = safra ? '#00FF87' : '#F4F5F1';
+    const cru = (v, d) => (v === undefined || v === null ? d : v);
+    const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : 0; };
+    const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    vals.inLeads = cru(s.leads, '800');
+    vals.inTicket = cru(s.ticket, '15000');
+    vals.inVendas = cru(s.vendas, '10');
+    vals.inM1 = cru(s.m1, '50');
+    vals.inM2 = cru(s.m2, '50');
+    vals.inM3 = cru(s.m3, '75');
+    vals.inM4 = cru(s.m4, '20');
+    const taxa = (num(vals.inM1) / 100) * (num(vals.inM2) / 100) * (num(vals.inM3) / 100) * (num(vals.inM4) / 100);
+    const vendasPot = num(vals.inLeads) * taxa;
+    const potencial = vendasPot * num(vals.inTicket);
+    const colhidoR = num(vals.inVendas) * num(vals.inTicket);
+    vals.rPotencial = fmt(potencial);
+    vals.rColhido = fmt(colhidoR);
+    vals.rCampo = fmt(Math.max(0, potencial - colhidoR));
+    vals.vendasPot = (Math.round(vendasPot * 10) / 10).toString().replace('.', ',');
+    vals.colhidoPct = potencial > 0 ? Math.min(100, (colhidoR / potencial) * 100) : 100;
+    const mult = Math.max(0, potencial - colhidoR) / 45000;
+    vals.multPos = Math.round(Math.min(mult, 5) / 5 * 1000) / 10;
+    vals.multTxt = (mult >= 10 ? Math.round(mult).toString() : (Math.round(mult * 10) / 10).toString().replace('.', ',')) + ' vezes';
+    vals.multCor = mult >= 3 ? '#00FF87' : '#F4F5F1';
+    vals.mudaLeads = (e) => this.setState({ leads: e.target.value });
+    vals.mudaTicket = (e) => this.setState({ ticket: e.target.value });
+    vals.mudaVendas = (e) => this.setState({ vendas: e.target.value });
+    vals.mudaM1 = (e) => this.setState({ m1: e.target.value });
+    vals.mudaM2 = (e) => this.setState({ m2: e.target.value });
+    vals.mudaM3 = (e) => this.setState({ m3: e.target.value });
+    vals.mudaM4 = (e) => this.setState({ m4: e.target.value });
+    const metasAbertas = !!s.metasAbertas;
+    vals.metasAbertas = metasAbertas;
+    vals.metasFechadas = !metasAbertas;
+    vals.ajustarAberto = metasAbertas ? 'true' : 'false';
+    vals.rotuloAjustar = metasAbertas ? 'Fechar' : 'Ajustar';
+    vals.alternaMetas = () => this.setState({ metasAbertas: !metasAbertas });
+    const perfil = s.perfil || 'gestor';
+    const gestor = perfil === 'gestor';
+    const tela = s.tela || 'g1';
+    vals.isG = gestor;
+    vals.isV = !gestor;
+    vals.pfG = gestor ? 'true' : 'false';
+    vals.pfV = gestor ? 'false' : 'true';
+    vals.pbG = gestor ? '#00FF87' : 'transparent';
+    vals.pfcG = gestor ? '#07070D' : '#8A8D96';
+    vals.pbV = gestor ? 'transparent' : '#00FF87';
+    vals.pfcV = gestor ? '#8A8D96' : '#07070D';
+    vals.verGestor = () => this.setState({ perfil: 'gestor', tela: 'g1', telaFixa: true });
+    vals.verVendedor = () => this.setState({ perfil: 'vendedor', tela: 'v1', telaFixa: true });
+    const nomes = {
+      g1: 'Painel de Safras', g2: 'Onde a safra trava', g3: 'Leads que nunca disseram não', g4: 'Reunião de safra', g5: 'Avaliação de calls', g6: 'Agentes de IA',
+      v1: 'Contatos de hoje', v2: 'Relógio do lead', v3: 'Roteiro de cada tentativa', v4: 'Histórico do lead', v5: 'Feedback das calls'
+    };
+    vals.telaNome = nomes[tela] || '';
+    Object.keys(nomes).forEach((id) => {
+      const ativa = tela === id;
+      vals['t' + id] = ativa;
+      vals['bd_' + id] = ativa ? '#00FF87' : '#262833';
+      vals['bg_' + id] = ativa ? 'rgba(0, 255, 135, 0.07)' : '#0E0F16';
+      vals['tt_' + id] = ativa ? '#00FF87' : '#F4F5F1';
+      vals['sel_' + id] = () => this.setState({ tela: id, telaFixa: true });
+    });
+    const peca = s.peca || 'tudo';
+    const pecas = ['ment', 'hum', 'merc', 'ia', 'proc', 'dados', 'tec'];
+    const modulos = {
+      op1: ['dados', 'merc', 'ia', 'proc'],
+      op2: ['tec', 'proc'],
+      op3: ['ment', 'hum', 'merc', 'ia', 'proc'],
+      op4: ['ment', 'hum', 'proc'],
+      op5: ['dados', 'ia', 'tec'],
+      op6: ['ment', 'hum', 'merc', 'dados'],
+      op7: ['proc', 'ment'],
+      op8: ['dados', 'hum', 'merc', 'ia'],
+      op9: ['ment'],
+      opG: ['ia', 'tec']
+    };
+    Object.keys(modulos).forEach((k) => {
+      vals[k] = peca === 'tudo' || modulos[k].indexOf(peca) >= 0 ? 1 : 0.22;
+    });
+    ['tudo'].concat(pecas).forEach((k) => {
+      const ativa = peca === k;
+      vals['la_' + k] = ativa ? 'true' : 'false';
+      vals['lb_' + k] = ativa ? '#00FF87' : 'transparent';
+      vals['lf_' + k] = ativa ? '#07070D' : '#8A8D96';
+      vals['lr_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['ver_' + k] = () => this.setState({ peca: k });
+    });
+    pecas.forEach((k) => {
+      const ativa = peca === k;
+      vals['pc_' + k] = ativa ? '#00FF87' : '#262833';
+      vals['pb_' + k] = ativa ? 'rgba(0, 255, 135, 0.1)' : 'transparent';
+      vals['pt_' + k] = ativa ? '#00FF87' : '#8A8D96';
+    });
+    const etapa = s.etapa || 0;
+    for (let i = 0; i < 6; i++) {
+      const ativo = i === etapa;
+      vals['b' + i] = ativo ? '#00FF87' : '#262833';
+      vals['s' + i] = ativo ? '0 0 0 5px rgba(0, 255, 135, 0.16)' : 'none';
+      vals['t' + i] = ativo ? '#00FF87' : '#F4F5F1';
+      vals['c' + i] = ativo ? '#00FF87' : 'rgba(0, 255, 135, 0.35)';
+    }
+    const ladoSafra = s.lado === 'safra';
+    vals.ovM = ladoSafra ? 1 : 0;
+    vals.peM = ladoSafra ? 'auto' : 'none';
+    vals.ovS = ladoSafra ? 0 : 1;
+    vals.peS = ladoSafra ? 'none' : 'auto';
+    vals.revelaM = () => this.setState({ lado: 'mensal', virou: true });
+    vals.revelaS = () => this.setState({ lado: 'safra', virou: true });
+    vals.alternaLado = () => this.setState({ lado: ladoSafra ? 'mensal' : 'safra', virou: true });
+    vals.chaveOn = ladoSafra ? 'true' : 'false';
+    vals.chaveX = ladoSafra ? 'translateX(28px)' : 'translateX(0)';
+    vals.trilhoCor = ladoSafra ? 'rgba(0, 255, 135, 0.85)' : 'rgba(255, 84, 104, 0.85)';
+    vals.trilhoBorda = ladoSafra ? '#00FF87' : '#FF5468';
+    vals.corLabM = ladoSafra ? '#8A8D96' : '#F4F5F1';
+    vals.corLabS = ladoSafra ? '#00FF87' : '#8A8D96';
+    vals.dicaOp = s.virou ? 0.35 : pulso;
+    const faq = s.faq === undefined ? 0 : s.faq;
+    for (let i = 0; i < 9; i++) {
+      const aberta = faq === i;
+      vals['fq' + i] = aberta;
+      vals['fa' + i] = aberta ? 'true' : 'false';
+      vals['fr' + i] = aberta ? 'rotate(45deg)' : 'rotate(0deg)';
+      vals['fc' + i] = aberta ? '#00FF87' : '#F4F5F1';
+      vals['fb' + i] = aberta ? '#00FF87' : '#262833';
+      vals['ft' + i] = () => this.setState({ faq: aberta ? -1 : i });
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
