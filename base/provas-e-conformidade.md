@@ -1,6 +1,6 @@
 ---
 id: provas-e-conformidade
-versao: 2
+versao: 3
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -10,17 +10,17 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
+    versao: 4
   - id: mecanismo
     versao: 1
   - id: promessa
-    versao: 2
+    versao: 3
   - id: oferta
     versao: 1
   - id: persona
-    versao: 2
+    versao: 3
   - id: tom-de-voz
-    versao: 2
+    versao: 3
 desatualizado: true
 ---
 

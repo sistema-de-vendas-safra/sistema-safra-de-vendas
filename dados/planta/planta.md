@@ -1,27 +1,27 @@
 ---
 id: planta-do-banco
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: funil-01
-    versao: 1
+    versao: 2
   - id: lead-score
-    versao: 1
+    versao: 2
   - id: ficha-de-fatos
     versao: 3
   - id: decisoes
     versao: 3
   - id: metodo
-    versao: 2
+    versao: 3
   - id: provas-e-conformidade
-    versao: 2
+    versao: 3
   - id: regra-seguranca
     versao: 1
   - id: lacunas
     versao: 4
-desatualizado: false
+desatualizado: true
 ---
 
 # Planta do banco

@@ -1,6 +1,6 @@
 ---
 id: funil-01
-versao: 1
+versao: 2
 status: pendente-aprovacao
 aprovado_por:
   otavio: pendente
@@ -12,21 +12,21 @@ depende_de:
   - id: ficha-de-fatos
     versao: 3
   - id: lead-score
-    versao: 1
+    versao: 2
   - id: metodo
-    versao: 2
-  - id: produto
-    versao: 2
-  - id: entregas-do-servico
-    versao: 2
-  - id: provas-e-conformidade
-    versao: 2
-  - id: lacunas
     versao: 3
+  - id: produto
+    versao: 3
+  - id: entregas-do-servico
+    versao: 3
+  - id: provas-e-conformidade
+    versao: 3
+  - id: lacunas
+    versao: 4
   - id: regra-seguranca
     versao: 1
   - id: glossario
-    versao: 2
+    versao: 3
 desatualizado: true
 ---
 

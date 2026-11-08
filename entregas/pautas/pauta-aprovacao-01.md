@@ -25,7 +25,7 @@ depende_de:
     versao: 2
   - id: provas-e-conformidade
     versao: 2
-desatualizado: false
+desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides

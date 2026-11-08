@@ -1,6 +1,6 @@
 ---
 id: landing-page-01-briefing
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -12,32 +12,32 @@ depende_de:
   - id: lacunas
     versao: 4
   - id: persona
-    versao: 2
+    versao: 3
   - id: promessa
-    versao: 2
+    versao: 3
   - id: oferta
     versao: 1
   - id: mecanismo
     versao: 1
   - id: tom-de-voz
-    versao: 2
+    versao: 3
   - id: provas-e-conformidade
-    versao: 2
+    versao: 3
   - id: entregas-do-servico
-    versao: 2
+    versao: 3
   - id: design-system
-    versao: 2
+    versao: 3
   - id: glossario
-    versao: 2
+    versao: 3
   - id: funil-01
-    versao: 1
+    versao: 2
   - id: lead-score
-    versao: 1
+    versao: 2
   - id: pauta-aprovacao-01
     versao: 1
   - id: planta-do-banco
-    versao: 1
-desatualizado: false
+    versao: 2
+desatualizado: true
 ---
 
 # Briefing · landing-page-01

@@ -1,6 +1,6 @@
 ---
 id: promessa
-versao: 2
+versao: 3
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-08
@@ -12,9 +12,9 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
+    versao: 4
   - id: metodo
-    versao: 2
+    versao: 3
   - id: mecanismo
     versao: 1
 desatualizado: true

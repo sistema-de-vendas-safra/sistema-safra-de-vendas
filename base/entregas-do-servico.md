@@ -1,6 +1,6 @@
 ---
 id: entregas-do-servico
-versao: 2
+versao: 3
 status: decidido
 aprovado_por:
   otavio: 2026-11-01
@@ -10,10 +10,10 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
+    versao: 4
   - id: produto
-    versao: 2
-desatualizado: true
+    versao: 3
+desatualizado: false
 ---
 
 # Entregas do serviço

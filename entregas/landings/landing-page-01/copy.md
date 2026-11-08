@@ -1,6 +1,6 @@
 ---
 id: landing-page-01-copy
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,19 +8,19 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: landing-page-01-briefing
-    versao: 1
+    versao: 2
   - id: tom-de-voz
-    versao: 2
+    versao: 3
   - id: glossario
-    versao: 2
+    versao: 3
   - id: provas-e-conformidade
-    versao: 2
+    versao: 3
   - id: ficha-de-fatos
     versao: 3
   - id: persona
-    versao: 2
+    versao: 3
   - id: promessa
-    versao: 2
+    versao: 3
   - id: decisoes
     versao: 3
   - id: lacunas
@@ -28,14 +28,14 @@ depende_de:
   - id: mecanismo
     versao: 1
   - id: entregas-do-servico
-    versao: 2
+    versao: 3
   - id: funil-01
-    versao: 1
+    versao: 2
   - id: lead-score
-    versao: 1
+    versao: 2
   - id: oferta
     versao: 1
-desatualizado: false
+desatualizado: true
 ---
 
 # Copy · landing-page-01

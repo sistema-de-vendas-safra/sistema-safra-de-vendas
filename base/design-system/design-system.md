@@ -1,6 +1,6 @@
 ---
 id: design-system
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -11,11 +11,11 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
+    versao: 4
   - id: tom-de-voz
-    versao: 2
+    versao: 3
   - id: provas-e-conformidade
-    versao: 2
+    versao: 3
 desatualizado: true
 ---
 

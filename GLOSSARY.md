@@ -1,6 +1,6 @@
 ---
 id: glossario
-versao: 2
+versao: 3
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -10,25 +10,25 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
+    versao: 4
   - id: produto
-    versao: 2
+    versao: 3
   - id: metodo
-    versao: 2
+    versao: 3
   - id: mecanismo
     versao: 1
   - id: oferta
     versao: 1
   - id: promessa
-    versao: 2
+    versao: 3
   - id: entregas-do-servico
-    versao: 2
+    versao: 3
   - id: persona
-    versao: 2
+    versao: 3
   - id: tom-de-voz
-    versao: 2
+    versao: 3
   - id: lead-score
-    versao: 1
+    versao: 2
 desatualizado: true
 ---
 

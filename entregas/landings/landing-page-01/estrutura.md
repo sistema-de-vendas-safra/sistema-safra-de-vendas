@@ -1,20 +1,20 @@
 ---
 id: landing-page-01-estrutura
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: landing-page-01-copy
-    versao: 1
-  - id: landing-page-01-briefing
-    versao: 1
-  - id: funil-01
-    versao: 1
-  - id: planta-do-banco
-    versao: 1
-  - id: provas-e-conformidade
     versao: 2
+  - id: landing-page-01-briefing
+    versao: 2
+  - id: funil-01
+    versao: 2
+  - id: planta-do-banco
+    versao: 2
+  - id: provas-e-conformidade
+    versao: 3
   - id: ficha-de-fatos
     versao: 3
   - id: lacunas
@@ -24,12 +24,12 @@ depende_de:
   - id: regra-seguranca
     versao: 1
   - id: design-system
-    versao: 2
+    versao: 3
   - id: persona
-    versao: 2
+    versao: 3
   - id: tom-de-voz
-    versao: 2
-desatualizado: false
+    versao: 3
+desatualizado: true
 ---
 
 # Estrutura UX · landing-page-01

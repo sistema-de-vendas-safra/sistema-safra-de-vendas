@@ -2,6 +2,26 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 11 · triagem · forma
+
+- base/persona.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
+- base/produto.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
+- base/metodo.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
+- base/entregas-do-servico.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
+- base/lead-score.md v1 para v2, pendente-aprovacao. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
+- base/promessa.md v2 para v3, pendente-aprovacao. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de mecanismo (pergunta 4.5).
+- base/tom-de-voz.md v2 para v3, pendente-aprovacao. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de promessa (pergunta 4.5).
+- base/provas-e-conformidade.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de mecanismo, oferta, promessa e tom-de-voz (pergunta 4.5).
+- base/design-system/design-system.md v2 para v3, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de tom-de-voz e provas-e-conformidade (pergunta 4.5).
+- GLOSSARY.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de mecanismo, oferta, promessa e tom-de-voz (pergunta 4.5).
+- funis/funil-01/funil.md v1 para v2, pendente-aprovacao. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de provas-e-conformidade e glossario (pergunta 4.5).
+- dados/planta/planta.md v1 para v2, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de funil-01 e provas-e-conformidade (pergunta 4.5).
+- entregas/landings/landing-page-01/briefing.md v1 para v2, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de mecanismo, oferta e documentos marcados (pergunta 4.5); pauta-aprovacao-01 segue na versão 1, a troca fica para a etapa 12.
+- entregas/landings/landing-page-01/copy.md v1 para v2, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de mecanismo, oferta e documentos marcados (pergunta 4.5).
+- entregas/landings/landing-page-01/estrutura.md v1 para v2, rascunho. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma. Continua desatualizado: depende de documentos marcados (pergunta 4.5).
+- entregas/pautas/pauta-aprovacao-01.md v1, rascunho: passa a desatualizado: true, sem mudar versão nem conteúdo (cascata, passo 3); sobe de versão no commit da pauta.
+- Regra aplicada (pergunta 11.1): só volta a desatualizado: false o documento cujas dependências estão todas na versão atual e nenhuma marcada. base/mecanismo.md e base/oferta.md não foram tocados (pergunta 4.5).
+
 ## 2026-11-08 · fim da fila (etapas 4 a 10)
 
 - Todas as sete etapas com commit. Resumo em prompts/05-fila-de-trabalho-resposta.md; 84 perguntas em prompts/05-fila-perguntas.md.

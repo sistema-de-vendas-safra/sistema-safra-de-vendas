@@ -1,6 +1,6 @@
 ---
 id: lead-score
-versao: 1
+versao: 2
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-08
@@ -10,12 +10,12 @@ depende_de:
   - id: ficha-de-fatos
     versao: 3
   - id: persona
-    versao: 2
+    versao: 3
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 3
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Lead score
