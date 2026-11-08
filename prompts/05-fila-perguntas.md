@@ -328,3 +328,109 @@ Detalhe em entregas/landings/landing-page-01/briefing.md.
    - *O que fiz:* fundi o passo 2 no passo 1 (responder o quiz com os números do funil). O título fica como partida para a etapa 9, condicionado ao que o quiz-01 pedir.
    - *Recomendação:* aceitar a fusão; conferir o título contra o quiz-01 quando ele existir.
    - *Se decidir diferente:* se o pedido de números for um passo à parte (por exemplo, enviado depois do quiz), a seção 08 volta a ter três passos antes da conversa e o caminho do funil-01 ganha esse passo.
+
+## Etapa 9 · Copy da landing-page-01
+
+Detalhe em entregas/landings/landing-page-01/copy.md.
+
+9.1. **O hero enquanto a #85 estiver pendente.**
+   - *Dúvida:* a 8.3 recomendou usar o título do Hero B como hero único provisório, mas o Otávio ainda não respondeu.
+   - *O que fiz:* o Hero A ficou inteiro como {{BLOQUEADO: #85}}. O B ficou com o título do Otávio (04/11), marcado [PENDENTE: 8.3] e [PROVA REAL] (ver 9.14). O subtítulo do B, que adapta a #33, ficou {{BLOQUEADO: #85}}, como manda o briefing. Proposta de subtítulo neutro, fora da copy, para o Otávio decidir: "Antes de comprar mais lead, veja onde estão os que você já pagou." (só palavras do comprador, sem número nem resultado).
+   - *Recomendação:* aceitar o B como hero único até a #85, com a proposta de subtítulo, e retomar o teste A/B quando a #85 for aprovada.
+   - *Se decidir diferente:* se o Otávio aceitar a proposta, ela entra no lugar do placeholder; se preferir esperar a #85, o hero inteiro vira placeholder.
+
+9.2. **O texto dos botões.**
+   - *Dúvida:* o nome público da Análise está em conflito (ficha-de-fatos#analise-nome-publico), e o botão decidido pelo Otávio usa um dos nomes.
+   - *O que fiz:* "Quero responder as perguntas do meu funil" no bloco de chamada e na seção 08, e "Responder as perguntas" no cabeçalho, todos com {{BLOQUEADO: ficha-de-fatos#analise-nome-publico}}. Evitei "diagnóstico" (gasto pelo mercado, `tom-de-voz`) e qualquer termo do método.
+   - *Recomendação:* decidir o nome público (pauta, item 7) e voltar ao botão decidido ou ao nome escolhido.
+   - *Se decidir diferente:* só muda o texto do botão, em todos os blocos de uma vez.
+
+9.3. **Como dizer a gratuidade.**
+   - *Dúvida:* a gratuidade está decidida (ficha-de-fatos#analise-gratuidade), com fim real em ficha-de-fatos#analises-gratuitas, e o Otávio pediu em 03/11 para dizê-la como promoção de lançamento. "Gratuita" (feminino) se refere à Análise, cujo nome está em conflito. Não está escrito se a página deve dizer o número de análises gratuitas.
+   - *O que fiz:* "Sem custo na promoção de lançamento", sem o número e sem o nome.
+   - *Recomendação:* manter sem o número até o contador da #93 aparecer; quando ele aparecer, o número entra junto, por {{ficha-de-fatos#analises-gratuitas}}.
+   - *Se decidir diferente:* se o número for dito desde já, a linha vira "Sem custo nas primeiras {{ficha-de-fatos#analises-gratuitas}}" e não muda mais nada.
+
+9.4. **A voz do Júnior contra a base (choque de skill).**
+   - *Dúvida:* o `tom-de-voz` manda a voz final passar pela junior-neves-voice. A skill pede primeira pessoa do Júnior, gíria ("foda", "pica", "marechal"), "Fechou?" e autoridade com feitos próprios, e tem "mentoria" e "curso" no vocabulário dele. A base proíbe "mentoria" e "curso" para a oferta (#53), credencial sem comprovante (`provas-e-conformidade`) e pede reduzir a ansiedade do Rafa; e quem assina a página está em conflito (conflito-07).
+   - *O que fiz:* venceu a base. Da skill ficou o ritmo (frase curta, pergunta seguida da resposta, "a gente", número no lugar de adjetivo, negações na língua do dono). Ficaram fora a primeira pessoa do Júnior, a gíria, os tiques orais e qualquer feito autodeclarado.
+   - *Recomendação:* decidir quem assina (pauta, item 8). Se for o Júnior em primeira pessoa, passar a copy pela skill de novo, só nos textos de corpo, e mostrar ao Júnior.
+   - *Se decidir diferente:* se a página falar como o Júnior, os "a gente" viram "eu" onde couber, e entram as marcas orais leves; a lista de proibições continua valendo.
+
+9.5. **O padrão de landing de captura contra a base (choque de skill).**
+   - *Dúvida:* a landing-page-copy pede formulário, micro-prova social (depoimento, número de usuários), urgência com prazo, números quebrados no título e inversão de risco. A base proíbe formulário na landing (8.14; `funil-01`), depoimento e número sem comprovante, prazo e contagem regressiva, e garantia.
+   - *O que fiz:* venceu a base. Sem formulário, sem prova social (só [PROVA REAL]), sem urgência além da gratuidade, sem garantia. Da skill ficaram: um destino só, botão em primeira pessoa com verbo de ação, redutor de risco embaixo do botão (a gratuidade) e o "para quem não é" como filtro.
+   - *Recomendação:* aceitar. Quando houver o primeiro caso com autorização, a página ganha a prova que falta.
+   - *Se decidir diferente:* qualquer prova ou urgência nova precisa primeiro de comprovante ou de campo na ficha.
+
+9.6. **As trocas de "reunião".**
+   - *Dúvida:* "reunião" é palavra queimada para a persona (`tom-de-voz`, resposta 5), e o wireframe a usa no diagrama da seção 02, no funil de exemplo da seção 08, na tela "Reunião de safra" e no passo da conversa com o Júnior. A troca do rito está na 8.12, sem resposta.
+   - *O que fiz:* "mede agendamentos", "conversa marcada que não aconteceu", "Comparecimento" e "Fechamento" na seção 02 (nomes de etapa do método, no corpo); "conversa" na seção 08; a tela do painel ganhou o nome provisório "Prioridade da semana", com o mesmo conteúdo, marcada [PENDENTE: 8.12].
+   - *Recomendação:* aceitar as trocas; dar o nome final da tela junto com a resposta da 8.12.
+   - *Se decidir diferente:* se "reunião" puder aparecer no corpo, as trocas voltam ao texto do wireframe sem mexer na estrutura.
+
+9.7. **Textos do wireframe suavizados.**
+   - *Dúvida:* alguns textos do wireframe (todos sugestão, não confirmada) encostam em promessa ou em palavra a evitar.
+   - *O que fiz:* troquei, sem mudar a estrutura: o título das barras ("multiplica o lucro" virou "muda a conta"); o título do diagrama ("Sistema de Vendas multiplica vendas" virou "Ações isoladas somam peças soltas. Sistema de Vendas liga as etapas.") e a saída de "baixa eficácia" e "máxima eficácia", alegações absolutas sem prova; o subtítulo da Big Idea ("sacar o dinheiro que já existe no seu cemitério de leads" virou "Uma parte delas está parada nos leads que ninguém voltou a procurar"); nas colunas da seção 02, "nenhum lead sai da lista antes de dizer sim ou não" virou "cada lead é trabalhado até dizer sim ou não", para não encostar na frase-assinatura (#85); o "tudo" do sobretítulo do painel; "dois dashboards" virou "um painel com duas visões" (a base descreve um painel, `entregas-do-servico` seção 5; as duas visões são as abas do wireframe); "Feedback" virou "Retorno"; "Não é falta de lead" virou "Não é comprar mais lead" (encostava na frase gasta "o problema não é lead"); "o pior Sistema de Vendas que existe" virou "o jeito mais caro de vender"; "quem fecha só fecha a venda" saiu (tese do closer, #87, lacuna-08); "ninguém vira perdido sem dizer não", "até o sim ou o não" e "toda semana" sem campo saíram; "ninguém volta a falar" virou "quase ninguém"; "Leads perdidos" virou "Leads que ficaram pelo caminho"; a comparação das barras fica marcada para a revisão de advogado; "treina" virou "prepara"; "Sem planilha" saiu do painel, porque a planilha é um dos acessos que o cliente libera (ficha-de-fatos#insumo-do-cliente). No FAQ do caso, a resposta segue a troca pelo caso documentado de `oferta` (opcional, números agregados, nome da empresa ou só o setor à escolha do cliente, e o depoimento em vídeo "seja qual for o resultado"), sem a sessão extra, porque a página não fala da oferta. "CRM" ficou no corpo: o "não falar em CRM" de 22/10 vale para a Big Idea dirigida ao comprador, com alcance não registrado.
+   - *Recomendação:* aceitar; conferir "CRM" no corpo.
+   - *Se decidir diferente:* cada trecho volta ao texto do wireframe isoladamente.
+
+9.8. **Os nomes das entregas por referência.**
+   - *Dúvida:* os nomes das entregas são campo da ficha (ficha-de-fatos#nomes-das-entregas) e precisam aparecer um por um.
+   - *O que fiz:* criei a notação {{ficha-de-fatos#nomes-das-entregas:n}} para o item n da lista. "Sessões de Comando com o Junior Neves" ficou literal, porque é nome decidido (#83) e não valor de campo.
+   - *Recomendação:* aceitar a notação para as próximas entregas.
+   - *Se decidir diferente:* os nomes entram literais, exatamente como na ficha, e a cascata passa a depender da revisão manual.
+
+9.9. **As fases de cor sem a parte de cada uma.**
+   - *Dúvida:* a 8.11 segue sem resposta, e o que acontece em cada fase vem da F25 (via wireframe).
+   - *O que fiz:* três fases pela ordem, com uma linha cada (o time estranha, o time começa a acreditar, o sistema rodando), sem percentual e sem cor, marcadas [PENDENTE: 8.11].
+   - *Recomendação:* confirmar as três linhas com o Júnior, que decidiu as fases (#80); a cor é do design.
+   - *Se decidir diferente:* se a parte de cada fase entrar, vira campo da ficha e a linha do tempo cita o campo.
+
+9.10. **O Euclides nas calls em grupo.**
+   - *Dúvida:* o formato das calls em grupo, conduzidas pelo Júnior e pelo Euclides, está decidido (ficha-de-fatos#calls-em-grupo; #78, #79). Mas a promessa de 08/11 (#85, pendente) transforma a presença do Euclides em compromisso público de agenda, e o CTX chama essa agenda de segundo gargalo.
+   - *O que fiz:* as calls em grupo saem só do campo, por {{ficha-de-fatos#calls-em-grupo:formato}} (que traz a frequência e os dois condutores), sem frase própria que prometa além dele; marcadas [PENDENTE: 9.10] na seção 05 e no FAQ; a quantidade ficou bloqueada. Por isso o Euclides está em aprovado_por.
+   - *Recomendação:* confirmar com o Euclides antes de publicar, já que a página vincula pelo art. 30 do CDC.
+   - *Se decidir diferente:* sai o nome do Euclides e fica "conduzidas pelo Junior Neves".
+
+9.11. **As credenciais continuam ocultas.**
+   - *Dúvida:* a 8.7 propôs uma versão mínima da seção 04, sem resposta.
+   - *O que fiz:* não escrevi a versão mínima; a seção ficou oculta, só com a lista do que falta.
+   - *Recomendação:* responder a 8.7; se a versão mínima for aceita, ela é escrita na próxima versão da copy.
+   - *Se decidir diferente:* com a versão mínima aceita, a copy sobe de versão com a seção 04 escrita.
+
+9.12. **Dizer na página que o time do cliente executa.**
+   - *Dúvida:* a persona pergunta se o fornecedor executa ou "passa tarefa" (critério 2), e o registro diz que o time do cliente executa a infraestrutura a partir da tarefa do Júnior (ficha-de-fatos#execucao-do-time; #74). Dizer isso pode esfriar o Rafa; esconder contraria a conformidade.
+   - *O que fiz:* disse, na entrega 2 e no FAQ ("O seu time"), sem esconder.
+   - *Recomendação:* manter; o "sistema instalado no prazo" e as Sessões de Comando mostram quem comanda.
+   - *Se decidir diferente:* a frase da entrega 2 pode ir para o FAQ, mas não pode sair da página.
+
+9.13. **Placeholders com só uma parte do campo.**
+   - *Dúvida:* alguns campos têm mais de um valor dentro (o percentual e a fonte de Deming; o tempo de cada cultura; o formato e a quantidade das calls em grupo; a quantidade e as datas das Sessões de Comando; o volume da análise de calls; o prazo da execução do time; o limite da barra), e a frase precisa de uma parte só.
+   - *O que fiz:* criei a notação {{ficha-de-fatos#campo:parte}}, explicada em "Como ler" com a lista das partes usadas e o que cada uma traz (inclusive grupo-de-suporte:canal, sem a IA de consulta, adiada pela #84, e sistema-instalado:dia; sessoes-de-comando:quando só com os marcos decididos; execucao-do-time:prazo só com a duração), ao lado da :n da 9.8. As frases foram ajustadas para que cada placeholder encaixe sem repetir palavra (por exemplo, "São {{ficha-de-fatos#numero-de-entregas}}, instaladas...").
+   - *Recomendação:* aceitar a notação; se ela ficar, a ficha pode ganhar subcampos com nome fixo na próxima versão, para a cascata achar cada parte.
+   - *Se decidir diferente:* sem subcampos, cada placeholder cita o campo inteiro, e a frase em volta é reescrita para receber o valor completo.
+
+9.14. **O título do Hero B pede prova.**
+   - *Dúvida:* "Resgate o lucro que está oculto no seu negócio" é texto decidido pelo Otávio (04/11), mas "lucro" pede a margem do cliente (lacuna-09) e o benefício pede prova de vendas de leads que nunca disseram não (`provas-e-conformidade`; `mecanismo`).
+   - *O que fiz:* mantive o texto e marquei [PROVA REAL: vendas colhidas de leads que nunca disseram não, num cliente fundador], citando a lacuna-09 nas Notas.
+   - *Recomendação:* manter no rascunho; antes de ir ao ar, ou o primeiro caso documentado, ou a troca de "lucro" por algo que o dono confere sozinho (por exemplo, "as vendas que estão paradas nos leads que você já pagou").
+   - *Se decidir diferente:* se o Otávio liberar o título sem prova, a marca sai, e a revisão de advogado decide.
+
+9.15. **Os rótulos de fase "Análise" e "Fechamento" na seção 05.**
+   - *Dúvida:* a fase "Análise" do wireframe se confunde com a Análise da porta de entrada (o diagnóstico do quiz, #92), e "Fechamento" é nome de etapa do funil (ficha-de-fatos#metas-por-etapa); a base só diz que a entrega 8 fecha o serviço.
+   - *O que fiz:* "Ponto de partida" no lugar de "Análise" e "Encerramento" no lugar de "Fechamento". "Preparo do solo" e "Colheita e plantio" ficaram, como nomes de fase do método no corpo.
+   - *Recomendação:* aceitar os dois rótulos; se o método tiver nomes oficiais para a primeira e a última fase, eles entram no lugar.
+   - *Se decidir diferente:* os rótulos voltam ao wireframe, com uma linha explicando que a entrega 1 não é a leitura gratuita do quiz.
+
+9.16. **"Colheita" no título do quadro da horta.**
+   - *Dúvida:* o título do quadro ("Cada lead é uma planta. A venda é a colheita.") vem antes das plantas aparecerem, e a regra de 22/10 tira "colheita" de título antes de o mecanismo ser explicado.
+   - *O que fiz:* troquei por "Cada lead é uma planta. Cada planta tem o seu tempo." "Colhido" fica só dentro do quadro, com a analogia na tela, e "colheita" só no corpo (o rótulo de fase "Colheita e plantio" e a resposta "A colheita é sua", depois do mecanismo).
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* se o Otávio entender que o mecanismo já está explicado no texto acima do quadro, o título do wireframe volta.
+
+9.17. **O lado da Gestão por Safra no quadro da horta.**
+   - *Dúvida:* o wireframe mostra, do lado da Gestão por Safra, os três leads "colhidos (vendidos)" e "Nada fica na mesa". Na analogia isso soa como promessa de que todo lead vira venda, e nenhum caso comprova vendas de leads que nunca disseram não (`provas-e-conformidade`).
+   - *O que fiz:* os três leads aparecem "trabalhados até o dia" de cada cultura, e o placar diz "3 de 3 trabalhados no tempo de cada um". O lado da Gestão Mensal ficou como no wireframe (1 de 3 colhido, dois ficaram na mesa), porque descreve o problema.
+   - *Recomendação:* aceitar no rascunho; quando houver o primeiro caso documentado, avaliar se a analogia pode voltar a mostrar a venda.
+   - *Se decidir diferente:* o texto do wireframe volta, e o quadro passa pela revisão de advogado junto com a promessa.

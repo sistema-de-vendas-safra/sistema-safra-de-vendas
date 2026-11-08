@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 9 · copy da landing-page-01
+
+- entregas/landings/landing-page-01/copy.md v1, rascunho (otavio, junior e euclides: pendente). Novo. Skills usadas: landing-page-copy, roteiro-de-pagina e junior-neves-voice; onde chocaram com a base, venceu a base (9.4, 9.5). Notações novas {{ficha-de-fatos#campo:n}} e {{ficha-de-fatos#campo:parte}} (9.8, 9.13). Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 9.1 a 9.17.
+- Revisão: dois revisores independentes e duas rodadas de correção. Primeira: depende_de e aprovado_por incompletos, placeholders que puxavam o campo inteiro ou não encaixavam, citação não literal, subtítulo do hero fora do briefing, "colheita" em título, alegações de resultado e absolutas no diagrama, título do hero sem [PROVA REAL], frequência das calls em grupo, painel, caso documentado, seção 08 sem marca do quiz-01. Segunda: grupo de suporte trazendo "reuniões", CS e a IA adiada, placar que insinuava conversão total, a tese do closer (#87) numa legenda, o "só" falso no caso documentado, absolutos e superlativos restantes.
+
 ## 2026-11-08 · etapa 8 · briefing da landing-page-01
 
 - entregas/landings/landing-page-01/briefing.md v1, rascunho (otavio: pendente). Novo. Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 8.1 a 8.15.
