@@ -1,9 +1,9 @@
 ---
 id: regra-versionamento
-versao: 1
-status: rascunho
+versao: 2
+status: decidido
 aprovado_por:
-  otavio: pendente
+  otavio: 2026-11-08
 depende_de: []
 ---
 
@@ -48,7 +48,14 @@ desatualizado: false         # vira true quando algo de que depende sobe de vers
 | pendente-aprovacao | Exige aprovação de mais alguém (Júnior, Euclides) e ao menos um ainda está `pendente` em aprovado_por. | Só como rascunho, avisando que pode mudar |
 | aprovado | Todos os nomes em aprovado_por têm data. | Sim |
 
-Quando uma nova versão muda o conteúdo de um documento `decidido` ou `aprovado`, ele volta para `rascunho` ou `pendente-aprovacao` até ser aprovado de novo, e as datas antigas em aprovado_por voltam para `pendente`.
+## Forma e sentido
+
+Toda alteração sobe a versão, mas nem toda alteração derruba a aprovação:
+
+- **Correção de forma** (erro de digitação, formatação, link quebrado): sobe a versão e registra no log.md, mas o status e as datas em aprovado_por continuam como estão.
+- **Mudança de sentido** (qualquer coisa que altere o que o documento diz ou decide): o documento `decidido` ou `aprovado` volta para `rascunho` ou `pendente-aprovacao` até ser aprovado de novo, e as datas em aprovado_por voltam para `pendente`.
+
+Na dúvida se é forma ou sentido, o Claude pergunta antes de alterar.
 
 ## Cascata
 

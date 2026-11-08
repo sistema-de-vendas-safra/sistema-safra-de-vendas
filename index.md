@@ -11,8 +11,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## nucleo/
 
-- regras/versionamento.md · cabeçalho padrão, status e cascata (v1, rascunho)
-- regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v1, rascunho)
+- regras/versionamento.md · cabeçalho padrão, status, forma e sentido, cascata (v2, decidido)
+- regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v1, decidido)
 - modelos/ · vazio
 - receitas/ · vazio
 - ferramentas/ · vazio

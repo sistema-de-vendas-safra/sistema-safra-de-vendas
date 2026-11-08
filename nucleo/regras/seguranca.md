@@ -1,9 +1,9 @@
 ---
 id: regra-seguranca
 versao: 1
-status: rascunho
+status: decidido
 aprovado_por:
-  otavio: pendente
+  otavio: 2026-11-08
 depende_de: []
 ---
 
