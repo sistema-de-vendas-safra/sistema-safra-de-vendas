@@ -8,7 +8,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - index.md · este mapa
 - log.md · histórico de alterações e pendências
 - conexoes.md · contas e serviços (sem chaves)
-- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md)
+- GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v1, decidido)
+- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta)
 
 ## nucleo/
 
@@ -35,7 +36,10 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - oferta.md · a oferta montada, citando os valores pela ficha (v1, pendente-aprovacao do Júnior e do Euclides)
 - promessa.md · a promessa de 08/11 nas duas versões e a de 23/10 como histórico (v1, pendente-aprovacao do Júnior e do Euclides)
 - entregas-do-servico.md · as entregas com nome oficial, o que cada uma é e o critério de pronto (v1, decidido)
-- design-system/ · vazio
+- persona.md · Rafa, o Dono-Closer: dores, ganhos, crenças, citações com ID e grau de evidência (v1, decidido)
+- tom-de-voz.md · voz, grafia, vocabulário, o que nunca dizer, frases gastas (v1, pendente-aprovacao do Júnior)
+- provas-e-conformidade.md · provas que existem, [PROVA REAL] do que falta, regras de CDC, CONAR, LGPD e Código Civil (v1, decidido)
+- design-system/design-system.md · ficha do design system v1.0, que aponta para fontes/ e registra os conflitos (v1, rascunho)
 
 ## funis/
 

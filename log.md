@@ -2,6 +2,16 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · base lote 3
+
+- base/persona.md v1, decidido (otavio: 2026-11-08, pela aprovação do plano).
+- base/tom-de-voz.md v1, pendente-aprovacao (otavio: 2026-11-08; junior: pendente).
+- base/provas-e-conformidade.md v1, decidido (otavio: 2026-11-08). Segue a #91 sobre o reembolso.
+- base/design-system/design-system.md v1, rascunho (otavio e junior: pendente). Aponta para fontes/design-system-v1.0/ sem copiar tokens; conflitos com #45, #81 e o laranja ficam bloqueados; a grafia do Júnior no DS é correção a fazer.
+- GLOSSARY.md v1 (id glossario), decidido (otavio: 2026-11-08), na raiz, conforme a escolha registrada no lote 1.
+- A partir deste lote vale a Regra de pausas (prompts/03-escrever-a-base.md): as dúvidas do Otávio seguiram o caminho mais conservador e estão em prompts/03-escrever-a-base-resposta.md, "Perguntas para o Otávio".
+- Revisão: dois revisores independentes. Corrigidos citações alteradas dentro das aspas, a definição de "Virada do mês" (sem apoio na fonte; reescrita do Mecanismo único, da Big Idea final e do One pager), a #33 tratada como substituída no design-system, números de fatos fora da ficha, nomes antigos como verbete próprio e um verbete com vários termos.
+
 ## 2026-11-08 · base lote 2
 
 - base/produto.md v1, decidido (otavio: 2026-11-08).
@@ -36,6 +46,8 @@ Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. En
 - Pastas vazias copywriter/, landing-page/, quiz/ e revisor/ removidas.
 
 ## Pendências
+
+- [ ] **Base:** 9 perguntas da etapa 3 em prompts/03-escrever-a-base-resposta.md (a primeira é atualizar decisoes para a ficha v2).
 
 - [ ] **Decisão #90:** o funil-01 (landing-page-01, quiz-01, Supabase, planilha, SDR) substitui a página das três portas (#66) e o CRM do Doc Mestre. Pendente de aprovação do Júnior e do Euclides.
 - [ ] **Design:** o design system v1.0 é escuro e proíbe cores fora da paleta, o que conflita com a paleta branco e verde (#81) e com os botões laranja de 03/11. Decidir antes da etapa de design da landing. Dono das próximas versões do design system a definir.
