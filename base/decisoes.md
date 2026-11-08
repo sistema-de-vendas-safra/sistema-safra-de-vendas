@@ -7,7 +7,7 @@ aprovado_por:
 depende_de:
   - id: ficha-de-fatos
     versao: 1
-desatualizado: false
+desatualizado: true
 ---
 
 # Decisões

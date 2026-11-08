@@ -1,6 +1,6 @@
 ---
 id: ficha-de-fatos
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -188,6 +188,12 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 
 ---
 
+### relogio-da-operacao
+- **Valor:** 90 dias de maturação na operação do Júnior, contados do dia em que o lead entra. É o exemplo da operação demonstrada: o relógio varia por negócio.
+- **Fonte:** Mecanismo único online ("Dar relógio"); Sistema de Vendas Safra online (tabela, "Relógio de maturação"); F7 ("os 90 dias são o exemplo da operação demonstrada"); #41.
+- **Status:** fato registrado (entrou na v2, pedido do Otávio em 08/11/2026).
+- **Obs.:** F1 descreve a safra "tratada por 90 dias depois do fim do mês", contagem diferente da do Sistema de Vendas Safra online (do dia em que o lead entra). Confirmar com o Júnior antes de usar a contagem em peça.
+
 ## Entregas, ritos e suporte
 
 ### numero-de-entregas
@@ -311,6 +317,16 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 
 ---
 
+### duracao-call-de-venda
+- **Valor:** cerca de 60 minutos.
+- **Fonte:** Oferta online ("Na call (cerca de 60 minutos)").
+- **Status:** proposta (entrou na v2, pedido do Otávio em 08/11/2026). Não confundir com analise-duracao, que é a Análise e está em conflito.
+
+### multiplo-regra-de-venda
+- **Valor:** cerca de três vezes o preço parado nas safras antigas; abaixo disso, a recomendação é não vender agora.
+- **Fonte:** Oferta online ("Regra de venda recomendada"; "Decisões do cliente", item 11; roteiro da call); One pager online.
+- **Status:** proposta, entre as decisões do cliente ainda abertas (entrou na v2, pedido do Otávio em 08/11/2026).
+
 ## Bônus, downsell e continuidade
 
 ### bonus-curso
@@ -353,6 +369,11 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 
 ---
 
+### gsaas-preco-travado
+- **Valor:** preço do GSAAS travado por 12 meses para os clientes das 10 primeiras vagas.
+- **Fonte:** Oferta online ("GSAAS na oferta (proposta)"; "Decisões do cliente", item 9).
+- **Status:** proposta (entrou na v2, pedido do Otávio em 08/11/2026).
+
 ## Público e qualificação
 
 ### criterio-de-qualificacao
@@ -385,6 +406,11 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Status:** fato citado.
 
 ---
+
+### tentativas-ate-abandonado
+- **Valor:** 18 tentativas de contato antes de um lead virar abandonado, na operação do Júnior.
+- **Fonte:** F1; Criativos rodada 1 online ("Dezoito tentativas").
+- **Status:** fato registrado (entrou na v2, pedido do Otávio em 08/11/2026); liberação para peça pendente do Júnior: a fonte pede "Confirmar com o Júnior que a regra segue valendo" e liberar "as histórias da operação usadas nos talking heads" (Criativos rodada 1 online).
 
 ## Credenciais e números públicos (todos sem comprovante)
 

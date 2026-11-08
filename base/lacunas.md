@@ -1,12 +1,12 @@
 ---
 id: lacunas
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 1
+    versao: 2
   - id: decisoes
     versao: 1
 desatualizado: false
@@ -489,3 +489,10 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** um advogado (Otávio, 08/11/2026).
 - **O que destrava:** a cláusula do contrato, antes da primeira venda.
 - **Ver também:** lacuna-10.
+
+### outros-19
+**A fala do Júnior para a call de venda.**
+- **O que é:** a mesma fala aparece de dois jeitos: "Me dá 3 semanas" (Promessa central online) e "Me dá uma semana" (One pager online). Bloqueada para entrega até a decisão.
+- **Valores e fontes:** Promessa central online; One pager online; promessa (base/promessa.md).
+- **Quem decide:** o Otávio, confirmando com o Júnior (Otávio, 08/11/2026).
+- **O que destrava:** o roteiro da call e as peças que citam a fala.

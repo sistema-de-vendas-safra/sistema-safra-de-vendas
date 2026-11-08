@@ -2,6 +2,18 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · base lote 2
+
+- base/produto.md v1, decidido (otavio: 2026-11-08).
+- base/metodo.md v1, decidido (otavio: 2026-11-03).
+- base/mecanismo.md v1, aprovado (otavio: 2026-10-22; junior: 2026-10-27; euclides: 2026-10-27). Confirmado pelo Otávio: fica aprovado, com a frase filosófica pendente, a crença "com ressalva" e os nomes de 01/11 (v0.5) marcados como posteriores à #48.
+- base/oferta.md v1 e base/promessa.md v1, pendente-aprovacao (otavio: 2026-11-08; junior e euclides: pendente).
+- base/entregas-do-servico.md v1, decidido (otavio: 2026-11-01). O calendário por dia da engenharia reversa não entra.
+- base/ficha-de-fatos.md v1 para v2, decidido. Motivo: pedido do Otávio para pôr na ficha os fatos que o lote 2 citava sem campo: relogio-da-operacao, tentativas-ate-abandonado, duracao-call-de-venda, multiplo-regra-de-venda, gsaas-preco-travado (67 campos). Mudança de sentido aprovada pelo Otávio; os campos antigos não mudaram.
+- base/lacunas.md v1 para v2, rascunho. Motivo: nova lacuna outros-19 (a fala do Júnior para a call: "3 semanas" ou "uma semana"), decisão do Otávio; depende_de passa a ficha-de-fatos v2.
+- Cascata: base/decisoes.md fica desatualizado: true (depende de ficha-de-fatos v1). Atualização proposta ao Otávio: só apontar para a ficha v2, sem mudança de conteúdo.
+- Revisão: dois revisores independentes. Corrigidos números de fatos fora da ficha (sessões, setup, safra de julho, calendário), citações alteradas dentro das aspas, a #91 como fonte do reembolso, a Análise da call marcada como em conflito e a pendência do Júnior sobre as 18 tentativas, que a fonte registra.
+
 ## 2026-11-08 · base lote 1
 
 - base/ficha-de-fatos.md v1, decidido (otavio: 2026-11-08). Criada conforme o plano (prompts/02-plano-da-base-resposta.md, parte 2): 62 campos, cada um com status; os campos em conflito ficam "em conflito · bloqueado para entrega até a decisão". Campo novo, aceito pelo Otávio: barra-de-resgates. Campo arrependimento conforme a #91. grafia-junior: vale o CTX; o design system será corrigido na próxima versão dele (Otávio).

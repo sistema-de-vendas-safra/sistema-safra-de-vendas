@@ -26,9 +26,15 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## base/
 
-- ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, bônus, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v1, decidido)
-- decisoes.md · registro das decisões #1 a #91, cada uma com o seu status (v1, decidido)
-- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v1, rascunho)
+- ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, bônus, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v2, decidido)
+- decisoes.md · registro das decisões #1 a #91, cada uma com o seu status (v1, decidido; desatualizado: depende da ficha v1)
+- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v2, rascunho)
+- produto.md · o que é a IASV Safra: formato, ritos, quem faz o quê, o que não está incluído (v1, decidido)
+- metodo.md · o Sistema de Vendas Safra e a Gestão de Leads por Safra, com as regras do método (v1, decidido)
+- mecanismo.md · problema, solução, Big Idea, analogia e crença (v1, aprovado; frase filosófica pendente)
+- oferta.md · a oferta montada, citando os valores pela ficha (v1, pendente-aprovacao do Júnior e do Euclides)
+- promessa.md · a promessa de 08/11 nas duas versões e a de 23/10 como histórico (v1, pendente-aprovacao do Júnior e do Euclides)
+- entregas-do-servico.md · as entregas com nome oficial, o que cada uma é e o critério de pronto (v1, decidido)
 - design-system/ · vazio
 
 ## funis/
