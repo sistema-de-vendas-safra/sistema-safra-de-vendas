@@ -434,3 +434,101 @@ Detalhe em entregas/landings/landing-page-01/copy.md.
    - *O que fiz:* os três leads aparecem "trabalhados até o dia" de cada cultura, e o placar diz "3 de 3 trabalhados no tempo de cada um". O lado da Gestão Mensal ficou como no wireframe (1 de 3 colhido, dois ficaram na mesa), porque descreve o problema.
    - *Recomendação:* aceitar no rascunho; quando houver o primeiro caso documentado, avaliar se a analogia pode voltar a mostrar a venda.
    - *Se decidir diferente:* o texto do wireframe volta, e o quadro passa pela revisão de advogado junto com a promessa.
+
+## Etapa 10 · Estrutura UX da landing-page-01
+
+10.1. **A ordem das seções, o caminho até o quiz e o celular como referência.**
+   - *Dúvida:* a etapa 10 decide a ordem final, e a 8.5 pediu para conferir se o caminho até o quiz fica longo no celular. A `persona` não registra em que aparelho o dono lê a página.
+   - *O que fiz:* mantive a ordem da copy, com as ocultas marcadas no lugar. Mantive a 8.5: todo botão leva à seção 08 e só o da 08 abre o quiz-01 (dois toques de qualquer seção, um da 08). Tratei o celular como a tela de referência da primeira tela, sem dizer que é o aparelho do dono.
+   - *Recomendação:* manter; o salto até a 08 não obriga a rolar a página, e a 08 diz o que o quiz entrega e que a conversa não é para todos (8.10). Medir visita e início do quiz por versão antes de mexer.
+   - *Se decidir diferente:* se os botões forem direto ao quiz, a 08 vira uma seção como as outras e o caminho cai para um toque; se a ordem mudar, a tabela de ordem e a hierarquia de títulos mudam junto.
+
+10.2. **Onde fica o bloco de chamada da seção 09.**
+   - *Dúvida:* a copy diz que o bloco de chamada repete "ao fim" da 09, mas, dentro da 09, lista a frase "Ficou alguma dúvida?" e o botão antes das perguntas.
+   - *O que fiz:* pus as perguntas primeiro e, depois delas, a frase e o bloco de chamada, no fim da seção.
+   - *Recomendação:* aceitar; "Ficou alguma dúvida?" faz sentido depois de a pessoa ler as perguntas, e segue a regra do bloco.
+   - *Se decidir diferente:* a frase e o botão sobem para logo depois dos números de destaque, e a 09 passa a ter o botão no começo.
+
+10.3. **O botão do cabeçalho na primeira tela.**
+   - *Dúvida:* o briefing pede um único botão primário na dobra e, ao mesmo tempo, o cabeçalho fixo com botão secundário (sugestão do wireframe, não confirmada). Na primeira tela, isso dá dois botões com o mesmo destino.
+   - *O que fiz:* o botão do cabeçalho só aparece depois que o botão do hero sai da tela; daí em diante fica ao alcance em toda a rolagem.
+   - *Recomendação:* aceitar, para a primeira tela ter uma ação só.
+   - *Se decidir diferente:* o botão do cabeçalho aparece desde o começo, e a primeira tela passa a ter dois botões com o mesmo destino.
+
+10.4. **A imagem do hero no celular.**
+   - *Dúvida:* o wireframe sugere, sem confirmação, que no celular a imagem do hero sai.
+   - *O que fiz:* aceitei como provisória: no celular, a primeira tela é só texto e botão.
+   - *Recomendação:* aceitar; a imagem do hero depende do design, bloqueado (conflito-08), e a primeira tela carrega antes sem ela.
+   - *Se decidir diferente:* a imagem entra na primeira tela, e a estrutura precisa garantir que o botão continue visível sem rolar.
+
+10.5. **Como a etiqueta e o código de sessão chegam ao quiz.**
+   - *Dúvida:* o `funil-01` diz que a landing passa a etiqueta ao quiz, e a planta diz que nada fica guardado no navegador (6.2), mas nenhum dos dois diz por onde a etiqueta passa. Os endereços da landing e do quiz não estão decididos.
+   - *O que fiz:* o botão da 08 abre o quiz-01 na mesma aba, com utm_source, utm_campaign e o código de sessão no próprio endereço do quiz.
+   - *Recomendação:* aceitar; é o jeito mais simples que não guarda nada no navegador, e a mesma aba mantém um caminho só.
+   - *Se decidir diferente:* se o quiz abrir em outra aba, o código continua indo no endereço; se a etiqueta tiver de passar de outro jeito (cookie, armazenamento local), é preciso aviso e consentimento antes da visita, e a 6.2, o quiz-01 e `provas-e-conformidade` mudam.
+
+10.6. **Quem registra o início do quiz.**
+   - *Dúvida:* a planta diz que o garçom grava inicio_quiz quando o lead "começa o quiz-01", sem dizer se o evento sai do clique na landing ou da abertura do quiz.
+   - *O que fiz:* o quiz-01 registra inicio_quiz quando abre, com o mesmo código de sessão; a landing registra só a visita.
+   - *Recomendação:* aceitar; assim o evento só existe se o quiz abriu de verdade, e a ligação com a versão da landing vem pelo código de sessão.
+   - *Se decidir diferente:* se a landing registrar no clique, o evento sai com a etiqueta de entrega da landing e conta também quem tocou e o quiz não abriu; o quiz-01 deixa de registrar esse evento.
+
+10.7. **Ferramentas de terceiros na landing.**
+   - *Dúvida:* nenhum documento diz se a landing pode ter ferramenta de medição ou de anúncio de terceiros. A Meta está fora do MVP (conexoes.md, citado no `funil-01`).
+   - *O que fiz:* a landing não usa nenhuma ferramenta de terceiros que colha dado do visitante; a medição é só a visita pelo garçom.
+   - *Recomendação:* aceitar no MVP; qualquer ferramenta dessas pediria aviso e consentimento na landing, que hoje não tem campo nenhum.
+   - *Se decidir diferente:* a landing ganha aviso e consentimento antes de carregar a ferramenta, e a 8.14, `provas-e-conformidade` e conexoes.md mudam.
+
+10.8. **A visita sem etiqueta.**
+   - *Dúvida:* a planta diz que evento sem alguma das cinco etiquetas não entra, e também que utm_source fica vazio quando a etiqueta vem fora da lista (5.5). Não diz o que acontece quando o link não traz etiqueta nenhuma.
+   - *O que fiz:* a página funciona igual, não inventa origem nem põe origem padrão, manda a visita com utm_source e utm_campaign presentes e vazios, e passa ao quiz o que veio. Não corrige maiúsculas nem acento: o garçom decide.
+   - *Recomendação:* aceitar, e escrever na planta que "etiqueta presente e vazia" conta como etiqueta, para a visita sem origem não se perder.
+   - *Se decidir diferente:* se a visita sem etiqueta não puder entrar, ela some da contagem, e quem chega por link sem etiqueta (por exemplo, digitando o endereço) não aparece; se a página tiver de corrigir a grafia, a lista de origens passa a morar também na página.
+
+10.9. **A página sem JavaScript e o estado inicial dos controles.**
+   - *Dúvida:* o wireframe pede só a seção 02 legível sem JavaScript; a etiqueta e o código de sessão dependem do programa da página. O wireframe sugere, sem confirmação, que o quadro da horta abra na Gestão Mensal e que o FAQ tenha uma pergunta aberta por vez, sem dizer se alguma começa aberta.
+   - *O que fiz:* a página inteira fica legível sem o programa; os controles abrem mostrando tudo (a horta com os dois lados, a Gestão Mensal primeiro; o FAQ com todas as perguntas abertas); os botões são links de verdade, e o da 08 abre o quiz sem etiqueta e sem código (a visita não é registrada e a origem fica em branco). Com o programa, a horta abre na Gestão Mensal, e o FAQ abre com todas as perguntas fechadas e uma aberta por vez.
+   - *Recomendação:* aceitar; perder a origem de poucos visitantes é melhor que perder o visitante.
+   - *Se decidir diferente:* se o quiz exigir a etiqueta, o botão da 08 só funciona com o programa, e quem está sem ele não chega ao quiz.
+
+10.10. **O garçom fora do ar.**
+   - *Dúvida:* nenhum documento diz o que a página faz se o garçom não responder.
+   - *O que fiz:* a página não espera o garçom; a visita se perde sem aviso ao visitante, sem nova tentativa guardada no navegador e sem nenhuma mudança na página.
+   - *Recomendação:* aceitar, e acompanhar a diferença entre visitas e inícios de quiz para notar a queda do garçom.
+   - *Se decidir diferente:* uma nova tentativa na mesma aba, só em memória, é possível sem guardar nada no navegador; guardar para tentar depois pediria aviso (6.2).
+
+10.11. **O contador de escassez: quando a contagem atrasa e onde ele pode aparecer.**
+   - *Dúvida:* a regra é mostrar só acima do limite de ficha-de-fatos#barra-de-resgates, mas nada diz o que fazer se a contagem demorar ou falhar. E o bloco de chamada do hero, que traz o contador, está na primeira tela, onde nada deve se mexer nem entrar depois.
+   - *O que fiz:* o contador só aparece se a contagem chegar antes de o bloco ser mostrado, com as condições (limite, regra da 5.7 decidida, contagem válida). Se demorar, falhar ou vier sem sentido, não aparece naquela visita, sem lugar vazio, sem "carregando" e sem entrar depois. Ele nunca entra no bloco do hero nem em nada da primeira tela: só nos blocos de chamada de baixo (02, 03, 03b, 05, 06, 07, 09) e no cartão da oferta da 08, quando liberado.
+   - *Recomendação:* aceitar: na dúvida, não mostrar, e a primeira tela fica sem contador.
+   - *Se decidir diferente:* se o contador puder entrar depois, a página reserva o lugar dele sempre, e a reserva vazia aparece para quem está abaixo do limite; se ele puder ir para o hero, a primeira tela passa a depender da contagem, e a regra "nada se mexe sozinho" precisa de exceção.
+
+10.12. **A meta de acessibilidade.**
+   - *Dúvida:* a meta WCAG 2.2 AA vem do design system v1.0, cuja adoção está pendente (conflito-08). Sem ela, a etapa não tem meta escrita.
+   - *O que fiz:* usei WCAG 2.2, nível AA, como mínimo, citando os critérios (1.4.1, 1.4.3, 1.4.11, 2.2.2, 2.5.8) sem definir cor nem tamanho.
+   - *Recomendação:* aceitar a meta independente do design system que for escolhido, porque ela não depende de visual.
+   - *Se decidir diferente:* se o design system escolhido pedir outra meta, a seção de acessibilidade muda junto. Proposta, sem base escrita: se a meta ficar abaixo do AA, levar o ponto à revisão de advogado.
+
+10.13. **As telas do painel que giram sozinhas.**
+   - *Dúvida:* o wireframe sugere, sem confirmação, que as telas do painel girem sozinhas até o toque.
+   - *O que fiz:* as abas da 06 trocam só pelo toque ou pelo teclado; nada gira sozinho.
+   - *Recomendação:* aceitar; movimento sozinho exige um jeito de parar (WCAG 2.2.2) e atrapalha quem lê devagar no celular.
+   - *Se decidir diferente:* as telas giram, com botão de pausa visível, parada no primeiro toque e nenhum giro com movimento reduzido.
+
+10.14. **A marca da variante no teste A/B do hero.**
+   - *Dúvida:* o teste A/B do hero mede só a copy, e a planta separa as versões só pela versão da entrega (versao_entrega). Não está escrito como marcar a variante A ou B nos eventos.
+   - *O que fiz:* nada, porque a versão A está bloqueada (#85) e o hero B vai sozinho; registrei o ponto em "O que esta estrutura não decide".
+   - *Recomendação:* quando a #85 sair, decidir se cada variante vira uma versão no catálogo de entregas ou ganha um campo próprio no evento, antes de ligar o teste.
+   - *Se decidir diferente:* se cada variante for uma versão, o catálogo de entregas ganha uma linha por variante; se for um campo, a planta do banco ganha o campo.
+
+10.15. **O id e a versão da landing no catálogo de entregas.**
+   - *Dúvida:* todo evento leva a entrega e a versão dela, e o garçom só aceita o par que existe no catálogo da gaveta entregas (`planta-do-banco`, 6.6). Nenhum documento tem o id landing-page-01: os que existem são landing-page-01-briefing, landing-page-01-copy e landing-page-01-estrutura, cada um com a sua versão.
+   - *O que fiz:* marquei o passo do registro da visita como [PENDENTE: 10.15], sem escolher id nem versão.
+   - *Recomendação:* um id landing-page-01 para a página publicada, com uma versão própria que sobe a cada publicação, registrada num cabeçalho da página publicada (ou do README da pasta), e que declare em depende_de as versões da copy e da estrutura usadas.
+   - *Se decidir diferente:* se o catálogo usar o id da copy, a versão da página passa a ser a da copy, e mudança só de estrutura não muda a versão medida; se usar o da estrutura, vale o contrário.
+
+10.16. **Duas mudanças de lugar dentro das seções.**
+   - *Dúvida:* a copy põe a nota de rodapé de Deming logo abaixo do título da 02 e o subtítulo do hero antes do botão. No celular, isso pode empurrar o botão do hero para fora da primeira tela e separar a nota do resto da seção.
+   - *O que fiz:* a nota de Deming vai para o fim da 02, logo antes do bloco de chamada, ligada ao asterisco do título. No celular, quando o botão do hero não couber sem rolar, o subtítulo vai para baixo do botão, no que se vê e também no código, para a ordem lida ser sempre a vista.
+   - *Recomendação:* aceitar as duas; a nota continua ligada ao asterisco, e a primeira tela fica com o botão.
+   - *Se decidir diferente:* a nota volta para logo abaixo do título, e o subtítulo fica sempre antes do botão; nesse caso, o qualificador ou o subtítulo têm de ser curtos o bastante para o botão caber na primeira tela.

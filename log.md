@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 10 · estrutura UX da landing-page-01
+
+- entregas/landings/landing-page-01/estrutura.md v1, rascunho (otavio: pendente). Novo, a partir do copy.md. Sem cor, fonte nem estilo (conflito-08). Apoia-se em documentos desatualizados pela cascata (6.9). Perguntas 10.1 a 10.16.
+- Revisão: um revisor independente e uma rodada de correção. Corrigidos o id e a versão da landing no catálogo (pendente, 10.15), o contador de escassez fora do bloco do hero, afirmações fortes demais, a frase sobre a ordem (três mudanças internas listadas, 10.16), persona e tom-de-voz em depende_de, o campo do qualificador, o conflito-06, a fonte das sugestões do wireframe, a hierarquia da seção 08 e o estado inicial da horta e do FAQ.
+
 ## 2026-11-08 · etapa 9 · copy da landing-page-01
 
 - entregas/landings/landing-page-01/copy.md v1, rascunho (otavio, junior e euclides: pendente). Novo. Skills usadas: landing-page-copy, roteiro-de-pagina e junior-neves-voice; onde chocaram com a base, venceu a base (9.4, 9.5). Notações novas {{ficha-de-fatos#campo:n}} e {{ficha-de-fatos#campo:parte}} (9.8, 9.13). Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 9.1 a 9.17.

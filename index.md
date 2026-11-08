@@ -50,6 +50,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 - landings/landing-page-01/briefing.md · briefing da landing-page-01: básico, estrutura de partida pelo wireframe corrigido, direcionamentos de copy, UX e design, bloqueios (v1, rascunho)
 - landings/landing-page-01/copy.md · copy da landing-page-01, seção por seção, com fatos por {{ficha-de-fatos#campo}} e bloqueios marcados (v1, rascunho; otavio, junior e euclides: pendente)
+- landings/landing-page-01/estrutura.md · estrutura UX da landing-page-01: ordem, hierarquia, primeira tela no celular, botões, caminho até o quiz, carregamento e erro, acessibilidade; sem estilo, design bloqueado (v1, rascunho)
 - quizzes/ · vazio
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
