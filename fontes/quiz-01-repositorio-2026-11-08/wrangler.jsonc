@@ -1,0 +1,13 @@
+// Publicação do quiz no Cloudflare (Workers, só arquivos estáticos).
+// Vai para o ar só a pasta docs (o quiz e a foto). CLAUDE.md, MANUAL e REA ficam fora do site.
+// O "name" precisa ser igual ao nome do projeto no painel do Cloudflare.
+{
+  "name": "sistema-de-vendas-safra-quiz01",
+  "compatibility_date": "2025-09-01",
+  // endereço *.workers.dev ligado; cada versão também ganha um link de prévia
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./docs"
+  }
+}

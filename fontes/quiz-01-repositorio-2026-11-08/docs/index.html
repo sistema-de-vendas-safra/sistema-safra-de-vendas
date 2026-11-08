@@ -1,0 +1,1797 @@
+<title>Quiz Diagnóstico de Vendas</title>
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Permanent+Marker&family=Space+Grotesk:wght@300..700&display=swap">
+<style>
+/* Layout (estrutura da REA do Full Stack Marketing): capa em coluna de 640 com cartões escuros (teste + vídeo do Junior); abertura em duas colunas; teste em conversa + painel ao vivo à direita (abas no celular); relatório em blocos empilhados com a haste semente → fruto como assinatura.
+   Identidade: variação da Triad (triad-www/styles.css). Do site: fundo #07070d, superfícies #11131d e #0d0e16, texto #f4f6f5, cinza #8b8f9c, verde #00ff87 com brilho, grade de 64px do hero, marca ▲ TRIAD e as fontes Space Grotesk, Inter e Permanent Marker (só 1 acento manuscrito por tela).
+   Acréscimos do quiz: coral #ff5f6d = abaixo da meta, âmbar #ffb547 = dinheiro na mesa, fruto e estimativa. A marca é escura por natureza: os mesmos valores valem nos dois modos. */
+:root{
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
+  --tomate:#ff5f6d; --tomate-suave:#2e1418;
+  --trigo:#ffb547; --trigo-suave:#1a1509;
+  --sombra:rgba(0,0,0,.6);
+  --painel:#0d0e16; --sobre-painel:#f4f6f5; --folha-viva:#00ff87; --tomate-viva:#ff5f6d;
+  --f-titulo:'Space Grotesk',system-ui,sans-serif;
+  --f-texto:'Inter',system-ui,sans-serif;
+  --f-dado:'Space Grotesk',system-ui,sans-serif;
+  --f-mao:'Permanent Marker','Marker Felt',cursive;
+  --curva:cubic-bezier(.2,.8,.2,1);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
+  --tomate:#ff5f6d; --tomate-suave:#2e1418;
+  --trigo:#ffb547; --trigo-suave:#1a1509;
+  --sombra:rgba(0,0,0,.6);
+  --painel:#0d0e16; --sobre-painel:#f4f6f5; --folha-viva:#00ff87; --tomate-viva:#ff5f6d; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
+  --tomate:#ff5f6d; --tomate-suave:#2e1418;
+  --trigo:#ffb547; --trigo-suave:#1a1509;
+  --sombra:rgba(0,0,0,.6);
+  --painel:#0d0e16; --sobre-painel:#f4f6f5; --folha-viva:#00ff87; --tomate-viva:#ff5f6d; color-scheme:dark;
+}
+/* Tokens extras, iguais nos dois modos: tons vivos para as superfícies escuras que aparecem dentro de telas claras, fundos em degradê, botão e fonte de máquina */
+:root{
+  --trigo-viva:#ffb547; --folha-forte-viva:#5cffb4; --superficie-escura:#11131d; --folha-suave-escura:#0b2a1d; --sobre-folha-escura:#04130b;
+  --verde-fundo:#0a2a1b; --verde-fundo-2:#0d3322;
+  --btn:#00ff87; --btn-texto:#04130b; --btn-hover:#5cffb4;
+  --f-maq:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+}
+/* Superfícies escuras (cartões da capa, painel ao vivo, vídeo, relatório de exemplo): as mesmas peças, com os tons trocados por dentro */
+.escuro{
+  --tinta:var(--sobre-painel); --ardosia:color-mix(in srgb,var(--sobre-painel) 62%,transparent);
+  --linha:color-mix(in srgb,var(--sobre-painel) 18%,transparent); --trilho:color-mix(in srgb,var(--sobre-painel) 14%,transparent);
+  --folha:var(--folha-viva); --folha-forte:var(--folha-forte-viva); --tomate:var(--tomate-viva); --trigo:var(--trigo-viva); --papel:var(--painel);
+  --superficie:var(--superficie-escura); --folha-suave:var(--folha-suave-escura); --sobre-folha:var(--sobre-folha-escura);
+  --btn:var(--folha-viva); --btn-texto:var(--sobre-folha-escura); --btn-hover:var(--folha-forte-viva);
+  color:var(--sobre-painel);
+}
+/* Telas claras: abertura e conversa (a página do original é clara). O escuro fica nos cartões e no painel. O neon vira acento:
+   onde vai texto, o verde escurece para passar de 4,5:1 no fundo claro */
+body[data-largura="abertura"],body[data-largura="sala"],body[data-largura="plano"]{
+  --papel:#f3f5ef; --superficie:#ffffff; --tinta:#07070d; --ardosia:#586070; --linha:#d8dcd0; --trilho:#e2e6da; --grade:transparent;
+  --folha:#007a3e; --folha-forte:#006733; --folha-suave:#dcfae9; --folha-borda:#a8ebc6; --sobre-folha:#ffffff;
+  --tomate:#c4323f; --tomate-suave:#fbe6e8; --trigo:#9a5f00; --trigo-suave:#fdf1dc;
+  --sombra:rgba(7,7,13,.3);
+  --btn:#07070d; --btn-texto:#f3f5ef; --btn-hover:#0d3322;
+  --fala:#3b4150;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; position:relative; z-index:0; background:var(--papel); color:var(--tinta);
+  font-family:var(--f-texto); font-size:17px; line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:0 104px;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+/* Grade e brilho verde do hero do site da Triad, só na capa */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 80%);opacity:0;transition:opacity .5s}
+body[data-largura="capa"]::before{opacity:1}
+body[data-largura="capa"]{background:radial-gradient(ellipse 70% 380px at 50% -60px, color-mix(in srgb,var(--folha) 16%,transparent), transparent 72%) no-repeat, var(--papel)}
+::selection{background:var(--folha);color:var(--sobre-folha)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--folha);outline-offset:3px;border-radius:6px}
+h1,h2,h3{text-wrap:balance}
+[hidden]{display:none!important}
+.pular{position:absolute;left:-9999px;top:8px;z-index:60;padding:10px 14px;border-radius:8px;background:var(--folha);color:var(--sobre-folha);font-family:var(--f-titulo);font-weight:650;text-decoration:none}
+.pular:focus{left:max(16px, env(safe-area-inset-left, 0px))}
+
+/* ——— Cabeçalho: marca + barra fina sem rótulos ——— */
+.topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--papel) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);max-width:1080px;margin-inline:auto;padding-block:16px 12px}
+body[data-largura="capa"] .topo{display:none}
+body[data-largura="coluna"] .topo{max-width:620px}
+body[data-largura="relatorio"] .topo{max-width:760px}
+body[data-largura="abertura"] .topo{max-width:1120px}
+body[data-largura="plano"] .topo{max-width:760px}
+/* conversa: só a barra de progresso fina (trecho preto sobre trilho claro), sem cabeçalho carregado */
+body[data-largura="sala"] .topo{max-width:1180px;padding-block:11px}
+body[data-largura="sala"] .topo__linha{display:none}
+body[data-largura="sala"] .progresso{margin-top:0}
+body[data-largura="sala"] .progresso__fill{background:var(--tinta);box-shadow:none}
+.topo__linha{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-titulo);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta)}
+.marca svg{width:12px;height:12px;fill:var(--folha)}
+.topo__passo{font-family:var(--f-dado);font-size:12px;color:var(--ardosia);letter-spacing:.03em;text-align:right}
+.progresso{margin-top:12px;height:5px;background:var(--trilho);border-radius:99px;overflow:hidden}
+.progresso__fill{height:100%;width:0;background:var(--folha);box-shadow:0 0 12px color-mix(in srgb,var(--folha) 60%,transparent);border-radius:inherit;transition:width .7s var(--curva)}
+
+/* ——— Palco ——— */
+.palco{margin-inline:auto}
+.entra > * > *{animation:sobe .5s var(--curva) both}
+.entra > * > *:nth-child(2){animation-delay:.07s}
+.entra > * > *:nth-child(3){animation-delay:.14s}
+.entra > * > *:nth-child(4){animation-delay:.21s}
+.entra > * > *:nth-child(n+5){animation-delay:.28s}
+[tabindex="-1"]:focus{outline:none}
+@keyframes sobe{from{opacity:0;transform:translateY(10px)}}
+
+/* ——— Botões ——— */
+.botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;border:1.5px solid var(--btn);background:var(--btn);color:var(--btn-texto);font-family:var(--f-titulo);font-weight:600;font-size:1.02rem;line-height:1.2;cursor:pointer;text-decoration:none;box-shadow:0 8px 30px -6px color-mix(in srgb,var(--btn) 32%,transparent);transition:transform .18s var(--curva),background .18s,border-color .18s,color .18s,box-shadow .18s}
+.botao:hover{transform:translateY(-2px);background:var(--btn-hover);border-color:var(--btn-hover);box-shadow:0 14px 40px -6px color-mix(in srgb,var(--btn) 48%,transparent)}
+.botao:active{transform:none}
+.botao:disabled{opacity:.35;cursor:not-allowed;transform:none;background:var(--btn);border-color:var(--btn);box-shadow:none}
+.botao--linha{background:transparent;color:var(--tinta);border-color:color-mix(in srgb,var(--tinta) 32%,transparent);box-shadow:none}
+.botao--linha:hover{background:transparent;border-color:var(--folha);color:var(--folha);box-shadow:none}
+.botao svg{flex:none}
+.seta{font-family:var(--f-dado);font-weight:500}
+.olho{font-family:var(--f-dado);font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ardosia);margin:0 0 16px}
+.fino{font-family:var(--f-dado);font-size:12px;line-height:1.55;color:var(--ardosia);margin:0}
+
+/* ——— Glifos ——— */
+.g-semente{fill:var(--ardosia)}
+.g-fruto circle{fill:var(--trigo)}
+.g-folha{fill:var(--folha)}
+
+/* ——— Capa (C1–C11): coluna de 640, foto, rótulo, cartões ——— */
+.hub{max-width:640px;margin-inline:auto;padding-block:clamp(40px,8vh,80px) 24px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.hub__foto{width:clamp(96px,18vw,132px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid color-mix(in srgb,var(--folha) 45%,transparent);box-shadow:0 0 0 6px var(--folha-suave),0 20px 50px -22px var(--sombra);background:var(--painel)}
+.hub__foto img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%}
+.hub__nome{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-dado);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ardosia);padding:6px 14px;border:1px solid var(--linha);border-radius:999px;background:color-mix(in srgb,var(--superficie) 60%,transparent)}
+.hub__nome::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--folha);box-shadow:0 0 10px var(--folha)}
+/* acento manuscrito da capa (Permanent Marker, como o "launches" do site) */
+.rotulo{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;margin:30px 0 0;font-family:var(--f-mao);font-size:1.45rem;font-weight:400;line-height:1.2;color:var(--folha);text-shadow:0 0 18px color-mix(in srgb,var(--folha) 45%,transparent)}
+.rotulo::before,.rotulo::after{content:"";flex:0 1 56px;height:1px;background:var(--linha)}
+.cartoes{width:100%;display:grid;grid-auto-rows:1fr;gap:14px}
+.cartao{--sobe:30px;position:relative;isolation:isolate;background:radial-gradient(ellipse 80% 150px at 30% 100%,color-mix(in srgb,var(--folha-viva) 22%,transparent),transparent 72%),linear-gradient(180deg,#07070d 0%,#07120d 36%,var(--verde-fundo) 74%,var(--verde-fundo-2) 100%);border:1px solid color-mix(in srgb,var(--folha-viva) 28%,transparent);border-radius:18px;overflow:hidden;box-shadow:0 24px 60px -30px color-mix(in srgb,var(--folha) 60%,transparent);transition:border-color .25s var(--curva),box-shadow .25s var(--curva),transform .15s var(--curva)}
+.cartao:hover{border-color:color-mix(in srgb,var(--folha-viva) 60%,transparent);box-shadow:0 28px 64px -28px color-mix(in srgb,var(--folha) 75%,transparent)}
+.cartao:active{transform:scale(.985)}
+/* Mesma faixa do Arthur: 190 a 270 de altura, recorte pelo alto. Ela derrete no degradê do cartão por máscara (sem corte seco),
+   e o corpo sobe só --sobe, sobre a parte já apagada: o conteúdo da faixa termina antes do texto (nada sobreposto, no celular e no computador) */
+.cartao__midia{position:relative;z-index:-1;height:clamp(190px,42vw,270px);overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 50%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 50%,transparent 100%)}
+.cartao__midia img,.cartao__midia video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 28%} /* rosto no terço de cima da faixa */
+.cartao__midia--barras{display:flex;flex-direction:column;gap:8px;padding:14px clamp(20px,3.5vw,32px) 40px;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent 100%);mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent 100%)}
+.cartao__midia--barras .barras{flex:1;min-height:0}
+.mini-rel__olho{display:flex;justify-content:space-between;gap:8px;margin:0;font-family:var(--f-dado);font-size:10.5px;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--ardosia)}
+.mini-rel__olho > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cartao__corpo{margin-top:calc(var(--sobe) * -1);padding:0 clamp(20px,3.5vw,32px) clamp(24px,4vw,32px);display:flex;flex-direction:column;gap:14px}
+.cartao__meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0}
+.pilula{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sobre-painel) 22%,transparent);background:color-mix(in srgb,var(--painel) 78%,transparent);font-family:var(--f-dado);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sobre-painel) 72%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pilula::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--folha-viva)}
+.cartao__ir{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--folha-viva);color:var(--painel);font-family:var(--f-dado);font-size:15px;font-weight:600;transition:background .25s var(--curva),transform .25s var(--curva)}
+.cartao:hover .cartao__ir{background:var(--sobre-painel);transform:translateX(2px)}
+.cartao__titulo{margin:0;font-family:var(--f-titulo);font-weight:700;font-size:clamp(22px,5.6vw,27px);line-height:1.18;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 16px rgba(0,0,0,.45)}
+.cartao__link{all:unset;cursor:pointer}
+.cartao__link::after{content:"";position:absolute;inset:0;border-radius:18px}
+.cartao__link:focus-visible::after{outline:2px solid var(--folha-viva);outline-offset:-4px}
+.cartao__aviso{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--sobre-painel) 10%,transparent);font-family:var(--f-dado);font-size:12.5px;line-height:1.55}
+.play{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,var(--folha-viva) 92%,transparent);box-shadow:0 0 0 8px color-mix(in srgb,var(--folha-viva) 16%,transparent),0 12px 30px -10px rgba(0,0,0,.55)}
+.play::before{content:"";margin-left:5px;border-left:18px solid var(--sobre-folha);border-top:11px solid transparent;border-bottom:11px solid transparent}
+.hub__mais{width:100%;display:grid;gap:10px;margin-top:20px}
+.hub__mais .botao{width:100%;max-width:320px;justify-self:center}
+.hub__mais .fino{text-align:center}
+.hub__pe{width:100%;margin-top:30px;padding-top:18px;border-top:1px solid var(--linha);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;font-family:var(--f-dado);font-size:11.5px;color:var(--ardosia)}
+.hub__pe .marca{font-size:12px}
+
+/* ——— Abertura do teste (A1–A9): página clara, peça a peça como a do /assessment do original.
+   Relatório de exemplo grande à esquerda (cartão escuro, inclinado, clicável); etiqueta, título, texto, botão preto e nota à direita ——— */
+.abertura{width:100%;max-width:1120px;margin-inline:auto;display:grid;gap:clamp(28px,5vw,64px);align-items:start;padding-block:clamp(12px,3vw,36px) 24px}
+.abertura__copy{min-width:0;width:100%;max-width:520px;justify-self:center;container-type:inline-size}
+.abertura__olho{margin:0 0 18px;font-family:var(--f-maq);font-size:.86rem;font-weight:500;letter-spacing:.02em;color:var(--ardosia)}
+.abertura h1{margin:0 0 22px;font-family:var(--f-titulo);font-weight:700;font-size:clamp(2rem,9vw,2.7rem);line-height:1.04;letter-spacing:-.035em;color:var(--tinta);overflow-wrap:break-word}
+.abertura__lede{margin:0 0 28px;max-width:32em;font-size:1.1rem;line-height:1.55;color:var(--fala)}
+.abertura__lede strong{color:var(--tinta);font-weight:700}
+.abertura__meta{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;padding:0;margin:0 0 28px;font-family:var(--f-dado);font-size:.95rem;color:var(--ardosia)}
+.abertura__meta li{display:inline-flex;align-items:center;gap:8px}
+.abertura__meta svg{flex:none;width:16px;height:16px}
+.abertura__nota{margin:18px 0 0;max-width:34em;font-size:.88rem;line-height:1.5;color:var(--ardosia)}
+@media (min-width:900px){
+  .abertura{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  /* o texto acompanha a rolagem do relatório, que é mais alto que a tela */
+  .abertura__copy{justify-self:start;position:sticky;top:clamp(72px,12vh,120px);padding-top:clamp(0px,4vh,40px)}
+  /* 3 linhas no computador; o tamanho acompanha a largura da coluna para a linha mais longa (21 letras) sempre caber */
+  .abertura h1{font-size:clamp(1.6rem,7.6cqw,3.1rem)}
+  .abertura h1 .l{display:block;white-space:nowrap}
+}
+
+/* Relatório de exemplo: o mesmo que a pessoa recebe no final, com dados de exemplo. A conta toda é em "em" e escala com a largura do cartão */
+.previa{position:relative;margin:0;width:100%;max-width:560px;justify-self:center;container-type:inline-size}
+.previa__botao{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;border:0;border-radius:20px;background:transparent;cursor:pointer}
+.previa__botao:focus-visible{outline:2px solid var(--folha);outline-offset:6px}
+.rel{font-size:clamp(10px,2.78cqw,15px);position:relative;padding:2.1em 2em 1.9em;border-radius:1.4em;color:#f4f6f5;
+  background:radial-gradient(ellipse 85% 22em at 90% 0%,rgba(0,255,135,.14),transparent 70%),linear-gradient(180deg,#07070d 0%,#08160f 42%,var(--verde-fundo) 100%);
+  border:1px solid rgba(0,255,135,.2);box-shadow:0 44px 90px -36px rgba(0,0,0,.6),0 14px 32px -16px rgba(0,0,0,.45);
+  transform:rotate(-2deg);transition:transform .35s var(--curva)}
+.previa:hover .rel,.previa:has(.previa__botao:focus-visible) .rel{transform:rotate(0) scale(1.01)}
+.rel__topo{margin:0;display:flex;justify-content:space-between;gap:1em;font-family:var(--f-maq);font-size:.74em;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,246,245,.6)}
+.rel__topo span:first-child{color:var(--folha-viva)}
+.rel__titulo{margin:.5em 0 0;font-family:var(--f-titulo);font-weight:700;font-size:2.2em;line-height:1.05;letter-spacing:-.03em;color:#fff;text-wrap:balance}
+.rel__quem{margin:1.1em 0 0;padding-top:1.1em;border-top:1px solid rgba(0,255,135,.28);display:flex;flex-wrap:wrap;gap:.4em 1.2em;font-family:var(--f-maq);font-size:.72em;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,246,245,.68)}
+.rel__quem b{color:#fff;font-weight:600}
+.rel__sec{margin-top:1.9em;display:grid;grid-template-columns:1.4em minmax(0,1fr);gap:0 .9em;align-items:start}
+.rel__vert{writing-mode:vertical-rl;transform:rotate(180deg);justify-self:center;font-family:var(--f-maq);font-size:.66em;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:rgba(244,246,245,.5)}
+.rel__conteudo{min-width:0}
+.rel__funil{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1.3em}
+.rel__graf{height:13.5em;min-width:0}
+.rel .barras{--larg:clamp(12px,38%,34px);font-size:.92em}
+.rel__perfil{align-self:start;padding:1.1em 1.2em 1.2em;border-radius:1em;color:var(--sobre-folha-escura);background:linear-gradient(150deg,#5cf0a8 0%,#26c576 100%);box-shadow:0 0 2.4em -.6em rgba(0,255,135,.5)}
+.rel__perfil-cab{margin:0;display:flex;align-items:center;gap:.7em;font-family:var(--f-maq);font-size:.66em;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.rel__perfil-cab::after{content:"";flex:1;height:1px;background:currentColor;opacity:.35}
+.rel__perfil b{display:block;margin-top:.7em;font-family:var(--f-titulo);font-weight:800;font-size:1.45em;line-height:1.08;letter-spacing:-.015em}
+.rel__perfil-txt{margin:.7em 0 0;font-size:.86em;line-height:1.45;color:#0a2a18}
+.rel .mini{margin:1.6em 0 0;gap:1em}
+.rel .mini li{font-size:.92em}
+.rel .mini em{font-size:1em}
+.rel__sub{margin:0 0 .9em;font-family:var(--f-maq);font-size:.7em;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,246,245,.6)}
+.rel__sub b{color:var(--folha-viva);font-weight:600}
+.rel__selos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55em}
+.rel__selos li{display:flex;align-items:center;gap:.5em;min-width:0;padding:.7em .75em;border:1px solid rgba(244,246,245,.14);border-radius:.7em;font-family:var(--f-titulo);font-weight:550;font-size:.74em;line-height:1.2;color:rgba(244,246,245,.5)}
+.rel__selos li::before{content:"";flex:none;width:.7em;height:.7em;border-radius:50%;border:1.5px dashed currentColor}
+.rel__selos li.is-ganho{color:#fff;border-color:rgba(0,255,135,.55);background:rgba(0,255,135,.12)}
+.rel__selos li.is-ganho::before{border:0;background:var(--folha-viva)}
+.rel__qs{display:grid;grid-template-columns:1fr 1fr;gap:.8em}
+.rel__q{min-width:0;padding:1.1em 1.2em;border:1px solid rgba(244,246,245,.14);border-radius:.9em;background:rgba(244,246,245,.03)}
+.rel__q h3{margin:0 0 .8em;display:flex;align-items:center;gap:.6em;font-family:var(--f-maq);font-size:.7em;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.rel__q h3::before{content:"";flex:none;width:.9em;height:.9em;border-radius:50%;background:currentColor}
+.rel__q--f h3{color:var(--folha-viva)} .rel__q--r h3{color:var(--tomate-viva)} .rel__q--o h3{color:var(--trigo-viva)} .rel__q--a h3{color:rgba(244,246,245,.62)}
+.rel__q ul{list-style:none;margin:0;padding:0;display:grid;gap:.6em;font-size:.76em;line-height:1.4;color:rgba(244,246,245,.9)}
+.rel__q li{position:relative;padding-left:1.1em}
+.rel__q li::before{content:"";position:absolute;left:0;top:.5em;width:.4em;height:.4em;border-radius:50%;background:currentColor;opacity:.6}
+.rel__mesa{margin:1.7em 0 0;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4em 1em;padding:1em 1.2em;border:1px dashed rgba(255,181,71,.55);border-radius:.9em;font-family:var(--f-dado);font-size:.8em;color:rgba(244,246,245,.72)}
+.rel__mesa b{font-weight:600;font-size:1.05em;color:var(--trigo-viva)}
+/* cartão estreito (celular): sem o rótulo girado, tudo em uma coluna */
+@container (max-width:430px){
+  .rel{font-size:max(10.6px,3.05cqw);padding:1.8em 1.4em 1.5em}
+  .rel__sec{grid-template-columns:1fr;gap:.9em 0}
+  .rel__vert{writing-mode:horizontal-tb;transform:none;justify-self:start}
+  .rel__funil{grid-template-columns:1fr}
+  .rel__selos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rel__qs{grid-template-columns:1fr}
+}
+/* no celular o relatório vem em cima, menor: mostra o começo dele e esmaece, o cartão inteiro continua clicável */
+@media (max-width:899px){
+  .previa{max-height:clamp(500px,148vw,620px);overflow:hidden;padding:10px 10px 0;-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 78%,transparent 100%)}
+}
+
+/* ——— Sala: conversa + painel ao vivo (T2, T3) ——— */
+.sala{max-width:1180px;margin-inline:auto;display:grid;gap:24px;align-items:start}
+@media (min-width:980px){
+  .sala{grid-template-columns:minmax(0,1fr) 480px;gap:40px}
+  .abas{display:none!important}
+}
+.abas{position:sticky;top:calc(env(safe-area-inset-top,0px) + 33px);z-index:15;display:flex;gap:6px;padding:4px;margin-top:0;background:var(--superficie);border:1px solid var(--linha);border-radius:999px;box-shadow:0 8px 16px -12px var(--sombra)}
+.abas button{position:relative;flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 12px;border:0;border-radius:999px;background:transparent;font-family:var(--f-titulo);font-weight:600;font-size:.92rem;color:var(--ardosia);cursor:pointer}
+.abas button[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
+/* selo da aba Resultado: conta o que já foi preenchido, gira na análise, vira ✓ quando fica pronto */
+.abas__selo{position:relative;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid currentColor;font-family:var(--f-dado);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.abas__selo.is-novo{background:var(--folha);border-color:var(--folha);color:var(--sobre-folha)}
+.abas__selo.is-girando{color:var(--trigo);border-color:color-mix(in srgb,var(--trigo) 30%,transparent)}
+.abas__selo.is-girando::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--trigo);border-right-color:transparent;border-bottom-color:transparent;animation:gira .8s linear infinite}
+.abas__selo.is-pronto{background:var(--folha);border-color:var(--folha);color:var(--sobre-folha);animation:pulso-forte .8s var(--curva) 4}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes pulso-forte{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--folha) 75%,transparent)}100%{box-shadow:0 0 0 12px transparent}}
+.abas button.is-empurrao{animation:empurrao 1.3s var(--curva) infinite}
+@keyframes empurrao{50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--folha) 40%,transparent)}}
+/* setinha apontando para a aba (o 👆 do original) */
+.abas button.is-empurrao::after{content:"↑";position:absolute;top:calc(100% + 8px);left:50%;margin-left:-.3em;font-family:var(--f-titulo);font-size:22px;font-weight:700;line-height:1;color:var(--folha);text-shadow:0 0 12px color-mix(in srgb,var(--folha) 60%,transparent);animation:aponta 1s var(--curva) infinite;pointer-events:none}
+@keyframes aponta{50%{transform:translateY(-5px)}}
+@media (max-width:979px){
+  body[data-aba="resultado"] .sala [data-pane="conversa"]{display:none}
+  body:not([data-aba="resultado"]) .sala [data-pane="resultado"]{display:none}
+}
+
+/* ——— Conversa (T4–T11): fundo claro. A fala do Junior fica em balão branco (Inter regular, cinza escuro); a pergunta fica solta no fundo
+   (Space Grotesk em negrito, preta, maior), colada nas opções; uma opção por linha, sem bolinha ——— */
+.conversa{max-width:660px;width:100%;margin-inline:auto;padding-block:20px 0;display:flex;flex-direction:column;gap:14px;min-width:0}
+/* espaço vazio no fim: deixa o que é novo subir até a linha de leitura mesmo com pouco conteúdo */
+.conversa::after{content:"";flex:none;height:100vh}
+/* âncora de altura zero: o ponto exato onde começa tudo que é novo (o espaço de 14 entre itens é cancelado) */
+[data-ancora]{height:0;margin-bottom:-14px}
+.balao{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.balao.is-in{animation:sobe .36s var(--curva) both}
+.balao__texto{min-width:0;background:var(--superficie);border:1px solid var(--linha);border-radius:10px;padding:14px 18px}
+.avatar{flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden}
+.avatar img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;opacity:0;transition:opacity .25s}
+.balao--bot.is-ultimo .avatar img{opacity:1}
+.fala{margin:0;font-family:var(--f-texto);font-size:clamp(1.1rem,1.04rem + .2vw,1.25rem);font-weight:400;line-height:1.5;color:var(--fala);text-wrap:pretty}
+.fala strong{font-family:var(--f-titulo);font-weight:700;color:var(--tinta)}
+/* respiro de 40px entre o comentário e a pergunta (14 do espaço normal + 26) */
+.balao--bot + .balao--perg,.marco + .balao--perg{margin-top:26px}
+.pergunta{flex:1;min-width:0}
+.pergunta__q{margin:0;font-family:var(--f-titulo);font-weight:700;font-size:clamp(1.25rem,1.1rem + .5vw,1.4rem);line-height:1.25;letter-spacing:-.015em;color:var(--tinta);text-wrap:balance}
+.ajuda{margin:6px 0 0;font-size:.9rem;line-height:1.45;color:var(--ardosia)}
+.balao--eu{justify-content:flex-end}
+.balao--eu .balao__texto{display:inline-flex;align-items:flex-start;gap:10px;max-width:88%;background:var(--folha-suave);border-color:var(--folha-borda);font-family:var(--f-titulo);font-weight:500;font-size:1.02rem;line-height:1.45;color:var(--tinta);padding:11px 12px 11px 16px}
+.editar{flex:none;background:none;border:0;padding:0 2px;font-size:14px;line-height:1.45;color:var(--ardosia);cursor:pointer}
+.editar:hover{color:var(--tinta)}
+.digitando .balao__texto{display:inline-flex;gap:5px;padding:15px 16px}
+.digitando i{width:7px;height:7px;border-radius:50%;background:var(--ardosia);animation:pula 1s infinite ease-in-out}
+.digitando i:nth-child(2){animation-delay:.18s}
+.digitando i:nth-child(3){animation-delay:.36s}
+@keyframes pula{0%,60%,100%{transform:none;opacity:.45}30%{transform:translateY(-4px);opacity:1}}
+.recuo{margin-left:52px}
+@media (max-width:520px){ .recuo{margin-left:46px} .avatar{width:34px;height:34px} }
+/* marcos discretos: "✓ 1 de 3" */
+.marco{margin:0;font-family:var(--f-dado);font-size:12.5px;line-height:1.4;color:var(--ardosia)}
+.marco strong{font-weight:600;color:var(--tinta)}
+
+/* ——— Opções (T9): linhas brancas de largura total, uma por linha, sem bolinha ——— */
+[data-corpo]{margin-top:2px} /* 16px da pergunta até a primeira opção */
+.opcoes{display:flex;flex-direction:column;gap:10px}
+.opcao{display:flex;align-items:center;gap:12px;width:100%;min-width:0;min-height:64px;text-align:left;padding:14px 20px;background:var(--superficie);border:1px solid var(--linha);border-radius:10px;font-family:var(--f-texto);font-size:clamp(1.05rem,1rem + .2vw,1.125rem);font-weight:500;line-height:1.35;color:var(--tinta);cursor:pointer;transition:border-color .15s,background .15s}
+.opcao:hover{border-color:color-mix(in srgb,var(--tinta) 60%,var(--linha))}
+.opcao[aria-checked="true"]{border-color:var(--folha);background:var(--folha-suave)}
+.opcao[role="checkbox"][aria-checked="true"]::after{content:"✓";margin-left:auto;padding-left:12px;font-weight:700;color:var(--folha)}
+.opcao small{display:block;font-family:var(--f-texto);font-size:.9rem;font-weight:400;color:var(--ardosia);margin-top:2px}
+.opcoes--duas .opcao b{font-family:var(--f-titulo);font-weight:600;font-size:1.1rem}
+.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+
+/* ——— Campos ——— */
+.entrada{display:flex;align-items:center;gap:10px;background:var(--superficie);border:1.5px solid var(--linha);border-radius:10px;padding:0 16px;transition:border-color .15s}
+.entrada:focus-within{border-color:var(--folha)}
+.entrada input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--tinta);font-family:var(--f-titulo);font-variant-numeric:tabular-nums;font-size:1.05rem;font-weight:550;padding:13px 0}
+.entrada__pre,.entrada__pos{font-family:var(--f-dado);font-size:.95rem;color:var(--ardosia)}
+.entrada--grande{max-width:340px}
+.entrada--grande input{font-size:1.7rem;font-weight:700;padding:14px 0}
+.dica{font-family:var(--f-dado);font-size:12px;color:var(--ardosia);margin:8px 0 0}
+
+/* ——— Modo números ——— */
+.livro{list-style:none;margin:0;padding:0;position:relative}
+.livro::before{content:"";position:absolute;left:11px;top:26px;bottom:26px;width:2px;background:var(--linha)}
+.livro > li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--linha)}
+.livro > li:last-child{border-bottom:0}
+.no{position:relative;z-index:1;width:24px;height:24px;display:grid;place-items:center;background:var(--papel)}
+.no svg{width:16px;height:16px}
+.no i{width:10px;height:10px;border-radius:50%;border:2px solid var(--ardosia);background:var(--papel)}
+.livro__rotulo b{display:block;font-family:var(--f-titulo);font-weight:650;font-size:1rem;line-height:1.25}
+.livro__rotulo small{display:block;font-size:.9rem;line-height:1.35;color:var(--ardosia)}
+.livro__campo{display:flex;align-items:center;gap:8px}
+.livro__campo .entrada{padding:0 12px;border-radius:10px}
+.livro__campo input{width:84px;flex:none;padding:10px 0;font-size:1.05rem}
+.alterna{display:inline-flex;border:1px solid var(--linha);border-radius:9px;overflow:hidden;background:var(--superficie)}
+.alterna button{border:0;background:transparent;padding:10px 11px;font-family:var(--f-dado);font-size:13px;color:var(--ardosia);cursor:pointer;min-width:40px}
+.alterna button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.alterna--fixa{padding:10px 12px;font-family:var(--f-dado);font-size:13px;color:var(--ardosia)}
+.livro__calc{grid-column:2 / -1;margin:0;font-family:var(--f-dado);font-size:12px;color:var(--folha);min-height:1em}
+.livro__calc.is-aviso{color:var(--tomate)}
+@media (max-width:520px){
+  .livro > li{grid-template-columns:24px minmax(0,1fr)}
+  .livro__campo{grid-column:2}
+}
+
+/* ——— Modo chute ——— */
+.ou{display:flex;align-items:center;gap:12px;font-family:var(--f-dado);font-size:12px;color:var(--ardosia);margin:6px 0 2px}
+.ou::before,.ou::after{content:"";flex:1;height:1px;background:var(--linha)}
+.chute{max-width:200px}
+
+/* ——— Contato (T19) ——— */
+.cartao-form{background:var(--superficie);border:1px solid var(--linha);border-radius:16px;padding:18px}
+.form{display:grid;gap:16px}
+.campo label,.campo .rotulo-campo{display:block;font-family:var(--f-titulo);font-weight:600;font-size:.93rem;margin-bottom:6px}
+.opcional{font-weight:400;color:var(--ardosia)}
+.campo input:not(.cru){width:100%;background:var(--papel);border:1.5px solid var(--linha);border-radius:10px;padding:13px 14px;font-family:var(--f-titulo);font-size:1.05rem;font-weight:500;color:var(--tinta);transition:border-color .15s}
+.campo input:not(.cru):focus{outline:0;border-color:var(--folha)}
+.tel{display:flex;gap:8px}
+.ddi{position:relative;flex:none;display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--papel);border:1.5px solid var(--linha);border-radius:10px;font-family:var(--f-dado);font-size:.95rem;white-space:nowrap}
+.ddi:focus-within{border-color:var(--folha);outline:2px solid var(--folha);outline-offset:2px}
+.ddi__seta{font-size:10px;color:var(--ardosia)}
+.ddi select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;font-size:16px}
+.tel input{flex:1;min-width:0}
+.dica.is-ok{color:var(--folha)}
+.sugestao{display:inline;background:none;border:0;padding:0;font:inherit;color:var(--folha);text-decoration:underline;cursor:pointer}
+.proto-encher{justify-self:start;background:none;border:1px dashed var(--ardosia);border-radius:8px;padding:6px 10px;font-family:var(--f-dado);font-size:11.5px;color:var(--ardosia);cursor:pointer}
+
+/* ——— Montando (T20) ——— */
+.montando{max-width:440px;margin-inline:auto;padding-block:20px 8px;text-align:center}
+.broto{width:120px;height:120px;display:block;margin:0 auto 14px}
+.broto .chao{stroke:var(--linha);stroke-width:2;stroke-linecap:round}
+.broto .caule{fill:none;stroke:var(--folha);stroke-width:3;stroke-linecap:round;stroke-dasharray:80;stroke-dashoffset:80;animation:desenha 1.3s .2s var(--curva) forwards}
+.broto .fl{fill:var(--folha);transform-box:fill-box;transform:scale(0);animation:abre .5s var(--curva) forwards}
+.broto .fl1{transform-origin:100% 100%;animation-delay:1s}
+.broto .fl2{transform-origin:0 100%;animation-delay:1.3s}
+.broto .fr{fill:var(--trigo);transform-box:fill-box;transform-origin:50% 50%;transform:scale(0);animation:abre .5s 2.3s var(--curva) forwards}
+@keyframes desenha{to{stroke-dashoffset:0}}
+@keyframes abre{to{transform:scale(1)}}
+.montando__titulo{font-family:var(--f-titulo);font-weight:750;font-size:1.4rem;letter-spacing:-.015em;margin:0 0 16px}
+.passos{list-style:none;padding:0;margin:0 auto;display:grid;gap:10px;text-align:left;width:fit-content;max-width:100%;font-family:var(--f-dado);font-size:13.5px;color:var(--ardosia)}
+.passos li{display:flex;align-items:center;gap:10px;transition:color .3s}
+.passos li::before{content:"";flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--linha);transition:background .3s,border-color .3s}
+.passos li.feito{color:var(--tinta)}
+.passos li.feito::before{background:var(--folha);border-color:var(--folha);box-shadow:inset 0 0 0 3px var(--papel)}
+.montando .botao{margin-top:24px}
+
+/* ——— Painel ao vivo (T16): continua escuro (preto Triad para verde-escuro), como no original ——— */
+.painel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 51px);max-height:calc(100vh - 76px);overflow:auto;margin-top:20px;background:radial-gradient(ellipse 90% 220px at 88% 0%,color-mix(in srgb,var(--folha-viva) 13%,transparent),transparent 70%),linear-gradient(180deg,#07070d 0%,#08160f 45%,var(--verde-fundo) 100%);border:1px solid color-mix(in srgb,var(--folha-viva) 22%,transparent);border-radius:20px;padding:28px 26px 24px;display:grid;gap:32px;box-shadow:0 30px 60px -34px var(--sombra);min-width:0}
+@media (max-width:979px){ .painel{position:relative;max-height:none;margin-top:12px} }
+/* véu escuro com desfoque enquanto o diagnóstico é montado; o aviso de análise fica por cima */
+body[data-analisando] .painel::after{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:color-mix(in srgb,var(--painel) 62%,transparent);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none}
+body[data-analisando] .painel__topo,body[data-analisando] .painel__titulo,body[data-analisando] .giro{position:relative;z-index:2}
+.painel__topo{display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--f-maq);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ardosia)}
+.painel__marca{color:var(--folha)}
+@keyframes pisca{50%{opacity:.25}}
+.painel__titulo{margin:-14px 0 0;font-family:var(--f-titulo);font-weight:700;font-size:2rem;line-height:1.05;letter-spacing:-.03em;color:#fff}
+.giro{display:flex;align-items:center;gap:8px;margin:-20px 0 0;font-family:var(--f-maq);font-size:12px;color:var(--trigo)}
+.giro::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:currentColor;animation:pisca 1.6s infinite}
+.ficha{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ficha li{display:flex;align-items:center;gap:14px;padding:6px 8px;margin:0 -8px;border-radius:12px}
+.ficha__ic{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--folha) 45%,transparent);color:var(--folha)}
+.ficha__ic svg{width:17px;height:17px}
+.ficha__corpo{min-width:0;display:grid;gap:1px}
+.ficha__k{font-family:var(--f-maq);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ardosia)}
+.ficha__v{min-width:0;font-family:var(--f-titulo);font-weight:600;font-size:1.02rem;line-height:1.25;color:#fff}
+.ficha li.is-vazio .ficha__v{color:var(--ardosia);font-weight:400}
+.ficha li.is-destaque{animation:destaque 1s var(--curva) 3}
+@keyframes destaque{50%{background:color-mix(in srgb,var(--folha) 26%,transparent)}}
+.perfil-funil{padding:16px 18px 18px;border-radius:16px;color:var(--sobre-folha-escura);background:linear-gradient(150deg,#5cf0a8 0%,#26c576 100%);box-shadow:0 0 36px -10px color-mix(in srgb,var(--folha-viva) 55%,transparent)}
+.perfil-funil__cab{margin:0;display:flex;align-items:center;gap:10px;font-family:var(--f-maq);font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.perfil-funil__cab::after{content:"";flex:1;height:1px;background:currentColor;opacity:.35}
+.perfil-funil__corpo{display:flex;align-items:center;gap:12px;margin-top:12px}
+.perfil-funil__ic{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#04130b;color:var(--folha-viva)}
+.perfil-funil__ic svg{width:19px;height:19px}
+.perfil-funil__nome{margin:0;font-family:var(--f-titulo);font-weight:800;font-size:1.55rem;line-height:1.05;letter-spacing:-.01em}
+.perfil-funil__sub{margin:10px 0 0;font-size:.92rem;line-height:1.45;color:#0a2a18}
+.sec-cab{display:flex;align-items:baseline;gap:12px;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--linha)}
+.sec-cab b{font-family:var(--f-maq);font-weight:500;font-size:12px;letter-spacing:.1em;color:var(--folha)}
+.sec-cab h2{margin:0;font-family:var(--f-titulo);font-weight:700;font-size:1.15rem;letter-spacing:-.01em;color:#fff}
+.sec-cab span{margin-left:auto;font-family:var(--f-maq);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ardosia)}
+#painelFunil .barras{height:190px}
+.selos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.selo-item{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;font-family:var(--f-titulo);font-size:.82rem;font-weight:550;line-height:1.2;color:var(--ardosia);opacity:.65}
+.selo-item::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;border:1.5px dashed var(--ardosia)}
+.selo-item.is-ganho{opacity:1;color:var(--tinta);border-color:color-mix(in srgb,var(--folha) 55%,transparent);background:color-mix(in srgb,var(--folha) 12%,transparent)}
+.selo-item.is-ganho::before{border:0;background:var(--folha)}
+.quadros{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.quadro{border:1px solid var(--linha);border-radius:12px;padding:12px 14px;display:grid;gap:7px}
+.quadro b{font-family:var(--f-maq);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.quadro--f b{color:var(--folha)} .quadro--r b{color:var(--tomate)} .quadro--o b{color:var(--trigo)} .quadro--a b{color:var(--ardosia)}
+.esqueleto{height:7px;border-radius:4px;background:var(--trilho)}
+.esqueleto + .esqueleto{width:70%}
+body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
+.painel__acoes{display:flex;gap:8px;flex-wrap:wrap}
+.painel__acoes button{flex:1;padding:9px 12px;border-radius:999px;border:1px solid var(--linha);background:transparent;color:var(--ardosia);font-family:var(--f-dado);font-size:12px;cursor:not-allowed}
+.painel__nota{margin:8px 0 0;font-family:var(--f-dado);font-size:11.5px;line-height:1.5;color:var(--ardosia)}
+
+/* ——— Selo conquistado (T15) ——— */
+.aviso-selo{position:fixed;z-index:40;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 150px);padding:10px 16px;border-radius:12px;border:1px solid color-mix(in srgb,var(--folha-viva) 45%,transparent);background:var(--painel);color:var(--sobre-painel);font-family:var(--f-titulo);font-weight:650;font-size:.95rem;box-shadow:0 18px 40px -18px var(--sombra);animation:sobe .4s var(--curva) both}
+.aviso-selo small{display:block;font-family:var(--f-dado);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--folha-viva)}
+
+/* ——— Relatório ——— */
+.relatorio{max-width:760px;margin-inline:auto;padding-block:20px 8px;display:flex;flex-direction:column;gap:56px}
+.rel-ficha{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--linha);font-family:var(--f-dado);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ardosia)}
+.rel-ficha span:first-child{color:var(--tinta);font-weight:600}
+.rel-topo h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(2rem,1.4rem + 2.6vw,3.2rem);line-height:1.03;letter-spacing:-.03em;margin:0 0 18px}
+/* acento manuscrito do relatório: o veredito, na cor do status */
+.rel-topo h1 span{display:inline-block;font-family:var(--f-mao);font-weight:400;font-size:.92em;line-height:1.1;letter-spacing:0;color:var(--tomate);text-shadow:0 0 18px color-mix(in srgb,var(--tomate) 40%,transparent);transform:rotate(-2deg)}
+.rel-topo h1 span.ok{color:var(--folha);text-shadow:0 0 18px color-mix(in srgb,var(--folha) 45%,transparent)}
+.rel-topo__lede{font-size:1.15rem;line-height:1.55;max-width:36em;margin:0 0 18px}
+.rel-selos{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.selo{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--linha);border-radius:999px;font-family:var(--f-dado);font-size:12px;color:var(--ardosia)}
+.selo::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--folha)}
+.selo--est{color:var(--tinta);border-color:color-mix(in srgb,var(--trigo) 45%,transparent)}
+.selo--est::before{background:var(--trigo)}
+.perfil-chip{display:inline-flex;align-items:baseline;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid var(--linha);background:var(--painel);color:color-mix(in srgb,var(--sobre-painel) 70%,transparent);font-family:var(--f-dado);font-size:12px}
+.perfil-chip b{font-family:var(--f-titulo);font-weight:750;font-size:.92rem;color:var(--folha-viva)}
+.rel-copia{margin:14px 0 0;font-family:var(--f-dado);font-size:12px;color:var(--ardosia)}
+.secao__olho{font-family:var(--f-dado);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ardosia);margin:0 0 6px}
+.secao__titulo{font-family:var(--f-titulo);font-weight:750;font-size:clamp(1.4rem,1.2rem + .8vw,1.8rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 22px}
+
+/* Haste semente → fruto (assinatura) */
+.haste{position:relative;padding-left:44px}
+.haste::before{content:"";position:absolute;left:13px;top:30px;bottom:30px;width:2px;background:linear-gradient(var(--ardosia),var(--folha));opacity:.45}
+.haste__ponta{position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding-block:8px}
+.haste__ponta > svg{position:absolute;left:-44px;top:8px;width:28px;height:28px;background:var(--papel)}
+.haste__ponta b{font-family:var(--f-titulo);font-weight:800;font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.haste__ponta span{font-family:var(--f-dado);font-size:12.5px;color:var(--ardosia)}
+.haste__geral{flex-basis:100%;font-family:var(--f-dado);font-size:12.5px;color:var(--ardosia);margin:6px 0 0}
+.haste__geral strong{color:var(--tinta);font-weight:600}
+.etapas{list-style:none;margin:0;padding:6px 0;display:grid;gap:22px}
+.etapa{position:relative;padding-block:4px}
+.etapa::before{content:"";position:absolute;left:-36px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--folha);box-shadow:0 0 0 4px var(--papel),0 0 12px color-mix(in srgb,var(--folha) 60%,transparent)}
+.etapa.is-baixo::before{background:var(--papel);border:2.5px solid var(--tomate);box-shadow:0 0 0 4px var(--papel)}
+.etapa__linha{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.etapa__nome{font-family:var(--f-titulo);font-weight:650;font-size:1.05rem}
+.etapa__taxa{font-family:var(--f-dado);font-weight:600;font-size:1.35rem;font-variant-numeric:tabular-nums;color:var(--folha)}
+.is-baixo .etapa__taxa{color:var(--tomate)}
+.etapa__pe{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2px 12px;font-family:var(--f-dado);font-size:12px;color:var(--ardosia)}
+.etapa__status{color:var(--folha)}
+.is-baixo .etapa__status{color:var(--tomate)}
+.regua{position:relative;height:12px;margin:26px 0 9px;background:var(--trilho);border-radius:3px}
+.regua__barra{position:absolute;left:0;top:0;bottom:0;width:calc(var(--v) * 1%);background:var(--folha);border-radius:3px;animation:enche 1s .15s var(--curva) both}
+.is-baixo .regua__barra{background:var(--tomate)}
+.regua__falta{position:absolute;top:0;bottom:0;left:calc(var(--v) * 1%);width:calc((var(--m) - var(--v)) * 1%);background:repeating-linear-gradient(135deg,var(--tomate) 0 2px,transparent 2px 6px);opacity:.5}
+.regua__meta{position:absolute;top:-6px;bottom:-6px;left:calc(var(--m) * 1%);width:2px;margin-left:-1px;background:var(--tinta)}
+.regua__meta i{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);padding-bottom:4px;font-family:var(--f-dado);font-style:normal;font-size:10.5px;line-height:1;white-space:nowrap;color:var(--tinta)}
+@keyframes enche{from{width:0}}
+.mini{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px}
+.mini li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:baseline;font-family:var(--f-titulo);font-size:.88rem;font-weight:550}
+.mini .regua{grid-column:1 / -1;height:8px;margin:2px 0 0}
+.mini .regua__meta{top:-4px;bottom:-4px}
+.mini .regua__meta i{display:none}
+.mini em{font-style:normal;font-family:var(--f-dado);font-size:.85rem;font-weight:600;color:var(--folha)}
+.mini .is-baixo em{color:var(--tomate)}
+.mini .is-vazio em{color:var(--ardosia);font-weight:400}
+
+/* Leitura em 4 quadros */
+.quatro{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.quatro__q{border:1px solid var(--linha);border-radius:16px;padding:18px 18px 16px;background:var(--superficie)}
+.quatro__q h3{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-family:var(--f-dado);font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.quatro__q h3::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.q-forca h3{color:var(--folha)} .q-fraqueza h3{color:var(--tomate)} .q-oportunidade h3{color:var(--trigo)} .q-alerta h3{color:var(--ardosia)}
+.q-fraqueza .lista li::before{background:var(--tomate)} .q-oportunidade .lista li::before{background:var(--trigo)} .q-alerta .lista li::before{background:var(--ardosia)}
+.selos--rel{grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr))}
+
+/* Pontos fracos */
+.fracos{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--tinta)}
+.fraco{padding:26px 0;border-bottom:1px solid var(--linha);display:grid;gap:12px}
+.fraco__tag{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-dado);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ardosia)}
+.fraco__tag .principal{color:var(--tomate);font-weight:600}
+.fraco__cabeca{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.fraco h3{font-family:var(--f-titulo);font-weight:750;font-size:1.45rem;letter-spacing:-.015em;margin:0}
+.fraco__num{font-family:var(--f-dado);font-size:13px;color:var(--ardosia);white-space:nowrap}
+.fraco__num b{font-size:1.15rem;color:var(--tomate);font-weight:600}
+.fraco__frase{margin:0;font-size:1.08rem}
+.fraco__bloco h4{margin:6px 0 4px;font-family:var(--f-dado);font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--folha)}
+.fraco__bloco p{margin:0;color:var(--tinta)}
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.lista li{position:relative;padding-left:20px}
+.lista li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;background:var(--folha);transform:rotate(45deg)}
+.conjunta{margin-top:24px;padding:18px 20px;border:1px dashed var(--ardosia);border-radius:14px;display:grid;gap:8px}
+.conjunta p{margin:0}
+.conjunta .secao__olho{margin:0}
+.funciona{margin-top:18px;display:flex;gap:12px;align-items:flex-start}
+.funciona svg{flex:none;width:22px;height:22px;margin-top:2px}
+.funciona p{margin:0}
+
+/* Dinheiro na mesa */
+.mesa{background:var(--trigo-suave);border:1px solid color-mix(in srgb,var(--trigo) 30%,transparent);border-radius:20px;padding:clamp(22px,4vw,40px)}
+.mesa__valor{font-family:var(--f-titulo);font-weight:800;font-size:clamp(2.6rem,1.8rem + 3.4vw,4.2rem);line-height:1;letter-spacing:-.035em;margin:8px 0 12px;font-variant-numeric:tabular-nums}
+.mesa__valor small{font-family:var(--f-dado);font-weight:500;font-size:.9rem;letter-spacing:0;color:var(--ardosia);margin-left:6px}
+.mesa__valor--frase{font-size:clamp(1.8rem,1.3rem + 2vw,2.7rem);line-height:1.08;letter-spacing:-.025em}
+.mesa__frase{font-size:1.1rem;margin:0 0 24px;max-width:34em}
+.partes{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:14px}
+.partes li{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:6px 14px;align-items:center}
+.partes__nome{font-family:var(--f-titulo);font-weight:650}
+.partes__barra{height:10px;border-radius:3px;background:var(--trigo);width:calc(var(--p) * 1%);animation:enche 1s .2s var(--curva) both}
+.partes__valor{font-family:var(--f-dado);font-size:13px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.partes__valor b{font-size:15px;font-weight:600}
+@media (max-width:560px){
+  .partes li{grid-template-columns:minmax(0,1fr) auto}
+  .partes__barra{grid-column:1 / -1;grid-row:2}
+}
+.mesa__nota{font-family:var(--f-dado);font-size:12px;line-height:1.6;color:var(--ardosia);margin:0;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--trigo) 45%,transparent)}
+.rolagem{overflow-x:auto;margin:0 0 20px}
+.tabela{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:360px}
+.tabela th{font-family:var(--f-dado);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ardosia);text-align:left;padding:0 10px 8px 0}
+.tabela td{font-family:var(--f-titulo);font-weight:600;font-size:1.1rem;padding:10px 10px 10px 0;border-top:1px solid color-mix(in srgb,var(--trigo) 45%,transparent)}
+.tabela td:last-child,.tabela th:last-child{text-align:right;padding-right:0}
+
+/* Vídeo do Junior no relatório (T23) */
+.video{position:relative;isolation:isolate;aspect-ratio:16/9;max-width:100%;border-radius:18px;overflow:hidden;background:var(--painel)}
+.video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 26%}
+.video__veu{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,color-mix(in srgb,var(--painel) 85%,transparent))}
+.video__play{position:absolute;inset:0;width:100%;padding:0;border:0;background:transparent;cursor:pointer;display:grid;place-items:center}
+.video__play:focus-visible{outline:2px solid var(--folha-viva);outline-offset:-6px;border-radius:18px}
+.video__play:hover .play{transform:scale(1.06)}
+.video .play{transition:transform .2s var(--curva)}
+.video .pilula{position:absolute;left:16px;bottom:14px;max-width:calc(100% - 32px)}
+.video-bloco .cartao__aviso{margin-top:12px;background:var(--trigo-suave);color:var(--tinta)}
+
+/* Chamada final */
+.cta{background:radial-gradient(ellipse 70% 170px at 20% 0%,color-mix(in srgb,var(--folha) 17%,transparent),transparent 72%) no-repeat,linear-gradient(180deg,#07070d 0%,var(--verde-fundo) 100%);color:var(--sobre-painel);border:1px solid color-mix(in srgb,var(--folha) 32%,transparent);border-radius:22px;padding:clamp(24px,4.5vw,44px)}
+.cta .secao__olho{color:color-mix(in srgb,var(--sobre-painel) 65%,transparent)}
+.cta h2{color:#fff;font-family:var(--f-titulo);font-weight:800;font-size:clamp(1.6rem,1.3rem + 1.4vw,2.3rem);line-height:1.08;letter-spacing:-.025em;margin:0 0 12px}
+.cta p{margin:0 0 24px;font-size:1.08rem;max-width:32em;color:color-mix(in srgb,var(--sobre-painel) 88%,transparent)}
+.cta__botoes{display:flex;flex-wrap:wrap;gap:12px}
+.cta .botao--linha{color:var(--sobre-painel);border-color:color-mix(in srgb,var(--sobre-painel) 40%,transparent)}
+.cta .botao--linha:hover{background:transparent;border-color:var(--folha);color:var(--folha)}
+.cta :focus-visible{outline-color:var(--sobre-painel)}
+.discreto{display:block;margin-top:16px;padding:4px 0;background:none;border:0;font-family:var(--f-dado);font-size:12.5px;color:color-mix(in srgb,var(--sobre-painel) 70%,transparent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.discreto:hover{color:var(--sobre-painel)}
+.agenda{margin-top:24px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--sobre-painel) 22%,transparent);display:grid;gap:14px}
+.agenda__rotulo{margin:0!important;font-family:var(--f-dado);font-size:12px!important;letter-spacing:.06em;text-transform:uppercase}
+.fichas{display:flex;flex-wrap:wrap;gap:8px}
+.fichas button{padding:9px 14px;border-radius:10px;border:1px solid color-mix(in srgb,var(--sobre-painel) 40%,transparent);background:transparent;color:var(--sobre-painel);font-family:var(--f-dado);font-size:13px;cursor:pointer}
+.fichas button[aria-pressed="true"]{background:var(--folha);border-color:var(--folha);color:var(--sobre-folha)}
+.agenda .botao{justify-self:start}
+.cta__nota{margin:18px 0 0!important;padding:14px 16px;border-radius:12px;background:color-mix(in srgb,var(--sobre-painel) 10%,transparent);font-family:var(--f-dado);font-size:13px!important;line-height:1.55}
+.acoes{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:-28px}
+.acoes .botao{padding:11px 20px;font-size:.95rem}
+.acoes .fino{flex-basis:100%}
+.rodape{font-family:var(--f-dado);font-size:11.5px;line-height:1.7;color:var(--ardosia);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;border-top:1px solid var(--linha);padding-top:16px;margin-top:-24px}
+.rodape .marca{font-size:12px}
+
+/* ——— Oferta do plano de 90 dias (depois do contato): página de exemplo com botões flutuantes, vídeo do time e chamada para o WhatsApp ——— */
+.plano-ex{max-width:760px;margin-inline:auto;padding-block:20px 150px}
+.plano-ex h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(2rem,1.4rem + 2.6vw,3rem);line-height:1.04;letter-spacing:-.03em;margin:0 0 14px}
+.plano-ex__lede{margin:0 0 28px;font-size:1.1rem;color:var(--ardosia)}
+.folha{position:relative;display:grid;gap:30px;padding:clamp(24px,5vw,48px);background:var(--superficie);border:1px solid var(--linha);border-radius:18px;box-shadow:0 30px 60px -36px var(--sombra)}
+.folha__bloco{display:grid;gap:10px}
+.folha__bloco .esqueleto{height:9px}
+.folha__bloco .esqueleto:first-child{height:16px;background:var(--linha)}
+.folha__selo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:calc(100% - 32px);padding:10px 18px;border:1.5px dashed var(--ardosia);border-radius:999px;background:var(--superficie);font-family:var(--f-maq);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--ardosia)}
+.flutua{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;width:max-content;max-width:calc(100vw - 32px);padding:8px;border-radius:999px;border:1px solid var(--linha);background:color-mix(in srgb,var(--superficie) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 18px 40px -18px var(--sombra)}
+.flutua .botao{padding:12px 20px;font-size:.98rem;white-space:nowrap}
+@media (max-width:620px){ .flutua{bottom:calc(60px + env(safe-area-inset-bottom,0px))} }
+.video--time{background:radial-gradient(ellipse 70% 60% at 30% 100%,color-mix(in srgb,var(--folha-viva) 20%,transparent),transparent 72%),linear-gradient(180deg,#07070d 0%,#07120d 40%,var(--verde-fundo) 100%)}
+.video__ph{position:absolute;left:16px;top:14px;font-family:var(--f-maq);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sobre-painel) 55%,transparent)}
+.video-chat .cartao__aviso{margin-top:12px;background:var(--trigo-suave);color:var(--tinta)}
+.whats{display:grid;gap:12px;justify-items:start;padding:18px;background:var(--superficie);border:1px solid var(--linha);border-radius:16px}
+.whats__rotulo{margin:0;font-family:var(--f-maq);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ardosia)}
+.whats__msg{justify-self:end;margin:0;padding:10px 14px;border-radius:12px 12px 3px 12px;background:var(--folha-suave);border:1px solid var(--folha-borda);font-family:var(--f-titulo);font-weight:500;font-size:1.05rem;color:var(--tinta)}
+.whats .fino{margin:0}
+
+/* Erro (T28) */
+.erro{max-width:480px;margin-inline:auto;padding-block:72px 24px;text-align:center}
+.erro h1{font-family:var(--f-titulo);font-weight:750;font-size:1.7rem;line-height:1.15;letter-spacing:-.015em;margin:0 0 12px}
+.erro p{margin:0 0 26px}
+
+/* ——— Navegação do protótipo ——— */
+.proto{position:fixed;z-index:50;right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.proto__botao{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--linha);background:var(--superficie);font-family:var(--f-dado);font-size:12px;color:var(--ardosia);cursor:pointer;box-shadow:0 6px 16px -10px var(--sombra)}
+.proto__botao:hover{color:var(--tinta);border-color:var(--ardosia)}
+.proto__painel{width:min(290px,calc(100vw - 32px));max-height:min(72vh,560px);overflow:auto;background:var(--superficie);border:1px solid var(--linha);border-radius:14px;padding:12px;box-shadow:0 20px 50px -20px var(--sombra)}
+.proto__nota{margin:2px 4px 10px;font-family:var(--f-dado);font-size:11px;line-height:1.5;color:var(--ardosia)}
+.proto__painel ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.proto__painel button{display:flex;gap:10px;width:100%;text-align:left;padding:7px 8px;border:0;border-radius:8px;background:transparent;font-family:var(--f-titulo);font-size:.88rem;color:var(--tinta);cursor:pointer}
+.proto__painel button span{font-family:var(--f-dado);font-size:11px;color:var(--ardosia);padding-top:2px}
+.proto__painel button:hover{background:var(--folha-suave)}
+.proto__painel button[aria-current="true"]{background:var(--tinta);color:var(--papel)}
+.proto__painel button[aria-current="true"] span{color:inherit}
+
+/* ——— Gráfico de colunas do funil (capa, prévia e painel): da semente ao fruto ———
+   Colunas = volume. Entre elas, a taxa da etapa: verde bate a meta, coral fica abaixo. Tracejado = onde a coluna chegaria com o funil inteiro na meta. */
+.barras{--larg:clamp(20px,40%,44px);--base:var(--painel);font-size:12px;display:flex;flex-direction:column;min-width:0;height:100%}
+.barras__area{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:minmax(0,1fr);border-bottom:1px solid var(--linha)}
+.barras__slot{--cor:var(--folha);position:relative}
+.barras__slot.is-abaixo{--cor:var(--tomate)}
+.barras__col,.barras__meta{position:absolute;bottom:0;left:0;right:0;margin-inline:auto;width:var(--larg);border-radius:4px 4px 0 0}
+.barras__col{z-index:1;height:max(3px,calc(var(--h) * 1%));background:linear-gradient(180deg,var(--cor) 0%,color-mix(in srgb,var(--cor) 40%,var(--base)) 100%);box-shadow:inset 0 2px 0 var(--cor),0 0 22px -10px var(--cor);transform-origin:50% 100%;animation:barra-sobe .75s calc(.1s + var(--i) * .09s) var(--curva) both}
+.barras__meta{height:calc(var(--g) * 1%);border:1.5px dashed color-mix(in srgb,var(--tomate) 85%,transparent);border-bottom:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--tomate) 22%,transparent) 0 2px,transparent 2px 6px);animation:barra-aparece .5s calc(.7s + var(--i) * .09s) both}
+.barras__taxa{position:absolute;z-index:2;left:100%;bottom:calc(var(--y) * 1%);transform:translate(-50%,50%);font-family:var(--f-dado);font-size:.88em;font-weight:600;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--folha);animation:barra-aparece .45s calc(.55s + var(--i) * .09s) both}
+.barras__taxa.is-abaixo{color:var(--tomate)}
+.barras__eixo{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:7px;text-align:center;line-height:1.2}
+.barras__eixo span{display:flex;flex-direction:column;align-items:center;min-width:0}
+.barras__eixo b{font-family:var(--f-dado);font-size:1em;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tinta)}
+.barras__eixo i{font-style:normal;font-family:var(--f-dado);font-size:.84em;white-space:nowrap;color:var(--ardosia)}
+.barras--fixo .barras__col,.barras--fixo .barras__meta,.barras--fixo .barras__taxa{animation:none}
+@keyframes barra-sobe{from{transform:scaleY(0)}}
+@keyframes barra-aparece{from{opacity:0}}
+@media (max-width:359px){ .barras{font-size:11px} }
+@media (prefers-reduced-motion: reduce){ .barras *{animation:none!important} }
+/* legenda do tracejado */
+.leg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.leg i{flex:none;width:14px;height:9px;border:1.5px dashed color-mix(in srgb,var(--tomate) 85%,transparent);border-bottom:0;border-radius:2px 2px 0 0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--tomate) 22%,transparent) 0 2px,transparent 2px 5px)}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+}
+</style>
+
+<a class="pular" href="#palco">Pular para o conteúdo</a>
+
+<header class="topo" id="topo">
+  <div class="topo__linha">
+    <span class="marca"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>Triad</span>
+    <span class="topo__passo" id="passo"></span>
+  </div>
+  <div class="progresso" id="progresso" role="progressbar" aria-label="Progresso do diagnóstico" aria-valuemin="0" aria-valuemax="100" hidden><div class="progresso__fill" id="fill"></div></div>
+</header>
+
+<main class="palco" id="palco" tabindex="-1"></main>
+
+<div class="aviso-selo" id="avisoSelo" role="status" hidden></div>
+
+<div class="proto" id="proto">
+  <div class="proto__painel" id="protoPainel" hidden>
+    <p class="proto__nota">Protótipo para revisão. Dados de exemplo, nada é enviado.</p>
+    <ol id="protoLista"></ol>
+  </div>
+  <button type="button" class="proto__botao" id="protoBotao" aria-expanded="false" aria-controls="protoPainel">Telas <span id="protoNum"></span></button>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ——— Foto e glifos ——— */
+// Foto real do Junior (mesma do site da Triad). Vira a capa do vídeo até o vídeo ser gravado.
+const FOTO = 'poster-junior.jpg';
+// WhatsApp da Triad para o pedido do plano de 90 dias. Número só com dígitos, com país (ex.: '5511999999999'). Vazio = o protótipo mostra um aviso.
+const WHATS = {numero:'', plano:'Envie o meu plano de ação.'};
+const TRIAD = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>';
+const SEMENTE = '<svg class="g-semente" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6c3.2 3.2 3.2 9.6 0 12.8-3.2-3.2-3.2-9.6 0-12.8z"/></svg>';
+const FRUTO = '<svg class="g-fruto" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="9.6" r="5.4"/><path class="g-folha" d="M8.2 4.4c.6-2 2.6-3 4.6-2.6-.5 2-2.4 2.9-4.6 2.6z"/></svg>';
+// Ícones de traço (ficha do painel, abertura)
+const IC = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+const ICO = {
+  nome: IC('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>'),
+  cargo: IC('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>'),
+  ramo: IC('<path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M9 13h.01M9 17h.01M15 9h.01M15 13h.01M15 17h.01"/>'),
+  faturamento: IC('<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>'),
+  estrela: IC('<path d="M12 3l2.2 6.3L21 12l-6.8 2.7L12 21l-2.2-6.3L3 12l6.8-2.7z" fill="currentColor"/>'),
+  relogio: IC('<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 1.5M9.5 2.8h5"/>'),
+  ok: IC('<path d="M5 12.5l4.5 4.5L19 7.5"/>')
+};
+const CONVERSA_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+
+/* ——— Utilidades ——— */
+const $ = (s, el) => (el || document).querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num = (n, d) => n.toLocaleString('pt-BR', {maximumFractionDigits: d === undefined ? 1 : d});
+const pct = n => num(n) + '%';
+const mil = n => 'R$ ' + num(Math.round(n / 1000), 0) + ' mil';
+const lerNum = s => { const v = parseFloat(String(s).replace(/\./g, '').replace(',', '.')); return isNaN(v) ? null : v; };
+const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const estreito = () => matchMedia('(max-width: 979px)').matches;
+
+/* ——— Metas do método (semente → fruto) ——— */
+const METAS = [50, 50, 75, 20];
+const ETAPAS = [
+  {nome:'Pré-qualificação', base:'leads', verbo:'têm perfil de compra'},
+  {nome:'Agendamento', base:'pré-qualificados', verbo:'marcaram reunião'},
+  {nome:'Comparecimento', base:'agendados', verbo:'vieram para a reunião'},
+  {nome:'Fechamento', base:'reuniões', verbo:'viraram venda'}
+];
+
+/* ——— Respostas: o que a pessoa marcou, com exemplo quando pula ——— */
+const R = {nome:'', origem:[], ticket:'', nums:[{v:'400',u:'n'},{v:'50',u:'p'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null};
+const EX = {nome:'Marina', ramo:'Serviços para empresas', faturamento:'R$ 150 mil a R$ 500 mil', vendedores:'2 ou 3', 'quem-marca':'Sim. O vendedor faz tudo', 'valor-medio':'15.000', origem:['Anúncios pagos (Meta, Google)','Indicação de clientes'], crm:'Sim, mas pouca gente atualiza', cargo:'Dono(a) ou sócio(a)', lembra:'Sim', chute:'Menos de 75%', causa:'No mesmo dia', causa2:'Depende do vendedor', causa3:'Alguns', plano:'Sim, eu quero'};
+const val = k => { const v = R[k]; if (Array.isArray(v)) return v.length ? v : EX[k]; return (typeof v === 'string' ? v.trim() : v) || EX[k]; };
+const qualificado = () => val('faturamento') !== 'Menos de R$ 50 mil' && val('vendedores') !== 'Nenhum por enquanto';
+const nm = () => String(val('nome')).split(' ')[0];
+
+/* ——— Perguntas de perfil ——— */
+const PERFIL = [
+  {id:'ramo', curto:'ramo', q:'Em que ramo sua empresa atua?', grade:true,
+   ops:['Serviços para empresas','Educação e cursos','Saúde e estética','Imóveis e construção','Tecnologia e software','Indústria e distribuição','Varejo e e-commerce','Outro']},
+  {id:'faturamento', curto:'faturamento', q:'Quanto a empresa fatura por mês, em média?',
+   ops:['Menos de R$ 50 mil','R$ 50 mil a R$ 150 mil','R$ 150 mil a R$ 500 mil','R$ 500 mil a R$ 1,5 milhão','Mais de R$ 1,5 milhão']},
+  {id:'vendedores', curto:'vendedores', q:'Quantos vendedores fazem reunião de vendas com clientes?', ajuda:'Conte quem conduz a conversa que fecha a venda, por vídeo ou presencial.',
+   ops:['Nenhum por enquanto','1','2 ou 3','4 a 10','Mais de 10']},
+  {id:'quem-marca', curto:'quem marca a reunião', q:'Quem marca as reuniões é a mesma pessoa que vende?',
+   ops:['Não. Tem gente só para fazer o primeiro contato e marcar','Sim. O vendedor faz tudo','Depende do vendedor']},
+  {id:'valor-medio', curto:'valor médio da venda', q:'Qual o valor médio de uma venda?', tipo:'dinheiro'},
+  {id:'origem', curto:'origem dos leads', q:'De onde vêm os seus leads?', ajuda:'Marque todas as que valem para vocês.', tipo:'varios', grade:true,
+   ops:['Anúncios pagos (Meta, Google)','Indicação de clientes','Instagram e redes, sem anúncio','Prospecção ativa','Eventos e feiras','Site e busca no Google','Parcerias','Outro']},
+  {id:'crm', curto:'CRM', q:'Vocês usam um CRM para acompanhar os clientes?', ajuda:'CRM é o sistema onde fica o histórico de cada cliente e de cada negociação.',
+   ops:['Sim, e o time atualiza todo dia','Sim, mas pouca gente atualiza','Usamos planilha','Não. Fica no WhatsApp e na cabeça de cada um']},
+  {id:'cargo', curto:'cargo', q:'Por último sobre a empresa: qual é o seu cargo?', grade:true,
+   ops:['Dono(a) ou sócio(a)','Diretor(a) comercial','Gestor(a) de vendas','Vendedor(a)','Marketing','Outro']}
+];
+const respostaDe = p => p.tipo === 'dinheiro' ? 'R$ ' + (R.ticket || EX[p.id]) :p.tipo === 'varios' ? val(p.id).join(', ') : val(p.id);
+const FALAS = {
+  nome:{q:'Para começar: como você se chama?'},
+  lembra:{q:'Agora o funil. Você lembra, mais ou menos, dos números do seu funil?', a:'Leads, reuniões e vendas de um mês normal. Se não lembrar, tudo bem: dá para responder por estimativa.'},
+  numeros:{q:'Pense em um mês normal e escreva cada número como lembrar, em quantidade ou em porcentagem.', a:'Na porcentagem, conte assim: de cada 100 que chegam na etapa, quantos passam para a próxima.'},
+  chute:{q:'Se fosse chutar, quantos dos agendados vêm para a reunião?', a:'De cada 100 reuniões marcadas, quantas acontecem de verdade.'},
+  causa:{q:'Em quanto tempo o lead recebe o primeiro contato?'},
+  causa2:{q:'Quantas vezes vocês tentam falar com o lead antes de desistir?', a:'Conte ligações e mensagens.'},
+  causa3:{q:'No fim do dia, sobra lead sem contato?'},
+  contato:{q:'Para onde eu mando o diagnóstico completo?', a:'Ele aparece nesta tela logo depois, e uma cópia vai para o seu e-mail e WhatsApp.'},
+  plano:{q:'Quer receber o seu plano de ação de 90 dias?'}
+};
+// Passos da conversa sem pergunta: só falas do Junior (e, no fim, o vídeo e o WhatsApp)
+const SEM_PERGUNTA = ['montando', 'video-time'];
+const pergunta = id => { const p = PERFIL.find(x => x.id === id); return p ? {q:p.q, a:p.ajuda} : FALAS[id]; };
+
+/* ——— Telas do protótipo ——— */
+const TELAS = [
+  {id:'capa', rot:'Capa', largura:'capa'},
+  {id:'abertura', rot:'Abertura do teste', largura:'abertura'},
+  {id:'nome', rot:'Nome', chat:true}
+].concat(PERFIL.map(p => ({id:p.id, rot:'Empresa · ' + p.curto, chat:true, perfil:p})))
+ .concat([
+  {id:'lembra', rot:'Lembra dos números?', chat:true},
+  {id:'numeros', rot:'Modo números', chat:true},
+  {id:'chute', rot:'Modo chute', chat:true},
+  {id:'causa', rot:'Causa · primeiro contato', chat:true},
+  {id:'causa2', rot:'Causa · tentativas', chat:true},
+  {id:'causa3', rot:'Causa · lead sem contato', chat:true},
+  {id:'contato', rot:'Contato', chat:true},
+  {id:'montando', rot:'Montando o diagnóstico', chat:true},
+  {id:'plano', rot:'Oferta · plano de 90 dias', chat:true},
+  {id:'plano-exemplo', rot:'Plano de 90 dias · exemplo', largura:'plano'},
+  {id:'video-time', rot:'Vídeo do time + WhatsApp', chat:true},
+  {id:'relatorio',rot:'Relatório · qualificado', rel:'fraco', q:true, largura:'relatorio'},
+  {id:'relatorio-nao', rot:'Relatório · não qualificado', rel:'fraco', q:false, largura:'relatorio'},
+  {id:'relatorio-chute', rot:'Relatório · por estimativa', rel:'fraco', q:true, est:true, largura:'relatorio'},
+  {id:'relatorio-saudavel', rot:'Relatório · funil saudável', rel:'saudavel', q:true, largura:'relatorio'},
+  {id:'relatorio-saudavel-nao', rot:'Relatório · saudável, não qualificado', rel:'saudavel', q:false, largura:'relatorio'},
+  {id:'erro', rot:'Erro ao montar'}
+ ]);
+const tela = id => TELAS.find(x => x.id === id);
+
+/* ——— Caminho da conversa e o que já foi respondido ——— */
+function caminho(id){
+  const f = id === 'chute' || id === 'numeros' ? id : (val('lembra') === 'Não' ? 'chute' : 'numeros');
+  return ['nome'].concat(PERFIL.map(p => p.id), ['lembra', f, 'causa', 'causa2', 'causa3', 'contato', 'montando', 'plano', 'video-time']);
+}
+function respondido(id){
+  const t = tela(atual);
+  if (!t) return false;
+  if (t.rel || t.id === 'erro' || t.id === 'montando') return true;
+  if (!t.chat) return false;
+  const c = caminho(atual), i = c.indexOf(id);
+  return i > -1 && i < c.indexOf(atual);
+}
+
+/* ——— Funil ao vivo (painel e selos) ——— */
+function volumesDe(nums){
+  const abs = [];
+  nums.forEach((n, i) => {
+    const v = lerNum(n.v);
+    abs[i] = v === null ? null : (i === 0 || n.u === 'n') ? v : (abs[i - 1] === null ? null : abs[i - 1] * v / 100);
+  });
+  return abs;
+}
+function taxasDe(nums){
+  const abs = volumesDe(nums);
+  return [1, 2, 3, 4].map(i => abs[i] !== null && abs[i - 1] ? abs[i] / abs[i - 1] * 100 : null);
+}
+const exTaxas = () => calcular(CENARIOS.fraco).taxas;
+function funilPainel(){
+  if (atual === 'numeros') return {taxas:taxasDe(R.nums), vol:volumesDe(R.nums), exemplo:false};
+  if (!respondido('numeros') && !respondido('chute')) return null;
+  const t = taxasDe(R.nums);
+  // ponytail: no modo chute o protótipo só pergunta 1 das 4 etapas; o painel mostra o exemplo
+  if (caminho(atual).indexOf('numeros') > -1 && t.every(v => v !== null)) return {taxas:t, vol:volumesDe(R.nums), exemplo:false};
+  return {taxas:exTaxas(), vol:calcular(CENARIOS.fraco).vol, exemplo:true};
+}
+/* ——— Selos (T15) ——— */
+const tem = (t, i, m) => !!t && t[i] !== null && t[i] >= m;
+const SELOS = [
+  {id:'mede', nome:'Mede o funil', desc:'Sabe os números de cada etapa.', ok:() => respondido('lembra') && val('lembra') === 'Sim'},
+  {id:'crm', nome:'CRM vivo', desc:'O time atualiza o CRM todo dia.', ok:() => respondido('crm') && val('crm') === 'Sim, e o time atualiza todo dia'},
+  {id:'time', nome:'Time dividido', desc:'Tem gente só para marcar reunião.', ok:() => respondido('quem-marca') && val('quem-marca').indexOf('Não.') === 0},
+  {id:'fontes', nome:'Várias fontes', desc:'Leads chegam por 3 caminhos ou mais.', ok:() => respondido('origem') && val('origem').length >= 3},
+  {id:'rapido', nome:'Resposta rápida', desc:'Primeiro contato em até 10 minutos.', ok:() => respondido('causa') && val('causa') === 'Em até 10 minutos'},
+  {id:'semente', nome:'Semente boa', desc:'Metade dos leads ou mais tem perfil.', ok:t => tem(t, 0, 50)},
+  {id:'agenda', nome:'Agenda que comparece', desc:'3 de cada 4 reuniões acontecem.', ok:t => tem(t, 2, 75)},
+  {id:'fecha', nome:'Fechador', desc:'1 venda a cada 5 reuniões, ou melhor.', ok:t => tem(t, 3, 20)}
+];
+const ganhos = taxas => new Set(SELOS.filter(s => s.ok(taxas)).map(s => s.id));
+const listaSelos = (g, cls) => '<ul class="selos' + (cls || '') + '">' + SELOS.map(s => '<li class="selo-item' + (g.has(s.id) ? ' is-ganho' : '') + '" title="' + esc(s.nome + ': ' + s.desc) + '">' + s.nome + '</li>').join('') + '</ul>';
+
+/* ——— Perfil do funil (a "persona" do Arthur) ——— */
+const PERFIS = [
+  {nome:'Semente fraca', sub:'O marketing traz gente sem perfil de compra.'},
+  {nome:'Lead esfriando na fila', sub:'Lead com perfil demora a virar reunião.'},
+  {nome:'Agenda furada', sub:'Reunião marcada não vira reunião feita.'},
+  {nome:'Reunião sem fechamento', sub:'O cliente vem para a reunião e sai sem comprar.'}
+];
+const PERFIL_OK = {nome:'Funil redondo, pouca semente', sub:'O time converte bem. Falta lead.'};
+
+/* ——— Peças de conversa ——— */
+// A fala do Junior é um balão branco. Sem rótulo "JUNIOR" dentro. A foto aparece só na última fala (classe is-ultimo, posta no motor).
+function bot(html){
+  return '<div class="balao balao--bot"><span class="avatar" aria-hidden="true"><img src="' + FOTO + '" alt=""></span>' +
+    '<div class="balao__texto"><p class="fala">' + html + '</p></div></div>';
+}
+// A pergunta não leva caixa: fica solta no fundo, em negrito, colada nas opções. A foto fica ao lado dela quando ela é a última fala.
+function perg(html, o){
+  o = o || {};
+  return '<div class="balao balao--bot balao--perg' + (o.atual ? ' balao--atual' : '') + '"><span class="avatar" aria-hidden="true"><img src="' + FOTO + '" alt=""></span>' +
+    '<div class="pergunta"><p class="pergunta__q"' + (o.atual ? ' id="foco" tabindex="-1"' : '') + '>' + html + '</p>' + (o.ajuda ? '<p class="ajuda">' + o.ajuda + '</p>' : '') + '</div></div>';
+}
+// Marco discreto ("✓ 1 de 3"): uma linha pequena e cinza, sem balão
+const marco = html => '<p class="marco recuo">' + html + '</p>';
+const fala = x => /<\/strong> ✓/.test(x) ? marco(x) : bot(x);
+const eu = (t, id) => '<div class="balao balao--eu"><div class="balao__texto"><span>' + esc(t) + '</span>' +
+  (id ? '<button type="button" class="editar" data-editar="' + id + '" aria-label="Corrigir esta resposta" title="Corrigir esta resposta">✎</button>' : '') + '</div></div>';
+const nova = h => h.replace(/^<(\w+) /, '<$1 data-nova ');
+function nav(o){
+  o = o || {};
+  return '<div class="nav recuo"><button type="button" class="botao" data-acao="' + (o.acao || 'proximo') + '"' + (o.id ? ' id="' + o.id + '"' : '') + (o.desligado ? ' disabled' : '') + '>' +
+    (o.rotulo || 'Continuar') + ' <span class="seta" aria-hidden="true">→</span></button></div>';
+}
+function opcoes(campo, ops, o){
+  o = o || {};
+  const marcado = R[campo];
+  return '<div class="opcoes recuo' + (o.grade ? ' opcoes--grade' : '') + '" role="' + (o.varios ? 'group' : 'radiogroup') + '" aria-labelledby="foco">' +
+    ops.map(op => {
+      const on = o.varios ? (marcado || []).indexOf(op) > -1 : marcado === op;
+      return '<button type="button" class="opcao" role="' + (o.varios ? 'checkbox' : 'radio') + '" aria-checked="' + on + '" data-campo="' + campo + '" data-valor="' + esc(op) + '"' +
+        (o.varios ? ' data-varios' : '') + (o.auto === false || o.varios ? '' : ' data-auto') + '><span>' + esc(op) + '</span></button>';
+    }).join('') + '</div>';
+}
+
+/* ——— Régua: taxa real contra a meta ——— */
+function regua(v, m){
+  const baixo = v < m;
+  return '<div class="regua" style="--v:' + Math.min(v, 100) + ';--m:' + m + '" role="img" aria-label="' + pct(v) + ' contra meta de ' + m + '%">' +
+    '<span class="regua__barra"></span>' + (baixo ? '<span class="regua__falta"></span>' : '') +
+    '<span class="regua__meta"><i>meta ' + m + '%</i></span></div>';
+}
+const reguaVazia = m => '<div class="regua" style="--v:0;--m:' + m + '" aria-hidden="true"><span class="regua__meta"><i>meta ' + m + '%</i></span></div>';
+const miniLinhas = taxas => ETAPAS.map((e, i) => {
+  const v = taxas ? taxas[i] : null;
+  if (v === null || v === undefined) return '<li class="is-vazio"><span>' + e.nome + '</span><em>—</em>' + reguaVazia(METAS[i]) + '</li>';
+  return '<li class="' + (v < METAS[i] ? 'is-baixo' : '') + '"><span>' + e.nome + '</span><em>' + pct(v) + '</em>' + regua(v, METAS[i]) + '</li>';
+}).join('');
+
+/* ——— Gráfico de colunas do funil (capa, prévia da abertura e painel): da semente ao fruto ———
+   A altura é em raiz quadrada: 7 vendas ao lado de 400 leads ficariam com 1 pixel numa escala reta. O número real vem embaixo de cada coluna.
+   Tracejado = o funil inteiro na meta: cada etapa converte a taxa da meta, partindo dos leads (400, 200, 100, 75, 15).
+   Entre as colunas fica a taxa da etapa: verde bate a meta, coral fica abaixo. Volume null = coluna ainda sem número (só o tracejado). */
+const FUNIL_EXEMPLO = [400, 200, 80, 56, 7];
+const COLUNAS = ['Leads', 'Com perfil', 'Agendados', 'Reuniões', 'Vendas'];
+const LEG_META = '<span class="leg"><i></i>na meta</span>';
+function graficoBarras(vol, o){
+  o = o || {};
+  vol = vol || FUNIL_EXEMPLO;
+  const nulo = v => v === null || v === undefined;
+  const alvo = [nulo(vol[0]) ? FUNIL_EXEMPLO[0] : vol[0]];
+  METAS.forEach((m, i) => alvo.push(alvo[i] * m / 100));
+  const maxRaiz = Math.sqrt(Math.max.apply(null, alvo.concat(vol.filter(v => !nulo(v)))));
+  const alt = v => Math.sqrt(v) / maxRaiz * 100;
+  const taxa = i => (!nulo(vol[i]) && !nulo(vol[i + 1]) && vol[i] > 0) ? vol[i + 1] / vol[i] * 100 : null;
+  const baixo = i => taxa(i) !== null && taxa(i) < METAS[i] - 1e-9;
+  const slots = COLUNAS.map((nome, i) => {
+    const v = vol[i], t = i < 4 ? taxa(i) : null;
+    const falta = nulo(v) || alvo[i] > v * 1.001;
+    return '<div class="barras__slot' + (i > 0 && baixo(i - 1) ? ' is-abaixo' : '') + '" style="--i:' + i + '">' +
+      (falta ? '<span class="barras__meta" style="--g:' + alt(alvo[i]).toFixed(1) + '"></span>' : '') +
+      (nulo(v) ? '' : '<span class="barras__col" style="--h:' + alt(v).toFixed(1) + '"></span>') +
+      (t === null ? '' : '<span class="barras__taxa' + (baixo(i) ? ' is-abaixo' : '') + '" style="--y:' + ((alt(v) + alt(vol[i + 1])) / 2).toFixed(1) + '">' + pct(t) + '</span>') +
+      '</div>';
+  }).join('');
+  const eixo = COLUNAS.map((nome, i) => '<span><b>' + (nulo(vol[i]) ? '—' : num(vol[i], 0)) + '</b><i>' + nome + '</i></span>').join('');
+  const desc = COLUNAS.map((nome, i) => nulo(vol[i]) ? '' : num(vol[i], 0) + ' ' + nome.toLowerCase() + (i && taxa(i - 1) !== null ? ' (' + pct(taxa(i - 1)) + ', meta ' + METAS[i - 1] + '%)' : '')).filter(Boolean).join('; ');
+  return '<div class="barras' + (o.fixo ? ' barras--fixo' : '') + '" role="img" aria-label="Gráfico de colunas do funil' + (desc ? ': ' + desc : ', ainda vazio') + '">' +
+    '<div class="barras__area">' + slots + '</div><div class="barras__eixo" aria-hidden="true">' + eixo + '</div></div>';
+}
+
+/* ——— Capa (C1–C11) ——— */
+function telaCapa(){
+  return '<section class="hub">' +
+    '<div class="hub__foto"><img src="' + FOTO + '" alt="Junior Neves" width="928" height="1152"></div>' +
+    '<span class="hub__nome">Junior Neves · Triad</span>' +
+    '<p class="rotulo">Comece aqui</p>' +
+    '<div class="cartoes">' +
+      '<article class="cartao escuro">' +
+        // Gráfico de colunas do funil no lugar do radar do original (o Arthur mostra um recorte do relatório; aqui o recorte é o funil, da semente ao fruto).
+        '<div class="cartao__midia cartao__midia--barras" aria-hidden="true"><p class="mini-rel__olho"><span>exemplo de diagnóstico</span>' + LEG_META + '</p>' + graficoBarras() + '</div>' +
+        '<div class="cartao__corpo"><p class="cartao__meta"><span class="pilula">Teste gratuito</span><span class="cartao__ir" aria-hidden="true">→</span></p>' +
+        '<h1 class="cartao__titulo" id="foco" tabindex="-1"><button type="button" class="cartao__link" data-acao="proximo">Descubra onde sua equipe de vendas está perdendo performance</button></h1></div>' +
+      '</article>' +
+      '<article class="cartao escuro">' +
+        // Vídeo da capa ("o que o diagnóstico mede"). Versão final: <video src="junior-loop.mp4" poster="poster-junior.jpg" autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+        // 16:9, rosto no terço de cima da faixa, loop de 3 s sem som (parado para quem pede menos movimento). Sem botão de play: só o rosto em movimento.
+        // O clique abre o vídeo de cerca de 1 min, com som, numa janela por cima da página. São dois vídeos diferentes: este da capa e o "antes de decidir" do relatório.
+        '<div class="cartao__midia" aria-hidden="true"><img src="' + FOTO + '" alt="" width="928" height="1152"></div>' +
+        '<div class="cartao__corpo"><p class="cartao__meta"><span class="pilula">vídeo do Junior · cerca de 1 min</span><span class="cartao__ir" aria-hidden="true">→</span></p>' +
+        '<h2 class="cartao__titulo"><button type="button" class="cartao__link" data-acao="aviso" data-alvo="avisoVideo" data-aviso="Protótipo: o vídeo do Junior ainda vai ser gravado. Na versão final, este cartão mostra 3 segundos dele falando, sem som, repetindo; o toque abre o vídeo de cerca de 1 minuto, com som, numa janela por cima da página.">O que o diagnóstico mede e o que você recebe no final</button></h2>' +
+        '<p class="cartao__aviso" id="avisoVideo" role="status" hidden></p></div>' +
+      '</article>' +
+    '</div>' +
+    '<div class="hub__mais"><button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoWhats" data-aviso="Protótipo: na versão final, abre o WhatsApp da Triad. O número ainda vai ser definido.">' + CONVERSA_SVG + 'Falar no WhatsApp</button>' +
+    '<p class="fino" id="avisoWhats" role="status" hidden></p></div>' +
+    '<footer class="hub__pe"><span class="marca">' + TRIAD + 'Triad</span><span>Diagnóstico de vendas para empresas que vendem por reunião.</span><span>© 2026 Triad Marketing USA LLC</span></footer>' +
+    '</section>';
+}
+
+/* ——— Abertura do teste (A1–A9): o relatório de exemplo, peça a peça como o do /assessment do original ———
+   O original mostra uma imagem do relatório; aqui ele é montado com os mesmos textos e a mesma conta do relatório de verdade (cenário "fraco"), sem o valor em reais. */
+function relExemplo(){
+  const k = calcular(CENARIOS.fraco), perfil = PERFIS[k.partes[0].i];
+  const q = quadrosDados(k, false, false, {lembra:'Sim', crm:'Sim, mas pouca gente atualiza'});
+  // ponytail: selos do exemplo fixos (3 de 8); no relatório de verdade saem das respostas
+  const ganhosEx = ['mede', 'semente', 'fontes'];
+  const quad = (cls, titulo, itens) => '<div class="rel__q rel__q--' + cls + '"><h3>' + titulo + '</h3><ul>' + itens.map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
+  const oportunidades = [q.o[1], LEITURA[1].fazer[0], LEITURA[2].fazer[0]];
+  return '<div class="rel escuro" aria-hidden="true">' +
+    '<p class="rel__topo"><span>diagnóstico de vendas</span><span>outubro 2026</span></p>' +
+    '<p class="rel__titulo">Diagnóstico de vendas</p>' +
+    '<p class="rel__quem"><b>Marina Souza</b><span>Dona</span><span>Serviços para empresas</span><span>R$ 150–500 mil/mês</span></p>' +
+    '<div class="rel__sec"><span class="rel__vert">Funil</span><div class="rel__conteudo">' +
+      '<div class="rel__funil"><div class="rel__graf">' + graficoBarras(k.vol) + '</div>' +
+      '<div class="rel__perfil"><p class="rel__perfil-cab">Perfil do funil</p><b>' + perfil.nome + '</b><p class="rel__perfil-txt">' + perfil.sub + '</p></div></div>' +
+      '<ul class="mini">' + miniLinhas(k.taxas) + '</ul></div></div>' +
+    '<div class="rel__sec"><span class="rel__vert">Selos</span><div class="rel__conteudo"><p class="rel__sub">Conquistados · <b>' + ganhosEx.length + ' de ' + SELOS.length + '</b></p>' +
+      '<ul class="rel__selos">' + SELOS.map(s => '<li' + (ganhosEx.indexOf(s.id) > -1 ? ' class="is-ganho"' : '') + '>' + s.nome + '</li>').join('') + '</ul></div></div>' +
+    '<div class="rel__sec"><span class="rel__vert">Leitura</span><div class="rel__conteudo"><div class="rel__qs">' +
+      quad('f', 'Forças', q.f) + quad('r', 'Fraquezas', q.r) + quad('o', 'Oportunidades', oportunidades) + quad('a', 'Alertas', q.a) + '</div></div></div>' +
+    '<p class="rel__mesa"><span>dinheiro na mesa</span><b>valor calculado no final</b></p>' +
+    '</div>';
+}
+function telaAbertura(){
+  return '<section class="abertura">' +
+    '<figure class="previa">' + relExemplo() +
+    '<button type="button" class="previa__botao" data-acao="proximo" aria-label="Começar o diagnóstico (exemplo de relatório: funil, perfil, selos e leitura em 4 quadros)"></button></figure>' +
+    '<div class="abertura__copy"><p class="abertura__olho">— diagnóstico de vendas</p>' +
+    '<h1 id="foco" tabindex="-1"><span class="l">Descubra onde sua</span> <span class="l">equipe de vendas está</span> <span class="l">perdendo performance</span></h1>' +
+    '<p class="abertura__lede">Diagnóstico completo e gratuito nas 4 etapas do funil de vendas: <strong>pré-qualificação</strong>, <strong>agendamento</strong>, <strong>comparecimento</strong> e <strong>fechamento</strong>.</p>' +
+    '<ul class="abertura__meta"><li>' + ICO.relogio + '8 minutos</li><li>' + ICO.ok + '100% gratuito</li></ul>' +
+    '<button type="button" class="botao" data-acao="proximo">Começar diagnóstico <span class="seta" aria-hidden="true">→</span></button>' +
+    '<p class="abertura__nota">Suas respostas servem só para montar o seu diagnóstico e para a equipe da Triad falar com você.</p></div></section>';
+}
+/* ——— Conversa: o que o Junior fala antes e depois de cada pergunta ——— */
+function depois(id){
+  const v = val(id);
+  switch (id) {
+    case 'nome': return ['Prazer, ' + esc(nm()) + '. Conforme você responde, seu diagnóstico vai sendo preenchido ' + (estreito() ? 'na aba Resultado' : 'aqui ao lado') + '.<span data-onboarding></span>'];
+    case 'quem-marca': return ['Guarde isso: fila maior do que o time consegue atender derruba mais venda do que roteiro ruim.'];
+    case 'origem': return ['Lead que chega direto no WhatsApp, sem origem marcada, fica invisível. Saber de onde vem cada um é o que mostra onde investir.'];
+    case 'crm': return [v === 'Sim, e o time atualiza todo dia' ? 'Boa: com o CRM em dia, os números do funil saem de lá, não da memória.' : 'Ferramenta sem rotina não mede nada. O CRM só ajuda quando o time atualiza todo dia.'];
+    case 'cargo': return ['<strong>Empresa</strong> ✓ 1 de 3. Próximo: o funil.'];
+    case 'lembra': return [v === 'Não' ? 'Sem problema. Não saber os números já é um sinal, e ele entra no diagnóstico.' : 'Ótimo. Com os números, o diagnóstico fica mais preciso.'];
+    case 'numeros': case 'chute': return ['<strong>Funil</strong> ✓ 2 de 3. Agora, as causas.'];
+    case 'causa': return [v === 'Em até 10 minutos' ? 'Isso é velocidade de quem leva lead a sério.' : 'Lead esfria rápido, e quem responde primeiro costuma ficar com a reunião.'];
+    case 'causa2': return [v.indexOf('6 ou mais') === 0 ? 'Persistência com roteiro é o que separa lead perdido de reunião marcada.' : 'Sem um número fixo de tentativas, cada vendedor desiste num ponto diferente, e lead com perfil fica pelo caminho.'];
+    case 'causa3': return [v === 'Não' ? 'Bom sinal: o time dá conta de todos os leads que chegam.' : 'Sobra de lead no fim do dia é sinal de que entra mais lead do que o time consegue atender.', '<strong>Causas</strong> ✓ 3 de 3.'];
+    case 'montando': return ['<strong>Diagnóstico</strong> ✓ pronto.'];
+    case 'plano': return [v === 'Quero ver como é' && R.planoVolta === 'voltar' ? 'Agora você já viu como ele é, ' + esc(nm()) + '.' : 'Fechou, ' + esc(nm()) + '.'];
+  }
+  return [];
+}
+/* ——— Dinheiro na mesa da conversa (oferta do plano de 90 dias) ———
+   Usa os números da pessoa quando o funil está completo; senão, o mesmo cenário de exemplo do relatório. */
+function contaConversa(){
+  const f = funilPainel(), est = R.lembra === 'Não';
+  if (f && !f.exemplo && f.vol.slice(0, 4).every(v => v > 0) && f.vol[4] !== null) {
+    const k = calcular({leads:f.vol[0], n:f.vol.slice(1), ticket:lerNum(R.ticket) || CENARIOS.fraco.ticket});
+    if (k.extraV > 0) return {k:k, est:false};
+  }
+  return {k:calcular(est ? CENARIOS.chute : CENARIOS.fraco), est:est};
+}
+// "Pode aumentar o faturamento em até X%": X = 70% do dinheiro na mesa por mês sobre o que o funil fatura hoje (vendas de hoje × valor médio)
+const planoPct = k => k.hoje > 0 ? Math.floor(k.extraV / k.hoje * 70 + 1e-9) : null;
+function perfilConversa(){
+  const k = contaConversa().k;
+  return k.partes.length ? PERFIS[k.partes[0].i] : PERFIL_OK;
+}
+function antes(id){
+  if (id === 'nome') return [bot('Oi! Sou o Junior, da Triad, e vou guiar você neste diagnóstico.'), bot('São perguntas sobre sua empresa e seu time de vendas. Leva cerca de 8 minutos, e o relatório sai no final.')];
+  if (id === 'chute') return [perg('Se fosse chutar, quantos dos leads com perfil marcam reunião?'), eu('Menos de 50%')];
+  if (id === 'causa') return [bot('Uma coisa chamou atenção no agendamento. São três perguntas rápidas para entender o motivo.')];
+  if (id === 'contato') {
+    const f = funilPainel();
+    const n = f ? f.taxas.filter((v, i) => v !== null && v < METAS[i]).length : 0;
+    return [bot(n ? 'Pronto, ' + esc(nm()) + '! O painel já mostra ' + n + ' de 4 etapas abaixo da meta.' : 'Pronto, ' + esc(nm()) + '! Pelo painel, as 4 etapas batem a meta.'),
+      bot('Falta a leitura: a causa provável e o que fazer em cada etapa, e quanto dinheiro fica na mesa. Quem monta é uma IA treinada no meu jeito de diagnosticar. Tem custo, mas fica por minha conta.')];
+  }
+  if (id === 'montando') return [bot('Recebido, ' + esc(nm()) + '. Estou montando seu diagnóstico agora.')];
+  if (id === 'plano') {
+    const c = contaConversa(), k = c.k, p = planoPct(k);
+    return [
+      bot('Olha só, ' + esc(nm()) + ': ' + (c.est ? 'pela sua estimativa' : 'pelos números que você informou') + ', se as etapas fracas chegassem na meta, a conta daria <strong>' +
+        (c.est ? 'cerca de ' : '') + k.extraV + (k.extraV === 1 ? ' venda' : ' vendas') + ' a mais por mês, uns ' + mil(k.extraR) + '</strong>. É dinheiro que hoje fica na mesa.'),
+      bot('Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento' +
+        (p ? ' em até <strong>' + p + '%</strong>' : '') + '.'),
+      bot('Agora ele é gratuito. Em breve, vai custar R$ 497.')
+    ];
+  }
+  if (id === 'video-time') return [
+    bot('Agora dá o play neste recado rápido de alguém do meu time.'),
+    // Vídeo dentro da conversa (como o T23 do original): 16:9, com som na versão final, não trava nada
+    '<div class="video-chat recuo"><div class="video video--time escuro"><span class="video__ph">placeholder · vídeo</span>' +
+      '<button type="button" class="video__play" data-acao="aviso" data-alvo="avisoVideoTime" data-aviso="Placeholder: o vídeo de alguém do time do Junior ainda vai ser gravado. Na versão final ele toca aqui, com som, e não trava nada: a chamada para o WhatsApp fica liberada o tempo todo." aria-label="Assistir ao vídeo de alguém do time do Junior"><span class="play" aria-hidden="true"></span></button>' +
+      '<span class="pilula">vídeo · alguém do time do Junior</span></div>' +
+      '<p class="cartao__aviso" id="avisoVideoTime" role="status" hidden></p></div>',
+    bot('Depois, é só mandar esta mensagem no nosso WhatsApp que o seu plano chega por lá.')
+  ];
+  return [];
+}
+function resumoNumeros(){
+  const rot = ['leads', 'com perfil', 'agendados', 'reuniões', 'vendas'];
+  if (R.nums.some(n => !String(n.v).trim())) return '400 leads · 200 com perfil · 80 agendados · 56 reuniões · 7 vendas';
+  return R.nums.map((n, i) => n.v + (n.u === 'p' ? '%' : '') + ' ' + rot[i]).join(' · ');
+}
+function resumoContato(){
+  const c = R.contato, p = pais(c.pais);
+  return (c.email || 'marina@empresaexemplo.com.br') + ' · ' + (c.tel ? p.d + ' ' + formatarTel(p, c.tel) : '+55 (11) 98765-4321');
+}
+function resposta(id){
+  const p = PERFIL.find(x => x.id === id);
+  if (p) return respostaDe(p);
+  if (id === 'numeros') return resumoNumeros();
+  if (id === 'chute') return R.chuteN ? R.chuteN + '%' : val('chute');
+  if (id === 'contato') return resumoContato();
+  return val(id);
+}
+
+/* ——— Corpo de cada pergunta (o que a pessoa responde) ——— */
+const LIVRO = [
+  {rot:'Leads por mês', sub:'contatos novos que chegam'},
+  {rot:'Pré-qualificados', sub:'leads com perfil para comprar, pelo critério de vocês'},
+  {rot:'Agendados', sub:'marcaram reunião'},
+  {rot:'Reuniões realizadas', sub:'a reunião aconteceu'},
+  {rot:'Vendas fechadas', sub:'viraram cliente'}
+];
+const CORPO = {
+  nome: () => '<div class="recuo"><label class="entrada" style="max-width:340px"><input id="nomeIn" autocomplete="given-name" maxlength="60" placeholder="Ex.: Marina" value="' + esc(R.nome) + '" aria-labelledby="foco"></label></div>' +
+    nav({id:'seguir', desligado:R.nome.trim().length < 2}),
+  lembra: () => '<div class="opcoes opcoes--duas recuo" role="radiogroup" aria-labelledby="foco">' +
+    '<button type="button" class="opcao" role="radio" aria-checked="' + (R.lembra === 'Sim') + '" data-campo="lembra" data-valor="Sim" data-auto><span><b>Sim</b><small>Escrevo os números que lembro.</small></span></button>' +
+    '<button type="button" class="opcao" role="radio" aria-checked="' + (R.lembra === 'Não') + '" data-campo="lembra" data-valor="Não" data-auto><span><b>Não</b><small>Respondo por estimativa.</small></span></button></div>',
+  numeros: () => '<ol class="livro recuo">' + LIVRO.map((l, i) => {
+      const n = R.nums[i];
+      const no = i === 0 ? SEMENTE : i === 4 ? FRUTO : '<i></i>';
+      const alterna = i === 0 ? '<span class="alterna--fixa">nº</span>' :
+        '<span class="alterna" role="group" aria-label="Unidade de ' + l.rot + '"><button type="button" data-unidade="n" data-linha="' + i + '" aria-pressed="' + (n.u === 'n') + '">nº</button><button type="button" data-unidade="p" data-linha="' + i + '" aria-pressed="' + (n.u === 'p') + '">%</button></span>';
+      return '<li><span class="no" aria-hidden="true">' + no + '</span>' +
+        '<label class="livro__rotulo" for="num' + i + '"><b>' + l.rot + '</b><small>' + l.sub + '</small></label>' +
+        '<span class="livro__campo"><span class="entrada"><input id="num' + i + '" data-linha="' + i + '" inputmode="decimal" autocomplete="off" placeholder="—" value="' + esc(n.v) + '"></span>' + alterna + '</span>' +
+        '<p class="livro__calc" id="calc' + i + '" aria-live="polite"></p></li>';
+    }).join('') + '</ol>' + nav(),
+  chute: () => opcoes('chute', ['Mais de 75%', 'Menos de 75%', 'Realmente não faço ideia'], {auto:false}) +
+    '<div class="recuo"><p class="ou">ou chute um número</p>' +
+    '<label class="entrada chute"><input id="chuteN" inputmode="decimal" autocomplete="off" placeholder="ex.: 60" value="' + esc(R.chuteN) + '" aria-label="Seu chute, em porcentagem"><span class="entrada__pos">%</span></label></div>' + nav(),
+  causa: () => opcoes('causa', ['Em até 10 minutos', 'Em até 1 hora', 'No mesmo dia', 'No dia seguinte ou depois', 'Não sei']),
+  causa2: () => opcoes('causa2', ['1 ou 2', '3 a 5', '6 ou mais, com roteiro definido', 'Depende do vendedor']),
+  causa3: () => opcoes('causa3', ['Sim, muitos', 'Alguns', 'Não']),
+  contato: () => {
+    const c = R.contato, p = pais(c.pais);
+    if (!c.nome && R.nome.trim()) c.nome = R.nome.trim();
+    const opts = PAISES.map(x => x ? '<option value="' + x.c + '"' + (x.c === c.pais ? ' selected' : '') + '>' + x.f + ' ' + x.n + ' ' + x.d + '</option>' : '<option disabled>──────────</option>').join('');
+    return '<div class="cartao-form recuo"><form class="form" id="form" novalidate>' +
+      '<div class="campo"><label for="nome">Seu nome</label><input id="nome" autocomplete="name" placeholder="Como podemos chamar você" value="' + esc(c.nome) + '"></div>' +
+      '<div class="campo"><label for="email">E-mail</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@empresa.com.br" value="' + esc(c.email) + '"><p class="dica" id="emailDica" aria-live="polite"></p></div>' +
+      '<div class="campo"><span class="rotulo-campo" id="telRot">WhatsApp</span><div class="tel">' +
+      '<label class="ddi"><span id="ddiVer">' + p.f + ' ' + p.d + '</span><span class="ddi__seta" aria-hidden="true">▼</span><select id="pais" aria-label="País do WhatsApp">' + opts + '</select></label>' +
+      '<input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" aria-labelledby="telRot" placeholder="' + p.ph + '" value="' + esc(formatarTel(p, c.tel)) + '"></div>' +
+      '<p class="dica" id="telDica" aria-live="polite"></p></div>' +
+      '<div class="campo"><label for="empresa">Nome da empresa <span class="opcional">(opcional)</span></label><input id="empresa" autocomplete="organization" placeholder="Empresa Ltda." value="' + esc(c.empresa) + '"></div>' +
+      '<button type="button" class="proto-encher" data-acao="encher">protótipo · preencher exemplo</button>' +
+      '</form></div>' + nav({acao:'enviar', rotulo:'Ver meu diagnóstico', id:'enviar', desligado:true});
+  },
+  montando: () => '<div class="montando recuo">' +
+    '<svg class="broto" viewBox="0 0 120 120" aria-hidden="true"><line class="chao" x1="24" y1="96" x2="96" y2="96"/>' +
+    '<g transform="translate(52 92)"><path class="g-semente" d="M8 1.6c3.2 3.2 3.2 9.6 0 12.8-3.2-3.2-3.2-9.6 0-12.8z" transform="rotate(90 8 8) scale(.9)"/></g>' +
+    '<path class="caule" d="M60 94 C60 76 58 62 60 40"/>' +
+    '<path class="fl fl1" d="M59 66 C48 66 40 60 38 50 C49 50 57 56 59 66z"/>' +
+    '<path class="fl fl2" d="M60 56 C71 56 79 50 81 40 C70 40 62 46 60 56z"/>' +
+    '<circle class="fr" cx="60" cy="31" r="9"/></svg>' +
+    '<p class="montando__titulo" id="foco" tabindex="-1">Montando seu diagnóstico</p>' +
+    '<ol class="passos"><li>Calculando as 4 etapas do funil</li><li>Comparando com as metas</li><li>Somando o dinheiro na mesa</li></ol>' +
+    '<button type="button" class="botao" data-acao="ver-relatorio" hidden>Continuar <span class="seta" aria-hidden="true">→</span></button></div>',
+  plano: () => opcoes('plano', ['Sim, eu quero', 'Quero ver como é']),
+  'video-time': () => '<div class="whats recuo"><p class="whats__rotulo" id="foco" tabindex="-1">Mensagem pronta</p>' +
+    '<p class="whats__msg">' + esc(WHATS.plano) + '</p>' +
+    '<button type="button" class="botao" data-acao="whats-plano">' + CONVERSA_SVG + 'Mandar no WhatsApp</button>' +
+    '<p class="fino" id="avisoWhatsPlano" role="status" hidden></p></div>'
+};
+function corpo(t){
+  if (!t.perfil) return CORPO[t.id]();
+  const p = t.perfil;
+  if (p.tipo === 'dinheiro') return '<div class="recuo"><label class="entrada entrada--grande"><span class="entrada__pre">R$</span>' +
+    '<input id="ticket" inputmode="numeric" autocomplete="off" placeholder="15.000" value="' + esc(R.ticket) + '" aria-labelledby="foco"></label>' +
+    '<p class="dica">Pode ser um valor aproximado.</p></div>' + nav();
+  if (p.tipo === 'varios') return opcoes(p.id, p.ops, {grade:p.grade, varios:true}) + nav();
+  return opcoes(p.id, p.ops, {grade:p.grade});
+}
+
+/* ——— Painel ao vivo (T16) ——— */
+const FICHA = [['nome', 'Nome'], ['cargo', 'Cargo'], ['ramo', 'Ramo'], ['faturamento', 'Faturamento']];
+function painel(t){
+  const analisando = t.id === 'montando';
+  // depois do contato, na oferta do plano: o perfil do funil já aparece
+  const pf = t.id === 'plano' || t.id === 'video-time' ? perfilConversa() : null;
+  const f = funilPainel();
+  const g = ganhos(f && f.taxas);
+  const quadro = (cls, nome) => '<div class="quadro quadro--' + cls + '"><b>' + nome + '</b><span class="esqueleto"></span><span class="esqueleto"></span></div>';
+  const sec = (n, titulo, meta) => '<div class="sec-cab"><b>' + n + '</b><h2>' + titulo + '</h2><span>' + meta + '</span></div>';
+  return '<div class="painel__topo"><span class="painel__marca">— diagnóstico de vendas</span><span>outubro · 2026</span></div>' +
+    '<p class="painel__titulo">Diagnóstico de vendas</p>' +
+    (analisando ? '<p class="giro" id="giro" aria-live="polite">Lendo suas respostas…</p>' : '') +
+    '<ul class="ficha">' + FICHA.map(([id, k]) => {
+      const v = respondido(id) ? val(id) : '';
+      return '<li data-chave="' + id + '"' + (v ? '' : ' class="is-vazio"') + '><span class="ficha__ic" aria-hidden="true">' + ICO[id] + '</span><span class="ficha__corpo"><span class="ficha__k">' + k + '</span><span class="ficha__v">' + (v ? esc(v) : '—') + '</span></span></li>';
+    }).join('') + '</ul>' +
+    '<div class="perfil-funil"><p class="perfil-funil__cab">Perfil do funil</p><div class="perfil-funil__corpo"><span class="perfil-funil__ic" aria-hidden="true">' + ICO.estrela + '</span><p class="perfil-funil__nome">' + (pf ? pf.nome : '???') + '</p></div>' +
+    '<p class="perfil-funil__sub">' + (pf ? pf.sub : analisando ? 'Sai junto com o diagnóstico.' : 'Aparece quando você terminar de responder.') + '</p></div>' +
+    '<section>' + sec('01', 'Funil', f && f.exemplo ? 'exemplo' : '') + '<div id="painelFunil">' + graficoBarras(f ? f.vol : [null, null, null, null, null], {fixo:true}) + '</div></section>' +
+    '<section>' + sec('02', 'Selos', g.size + ' / ' + SELOS.length) + listaSelos(g) + '</section>' +
+    '<section>' + sec('03', 'Leitura', '4 quadros') + '<div class="quadros">' + quadro('f', 'Forças') + quadro('r', 'Fraquezas') + quadro('o', 'Oportunidades') + quadro('a', 'Alertas') + '</div>' +
+    '<p class="painel__nota">' + (analisando ? 'Sendo escrita agora.' : pf ? 'Vai para o seu e-mail e WhatsApp.' : 'Liberada depois do contato.') + '</p></section>' +
+    '<div><div class="painel__acoes"><button type="button" disabled>Compartilhar</button><button type="button" disabled>Baixar PDF</button></div>' +
+    '<p class="painel__nota">Liberados quando o diagnóstico ficar pronto.</p></div>';
+}
+function preenchidos(){
+  const f = funilPainel();
+  return FICHA.filter(x => respondido(x[0])).length + (f ? f.taxas.filter(v => v !== null).length : 0);
+}
+function abas(){
+  const n = preenchidos();
+  const selo = atual === 'montando' ? '<span class="abas__selo is-girando" id="abaSelo" role="img" aria-label="analisando">' + n + '</span>'
+    : atual === 'plano' || atual === 'video-time' ? '<span class="abas__selo is-novo" role="img" aria-label="diagnóstico pronto">✓</span>'
+    : n ? '<span class="abas__selo' + (sinal ? ' is-novo' : '') + '" role="img" aria-label="' + n + ' itens preenchidos">' + n + '</span>' : '';
+  return '<div class="abas" role="tablist" aria-label="Ver conversa ou resultado">' +
+    '<button type="button" role="tab" data-aba="conversa" aria-selected="' + (aba !== 'resultado') + '">Conversa</button>' +
+    '<button type="button" role="tab" data-aba="resultado" aria-selected="' + (aba === 'resultado') + '"' + (empurrao ? ' class="is-empurrao"' : '') + '>Resultado' + selo + '</button></div>';
+}
+function telaChat(t){
+  const c = caminho(t.id), i = c.indexOf(t.id);
+  let hist = '';
+  // pergunta + resposta de cada passo já feito; quem viu o exemplo do plano e clicou "Quero o meu" ganha essa resposta logo abaixo
+  const respondida = id => SEM_PERGUNTA.indexOf(id) > -1 ? '' : perg(pergunta(id).q) + eu(resposta(id), id === 'contato' ? null : id) +
+    (id === 'plano' && val('plano') === 'Quero ver como é' && R.planoVolta === 'quero' ? eu('Quero o meu') : '');
+  c.slice(0, i).forEach((id, j) => {
+    hist += antes(id).join('') + respondida(id) + (j < i - 1 ? depois(id).map(fala).join('') : '');
+  });
+  const novas = (i > 0 ? depois(c[i - 1]).map(fala) : []).concat(antes(t.id));
+  if (msgSelo) novas.push(bot(msgSelo));
+  if (SEM_PERGUNTA.indexOf(t.id) < 0) { const p = pergunta(t.id); novas.push(perg(p.q, {atual:true, ajuda:p.a})); }
+  // data-ancora: ponto de altura zero onde começa tudo que é novo (ver alinhar)
+  return '<div class="sala">' + abas() +
+    '<section class="conversa" data-pane="conversa" aria-label="Conversa">' + hist + '<div data-ancora></div>' + novas.map(nova).join('') + '<div data-corpo>' + corpo(t) + '</div></section>' +
+    '<aside class="painel escuro" data-pane="resultado" aria-label="Seu diagnóstico em construção">' + painel(t) + '</aside></div>';
+}
+/* ——— Modo números: conta ao vivo ——— */
+function atualizarLivro(){
+  let base = null;
+  R.nums.forEach((n, i) => {
+    const el = document.getElementById('calc' + i);
+    if (!el) return;
+    const v = lerNum(n.v);
+    let txt = '', aviso = false, abs = null;
+    if (i === 0) { abs = v; txt = v ? 'base de todas as contas' : ''; }
+    else if (v !== null && n.u === 'p') {
+      abs = base !== null ? base * v / 100 : null;
+      if (v > 100) { txt = 'Acima de 100%. Confere esse número?'; aviso = true; }
+      else txt = abs !== null ? '≈ ' + num(abs, 0) + ' ' + LIVRO[i].rot.toLowerCase() : '';
+    } else if (v !== null) {
+      abs = v;
+      if (base !== null && v > base) { txt = 'Maior que a etapa anterior. Confere esse número?'; aviso = true; }
+      else txt = base ? '= ' + pct(v / base * 100) + ' de ' + LIVRO[i - 1].rot.toLowerCase() : '';
+    }
+    el.textContent = txt;
+    el.classList.toggle('is-aviso', aviso);
+    base = abs;
+  });
+  const box = $('#painelFunil');
+  if (box) box.innerHTML = graficoBarras(volumesDe(R.nums), {fixo:true});
+}
+
+/* ——— Contato: telefone por país e e-mail ——— */
+const PAISES = [
+  {c:'BR', f:'🇧🇷', n:'Brasil', d:'+55', ph:'(11) 98765-4321'},
+  {c:'US', f:'🇺🇸', n:'Estados Unidos', d:'+1', ph:'(407) 555-0123'},
+  null,
+  {c:'PT', f:'🇵🇹', n:'Portugal', d:'+351', ph:'912 345 678'},
+  {c:'AR', f:'🇦🇷', n:'Argentina', d:'+54', ph:'11 2345-6789'},
+  {c:'MX', f:'🇲🇽', n:'México', d:'+52', ph:'55 1234 5678'},
+  {c:'CA', f:'🇨🇦', n:'Canadá', d:'+1', ph:'(416) 555-0123'},
+  {c:'ES', f:'🇪🇸', n:'Espanha', d:'+34', ph:'612 34 56 78'},
+  {c:'GB', f:'🇬🇧', n:'Reino Unido', d:'+44', ph:'7400 123456'}
+];
+const pais = c => PAISES.find(p => p && p.c === c);
+// ponytail: máscara por modelo de número; na versão real entra libphonenumber-js (validação de verdade por país)
+function modeloTel(p, dig){
+  if (p.c === 'BR') return dig.length > 10 ? '(##) #####-####' : '(##) ####-####';
+  return p.ph.replace(/\d/g, '#');
+}
+function formatarTel(p, dig){
+  const m = modeloTel(p, dig); let out = '', k = 0;
+  for (const ch of m) { if (k >= dig.length) break; if (ch === '#') out += dig[k++]; else out += ch; }
+  return out;
+}
+const telValido = (p, dig) => p.c === 'BR' ? (dig.length === 11 && dig[2] === '9') || dig.length === 10 : dig.length === (modeloTel(p, dig).match(/#/g) || []).length;
+const emailValido = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+const ERROS_EMAIL = {'gmial.com':'gmail.com','gmai.com':'gmail.com','gmail.con':'gmail.com','gamil.com':'gmail.com','hotmial.com':'hotmail.com','hotmail.con':'hotmail.com','outlok.com':'outlook.com','yahoo.com.b':'yahoo.com.br','icloud.con':'icloud.com'};
+function validarContato(){
+  const c = R.contato, p = pais(c.pais);
+  const okTel = telValido(p, c.tel), okEmail = emailValido(c.email);
+  const telDica = $('#telDica'), emailDica = $('#emailDica'), bt = $('#enviar');
+  if (!bt) return;
+  if (telDica) { telDica.textContent = !c.tel ? 'Formato: ' + p.ph : okTel ? 'Número completo' : 'Faltam números'; telDica.classList.toggle('is-ok', okTel); }
+  if (emailDica) {
+    const dom = (c.email.split('@')[1] || '').toLowerCase();
+    if (ERROS_EMAIL[dom]) emailDica.innerHTML = 'Você quis dizer <button type="button" class="sugestao" data-acao="corrigir-email" data-dominio="' + ERROS_EMAIL[dom] + '">' + esc(c.email.split('@')[0]) + '@' + ERROS_EMAIL[dom] + '</button>?';
+    else emailDica.textContent = '';
+  }
+  bt.disabled = !(c.nome.trim().length > 1 && okEmail && okTel);
+}
+
+/* ——— Relatório ——— */
+const CENARIOS = {
+  fraco:{leads:400, n:[200, 80, 56, 7], ticket:15000},
+  saudavel:{leads:400, n:[220, 120, 96, 21], ticket:15000},
+  // por estimativa: pré-qualificação "mais de 50%" (conta como 50%); as outras "menos de X%", que contam como 70% da meta
+  chute:{leads:400, taxas:[50, 35, 52.5, 14], ticket:15000}
+};
+function calcular(c){
+  const n = c.n || c.taxas.reduce((a, t) => a.concat(a[a.length - 1] * t / 100), [c.leads]).slice(1);
+  const vol = [c.leads].concat(n);
+  const taxas = n.map((v, i) => v / vol[i] * 100);
+  const fracas = taxas.map((t, i) => t < METAS[i] ? i : -1).filter(i => i > -1);
+  const hoje = Math.floor(n[3] + 1e-9);
+  const naMeta = Math.floor(c.leads * taxas.reduce((acc, t, i) => acc * (fracas.indexOf(i) > -1 ? METAS[i] : t) / 100, 1) + 1e-9);
+  const extraV = naMeta - hoje, extraR = extraV * c.ticket;
+  // ponytail: cada etapa leva uma fatia proporcional a ln(meta/taxa); as fatias somam o total e não dependem da ordem das etapas
+  const pesos = fracas.map(i => Math.log(METAS[i] / taxas[i]));
+  const soma = pesos.reduce((a, b) => a + b, 0);
+  const partes = fracas.map((i, k) => ({i:i, share:pesos[k] / soma, r:extraR * pesos[k] / soma, v:extraV * pesos[k] / soma}))
+    .sort((a, b) => Math.round(b.r) - Math.round(a.r) || a.i - b.i); // empate: segue a ordem do funil
+  return {vol:vol, taxas:taxas, fracas:fracas, hoje:hoje, naMeta:naMeta, extraV:extraV, extraR:extraR, partes:partes, geral:hoje / c.leads * 100};
+}
+// conferência rápida da conta do exemplo do manual (400 leads, R$ 15 mil): 7 → 15 vendas, R$ 120 mil na mesa
+(function(){ const k = calcular(CENARIOS.fraco); console.assert(k.naMeta === 15 && k.extraR === 120000 && Math.abs(k.partes.reduce((a, p) => a + p.r, 0) - 120000) < 1, 'conta do dinheiro na mesa'); })();
+
+const LEITURA = {
+  0:{frase:t => 'De cada 10 leads, ' + Math.floor(t / 10) + (Math.floor(t / 10) === 1 ? ' tem' : ' têm') + ' perfil de compra. O esperado é pelo menos 5.',
+     causa:'Quando menos da metade dos leads tem perfil, o problema nasce no marketing, não no time de vendas. O mais comum é criativo ou público errado, ou uma promessa que atrai curioso em vez de quem pode comprar.',
+     fazer:['Escrever em uma frase quem é o cliente com perfil e julgar cada anúncio por ela.','Colocar 2 ou 3 perguntas na entrada que filtrem quem pode comprar, como faturamento e prazo.','Desligar o anúncio que traz lead barato que nunca vira conversa.']},
+  1:{frase:t => 'De cada 10 leads com perfil, ' + Math.floor(t / 10) + ' marcam reunião. O esperado é pelo menos 5.',
+     causa:'Você contou que o primeiro contato sai no mesmo dia. Lead com perfil esfria rápido, e quem responde primeiro costuma ficar com a reunião. Antes de mexer no que se fala, vale atacar a velocidade.',
+     fazer:['Responder cada lead em até 10 minutos no horário comercial.','Cada lead com um responsável e um número fixo de tentativas, por ligação e WhatsApp.','Se sobra lead sem contato no fim do dia, está entrando mais lead do que o time consegue atender.']},
+  2:{frase:t => 'De cada 10 reuniões marcadas, ' + (10 - Math.round(t / 10)) + ' não acontecem. O esperado é perder no máximo 1 a cada 4.',
+     causa:'Hoje a pessoa recebe um lembrete só. Sem aviso na véspera e algumas horas antes, a reunião perde prioridade na agenda dela.',
+     fazer:['Lembrete na véspera e de novo algumas horas antes.','Quem falta é remarcado no mesmo dia.','Ao marcar, explicar o que a pessoa leva da reunião e pedir o compromisso dela.']},
+  3:{frase:t => 'De cada ' + Math.round(100 / t) + ' reuniões, 1 vira venda. O esperado é pelo menos 1 a cada 5.',
+     causa:'Quando a venda não fecha, o mais comum é o cliente dizer que vai pensar e sumir. Isso costuma indicar reunião que termina sem próximo passo e uma explicação que não deixa claro o que o cliente ganha.',
+     fazer:['Toda reunião termina com um sim, um não ou uma nova data marcada.','Um roteiro único de reunião, com duas gravações ouvidas por semana.','Anotar o motivo de cada venda perdida.']}
+};
+
+function haste(c, k, est){
+  const q = est ? '≈ ' : '';
+  return '<div class="haste">' +
+    '<div class="haste__ponta">' + SEMENTE + '<b>' + num(c.leads, 0) + '</b><span>leads no mês · as sementes</span></div>' +
+    '<ol class="etapas">' + ETAPAS.map((e, i) => {
+      const t = k.taxas[i], baixo = t < METAS[i];
+      return '<li class="etapa' + (baixo ? ' is-baixo' : '') + '"><div class="etapa__linha"><span class="etapa__nome">' + e.nome + '</span><span class="etapa__taxa">' + q + pct(t) + '</span></div>' +
+        regua(t, METAS[i]) +
+        '<div class="etapa__pe"><span>' + q + num(k.vol[i + 1], 0) + ' de ' + num(k.vol[i], 0) + ' ' + e.base + ' ' + e.verbo + '</span><span class="etapa__status">' + (baixo ? 'abaixo da meta' : 'bateu a meta') + '</span></div></li>';
+    }).join('') + '</ol>' +
+    '<div class="haste__ponta">' + FRUTO + '<b>' + num(k.hoje, 0) + '</b><span>vendas no mês · os frutos</span>' +
+    '<p class="haste__geral"><strong>' + q + pct(k.geral) + '</strong> dos leads viram venda. A meta geral é cerca de 4%.</p></div></div>';
+}
+
+// Leitura em 4 quadros (o SWOT do Arthur, na língua do funil). ctx = o que vem das respostas (o relatório de exemplo da abertura passa valores fixos)
+function quadrosDados(k, saudavel, est, ctx){
+  const crmEmDia = ctx.crm === 'Sim, e o time atualiza todo dia';
+  return saudavel ? {
+    f:['As 4 etapas batem a meta.', pct(k.geral) + ' dos leads viram venda.'],
+    r:['Nenhuma etapa abaixo da meta.'],
+    o:['Mais leads com perfil: com as suas taxas, cada lead novo tem a mesma chance de virar venda.', 'Venda de maior valor: o mesmo trabalho rende mais por cliente.'],
+    a:['Mais leads pedem mais gente para atender. Fila maior que o time derruba o agendamento.']
+  } : {
+    f:(k.taxas[0] >= METAS[0] ? ['Metade dos leads tem perfil de compra: o marketing traz gente certa.'] : [])
+      .concat(!est && ctx.lembra === 'Sim' ? ['Vocês sabem os números do funil, então dá para medir cada conserto.'] : []),
+    r:k.partes.map(p => ETAPAS[p.i].nome + ': ' + (est ? '≈ ' : '') + pct(k.taxas[p.i]) + ', meta ' + METAS[p.i] + '%.'),
+    o:['Dinheiro na mesa: ≈ ' + mil(k.extraR) + ' por mês com as etapas fracas na meta.']
+      .concat(k.fracas.indexOf(1) > -1 || k.fracas.indexOf(2) > -1 ? ['Agendamento e comparecimento dependem de rotina. Costumam ser os consertos mais baratos.'] : []),
+    a:(k.fracas.indexOf(2) > -1 && k.fracas.indexOf(3) > -1 ? ['Comparecimento e fechamento fracos juntos costumam indicar gente sem perfil entrando na agenda.'] : [])
+      .concat(crmEmDia ? [] : ['Sem CRM atualizado todo dia, fica difícil ver onde cada lead para.'])
+      .concat(est ? ['Os números são estimativa. Contar os cinco números todo mês deixa o diagnóstico preciso.'] : [])
+  };
+}
+function quadros(k, saudavel, est){
+  const q = quadrosDados(k, saudavel, est, {crm:val('crm'), lembra:val('lembra')});
+  const bloco = (cls, titulo, itens) => '<div class="quatro__q ' + cls + '"><h3>' + titulo + '</h3><ul class="lista">' + (itens.length ? itens : ['—']).map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
+  return '<section><p class="secao__olho">leitura em 4 quadros</p><h2 class="secao__titulo">O resumo do seu comercial</h2><div class="quatro">' +
+    bloco('q-forca', 'Forças', q.f) + bloco('q-fraqueza', 'Fraquezas', q.r) + bloco('q-oportunidade', 'Oportunidades', q.o) + bloco('q-alerta', 'Alertas', q.a) + '</div></section>';
+}
+function cta(tipo, saudavel){
+  const agoraNao = '<button type="button" class="discreto" data-acao="agora-nao">Agora não</button>';
+  if (tipo === 'nao') {
+    return '<section class="cta"><p class="secao__olho">próximo passo</p><h2>Quer conversar sobre esse diagnóstico?</h2>' +
+      '<p>Clique se você tem interesse que alguém da nossa equipe chame você para falar mais sobre esse assunto.</p>' +
+      '<div class="cta__botoes"><button type="button" class="botao" data-acao="interesse"' + (R.interesse ? ' disabled' : '') + '>Tenho interesse <span class="seta" aria-hidden="true">→</span></button></div>' + agoraNao +
+      '<p class="cta__nota" id="ctaNota" role="status"' + (R.interesse ? '' : ' hidden') + '>' + (R.interesse ? 'Anotado. Alguém da equipe da Triad vai chamar você no WhatsApp.' : '') + '</p></section>';
+  }
+  const dias = ['seg 26/10', 'ter 27/10', 'qua 28/10'], horas = ['10:00', '11:30', '14:00', '16:30'];
+  const ficha = (g, x) => '<button type="button" data-ficha="' + g + '" data-valor="' + x + '" aria-pressed="' + (R[g] === x) + '">' + x + '</button>';
+  return '<section class="cta"><p class="secao__olho">próximo passo</p><h2>' + (saudavel ? 'Quer crescer junto com a equipe da Triad?' : 'Quer resolver isso junto com a equipe da Triad?') + '</h2>' +
+    '<p>Numa conversa, a equipe olha esse diagnóstico com você e mostra ' + (saudavel ? 'onde investir primeiro' : 'por onde começar') + '. Escolha como prefere falar.</p>' +
+    '<div class="cta__botoes"><button type="button" class="botao" data-acao="agendar" aria-expanded="false" aria-controls="agenda">Agendar conversa <span class="seta" aria-hidden="true">→</span></button>' +
+    '<button type="button" class="botao botao--linha" data-acao="whats">Chamar no WhatsApp</button></div>' + agoraNao +
+    '<div class="agenda" id="agenda" hidden><p class="agenda__rotulo">Escolha o dia</p><div class="fichas">' + dias.map(d => ficha('dia', d)).join('') + '</div>' +
+    '<p class="agenda__rotulo">Escolha o horário (Brasília)</p><div class="fichas">' + horas.map(h => ficha('hora', h)).join('') + '</div>' +
+    '<button type="button" class="botao" data-acao="confirmar" id="confirmar"' + (R.dia && R.hora ? '' : ' disabled') + '>Confirmar horário</button></div>' +
+    '<p class="cta__nota" id="ctaNota" role="status" hidden></p></section>';
+}
+
+function telaRelatorio(t){
+  const saudavel = t.rel === 'saudavel';
+  // estimativa: tela do seletor ou quem respondeu "não lembro dos números"
+  const est = !saudavel && (!!t.est || R.lembra === 'Não');
+  const c = saudavel ? CENARIOS.saudavel : est ? CENARIOS.chute : CENARIOS.fraco;
+  const k = calcular(c);
+  const empresa = R.contato.empresa.trim() || 'Empresa Exemplo';
+  const nomeTodo = R.contato.nome.trim() || R.nome.trim() || 'Marina Souza';
+  const nome = nomeTodo.split(' ')[0];
+  const nf = k.fracas.length;
+  const perfil = saudavel ? PERFIL_OK : PERFIS[k.partes[0].i];
+
+  const topo = '<header class="rel-topo"><p class="olho">diagnóstico de vendas · ' + esc(empresa) + ' · outubro de 2026</p>' +
+    '<p class="rel-ficha">' + [nomeTodo, val('cargo'), val('ramo'), val('faturamento')].map(x => '<span>' + esc(x) + '</span>').join('') + '</p>' +
+    (saudavel
+      ? '<h1 id="foco" tabindex="-1">' + esc(nome) + ', seu funil <span class="ok">bate a meta</span> nas 4 etapas.</h1><p class="rel-topo__lede">Pelos números que você informou, todas as etapas estão na meta ou acima. O processo comercial funciona. O limite agora é quantas sementes entram.</p>'
+      : '<h1 id="foco" tabindex="-1">' + esc(nome) + ', seu funil perde força em <span>' + nf + ' das 4 etapas</span>.</h1><p class="rel-topo__lede">' + (est ? 'Pela sua estimativa' : 'Pelos números que você informou') +
+        (k.fracas.indexOf(0) < 0 ? ', o marketing faz a parte dele. Metade dos leads tem perfil de compra. A perda começa no agendamento e vai até o fechamento.' : ', a perda começa na entrada: menos da metade dos leads tem perfil de compra.') + '</p>') +
+    '<div class="rel-selos">' + (est ? '<span class="selo selo--est">estimativa · respostas por chute</span>' : '<span class="selo">confiança alta · números que você informou</span>') +
+    '<span class="perfil-chip">perfil do funil <b>' + perfil.nome + '</b></span></div>' +
+    '<p class="rel-copia">Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp.</p></header>';
+
+  const funil = '<section><p class="secao__olho">da semente ao fruto</p><h2 class="secao__titulo">Suas 4 etapas contra as metas</h2>' + haste(c, k, est) + '</section>';
+  const g = ganhos(k.taxas);
+  if (est) g.delete('mede');
+  const selos = '<section><p class="secao__olho">selos · ' + g.size + ' de ' + SELOS.length + '</p><h2 class="secao__titulo">O que o seu time já faz bem</h2>' + listaSelos(g, ' selos--rel') + '</section>';
+
+  let fracos;
+  if (saudavel) {
+    fracos = '<section><p class="secao__olho">pontos fracos</p><h2 class="secao__titulo">Nenhuma etapa ficou abaixo da meta</h2>' +
+      '<div class="fraco__bloco"><h4>Onde crescer</h4><ul class="lista">' +
+      '<li>Mais leads com perfil. Com as suas taxas, cada lead novo tem a mesma chance de virar venda.</li>' +
+      '<li>Venda de maior valor. O mesmo trabalho do time rende mais por cliente.</li>' +
+      '<li>Leads antigos. Quem não fechou meses atrás pode estar pronto agora.</li></ul></div>' +
+      '<div class="fraco__bloco" style="margin-top:18px"><h4>O que manter</h4><p>Continue contando os cinco números todo mês, num lugar só. É isso que permite ver uma etapa cair antes de ela pesar no faturamento.</p></div></section>';
+  } else {
+    const ok = ETAPAS.filter((e, i) => k.fracas.indexOf(i) < 0);
+    fracos = '<section><p class="secao__olho">' + nf + ' pontos fracos · do que mais pesa para o que menos pesa</p><h2 class="secao__titulo">Onde sua equipe perde performance</h2>' +
+      '<ol class="fracos">' + k.partes.map((p, n) => {
+        const e = ETAPAS[p.i], L = LEITURA[p.i];
+        return '<li class="fraco"><div class="fraco__tag">' + (n === 0 ? '<span class="principal">etapa principal</span>' : '') + '<span>≈ ' + mil(p.r) + ' por mês na mesa</span></div>' +
+          '<div class="fraco__cabeca"><h3>' + e.nome + '</h3><span class="fraco__num"><b>' + pct(k.taxas[p.i]) + '</b> · meta ' + METAS[p.i] + '%</span></div>' +
+          '<p class="fraco__frase">' + L.frase(k.taxas[p.i]) + '</p>' +
+          '<div class="fraco__bloco"><h4>Causa provável</h4><p>' + L.causa + '</p></div>' +
+          '<div class="fraco__bloco"><h4>O que fazer</h4><ul class="lista">' + L.fazer.map(f => '<li>' + f + '</li>').join('') + '</ul></div></li>';
+      }).join('') + '</ol>' +
+      '<div class="conjunta"><p class="secao__olho">leitura conjunta</p>' +
+      '<p>Comparecimento e fechamento fracos ao mesmo tempo costumam vir da mesma raiz. Gente sem perfil está entrando na agenda. Vale conferir o que quem agenda pergunta antes de marcar.</p>' +
+      '<p>Agendamento e comparecimento dependem de rotina, não de talento. Costumam ser os consertos mais baratos.</p></div>' +
+      (ok.length ? '<div class="funciona">' + FRUTO + '<p><strong>O que já funciona:</strong> ' + ok.map(e => e.nome.toLowerCase()).join(', ') + '.' + (k.fracas.indexOf(0) < 0 ? ' Metade dos seus leads tem perfil de compra, então o marketing está trazendo gente certa.' : '') + '</p></div>' : '') +
+      '</section>';
+  }
+
+  let mesa;
+  if (saudavel) {
+    const taxa = k.hoje / c.leads;
+    const linhas = [100, 200, 400].map(x => { const v = Math.floor(x * taxa + 1e-9); return '<tr><td>+' + x + '</td><td>+' + v + '</td><td>' + mil(v * c.ticket) + '</td></tr>'; }).join('');
+    mesa = '<section class="mesa"><p class="secao__olho">dinheiro na mesa</p><p class="mesa__valor mesa__valor--frase">Está em investir mais em marketing.</p>' +
+      '<p class="mesa__frase">Seu time converte bem. Cada lead com perfil que entra tem boa chance de virar venda, e hoje o que falta é semente.</p>' +
+      '<div class="rolagem"><table class="tabela"><thead><tr><th>Leads a mais por mês</th><th>Vendas a mais</th><th>Por mês</th></tr></thead><tbody>' + linhas + '</tbody></table></div>' +
+      '<p class="mesa__nota">Conta feita com as suas taxas de hoje: ' + pct(k.geral) + ' dos leads viram venda, valor médio de R$ ' + num(c.ticket, 0) + '. Não é promessa. Mais leads também pedem gente para atender.</p></section>';
+  } else {
+    mesa = '<section class="mesa"><p class="secao__olho">dinheiro na mesa</p>' +
+      '<p class="mesa__valor">' + (est ? '≈ ' : '') + mil(k.extraR) + '<small>por mês' + (est ? ' · estimativa' : '') + '</small></p>' +
+      '<p class="mesa__frase">São ' + (est ? 'cerca de ' : '') + k.extraV + ' vendas a mais por mês se as ' + nf + ' etapas fracas chegassem na meta. Frutos que hoje ficam no pé.</p>' +
+      '<ul class="partes">' + k.partes.map(p => {
+        const v = Math.round(p.v);
+        return '<li><span class="partes__nome">' + ETAPAS[p.i].nome + '</span><span class="partes__barra" style="--p:' + (p.share * 100).toFixed(1) + '"></span><span class="partes__valor"><b>' + mil(p.r) + '</b> · ≈ ' + v + (v === 1 ? ' venda' : ' vendas') + '</span></li>';
+      }).join('') + '</ul>' +
+      (est ? '<p class="mesa__nota">Conta por estimativa, não é promessa. Onde você respondeu “menos de X%”, a etapa entra como 70% da meta: ' + k.fracas.map(i => ETAPAS[i].nome.toLowerCase() + ' ' + pct(k.taxas[i])).join(', ') +
+        '. Base: ' + num(c.leads, 0) + ' leads por mês e valor médio de R$ ' + num(c.ticket, 0) + '. Com os números exatos, a conta fica precisa.</p></section>' :
+      '<p class="mesa__nota">Conta feita com os seus números, não é promessa. Hoje: ' + k.hoje + ' vendas, ' + mil(k.hoje * c.ticket) + ' por mês. Com as etapas na meta: ' + k.naMeta + ' vendas, ' + mil(k.naMeta * c.ticket) + '. Valor médio da venda: R$ ' + num(c.ticket, 0) + '.</p></section>');
+  }
+
+  const video = '<section class="video-bloco"><p class="secao__olho">antes de decidir</p><h2 class="secao__titulo">1 minuto com o Junior sobre o seu diagnóstico</h2>' +
+    '<div class="video escuro"><img src="' + FOTO + '" alt="" loading="lazy" width="928" height="1152"><span class="video__veu"></span>' +
+    '<button type="button" class="video__play" data-acao="aviso" data-alvo="avisoVideoRel" data-aviso="Protótipo: o vídeo ainda vai ser gravado. Na versão final ele toca aqui, com som, e não trava nada: a chamada abaixo fica liberada o tempo todo." aria-label="Assistir ao vídeo do Junior"><span class="play" aria-hidden="true"></span></button>' +
+    '<span class="pilula">vídeo do Junior · cerca de 1 min</span></div>' +
+    '<p class="cartao__aviso" id="avisoVideoRel" role="status" hidden></p></section>';
+
+  const acoes = '<div class="acoes"><button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoAcoes" data-aviso="Protótipo: na versão final, copia o link do seu diagnóstico para mandar a um sócio ou gestor.">Compartilhar</button>' +
+    '<button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoAcoes" data-aviso="Protótipo: na versão final, baixa o diagnóstico em PDF.">Baixar PDF</button>' +
+    '<p class="fino" id="avisoAcoes" role="status" hidden></p></div>';
+
+  const rodape = '<footer class="rodape"><span class="marca">' + TRIAD + 'Triad</span>' +
+    '<span>Metas usadas: pré-qualificação 50% · agendamento 50% · comparecimento 75% · fechamento 20%. Cada etapa é medida contra a anterior.</span></footer>';
+
+  return '<article class="relatorio">' + topo + funil + selos + quadros(k, saudavel, est) + fracos + mesa + video + cta(t.q === false ? 'nao' : 'qualificado', saudavel) + acoes + rodape + '</article>';
+}
+
+/* ——— Exemplo do plano de 90 dias (placeholder): "Voltar" e "Quero o meu" flutuando, os dois voltam para a conversa ——— */
+function telaPlanoExemplo(){
+  const blocos = [[46, 92, 84, 70], [40, 88, 76, 90, 58], [52, 80, 94, 66]];
+  return '<section class="plano-ex"><p class="olho">plano de ação de 90 dias · exemplo</p>' +
+    '<h1 id="foco" tabindex="-1">Como é o plano de ação de 90 dias</h1>' +
+    '<p class="plano-ex__lede">Placeholder: aqui entra um exemplo real do plano.</p>' +
+    '<div class="folha" role="img" aria-label="Espaço reservado para o exemplo do plano de ação">' +
+      blocos.map(b => '<div class="folha__bloco">' + b.map(w => '<span class="esqueleto" style="width:' + w + '%"></span>').join('') + '</div>').join('') +
+      '<span class="folha__selo">exemplo do plano entra aqui</span></div></section>' +
+    '<div class="flutua"><button type="button" class="botao botao--linha" data-acao="plano-voltar"><span class="seta" aria-hidden="true">←</span> Voltar</button>' +
+    '<button type="button" class="botao" data-acao="plano-quero">Quero o meu <span class="seta" aria-hidden="true">→</span></button></div>';
+}
+
+function telaErro(){
+  return '<section class="erro"><p class="olho">diagnóstico de vendas</p><h1 id="foco" tabindex="-1">Não deu para montar seu diagnóstico agora.</h1>' +
+    '<p>Suas respostas estão guardadas. Tente de novo em alguns instantes.</p>' +
+    '<button type="button" class="botao" data-acao="tentar">Tentar de novo <span class="seta" aria-hidden="true">→</span></button></section>';
+}
+
+/* ——— Motor do protótipo ——— */
+const palco = $('#palco');
+let atual = null, porFluxo = false, primeira = true;
+let aba = 'conversa', sinal = false, empurrao = false, selosAntes = new Set(), novosSelos = [], msgSelo = '';
+const timers = [];
+const limparTimers = () => { while (timers.length) clearTimeout(timers.pop()); };
+
+function render(t){
+  if (t.id === 'capa') return telaCapa();
+  if (t.id === 'abertura') return telaAbertura();
+  if (t.id === 'erro') return telaErro();
+  if (t.id === 'plano-exemplo') return telaPlanoExemplo();
+  if (t.rel) return telaRelatorio(t);
+  return telaChat(t);
+}
+function mostrar(id, o){
+  o = o || {};
+  const t = tela(id) || TELAS[0];
+  const vemDaConversa = !!(atual && tela(atual).chat);
+  atual = t.id; porFluxo = !!o.fluxo;
+  limparTimers();
+  $('#avisoSelo').hidden = true;
+  // selos novos: só quando a pessoa chega respondendo (não pelo seletor)
+  const f = funilPainel();
+  const agora = ganhos(f && f.taxas);
+  novosSelos = porFluxo && t.chat && vemDaConversa ? SELOS.map(s => s.id).filter(s => agora.has(s) && !selosAntes.has(s)) : [];
+  msgSelo = novosSelos.length && selosAntes.size === 0 ? 'Boa, ' + esc(nm()) + ': primeiro selo conquistado. Ele fica guardado no painel.' : '';
+  if (t.chat) selosAntes = agora; // páginas fora da conversa (ex.: exemplo do plano) não zeram os selos já vistos
+  if (porFluxo && t.chat) { aba = 'conversa'; if (t.id !== 'nome') sinal = true; }
+  palco.innerHTML = render(t);
+  palco.className = t.chat ? 'palco' : 'palco entra';
+  document.body.dataset.largura = t.largura || (t.chat ? 'sala' : 'coluna');
+  document.body.dataset.aba = aba;
+  document.body.toggleAttribute('data-analisando', t.id === 'montando');
+  topo(t); protoMarcar(t);
+  try { history.replaceState(null, '', '#' + t.id); } catch (e) {}
+  const focar = !primeira; primeira = false;
+  if (t.chat) conversar(focar);
+  else { window.scrollTo(0, 0); const fo = document.getElementById('foco'); if (focar && fo) fo.focus({preventScroll:true}); }
+  if (t.id === 'numeros') atualizarLivro();
+  if (t.id === 'contato') validarContato();
+  if (t.id === 'montando') { montar(); girar(); }
+}
+function proximaDe(id){
+  if (id === 'lembra') return val('lembra') === 'Não' ? 'chute' : 'numeros';
+  if (id === 'numeros' || id === 'chute') return 'causa';
+  if (id === 'montando') {
+    // funil saudável: relatório de crescimento. Quem não se qualifica: relatório com "Tenho interesse" (regra 5).
+    // Qualificado com etapa abaixo da meta: oferta do plano de ação de 90 dias, na conversa
+    const f = funilPainel(), saud = !!f && !f.exemplo && f.taxas.every((v, i) => v !== null && v >= METAS[i]);
+    if (saud) return 'relatorio-saudavel' + (qualificado() ? '' : '-nao');
+    return qualificado() ? 'plano' : 'relatorio-nao';
+  }
+  if (id === 'plano') return val('plano') === 'Quero ver como é' ? 'plano-exemplo' : 'video-time';
+  if (id === 'plano-exemplo') return 'video-time';
+  const i = TELAS.findIndex(x => x.id === id);
+  return TELAS[Math.min(i + 1, TELAS.length - 1)].id;
+}
+const avancar = () => mostrar(proximaDe(atual), {fluxo:true});
+
+/* ——— Conversa: "digitando…" e entrada das falas (T4, T5) ——— */
+function marcarUltimo(){
+  const b = palco.querySelectorAll('.balao--bot:not([hidden])');
+  b.forEach(x => x.classList.remove('is-ultimo'));
+  if (b.length) b[b.length - 1].classList.add('is-ultimo');
+}
+function destacar(){
+  const row = palco.querySelector('[data-chave="nome"]');
+  if (row) row.classList.add('is-destaque');
+  empurrao = true;
+  const tab = palco.querySelector('[data-aba="resultado"]');
+  if (tab) tab.classList.add('is-empurrao');
+}
+function mostrarSelo(){
+  if (!novosSelos.length) return;
+  const s = SELOS.find(x => x.id === novosSelos[0]);
+  const el = $('#avisoSelo');
+  el.innerHTML = '<small>selo conquistado</small>' + esc(s.nome);
+  el.hidden = false;
+  timers.push(setTimeout(() => { el.hidden = true; }, 3200));
+}
+
+/* ——— Linha de leitura: tudo que é novo nasce na mesma altura ———
+   A âncora (altura zero) marca onde começa o conteúdo novo. A rolagem acontece uma vez só, antes de ele aparecer, e leva a âncora até a linha:
+   a resposta que a pessoa acabou de dar fica logo acima dela, o histórico sai pelo alto. O espaço vazio no fim da conversa (100vh) faz isso
+   valer mesmo com pouco conteúdo. No computador a linha fica 140px abaixo da barra de progresso; no celular, logo abaixo das abas. */
+const linhaLeitura = () => {
+  const ab = palco.querySelector('.abas');
+  return ab && getComputedStyle(ab).display !== 'none' ? ab.getBoundingClientRect().bottom + 80 : $('#topo').getBoundingClientRect().bottom + 140;
+};
+function alinhar(suave){
+  const a = palco.querySelector('[data-ancora]');
+  if (!a || !a.offsetParent) return 0;
+  let alvo = a.getBoundingClientRect().top + window.scrollY - linhaLeitura();
+  if (alvo < -1) { // primeira pergunta: ainda não há histórico para subir, então o respiro vem de cima
+    const conv = a.parentElement;
+    conv.style.paddingTop = (parseFloat(getComputedStyle(conv).paddingTop) - alvo) + 'px';
+    alvo = 0;
+  }
+  const dist = Math.abs(alvo - window.scrollY);
+  window.scrollTo({top:Math.max(0, alvo), behavior:suave && !calmo ? 'smooth' : 'auto'});
+  return dist;
+}
+
+/* ——— Conversa: "digitando…" e entrada das falas (T4, T5) ——— */
+function conversar(focar){
+  const novas = [].slice.call(palco.querySelectorAll('[data-nova]'));
+  const corpoEl = palco.querySelector('[data-corpo]');
+  const fim = () => {
+    corpoEl.hidden = false;
+    marcarUltimo();
+    const fo = document.getElementById('foco');
+    if (focar && fo) fo.focus({preventScroll:true});
+    mostrarSelo();
+  };
+  // pelo seletor de telas ou com menos movimento: tudo aparece de uma vez e a rolagem é instantânea
+  if (!porFluxo || calmo || !novas.length) { fim(); alinhar(false); return; }
+  novas.forEach(n => { n.hidden = true; });
+  corpoEl.hidden = true;
+  const dist = alinhar(true);
+  let k = 0;
+  const passo = () => {
+    if (k >= novas.length) return fim();
+    const n = novas[k++];
+    const entra = () => { n.hidden = false; n.classList.add('is-in'); marcarUltimo(); if (n.querySelector('[data-onboarding]')) destacar(); };
+    // como no original: só as falas de comentário mostram "digitando…"; a pergunta atual entra direto. O "digitando…" nasce no lugar do comentário e é trocado por ele no mesmo lugar
+    if (!n.classList.contains('balao--bot') || n.classList.contains('balao--atual')) { entra(); timers.push(setTimeout(passo, 350)); return; }
+    const dig = document.createElement('div');
+    dig.className = 'balao balao--bot digitando';
+    dig.innerHTML = '<span class="avatar" aria-hidden="true"><img src="' + FOTO + '" alt=""></span><div class="balao__texto" role="img" aria-label="Junior está digitando"><i></i><i></i><i></i></div>';
+    n.before(dig); marcarUltimo();
+    timers.push(setTimeout(() => { dig.remove(); entra(); timers.push(setTimeout(passo, k < novas.length ? 500 : 200)); }, k === 1 ? 900 : 700));
+  };
+  timers.push(setTimeout(passo, dist < 2 ? 80 : 520));
+}
+function montar(){
+  palco.querySelectorAll('.passos li').forEach((li, i) => timers.push(setTimeout(() => li.classList.add('feito'), 700 + i * 800)));
+  timers.push(setTimeout(() => {
+    const s = $('#abaSelo');
+    if (s) { s.className = 'abas__selo is-pronto'; s.textContent = '✓'; s.setAttribute('aria-label', 'diagnóstico pronto'); }
+  }, 2900));
+  timers.push(setTimeout(() => {
+    if (porFluxo) return mostrar(proximaDe('montando'), {fluxo:true});
+    const b = palco.querySelector('[data-acao="ver-relatorio"]'); if (b) b.hidden = false;
+  }, 3700));
+}
+const GIRO = ['Lendo suas respostas…', 'Calculando as 4 etapas do funil…', 'Comparando com as metas…', 'Somando o dinheiro na mesa…', 'Escrevendo a leitura de cada etapa…'];
+function girar(){
+  const el = $('#giro');
+  if (el) GIRO.forEach((txt, i) => timers.push(setTimeout(() => { el.textContent = txt; }, i * 650)));
+}
+
+/* ——— Barra de progresso (T1): rápida no começo, devagar no fim, teto de 65% nas perguntas ——— */
+function progresso(t){
+  if (t.rel || t.id === 'erro') return 100;
+  if (!t.chat) return null;
+  if (t.id === 'video-time') return 100;
+  if (t.id === 'plano') return 95;
+  if (t.id === 'montando') return 90;
+  if (t.id === 'contato') return 80;
+  const qs = caminho(t.id).filter(id => ['contato', 'montando', 'plano', 'video-time'].indexOf(id) < 0), feitas = qs.indexOf(t.id);
+  const peso = i => i < 6 ? 2 : i < 10 ? 1.5 : 1;
+  let feito = 0, total = 0;
+  qs.forEach((id, i) => { total += peso(i); if (i < feitas) feito += peso(i); });
+  return Math.round(feito / total * 65);
+}
+function topo(t){
+  const p = progresso(t), barra = $('#progresso');
+  barra.hidden = p === null;
+  if (p !== null) { $('#fill').style.width = p + '%'; barra.setAttribute('aria-valuenow', p); }
+  $('#passo').textContent = t.rel ? 'diagnóstico de vendas' : '';
+}
+
+/* ——— Seletor de telas (só para revisão) ——— */
+const protoBotao = $('#protoBotao'), protoPainel = $('#protoPainel');
+$('#protoLista').innerHTML = TELAS.map((t, i) => '<li><button type="button" data-ir="' + t.id + '"><span>' + String(i + 1).padStart(2, '0') + '</span>' + t.rot + '</button></li>').join('');
+function protoMarcar(t){
+  const i = TELAS.indexOf(t);
+  $('#protoNum').textContent = (i + 1) + '/' + TELAS.length;
+  protoPainel.querySelectorAll('[data-ir]').forEach(b => b.setAttribute('aria-current', b.dataset.ir === t.id));
+}
+function protoAbrir(sim){ protoPainel.hidden = !sim; protoBotao.setAttribute('aria-expanded', sim); }
+protoBotao.addEventListener('click', () => protoAbrir(protoPainel.hidden));
+protoPainel.addEventListener('click', e => { const b = e.target.closest('[data-ir]'); if (b) { protoAbrir(false); mostrar(b.dataset.ir); } });
+document.addEventListener('click', e => { if (!protoPainel.hidden && !e.target.closest('#proto')) protoAbrir(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !protoPainel.hidden) { protoAbrir(false); protoBotao.focus(); } });
+
+/* ——— Cliques nas telas ——— */
+let tAuto = null;
+palco.addEventListener('click', e => {
+  const op = e.target.closest('.opcao');
+  if (op) {
+    const campo = op.dataset.campo, v = op.dataset.valor;
+    if ('varios' in op.dataset) {
+      const arr = (R[campo] || []).slice(), k = arr.indexOf(v);
+      if (k < 0) arr.push(v); else arr.splice(k, 1);
+      R[campo] = arr; op.setAttribute('aria-checked', k < 0);
+    } else {
+      R[campo] = v;
+      op.parentElement.querySelectorAll('.opcao').forEach(x => x.setAttribute('aria-checked', x === op));
+      if (campo === 'chute') { R.chuteN = ''; const ch = $('#chuteN'); if (ch) ch.value = ''; }
+      if (campo === 'plano') R.planoVolta = null;
+      if ('auto' in op.dataset) { clearTimeout(tAuto); tAuto = setTimeout(avancar, 380); }
+    }
+    return;
+  }
+  const un = e.target.closest('[data-unidade]');
+  if (un) {
+    const i = +un.dataset.linha; R.nums[i].u = un.dataset.unidade;
+    un.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === un));
+    atualizarLivro(); return;
+  }
+  const fi = e.target.closest('[data-ficha]');
+  if (fi) {
+    const g = fi.dataset.ficha; R[g] = fi.dataset.valor;
+    fi.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === fi));
+    $('#confirmar').disabled = !(R.dia && R.hora); return;
+  }
+  const ab = e.target.closest('.abas [data-aba]'); // o body também carrega data-aba
+  if (ab) {
+    aba = ab.dataset.aba; document.body.dataset.aba = aba;
+    palco.querySelectorAll('[data-aba]').forEach(x => x.setAttribute('aria-selected', x === ab));
+    if (aba === 'resultado') { sinal = false; empurrao = false; ab.classList.remove('is-empurrao'); const s = ab.querySelector('.abas__selo'); if (s) s.classList.remove('is-novo'); }
+    if (aba === 'conversa') alinhar(false); else window.scrollTo(0, 0);
+    return;
+  }
+  const ed = e.target.closest('[data-editar]');
+  if (ed) { clearTimeout(tAuto); mostrar(ed.dataset.editar); return; }
+  const b = e.target.closest('[data-acao]');
+  if (!b) return;
+  const nota = $('#ctaNota');
+  switch (b.dataset.acao) {
+    case 'proximo': clearTimeout(tAuto); avancar(); break;
+    case 'enviar': if (!b.disabled) avancar(); break;
+    case 'ver-relatorio': mostrar(proximaDe('montando')); break;
+    case 'tentar': mostrar('montando', {fluxo:true}); break;
+    case 'aviso': { const alvo = document.getElementById(b.dataset.alvo); if (alvo) { alvo.textContent = b.dataset.aviso; alvo.hidden = false; } break; }
+    case 'encher':
+      R.contato = {nome:'Marina Souza', email:'marina@empresaexemplo.com.br', pais:'BR', tel:'11987654321', empresa:'Empresa Exemplo'};
+      mostrar('contato'); break;
+    case 'corrigir-email':
+      R.contato.email = R.contato.email.split('@')[0] + '@' + b.dataset.dominio; $('#email').value = R.contato.email; validarContato(); break;
+    case 'agendar': {
+      const ag = $('#agenda'); ag.hidden = !ag.hidden; b.setAttribute('aria-expanded', !ag.hidden); nota.hidden = true; break;
+    }
+    case 'confirmar':
+      nota.textContent = 'Horário reservado: ' + R.dia + ', às ' + R.hora + '. A confirmação chega no seu WhatsApp.'; nota.hidden = false; break;
+    case 'whats':
+      $('#agenda').hidden = true;
+      nota.textContent = 'Abre o WhatsApp da Triad com a mensagem pronta: “Oi, fiz o diagnóstico de vendas e quero conversar.” (protótipo: sem link)'; nota.hidden = false; break;
+    case 'plano-quero': case 'plano-voltar':
+      // os dois botões da página de exemplo voltam para a conversa, no vídeo do time
+      R.plano = 'Quero ver como é'; R.planoVolta = b.dataset.acao === 'plano-quero' ? 'quero' : 'voltar';
+      mostrar('video-time', {fluxo:true}); break;
+    case 'whats-plano': {
+      if (WHATS.numero) { window.open('https://wa.me/' + WHATS.numero + '?text=' + encodeURIComponent(WHATS.plano), '_blank', 'noopener'); break; }
+      const a = $('#avisoWhatsPlano');
+      a.textContent = 'Protótipo: na versão final, abre o WhatsApp da Triad com a mensagem “' + WHATS.plano + '” já escrita. O número ainda vai ser definido.'; a.hidden = false; break;
+    }
+    case 'interesse':
+      R.interesse = true; b.disabled = true; nota.textContent = 'Anotado. Alguém da equipe da Triad vai chamar você no WhatsApp.'; nota.hidden = false; break;
+    case 'agora-nao': {
+      const ag = $('#agenda'); if (ag) ag.hidden = true;
+      nota.textContent = 'Tudo bem. O diagnóstico fica no seu e-mail e no WhatsApp para quando quiser.'; nota.hidden = false; break;
+    }
+  }
+});
+
+/* ——— Digitação ——— */
+palco.addEventListener('input', e => {
+  const el = e.target, c = R.contato;
+  if (el.id === 'nomeIn') {
+    R.nome = el.value; const s = $('#seguir'); if (s) s.disabled = R.nome.trim().length < 2;
+  } else if (el.id === 'ticket') {
+    const d = el.value.replace(/\D/g, '').slice(0, 9);
+    el.value = R.ticket = d ? Number(d).toLocaleString('pt-BR') : '';
+  } else if (el.dataset.linha !== undefined && el.tagName === 'INPUT') {
+    el.value = el.value.replace(/[^\d.,]/g, '');
+    R.nums[+el.dataset.linha].v = el.value; atualizarLivro();
+  } else if (el.id === 'chuteN') {
+    el.value = el.value.replace(/[^\d,]/g, '').slice(0, 5); R.chuteN = el.value;
+    if (el.value) { R.chute = null; palco.querySelectorAll('[data-campo="chute"]').forEach(x => x.setAttribute('aria-checked', 'false')); }
+  } else if (el.id === 'tel') {
+    const p = pais(c.pais), max = (modeloTel(p, '00000000000').match(/#/g) || []).length;
+    c.tel = el.value.replace(/\D/g, '').slice(0, max); el.value = formatarTel(p, c.tel); validarContato();
+  } else if (el.id === 'nome' || el.id === 'email' || el.id === 'empresa') {
+    c[el.id] = el.value.trim() ? el.value : ''; validarContato();
+  }
+});
+palco.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.target.id !== 'nomeIn') return;
+  e.preventDefault();
+  const s = $('#seguir'); if (s && !s.disabled) avancar();
+});
+palco.addEventListener('change', e => {
+  if (e.target.id !== 'pais') return;
+  const c = R.contato; c.pais = e.target.value; c.tel = '';
+  const p = pais(c.pais), tel = $('#tel');
+  $('#ddiVer').textContent = p.f + ' ' + p.d; tel.value = ''; tel.placeholder = p.ph; tel.focus(); validarContato();
+});
+
+/* ——— Início ——— */
+const h = (location.hash || '').slice(1);
+mostrar(tela(h) ? h : 'capa');
+})();
+</script>
