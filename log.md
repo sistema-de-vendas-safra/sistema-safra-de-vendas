@@ -2,6 +2,10 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · fim da fila (etapas 4 a 10)
+
+- Todas as sete etapas com commit. Resumo em prompts/05-fila-de-trabalho-resposta.md; 84 perguntas em prompts/05-fila-perguntas.md.
+
 ## 2026-11-08 · etapa 10 · estrutura UX da landing-page-01
 
 - entregas/landings/landing-page-01/estrutura.md v1, rascunho (otavio: pendente). Novo, a partir do copy.md. Sem cor, fonte nem estilo (conflito-08). Apoia-se em documentos desatualizados pela cascata (6.9). Perguntas 10.1 a 10.16.
