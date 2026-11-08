@@ -1,6 +1,6 @@
 ---
 id: pauta-aprovacao-01
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -12,25 +12,25 @@ depende_de:
   - id: ficha-de-fatos
     versao: 3
   - id: lead-score
-    versao: 1
-  - id: funil-01
-    versao: 1
-  - id: promessa
     versao: 2
+  - id: funil-01
+    versao: 2
+  - id: promessa
+    versao: 3
   - id: oferta
     versao: 1
   - id: tom-de-voz
-    versao: 2
+    versao: 3
   - id: design-system
-    versao: 2
+    versao: 3
   - id: provas-e-conformidade
-    versao: 2
+    versao: 3
 desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides
 
-**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (lead-score, funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta) e precisa ser revista depois da pergunta 6.9 e, por usar a oferta, da 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9.
+**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11).
 
 **Como ler.** Cada item traz o que é, as opções registradas, a posição do Otávio e o que a decisão destrava. Quando só existe uma proposta, as opções são aprovar, ajustar ou recusar. Onde a posição do Otávio não está escrita, o item diz "o Otávio decide antes da reunião". A linha "Referência", no fim de cada item, serve só para rastrear de onde veio cada ponto.
 
@@ -42,11 +42,11 @@ desatualizado: true
 
 ### 1. O funil novo no lugar da página das três portas
 
-- **O que é:** o Otávio propõe trocar a página antiga, com três portas de entrada (com e sem vídeo de vendas, e a calculadora como porta), por um caminho único: página, quiz, banco de dados, planilha de quem liga para os leads e reunião com o Júnior. O documento do funil descreve esse caminho e ainda não foi aprovado por ninguém.
+- **O que é:** o Otávio propõe trocar a página antiga, com três portas de entrada (com e sem vídeo de vendas, e a calculadora como porta), por um caminho único: página, quiz, banco de dados, planilha de quem liga para os leads e reunião com o Júnior. O documento do funil descreve esse caminho e ainda não foi aprovado por ninguém. Também em aberto: se a página nova tem vídeo, como diz a decisão do Júnior de 28/10 ("quiz e página com vídeo"), e onde (no topo ou numa seção própria). Se tiver, o roteiro vira uma entrega própria, na voz do Júnior.
 - **Opções:** aprovar, ajustar ou recusar. Recusar mantém as três portas, que seguem valendo até a aprovação.
-- **Posição do Otávio:** a favor; é a proposta dele de 08/11/2026. O documento do funil em si ainda espera a aprovação dele, junto com a dos dois.
+- **Posição do Otávio:** a favor; é a proposta dele de 08/11/2026. O documento do funil em si ainda espera a aprovação dele, junto com a dos dois. Sobre o vídeo: o Otávio decide antes da reunião.
 - **O que destrava:** a página e o quiz deixam de ser rascunho; a ligação do quiz e da página com o banco de dados e com a agenda de quem liga; a contagem real das análises gratuitas.
-- **Referência:** posição: #90; substitui #66. Lacunas: conflito-06, conflito-14, lacuna-13. Documento: funil-01; pergunta 5.1.
+- **Referência:** posição: #90; substitui #66. Lacunas: conflito-06, conflito-14, lacuna-13. Documento: funil-01; pergunta 5.1. Decisão: #51. Pergunta 8.6.
 
 ### 2. Quem entra na fila de ligação: a nota do lead
 
@@ -103,18 +103,18 @@ desatualizado: true
 ### 8. Nome da agência e quem assina as peças
 
 - **O que é:** o nome "Triad" está ocupado e em revisão; o nome provisório "Triad H." espera a aprovação dos dois, a busca de marca e a grafia pública. Enquanto isso, não está decidido quem assina a página, o quiz e os anúncios.
-- **Opções:** as quatro formas registradas na ficha de fatos: o nome provisório; "Triad" com a empresa americana do rodapé do quiz; "TRIAD MKT" do logo; ou assinar por Junior Neves e pelo produto, sem marca de agência, até o nome sair. Também em aberto: a agência assina ou o Júnior fala em primeira pessoa.
+- **Opções:** as quatro formas registradas na ficha de fatos: o nome provisório; "Triad" com a empresa americana do rodapé do quiz; "TRIAD MKT" do logo; ou assinar por Junior Neves e pelo produto, sem marca de agência, até o nome sair. Também em aberto: a agência assina ou o Júnior fala em primeira pessoa. Se o Júnior falar em primeira pessoa, o texto da página passa pela voz dele e é mostrado a ele antes de publicar; as proibições da base continuam valendo.
 - **Posição do Otávio:** a favor do nome provisório, que é proposta dele de 08/11/2026. Quem assina enquanto o nome não sai: o Otávio decide antes da reunião.
 - **O que destrava:** a assinatura e o rodapé da página, do quiz e dos anúncios.
-- **Referência:** posição: #89; #55. Lacunas: lacuna-07, conflito-07, lacuna-19. Ficha: nome-agencia. Documentos: promessa, tom-de-voz.
+- **Referência:** posição: #89; #55. Lacunas: lacuna-07, conflito-07, lacuna-19. Ficha: nome-agencia. Documentos: promessa, tom-de-voz. Pergunta 9.4.
 
 ### 9. Credenciais, números públicos e as tentativas de contato
 
 - **O que é:** os números de credencial dos dois divergem entre fontes, e nenhum tem comprovante guardado; na ficha de fatos, as credenciais estão marcadas como prova pendente. A faixa de nomes famosos, o mosaico de fotos e o depoimento do Júnior sobre o Marçal estão na página sem comprovante nem autorização de nome e imagem (Código Civil). O contador "Total gerado" do topo da página depende desse mesmo número. Junto vai a regra das tentativas de contato antes de dar o lead como abandonado, que vem da operação do Júnior: a fonte pede confirmar que ela segue valendo e liberar as histórias da operação usadas nos vídeos.
-- **Opções:** para cada número, um dos valores registrados na ficha de fatos, só com comprovante; sem comprovante, nada vai a público. Para as autorizações e as tentativas: aprovar, ajustar ou recusar.
+- **Opções:** para cada número, um dos valores registrados na ficha de fatos, só com comprovante; sem comprovante, nada vai a público. Para as autorizações e as tentativas: aprovar, ajustar ou recusar. Enquanto não há comprovante, uma versão mínima da seção de credenciais: só os nomes dos dois, o papel de cada um no serviço e uma frase do Euclides escrita pelo Otávio, sem números, sem nomes de terceiros e sem fotos com terceiros: aprovar, ajustar ou recusar.
 - **Posição do Otávio:** em 08/11 ele mandou as credenciais e as tentativas para esta pauta, juntas, e deixou tudo como está. Qual número usar: o Otávio decide antes da reunião, depois dos comprovantes.
 - **O que destrava:** a seção de credenciais, as fotos e o contador do topo da página; o número de tentativas que o funil novo usa para dar um lead como abandonado; as histórias nos vídeos.
-- **Referência:** posição: resposta 8 de 08/11 (a resposta 2 só pôs as credenciais na ficha como prova pendente). Decisões: #25, #44. Lacunas: conflito-05, conflito-04, lacuna-16, lacuna-24, outros-21. Ficha: total-dos-dois, lancamento-finch, camila-vieira, credenciais-44, tentativas-ate-abandonado. Pergunta 5.3.
+- **Referência:** posição: resposta 8 de 08/11 (a resposta 2 só pôs as credenciais na ficha como prova pendente). Decisões: #25, #44. Lacunas: conflito-05, conflito-04, lacuna-16, lacuna-24, outros-21. Ficha: total-dos-dois, lancamento-finch, camila-vieira, credenciais-44, tentativas-ate-abandonado. Perguntas 5.3, 8.7 e 9.11.
 
 ### 10. Parcelamento e taxa da Hotmart
 
@@ -158,16 +158,16 @@ desatualizado: true
 
 ### 14. Quantas calls em grupo, e a agenda do Euclides
 
-- **O que é:** o formato das calls em grupo está decidido (semanais, conduzidas pelos dois), mas a quantidade diverge entre a Ficha do Serviço e a promessa, e isso pesa na agenda do Euclides.
+- **O que é:** o formato das calls em grupo está decidido (semanais, conduzidas pelos dois), mas a quantidade diverge entre a Ficha do Serviço e a promessa, e isso pesa na agenda do Euclides. A página cita o Euclides como condutor das calls em grupo, como está na ficha de fatos; confirmar com ele antes de publicar, porque o que a página diz vira compromisso pela lei do consumidor.
 - **Opções:** uma das duas quantidades registradas na ficha de fatos.
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** o compromisso de agenda do Euclides e o texto do contrato.
-- **Referência:** lacuna: outros-03. Decisões: #78, #79, #85. Ficha: calls-em-grupo.
+- **Referência:** lacuna: outros-03. Decisões: #78, #79, #85. Ficha: calls-em-grupo. Pergunta 9.10.
 
 ### 15. A Implementação Essencial, oferecida depois do não
 
 - **O que é:** a versão menor do serviço, oferecida só a quem disse não à Implementação Avançada e que não conta para as vagas. O desenho está em revisão desde 07/11 e o preço está em conflito entre "decidido" e "hipótese".
-- **Opções:** a instalação rápida proposta em 08/11 (a recomendada pela fonte) ou a Essencial em grupo, os dois desenhos registrados na ficha de fatos; o preço que está na ficha, como decidido ou como hipótese. Também em aberto: a regra da diferença no upgrade, a garantia e se continua só depois do não.
+- **Opções:** a instalação rápida proposta em 08/11 (a recomendada pela fonte) ou a Essencial em grupo, os dois desenhos registrados na ficha de fatos; o preço que está na ficha, como decidido ou como hipótese. Também em aberto: a regra da diferença no upgrade, a garantia e se continua só depois do não; e quem oferece a Essencial e em que momento (na mesma reunião ou num contato seguinte).
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** a fala da Essencial na reunião de venda, o preço que pode ser dito e o último passo do funil novo.
 - **Referência:** lacunas: lacuna-03, outros-02. Decisões: #37, #42, #60, #63. Ficha: downsell-nome, downsell-desenho, downsell-preco, vendas-que-contam. Pergunta 5.8.
@@ -244,7 +244,7 @@ desatualizado: true
 - **Opções:** uma das duas formas registradas.
 - **Posição do Otávio:** o Otávio decide antes da reunião; a decisão é dele, confirmando com o Júnior.
 - **O que destrava:** o roteiro da reunião de venda e as peças que citam a fala.
-- **Referência:** lacuna: outros-19. Documento: promessa ("Na voz do Júnior, para a call").
+- **Referência:** lacuna: outros-19. Documento: promessa ("Na voz do Júnior, para a call"). Pergunta 7.8.
 
 ### 24. "Cultivo" como nome antigo de "Plantio"
 
@@ -268,7 +268,23 @@ desatualizado: true
 - **Opções:** aprovar, ajustar ou recusar, quando o texto existir.
 - **Posição do Otávio:** o Otávio decide antes da reunião. O texto ainda não foi escrito.
 - **O que destrava:** o conteúdo e a apresentação da Triad.
-- **Referência:** decisões: #43, #82. Lacunas: outros-07, lacuna-07.
+- **Referência:** decisões: #43, #82. Lacunas: outros-07, lacuna-07. Pergunta 7.8.
+
+### 27. Duas perguntas de esclarecimento
+
+- **O que é:** o que é o "AVS" que o Júnior citou, e o fechamento que o Euclides queria fazer na reunião de 07/11. Só eles podem explicar.
+- **Respostas possíveis:** explicar ou dizer que não se aplica. Não são opções tiradas da base.
+- **Posição do Otávio:** o Otávio decide antes da reunião.
+- **O que destrava:** fecha a lacuna das decisões do cliente que ficaram sem registro.
+- **Referência:** lacuna: lacuna-22. Pergunta 7.4.
+
+### 28. As três fases de cor na linha do tempo
+
+- **O que é:** a página mostra as fases de cor que o Júnior decidiu, pela ordem e com uma linha do que acontece em cada uma, sem percentual e sem cor; falta ele confirmar as três linhas. As três linhas estão no documento da copy da página, seção 05.
+- **Opções:** aprovar, ajustar ou recusar as três linhas.
+- **Posição do Otávio:** o Otávio decide antes da reunião.
+- **O que destrava:** a linha do tempo da página.
+- **Referência:** decisão: #80. Pergunta 9.9.
 
 ---
 

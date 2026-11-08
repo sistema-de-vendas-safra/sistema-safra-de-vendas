@@ -2,6 +2,10 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 11 · triagem · pauta
+
+- entregas/pautas/pauta-aprovacao-01.md v1 para v2, rascunho (otavio: pendente). Motivo: acréscimos do grupo D da triagem: item 1 (vídeo da página, 8.6), item 8 (texto na voz do Júnior, 9.4), item 9 (versão mínima das credenciais, 8.7 e 9.11), item 14 (Euclides como condutor das calls em grupo, 9.10), item 15 (quem oferece a Essencial e quando, 5.8), referência à 7.8 nos itens 23 e 26, itens novos 27 (esclarecimentos, 7.4) e 28 (fases de cor, 9.9); 4.3 e 7.2 já estavam na pauta. Nota para o Otávio ajustada. Sentido. No mesmo passo, forma da cascata: depende_de lead-score 2, funil-01 2, promessa 3, tom-de-voz 3, design-system 3 e provas-e-conformidade 3. Continua desatualizado: depende de oferta, promessa, funil-01 e outros marcados (pergunta 4.5). O briefing da landing-page-01 segue apontando para a pauta v1; a troca fica para a etapa 12.
+
 ## 2026-11-08 · etapa 11 · triagem · forma
 
 - base/persona.md v2 para v3, decidido. Motivo: cascata da lacunas v4, só depende_de (triagem 6.9). Forma.
