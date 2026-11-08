@@ -64,10 +64,33 @@ Em base/lacunas.md, o conflito do critério de qualificação passa a dizer: pro
 - conexoes.md: em "quem tem acesso", só o Otávio no MVP.
 - CLAUDE.md: acrescente uma regra dizendo que o projeto "Estrategista de Negócio" no Claude é arquivo histórico desde 08/11/2026 e que mudança no Safra entra só pelo repositório.
 
+## 5a. Respostas às 9 perguntas da etapa 3 (prompts/03-escrever-a-base-resposta.md)
+
+1. **Atualizar decisoes para a ficha v2:** aprovado. É correção de forma.
+2. **Fatos fora da ficha:** aprovada a sua recomendação. A ficha sobe de versão com as credenciais de #44 como [PROVA REAL], os tempos da analogia (rúcula, morango, melancia) e o percentual de Deming com a nota "Adaptado de". O resto fica fora da ficha.
+3. **Colheita, plantio e relógio:** resolvido sem o Júnior. Vale a regra de 22/10, reafirmada por mim em 08/11 (vocabulário público só com palavras do comprador) e que o próprio design system v1.0 também traz: esses termos não entram em promessa, título nem chamada antes de o mecanismo ser explicado. A exceção continua sendo o nome Sistema de Vendas Safra.
+4. **Adoção do design system v1.0:** vai para a pauta com o Júnior. Fica como está.
+5. **Etapas e jargão:** resolvido pela minha decisão de 08/11 (palavras do comprador em público). Vale a sua recomendação: em público, os nomes de etapa do método (pré-qualificação, agendamento, comparecimento, fechamento). "Reunião" é palavra queimada para a persona, então a forma do design system perde nesse ponto. "SDR" e "closer" saem da comunicação de topo.
+6. **Cultivo como nome antigo de Plantio:** vai para a pauta com o Júnior. Fica como está.
+7. **Contagem do relógio:** vale a #41 (a partir do dia em que o lead entra). Tire o "confirmar com o Júnior" da ficha.
+8. **As 18 tentativas:** vai para a pauta com o Júnior, junto com as credenciais. Fica como está.
+9. **F11 no glossário:** tire, como correção de forma.
+
+Os itens 4, 6 e 8 ficam em base/lacunas.md com a marca "levar ao Júnior".
+
 ## 5. Cascata
 
-Estas decisões já estão aprovadas por mim. Suba a versão de cada documento alterado e aplique a cascata: quando o documento dependente só precisa refletir estas decisões, atualize-o direto. Se a cascata pedir qualquer outra mudança de sentido, pare e me pergunte.
+Estas decisões já estão aprovadas por mim. Suba a versão de cada documento alterado e aplique a cascata: quando o documento dependente só precisa refletir estas decisões, atualize-o direto. Se a cascata pedir qualquer outra mudança de sentido, siga a Regra de pausas abaixo.
+
+## Regra de pausas (vale para esta etapa e entra no CLAUDE.md)
+
+- Não pare para perguntar. Quando aparecer uma dúvida que seria minha, siga pelo caminho mais conservador: o status mais restritivo; o conflito registrado com os dois lados e bloqueado para entrega; nada inventado; nenhum lado escolhido por mim.
+- Registre cada escolha provisória na lista "Perguntas para o Otávio", no fim do arquivo de resposta desta etapa em prompts/, com: a dúvida, o que você fez, a sua recomendação e o que muda se eu decidir diferente.
+- Só pare de verdade para: alterar ou apagar algo em fontes/; contrariar uma instrução escrita deste prompt ou do CLAUDE.md; qualquer ação que não dê para desfazer pelo Git.
+- No fim, me entregue a lista inteira de uma vez.
+
+Acrescente esta Regra de pausas ao CLAUDE.md, como regra permanente da casa.
 
 ## 6. Ao fim
 
-Peça a um subagente que não participou do trabalho para conferir: nenhum travessão; cabeçalhos completos; depende_de válidos; nenhum valor de fato copiado fora da ficha; nada pendente do Júnior e do Euclides marcado como aprovado. Corrija o que for de forma. Depois faça um commit com a mensagem "decisoes de 08-11 e lead score" e me diga em até 8 linhas o que mudou. Não faça push.
+Peça a um subagente que não participou do trabalho para conferir: nenhum travessão; cabeçalhos completos; depende_de válidos; nenhum valor de fato copiado fora da ficha; nada pendente do Júnior e do Euclides marcado como aprovado. Corrija o que for de forma. Depois faça um commit com a mensagem "decisoes de 08-11 e lead score" salve em prompts/04-decisoes-de-08-11-e-lead-score-resposta.md o resumo e a lista "Perguntas para o Otávio", e me diga em até 8 linhas o que mudou e quantas perguntas ficaram. Não faça push.

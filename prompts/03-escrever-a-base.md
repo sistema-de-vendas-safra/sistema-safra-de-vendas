@@ -21,11 +21,18 @@ Você é o coordenador. Para cada lote, na ordem:
 
 1. **Escrever.** Entregue o lote a um subagente, que começa com contexto limpo. Passe a ele: este arquivo, o plano (prompts/02-plano-da-base-resposta.md), o CLAUDE.md, nucleo/regras/versionamento.md e, a partir do lote 2, os documentos dos lotes anteriores de que ele depende. Peça de volta só um resumo curto do que foi escrito.
 2. **Revisar.** Entregue o resultado a outro subagente, que não participou da escrita, com a lista de conferência abaixo. Peça de volta só os problemas encontrados.
-3. **Corrigir ou parar.** Problema de forma (cabeçalho incompleto, travessão, depende_de quebrado, fato copiado fora da ficha, fonte faltando): corrija e revise de novo. Problema que exige decisão minha (um conflito sem dono, uma fonte que contradiz o plano, algo que o plano não previu): pare tudo e me pergunte.
+3. **Corrigir e anotar.** Problema de forma (cabeçalho incompleto, travessão, depende_de quebrado, fato copiado fora da ficha, fonte faltando): corrija e revise de novo. Problema que exige decisão minha: siga a Regra de pausas abaixo, sem parar.
 4. **Registrar.** Atualize o index.md, registre no log.md o lote, os documentos criados e as versões, e faça um commit com a mensagem "base lote N".
 5. Siga para o próximo lote.
 
 Se a sessão for interrompida, ao recomeçar confira no log.md quais lotes já foram feitos e continue do próximo.
+
+## Regra de pausas
+
+- Não pare para perguntar. Quando aparecer uma dúvida que seria minha, siga pelo caminho mais conservador: o status mais restritivo; o conflito registrado com os dois lados e bloqueado para entrega; nada inventado; nenhum lado escolhido por mim.
+- Registre cada escolha provisória na lista "Perguntas para o Otávio", no fim do arquivo de resposta desta etapa em prompts/, com: a dúvida, o que você fez, a sua recomendação e o que muda se eu decidir diferente.
+- Só pare de verdade para: alterar ou apagar algo em fontes/; contrariar uma instrução escrita deste prompt ou do CLAUDE.md; qualquer ação que não dê para desfazer pelo Git.
+- No fim, me entregue a lista inteira de uma vez.
 
 ## Como escrever (vale para os subagentes)
 
@@ -49,4 +56,4 @@ Se a sessão for interrompida, ao recomeçar confira no log.md quais lotes já f
 
 ## No fim
 
-Quando os três lotes estiverem feitos, me diga em até 12 linhas o que foi feito, o que o revisor encontrou e corrigiu, e o que ficou para eu decidir. Não faça push.
+Quando os três lotes estiverem feitos, salve em prompts/03-escrever-a-base-resposta.md o resumo do que foi feito e a lista "Perguntas para o Otávio". No chat, me diga em até 12 linhas o que foi feito e quantas perguntas ficaram na lista. Não faça push.
