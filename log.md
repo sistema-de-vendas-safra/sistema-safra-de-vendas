@@ -2,6 +2,15 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 14 · quiz-01 codigo
+
+- entregas/quizzes/quiz-01/pagina/index.html v1 (id quiz-01-pagina), rascunho (otavio, junior e euclides: pendente). Novo. Cópia de fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html (fontes/ não foi alterado) com o texto da copy (M1 a M30) e a lógica da etapa: objeto FATOS com os campos da ficha (bloqueados como aviso "a definir"; metas do texto derivadas do campo, 13.13), objeto LEAD_SCORE com pontos, faixas e eliminatórios de lead-score v2, pacote do fim do quiz no formato da planta v2 com etiquetas e utm lidas do endereço, enviarPacote só no console (nenhum endereço externo, nenhuma chave) e consentimento obrigatório. Visual sem mudança (conflito-18): o CSS só perdeu travessões em comentários. Cabeçalho num comentário no topo. Nasce desatualizado (14.13).
+- entregas/quizzes/quiz-01/pagina/poster-junior.jpg: cópia da foto do mockup. entregas/quizzes/quiz-01/pagina/README.md: mesmo cabeçalho, o que é, como abrir, como testar e o resultado do teste.
+- nucleo/ferramentas/prints/testar-quiz-01.js: novo. Teste em 375 e 1440 pixels: exemplo de lead-score (96, faixa a), caso eliminatório (faixa eliminatorio, relatório com "Tenho interesse") e sem consentimento (nada enviado). Passou: 28 de 28 conferências. Prints em entregas/quizzes/quiz-01/prints/ (12 arquivos).
+- index.md: página, prints e ferramentas/prints (a linha "ferramentas/ · vazio" estava velha).
+- Perguntas 14.1 a 14.13 em prompts/07-fila-perguntas.md.
+- Revisão da etapa 14: consentimento_texto do pacote passa a levar a frase da política, como aparece na tela; o pacote ganha primeira_utm_source e primeira_utm_campaign na parte da pessoa (planta, gaveta pessoas). Teste refeito (28 de 28) e prints refeitos.
+
 ## 2026-11-08 · etapa 13 · quiz-01 briefing e copy
 
 - Fonte nova registrada: fontes/quiz-01-repositorio-2026-11-08/ (cópia do repositório do quiz, commit 17ec4d6, de 08/11/2026; vale sobre o artefato do acervo, como diz o LEIA.md da pasta). Nada em fontes/ foi alterado.

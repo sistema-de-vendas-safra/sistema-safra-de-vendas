@@ -17,7 +17,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v1, decidido)
 - modelos/ · vazio
 - receitas/ · vazio
-- ferramentas/ · vazio
+- ferramentas/README.md · o que mora na pasta de ferramentas
+- ferramentas/prints/ · print.js (prints em 375 e 1440 pixels) e testar-quiz-01.js (teste da página do quiz-01: exemplo 96 faixa a, eliminatório, consentimento)
 
 ## fontes/ (somente leitura)
 
@@ -54,6 +55,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - landings/landing-page-01/estrutura.md · estrutura UX da landing-page-01: ordem, hierarquia, primeira tela no celular, botões, caminho até o quiz, carregamento e erro, acessibilidade; sem estilo, design bloqueado (v3, rascunho; desatualizado)
 - quizzes/quiz-01/briefing.md · briefing do quiz-01: básico, o que da cópia nova do quiz vale como fonte, conflitos, roteiro de telas, finais pelos dois critérios, bloqueios (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - quizzes/quiz-01/copy.md · copy do quiz-01 tela por tela, com as perguntas do lead score, o consentimento e a tabela das mudanças no texto do Júnior (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- quizzes/quiz-01/pagina/ · página do quiz-01 (index.html, poster-junior.jpg, README.md): mockup do Júnior com o texto da copy, lead score num lugar só, pacote no formato da planta, envio desligado (só console), consentimento obrigatório; visual sem mudança (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- quizzes/quiz-01/prints/ · prints da página do quiz-01 em 375 e 1440 pixels (capa, pergunta, contato com e sem consentimento, resultado A, resultado eliminatório)
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
 - pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v3, rascunho; desatualizado)

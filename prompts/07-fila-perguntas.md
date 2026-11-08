@@ -111,3 +111,95 @@
    - *O que foi feito:* nada; nenhum documento quebra hoje.
    - *Recomendação:* a pauta deixa de declarar a copy em depende_de e só a cita no texto do item 29 (a pauta aponta para a copy, mas não se apoia nela).
    - *Se decidir diferente:* manter como está e aceitar que cada subida de um dos três marca os outros dois.
+
+## Etapa 14
+
+14.1. **Fontes do Google carregadas pela página.**
+   - *Dúvida:* o mockup carrega as fontes Inter, Space Grotesk e Permanent Marker de fonts.googleapis.com e fonts.gstatic.com. É o único endereço externo da página; o visual está em conflito (conflito-18) e não podia ser mexido.
+   - *O que foi feito:* ficou como está e foi registrado no README da página; o teste confere que nenhuma outra requisição externa acontece.
+   - *Recomendação:* quando o visual for decidido, servir as fontes junto com a página (sem chamada ao Google), o que também evita mandar o endereço de cada visitante para fora.
+   - *Se decidir diferente:* se o Google Fonts puder ficar, a política de privacidade (etapa 16) precisa citar esse terceiro.
+
+14.2. **Qual critério decide o final na página.**
+   - *Dúvida:* o conflito-16 (corte do Júnior contra o lead score) segue aberto, mas a página precisa levar cada lead a um final.
+   - *O que foi feito:* a constante CRITERIO_DO_FIM ficou em 'junior', que é o comportamento do mockup, sem escolher lado na decisão; os dois critérios são calculados e aparecem no console a cada envio (13.6). O rodapé do relatório mostra "Final do quiz: [a definir: critério de qualificação]". A nota do "Tenho interesse" segue o critério em uso (M27).
+   - *Recomendação:* decidir junto com o item 2 da pauta (#98).
+   - *Se decidir diferente:* com o lead score, trocar a constante para 'lead-score'; o final passa a ser "qualificado = faixas a e b" e a nota neutra do "Tenho interesse" entra sozinha.
+
+14.3. **Id da entrega no pacote e id do cabeçalho.**
+   - *Dúvida:* o pacote leva entrega = quiz-01, como a etapa pede, e o cabeçalho da página tem id quiz-01-pagina. A planta diz que o catálogo de entregas usa o mesmo id do cabeçalho no repositório.
+   - *O que foi feito:* os dois ficaram como a etapa pediu; a versão no pacote (1) é a da página.
+   - *Recomendação:* no catálogo de entregas, a linha do quiz usar id_entrega quiz-01 e caminho_no_repositorio entregas/quizzes/quiz-01/pagina, e a planta dizer que o id do catálogo é o da pasta da entrega, não o do arquivo.
+   - *Se decidir diferente:* se o catálogo tiver de usar o id do cabeçalho, ETIQUETAS.entrega vira quiz-01-pagina.
+
+14.4. **Números de exemplo pré-preenchidos no funil.**
+   - *Dúvida:* o mockup abria o modo números com "400" leads e "50%" já escritos, e o histórico mostrava números de exemplo quando faltava algum. Numa página real, isso entraria no lead score e no pacote como resposta da pessoa.
+   - *O que foi feito:* os campos começam vazios; o histórico mostra o que a pessoa escreveu, com "·" no que ficou vazio. O texto não mudou; é lógica.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* voltar os valores de exemplo só no modo de revisão do protótipo (botão "Telas"), nunca no caminho normal.
+
+14.5. **Valor médio da venda obrigatório.**
+   - *Dúvida:* no mockup dava para seguir com o campo vazio (o protótipo usava R$ 15 mil de exemplo). O lead score pontua o valor e elimina abaixo de R$ 5 mil.
+   - *O que foi feito:* o "Continuar" só liga com um valor escrito. Se mesmo assim faltar (pelo seletor de telas), vale 0 ponto e não elimina.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* se o campo puder ficar vazio, o lead score precisa de uma linha "não informou" com pontos próprios.
+
+14.6. **"Triad" fora da tabela de mudanças.**
+   - *Dúvida:* além do que a copy lista, "Triad" aparecia em avisos do protótipo ("abre o WhatsApp da Triad") e na marca do cabeçalho; o triângulo da marca é desenho.
+   - *O que foi feito:* os avisos viraram "o nosso WhatsApp", com "[a definir: número do WhatsApp]"; o texto da marca do cabeçalho e dos rodapés vem de FATOS (aviso "a definir"). O triângulo ficou, por ser visual (conflito-18). Comentários internos do código que citam a Triad ficaram.
+   - *Recomendação:* acrescentar essas trocas como M31 na tabela da copy, para o Júnior ver.
+   - *Se decidir diferente:* se a marca puder aparecer, basta preencher FATOS.nome_agencia.
+
+14.7. **O relatório ainda usa os cenários de exemplo.**
+   - *Dúvida:* no mockup, o relatório (saudável e não qualificado) mostra sempre um cenário fixo (400 leads, R$ 15 mil), não os números da pessoa; a oferta do plano já usa os números dela. Ligar o relatório aos números é mudança maior que a etapa.
+   - *O que foi feito:* ficou como no mockup; o lead score e o pacote usam só as respostas da pessoa. Está na lista do que falta no README.
+   - *Recomendação:* fazer na versão que for ao ar, junto com a leitura escrita pela IA (briefing, seção 2).
+   - *Se decidir diferente:* se o relatório de exemplo bastar até a decisão do funil, nada muda agora.
+
+14.8. **Nota de quem cai no eliminatório.**
+   - *Dúvida:* o lead score diz que o eliminatório sai da fila seja qual for o resto, mas não diz se a nota é calculada. A planta guarda lead_score_nota e lead_score_faixa (com "eliminatorio").
+   - *O que foi feito:* a nota é calculada normalmente (81 no teste) e a faixa vai como eliminatorio.
+   - *Recomendação:* aceitar; a nota ajuda a revisão das faixas (outros-22).
+   - *Se decidir diferente:* a nota do eliminatório vai vazia ou zero, mudando uma linha em calcularLeadScore.
+
+14.9. **Dinheiro na mesa com funil na meta e "sem números".**
+   - *Dúvida:* com as quatro etapas na meta, o dinheiro na mesa é zero, e a regra dá 3 pontos ("menos de 0,5"). "Sem números informados" não diz se inclui número faltando.
+   - *O que foi feito:* segui a letra: funil na meta vale 3; modo chute, número faltando ou valor vazio contam como "sem números" (7).
+   - *Recomendação:* rever junto com as faixas depois das 50 primeiras respostas (outros-22).
+   - *Se decidir diferente:* muda só LEAD_SCORE.pontos.dinheiroNaMesa.
+
+14.10. **UTMs aceitas.**
+   - *Dúvida:* a etapa fala em utm_* e a planta guarda só utm_source e utm_campaign; meta-ads está reservada, fora do MVP.
+   - *O que foi feito:* a página lê só as duas da planta; aceita stories, bio, reels, email e whatsapp e a campanha funil-01; qualquer outro valor (inclusive meta-ads) vai vazio (5.5).
+   - *Recomendação:* aceitar até a Meta sair da reserva.
+   - *Se decidir diferente:* acrescentar o valor em UTM_ACEITAS; para outras utm, a planta ganha o campo antes.
+
+14.11. **Só o evento fim_quiz.**
+   - *Dúvida:* a planta tem também visita e inicio_quiz, que a página poderia montar; a etapa pede só o pacote do fim.
+   - *O que foi feito:* só o fim_quiz; o id_sessao já é criado ao abrir a página, para ligar os outros eventos quando existirem.
+   - *Recomendação:* acrescentar inicio_quiz na etapa do garçom (18), com o mesmo enviarPacote.
+   - *Se decidir diferente:* nada a desfazer.
+
+14.12. **"8 minutos" ainda sem medida.**
+   - *Dúvida:* a 13.12 pedia medir o tempo real no teste da etapa 14, mas o teste automático responde em segundos e não mede o tempo de uma pessoa.
+   - *O que foi feito:* "8 minutos" ficou.
+   - *Recomendação:* cronometrar duas ou três pessoas reais respondendo, antes de ir ao ar.
+   - *Se decidir diferente:* se o tempo virar fato da oferta, ganha campo na ficha e entra em FATOS.
+
+14.13. **A página nasce desatualizada e copia o preço no código.**
+   - *Dúvida:* a página se apoia em documentos marcados (lead-score, funil-01, planta-do-banco, briefing e copy do quiz); e a conta do lead score precisa do preço de ficha-de-fatos#preco-avancada, que fica escrito em FATOS.
+   - *O que foi feito:* nasce com desatualizado: true (regra provisória 11.1). O preço está só em FATOS, com o id do campo, e não aparece na tela; qual preço vale depois das vagas segue na 4.7.
+   - *Recomendação:* aceitar FATOS como o único lugar do código onde a ficha é copiada, e conferir esse objeto a cada nova versão da ficha.
+   - *Se decidir diferente:* gerar FATOS automaticamente a partir da ficha, com um script em nucleo/ferramentas/.
+
+14.14. **Venda média abaixo de R$ 5 mil recebe a oferta do plano.**
+   - *Dúvida:* pelo lead score, venda média abaixo de R$ 5 mil é eliminatória; pelo critério do Júnior (R$ 50 mil e 1 vendedor), não é. Com o critério do Júnior em uso no fim do quiz (14.2), essa pessoa vê a oferta do plano.
+   - *O que foi feito:* nada; segue o conflito-16 aberto. O teste não cobre esse caso.
+   - *Recomendação:* decidir junto com o conflito-16; enquanto isso, se o quiz for a teste com pessoas reais, usar o critério mais restritivo dos dois (eliminado por qualquer um).
+   - *Se decidir diferente:* se valer só o critério do Júnior, o lead score perde esse eliminatório para o fim do quiz e o SDR passa a filtrar.
+
+14.15. **O clique em "Tenho interesse" não gera evento.**
+   - *Dúvida:* o pacote sai no envio do contato, antes do relatório; o clique em "Tenho interesse" de quem foi eliminado não é registrado.
+   - *O que foi feito:* nada no quiz. A etapa 18 (garçom) considera um evento próprio para esse clique.
+   - *Recomendação:* criar o evento "interesse_pos_relatorio" na planta e no garçom.
+   - *Se decidir diferente:* o interesse do eliminado só aparece se ele mandar mensagem.
