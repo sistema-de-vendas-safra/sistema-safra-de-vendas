@@ -1,6 +1,6 @@
 ---
 id: lacunas
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -535,3 +535,11 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** base/lead-score.md ("Revisão programada"); #98.
 - **Quem decide:** o Otávio, com os dados do banco; a mudança no lead score segue a aprovação da #98.
 - **O que destrava:** uma ficha em aprendizados/ (hipótese, confirmado ou descartado) e, se for o caso, nova versão do lead score.
+
+### outros-23
+**Prazo de guarda dos dados dos leads.**
+- **O que é:** por quanto tempo o banco de dados guarda os dados de cada lead (contato, consentimento, respostas do quiz e eventos), o que acontece no fim do prazo (apagar ou deixar só números sem identificação) e como se atende o lead que pede para apagar os dados ou retira o consentimento. Nenhuma fonte trata do assunto.
+- **Valores e fontes:** nenhum valor registrado. dados/planta/planta.md ("Prazo de guarda"); `provas-e-conformidade`, "LGPD"; prompts/05-fila-de-trabalho.md, "Etapa 6 · Planta do banco".
+- **Quem decide:** não registrado; a fonte pede revisão de advogado antes da primeira peça (CTX §8; lacuna-10).
+- **O que destrava:** a regra de guarda e de apagamento da planta do banco. Até a decisão, nada é apagado automaticamente (prompts/05-fila-perguntas.md, 6.8).
+- **Ver também:** conflito-09 (o texto de consentimento do quiz-01, que diz a finalidade), lacuna-10.

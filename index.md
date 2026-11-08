@@ -29,7 +29,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 - ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, bônus, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v3, decidido)
 - decisoes.md · registro das decisões #1 a #98, cada uma com o seu status (v3, decidido)
-- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v3, rascunho)
+- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v4, rascunho)
 - produto.md · o que é a IASV Safra: formato, ritos, quem faz o quê, o que não está incluído (v2, decidido)
 - metodo.md · o Sistema de Vendas Safra e a Gestão de Leads por Safra, com as regras do método (v2, decidido)
 - mecanismo.md · problema, solução, Big Idea, analogia e crença (v1, aprovado; frase filosófica pendente; desatualizado: o papel da Análise muda pela #92)
@@ -54,7 +54,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## dados/
 
-- planta/ · vazio
+- planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê (v1, rascunho)
 - paineis/ · vazio
 
 ## aprendizados/

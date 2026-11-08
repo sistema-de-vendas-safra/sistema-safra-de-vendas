@@ -15,7 +15,7 @@ depende_de:
     versao: 3
   - id: lacunas
     versao: 3
-desatualizado: false
+desatualizado: true
 ---
 
 # Lead score

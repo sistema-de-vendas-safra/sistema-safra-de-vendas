@@ -118,3 +118,61 @@ Detalhe em funis/funil-01/funil.md.
    - *O que fiz:* citei os campos e deixei a cobrança fora do caminho do lead.
    - *Recomendação:* desenhar a cobrança antes de o contador chegar perto do limite, numa versão 2 do funil.
    - *Se decidir diferente:* nada muda agora; o caminho do lead ganha um passo quando a cobrança for desenhada.
+
+## Etapa 6 · Planta do banco
+
+Detalhe em dados/planta/planta.md.
+
+6.1. **Quem aprova a planta, e ela pode se apoiar em documentos pendentes e desatualizados?**
+   - *Dúvida:* a planta serve ao funil-01 (#90) e usa o lead score (#98), os dois pendentes do Júnior e do Euclides; e, com a versão 4 de `lacunas`, os dois ficaram desatualizados (6.9).
+   - *O que fiz:* status rascunho, com só o Otávio em aprovado_por (otavio: pendente). A planta é do Otávio, porque descreve o sistema que só ele acessa no MVP (#95). Usei do funil-01 e do lead-score só o que não muda com a lacuna nova.
+   - *Recomendação:* o Otávio aprova a planta depois de atualizar o depende_de do funil-01 e do lead-score (6.9); ela continua rascunho enquanto a #90 estiver pendente.
+   - *Se decidir diferente:* se o Júnior e o Euclides tiverem de aprovar, entram em aprovado_por e o status vira pendente-aprovacao.
+
+6.2. **Como ligar a visita à pessoa, se a visita acontece antes do contato.**
+   - *Dúvida:* a planta tem de guardar a origem da primeira visita, mas na visita a pessoa ainda não deixou contato. Um identificador guardado no navegador pediria consentimento antes da visita.
+   - *O que fiz:* a página cria um código de sessão na visita e o esquece quando a aba fecha, sem guardar nada no navegador. No fim do quiz, o banco liga a visita e o início do quiz à pessoa. Visita sem fim de quiz fica sem pessoa.
+   - *Recomendação:* aceitar. Quem visita hoje e volta amanhã por outro link aparece como duas visitas, e a primeira origem é a da visita em que terminou o quiz; é um erro pequeno e não pede consentimento extra.
+   - *Se decidir diferente:* se quiser a primeira visita de verdade em várias sessões, é preciso guardar um identificador no navegador, com aviso e consentimento, e o texto do quiz-01 e de `provas-e-conformidade` muda.
+
+6.3. **A mesma pessoa que refaz o quiz.**
+   - *Dúvida:* nada diz se quem refaz o quiz vira um lead novo. E o garçom só grava: não pode ler o banco para saber se a pessoa já existe.
+   - *O que fiz:* o próprio banco reconhece o telefone ou o e-mail já gravado e liga os eventos novos à mesma pessoa; os campos de primeira visita não são reescritos.
+   - *Recomendação:* aceitar, porque mantém a chave do garçom só de gravação e permite a regra de 5.7 (quem refaz não conta de novo).
+   - *Se decidir diferente:* se cada quiz for um lead novo, a planilha do SDR pode receber a mesma pessoa duas vezes e a contagem das análises gratuitas sobe mais rápido.
+
+6.4. **As etiquetas nos eventos que não acontecem numa página, e a Meta.**
+   - *Dúvida:* todo evento leva funil, entrega, versão da entrega e UTM, mas os eventos do SDR, da reunião e da venda não acontecem em nenhuma entrega. A planilha do SDR não é uma entrega de entregas/. E a tabela de origens do funil-01 usa só utm_source e utm_campaign.
+   - *O que fiz:* esses eventos levam a entrega e a versão do quiz que a pessoa respondeu e a origem da primeira visita dela. A planilha não entra no catálogo. Usei só os dois campos de UTM do funil-01; não criei outros.
+   - *Recomendação:* aceitar, porque assim toda venda volta até a peça e o link que a trouxeram. Quando a Meta sair da reserva, decidir se entra uma etiqueta a mais para separar os anúncios.
+   - *Se decidir diferente:* se a planilha for tratada como entrega, ela ganha id e versão no catálogo e os eventos do SDR passam a apontar para ela, perdendo a ligação direta com a peça de origem.
+
+6.5. **Venda e perda como tipos próprios, e o motivo da perda.**
+   - *Dúvida:* a etapa pede eventos de mudança de status, venda e perda, e o funil-01 trata venda como estágio e perdido como estado. Nada diz se a perda guarda motivo.
+   - *O que fiz:* venda e perda são tipos próprios, que também levam o estágio venda e o estado perdido; reuniao_marcada e reuniao_realizada levam o estágio agendado e realizado. A perda não guarda motivo, porque um texto livre pode trazer dado pessoal sem necessidade.
+   - *Recomendação:* aceitar. Se o motivo da perda for útil para a leitura da safra, criar uma lista fechada de motivos, nunca texto livre.
+   - *Se decidir diferente:* com motivo, o evento perda ganha um campo, e a planilha do SDR, uma coluna com a lista.
+
+6.6. **As chaves e o que cada uma abre.**
+   - *Dúvida:* o funil-01 deixou para esta etapa a chave da planilha do SDR. O garçom precisa conferir a entrega e a versão; o contador da página precisa ler um número; a regra é uma chave por uso, com a menor permissão.
+   - *O que fiz:* o garçom grava pessoas e eventos e lê só o catálogo de entregas, que não tem dado pessoal. A planilha tem duas chaves: uma só lê os leads das faixas A e B, com os campos da lista "O que vai para a planilha"; outra só grava os eventos do SDR com valores da lista fechada. O contador tem uma chave que só lê a contagem. O painel só lê agregados. O catálogo de entregas é gravado pelo Otávio a cada versão publicada. Lead que retirou o consentimento não vai para a planilha. Nenhuma chave foi criada nem registrada em conexoes.md.
+   - *Recomendação:* aceitar, e registrar cada chave em conexoes.md quando for criada, depois do detector de chaves.
+   - *Se decidir diferente:* se a volta do status passar pelo garçom, a chave do garçom ganha a gravação dos eventos do SDR, e o funil-01 (passo 5) muda; se o garçom não puder ler nada, o catálogo vai para a configuração dele, e cada versão publicada pede uma troca ali.
+
+6.7. **A contagem das análises gratuitas sem a regra de 5.7.**
+   - *Dúvida:* a contagem sai do banco (ficha-de-fatos#barra-de-resgates), mas o que conta como análise usada é a pergunta 5.7, ainda aberta.
+   - *O que fiz:* não guardei nenhum campo de "gratuita usada". A contagem é uma conta sobre os eventos fim_quiz, refeita a cada leitura; assim, a regra pode ser decidida depois sem perder nada. Até a decisão, o contador não vai ao ar.
+   - *Recomendação:* decidir 5.7 antes de o contador ir ao ar; a planta já permite a recomendação de 5.7 (uma por pessoa que terminou o quiz, sem contar quem refaz).
+   - *Se decidir diferente:* se contar só quem passou pela porta, a conta passa a olhar também a faixa do lead score; nenhum campo novo é preciso. Quando a cobrança da Análise for desenhada (5.9), a planta ganha o que for preciso para saber se a Análise de cada pessoa foi gratuita ou paga.
+
+6.8. **Prazo de guarda e apagamento.**
+   - *Dúvida:* nenhuma fonte diz por quanto tempo se guardam os dados dos leads nem como se atende quem pede para apagar.
+   - *O que fiz:* registrei a lacuna nova outros-23 em `lacunas` (que sobe para a versão 4), na parte 3, porque não é conflito entre fontes e a parte 1 é só do CTX; ela aponta para conflito-09, por causa do texto de consentimento do quiz-01. Na planta, até a decisão, nada é apagado automaticamente e o banco não guarda nada além dos campos desenhados. Criei o campo consentimento_retirado_em, e quem retira o consentimento sai da planilha do SDR.
+   - *Recomendação:* decidir o prazo com a revisão de advogado (lacuna-10) antes da primeira publicação do quiz-01, e pôr o prazo no texto de consentimento se o advogado pedir.
+   - *Se decidir diferente:* se a lacuna couber melhor na parte 2 (afeta o quiz), ela muda de número e de lugar, sem mudar o conteúdo.
+
+6.9. **A cascata da versão 4 de `lacunas`.**
+   - *Dúvida:* a regra de versionamento marca como desatualizado tudo que depende da versão anterior. Além do funil-01, dependem de `lacunas` v3: `glossario`, `lead-score`, `entregas-do-servico`, `promessa`, `produto`, `tom-de-voz`, `metodo`, `provas-e-conformidade`, `persona` e `design-system`. `mecanismo` e `oferta` dependem de versões mais antigas e já estavam desatualizados.
+   - *O que fiz:* marquei os onze com desatualizado: true, sem mudar conteúdo nem versão, como manda nucleo/regras/versionamento.md, "Cascata".
+   - *Recomendação:* em cada um, só atualizar a versão de `lacunas` no depende_de para 4 e voltar desatualizado para false, subindo a versão como correção de forma: a lacuna nova (outros-23) não muda nada do que eles dizem. Enquanto isso, eles não servem de base para entrega nova, o que trava as etapas 8 a 10 se não forem atualizados antes.
+   - *Se decidir diferente:* se o Otávio preferir que só o funil-01 fique marcado, os outros dez voltam a desatualizado: false sem mudar a versão.

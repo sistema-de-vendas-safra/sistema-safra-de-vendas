@@ -27,7 +27,7 @@ depende_de:
     versao: 1
   - id: glossario
     versao: 2
-desatualizado: false
+desatualizado: true
 ---
 
 # Funil-01

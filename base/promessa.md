@@ -17,7 +17,7 @@ depende_de:
     versao: 2
   - id: mecanismo
     versao: 1
-desatualizado: false
+desatualizado: true
 ---
 
 # Promessa

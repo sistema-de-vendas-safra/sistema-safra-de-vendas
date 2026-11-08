@@ -2,6 +2,13 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 6 · planta do banco
+
+- dados/planta/planta.md v1, rascunho (otavio: pendente). Novo. Perguntas 6.1 a 6.9 em prompts/05-fila-perguntas.md.
+- base/lacunas.md v3 para v4, rascunho. Motivo: nova lacuna outros-23 (prazo de guarda e apagamento dos dados dos leads), pedida pela etapa 6; depende_de sem mudança. Sentido.
+- Cascata: GLOSSARY.md, funil-01, lead-score, entregas-do-servico, promessa, produto, tom-de-voz, metodo, provas-e-conformidade, persona e design-system ficam com desatualizado: true, sem mudar conteúdo nem versão (dependem de lacunas v3). Atualização proposta ao Otávio: só apontar para lacunas v4 (pergunta 6.9). A planta se apoia em documentos agora desatualizados e precisa ser revista depois dessa atualização.
+- Revisão: um revisor independente. Corrigidos a chave do garçom (grava e lê só o catálogo), a classificação de dado pessoal das etiquetas e datas do evento, o domínio do e-mail de exemplo, o exemplo fictício do texto de consentimento, a regra do contador marcada como proposta e "quem decide" o prazo de guarda (não registrado, em vez do Otávio).
+
 ## 2026-11-08 · etapa 5 · funil-01
 
 - funis/funil-01/funil.md v1, pendente-aprovacao (otavio, junior e euclides: pendente). Novo. Depende da #90, pendente do Júnior e do Euclides. Não depende de oferta nem de mecanismo, que estão desatualizados. Perguntas 5.1 a 5.9 em prompts/05-fila-perguntas.md.
