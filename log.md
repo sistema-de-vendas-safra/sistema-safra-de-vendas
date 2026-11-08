@@ -2,6 +2,17 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 13 · quiz-01 briefing e copy
+
+- Fonte nova registrada: fontes/quiz-01-repositorio-2026-11-08/ (cópia do repositório do quiz, commit 17ec4d6, de 08/11/2026; vale sobre o artefato do acervo, como diz o LEIA.md da pasta). Nada em fontes/ foi alterado.
+- base/lacunas.md v4 para v5, rascunho. Motivo: quatro conflitos novos trazidos pela cópia nova do quiz, cada um com os dois lados, a fonte de cada lado e bloqueado para entrega: conflito-16 (critério de qualificação: R$ 50 mil e 1 vendedor contra o lead score), conflito-17 (destino dos contatos: Triad CRM contra o banco e a planilha da #90), conflito-18 (identidade visual: Triad escura com verde neon contra o DS v1.0 e a #81) e conflito-19 (promessa "até X%" contra a conformidade). "Ver também" acrescentado em conflito-01, conflito-08 e conflito-09. depende_de sem mudança. Sentido.
+- Cascata: base/lead-score.md v2, base/persona.md v3, base/metodo.md v3, base/produto.md v3 e base/entregas-do-servico.md v3 ficam com desatualizado: true, sem mudar conteúdo nem versão (dependem de lacunas v4). Já estavam marcados e seguem assim: GLOSSARY.md, funil-01, planta-do-banco, tom-de-voz, provas-e-conformidade, promessa, design-system, briefing, copy e estrutura da landing-page-01. mecanismo e oferta apontam para lacunas v2 e seguem marcados (4.5). Atualização proposta ao Otávio: só apontar para lacunas v5 (correção de forma), depois da 4.5 e da 11.1.
+- entregas/quizzes/quiz-01/briefing.md v1, rascunho (otavio, junior e euclides: pendente). Novo. Nasce desatualizado (13.10).
+- entregas/quizzes/quiz-01/copy.md v1, rascunho (otavio, junior e euclides: pendente). Novo. Tela por tela, com as perguntas e as opções que o lead score pontua; sem "até X%"; consentimento antes do e-mail e do WhatsApp com {{a definir: link da politica de privacidade}}; valor e gratuidade pela ficha; seção "Mudanças no texto do Júnior" com 30 mudanças (M1 a M30). Skill junior-neves-voice; onde chocou com a base, venceu a base. Nasce desatualizado (13.10).
+- entregas/pautas/pauta-aprovacao-01.md v2 para v3, rascunho (otavio: pendente). Motivo: item 29 novo, para o Júnior aprovar as mudanças no texto do quiz, apontando para a seção da copy; depende_de lacunas 4 para 5 e quiz-01-copy 1 acrescentado; nota para o Otávio. Sentido. Continua desatualizado (4.5). O briefing da landing-page-01, que aponta para a pauta v2, já estava marcado.
+- index.md: fonte nova, lacunas v5, pauta v3, os dois documentos do quiz e a marca "desatualizado" nos cinco documentos da cascata.
+- Perguntas 13.1 a 13.12 em prompts/07-fila-perguntas.md.
+
 ## 2026-11-08 · etapa 12 · cascata pendente
 
 - entregas/landings/landing-page-01/briefing.md v2 para v3, rascunho (otavio: pendente). Motivo: depende_de pauta-aprovacao-01 1 para 2; a pauta v2 só acrescentou texto aos itens e os itens 27 e 28, e os números de item que o briefing cita (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 18 e 19) seguem os mesmos. Nota "Documentos desatualizados" corrigida: a 6.9 já foi aplicada e a marca restante vem da 4.5. Forma. Continua desatualizado: usa mecanismo e oferta (pergunta 4.5) e documentos marcados por cadeia deles (regra 11.1).

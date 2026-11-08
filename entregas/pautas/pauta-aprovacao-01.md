@@ -1,6 +1,6 @@
 ---
 id: pauta-aprovacao-01
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ depende_de:
   - id: decisoes
     versao: 3
   - id: lacunas
-    versao: 4
+    versao: 5
   - id: ficha-de-fatos
     versao: 3
   - id: lead-score
@@ -25,12 +25,14 @@ depende_de:
     versao: 3
   - id: provas-e-conformidade
     versao: 3
+  - id: quiz-01-copy
+    versao: 1
 desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides
 
-**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11).
+**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13).
 
 **Como ler.** Cada item traz o que é, as opções registradas, a posição do Otávio e o que a decisão destrava. Quando só existe uma proposta, as opções são aprovar, ajustar ou recusar. Onde a posição do Otávio não está escrita, o item diz "o Otávio decide antes da reunião". A linha "Referência", no fim de cada item, serve só para rastrear de onde veio cada ponto.
 
@@ -285,6 +287,15 @@ desatualizado: true
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** a linha do tempo da página.
 - **Referência:** decisão: #80. Pergunta 9.9.
+
+### 29. As mudanças no texto do quiz
+
+- **O que é:** o quiz é do Júnior. A cópia nova dele foi passada para a copy do sistema, e o texto mudou só onde as regras registradas mandam: o nome da agência e o nome do diagnóstico, que estão em aberto (itens 7 e 8); a palavra "reunião", trocada por "conversa de venda", como na página; o consentimento antes de pedir e-mail e WhatsApp, com o link da política de privacidade; a promessa de aumentar o faturamento em até um percentual, que saiu; o valor e a gratuidade, que agora vêm da ficha de fatos; e a escolha de dia e horário no relatório, que saiu porque quem agenda é quem liga para os leads. Cada mudança está numa tabela com o texto original, o texto novo e o motivo.
+- **Opções:** aprovar todas, aprovar com ajustes (mudança por mudança) ou recusar alguma. Recusar uma mudança que vem de regra de conformidade (consentimento ou percentual) mantém o quiz sem poder ser publicado.
+- **Também na mesa:** a cópia nova do quiz trouxe quatro decisões próprias que divergem do sistema e ficaram registradas com os dois lados, sem escolha: quem é pré-qualificado (item 2), para onde vão os contatos (item 1), a identidade visual (item 6) e a promessa percentual (item 3).
+- **Posição do Otávio:** o Otávio decide antes da reunião.
+- **O que destrava:** o texto do quiz.
+- **Referência:** documento: quiz-01-copy, seção "Mudanças no texto do Júnior" (entregas/quizzes/quiz-01/copy.md). Lacunas: conflito-16, conflito-17, conflito-18, conflito-19. Perguntas 13.1 a 13.12.
 
 ---
 

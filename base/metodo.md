@@ -11,7 +11,7 @@ depende_de:
     versao: 3
   - id: lacunas
     versao: 4
-desatualizado: false
+desatualizado: true
 ---
 
 # Método · Sistema de Vendas Safra e Gestão de Leads por Safra

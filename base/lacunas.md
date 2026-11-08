@@ -1,6 +1,6 @@
 ---
 id: lacunas
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -245,7 +245,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio com o Júnior e o Euclides (Doc Mestre online, decisão 9; a regra do quiz é do Júnior na E.M.V.).
 - **O que destrava:** o filtro `qualificado` do quiz-01, o texto "Para quem é" e o FAQ da landing-page-01, e o público dos criativos.
 - **Situação em 08/11/2026:** proposta registrada em base/lead-score.md, pendente do Júnior e do Euclides (#98). Até a aprovação, o campo segue em conflito e o lead score só serve como rascunho.
-- **Ver também:** lacuna-12.
+- **Ver também:** lacuna-12, conflito-16.
 
 ### conflito-02
 **A Análise: valor, gratuidade, duração, quem conduz e nome.**
@@ -304,6 +304,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #45, #81; F25; DS (LEIA.md, safra-tokens.json, pagina-documentacao.html); landing; Doc Mestre online.
 - **Quem decide:** o Otávio com o Júnior (#81 foi dele); já está nas pendências do log.md. **Levar ao Júnior** (resposta 4 do Otávio, 08/11/2026: a adoção do design system v1.0 vai para a pauta com o Júnior e fica como está).
 - **O que destrava:** a etapa de design da landing-page-01 e do quiz-01.
+- **Ver também:** conflito-18 (a identidade visual da cópia nova do quiz-01).
 
 ### conflito-09
 **O quiz promete resultado e não pede consentimento.**
@@ -311,6 +312,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #39; CTX §8; Promessa central online; Doc Mestre online (regra 8); quiz.
 - **Quem decide:** o Otávio com o Júnior (o quiz é o artefato do Júnior; CTX §3).
 - **O que destrava:** a publicação do quiz-01.
+- **Ver também:** conflito-19 (a promessa "até X%" na cópia nova do quiz-01, fontes/quiz-01-repositorio-2026-11-08/).
 
 ### conflito-10
 **Plano de ação de 90 dias como saída.**
@@ -361,6 +363,46 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio com o Euclides (taxa da Hotmart).
 - **O que destrava:** o FAQ da landing-page-01 e a fala de pagamento na call.
 - **Ver também:** lacuna-19.
+
+### conflito-16
+**Critério de qualificação do quiz-01: o corte do Júnior contra o lead score.**
+- **O que é:** a cópia nova do quiz (fontes/quiz-01-repositorio-2026-11-08/) decide quem é pré-qualificado por um corte fixo; a base propõe o lead score. Os dois mandam o lead para caminhos diferentes no fim do quiz.
+- **Lado 1 · o corte do Júnior:** pré-qualificado é quem fatura pelo menos R$ 50 mil por mês e tem pelo menos 1 vendedor que faz reunião de vendas; "o corte final será revisto depois"; quem não se encaixa recebe o diagnóstico com a chamada "Clique se você tem interesse que alguém da nossa equipe chame você para falar mais sobre esse assunto." Fonte: CLAUDE.md do quiz ("Cliente ideal"; "Decisões (24/10/2026)", "Pré-qualificação" e "Não qualificado"; "Contexto da reunião de 23/10"); MANUAL DO DIAGNÓSTICO (RASCUNHO).md (seção 1 e M2, "[Junior · 24/10]"); LEIA PRIMEIRO.md (regra 5); mockups/quiz-diagnostico.html (função `qualificado`). É a versão (e) de ficha-de-fatos#criterio-de-qualificacao.
+- **Lado 2 · o lead score:** três eliminatórios (nenhum vendedor; faturamento abaixo de R$ 50 mil; valor médio da venda abaixo de R$ 5 mil), nota de 0 a 100 e faixas A, B e C; eliminatórios e faixa C vão para a nutrição, fora da fila do SDR. Fonte: base/lead-score.md; #98 (pendente do Júnior e do Euclides).
+- **Quem decide:** o Otávio com o Júnior e o Euclides (#98; a regra atual do quiz é do Júnior).
+- **O que destrava:** o caminho do fim do quiz-01 (oferta do plano, relatório com "Tenho interesse" ou nutrição) e a fila do SDR.
+- **Bloqueado para entrega até a decisão.** A copy do quiz-01 traz os dois lados escritos, sem escolher.
+- **Ver também:** conflito-01, lacuna-12.
+
+### conflito-17
+**Destino dos contatos do quiz-01: Triad CRM contra o banco e a planilha da #90.**
+- **O que é:** a cópia nova do quiz manda os contatos para um CRM; o funil-01 manda para o banco de dados e a planilha do SDR.
+- **Lado 1 · Triad CRM:** "Destino dos contatos: Triad CRM, numa conta nova só da agência (negócio distinto dos outros), com a origem marcada como já acontece nos outros negócios"; "Automação no CRM depois". Fonte: CLAUDE.md do quiz ("Decisões (24/10/2026)", "Destino dos contatos" e "Pré-qualificação"); LEIA PRIMEIRO.md ("O que falta": "envio dos contatos para uma conta nova no Triad CRM, com a origem marcada"); MANUAL DO DIAGNÓSTICO (RASCUNHO).md (M2: "depois vira automação no CRM").
+- **Lado 2 · banco e planilha:** o quiz envia respostas, contato, consentimento e etiqueta ao garçom, que grava no Supabase; a planilha do SDR recebe as faixas A e B e devolve o status ao banco. A #90 substitui "o CRM do Doc Mestre". Fonte: #90 (pendente do Júnior e do Euclides); funis/funil-01/funil.md ("Caminho do dado"); dados/planta/planta.md.
+- **Quem decide:** o Júnior e o Euclides (aprovação da #90).
+- **O que destrava:** o envio do quiz-01 (etapa 14 deixa o envio desligado) e a integração com o SDR.
+- **Bloqueado para entrega até a decisão.**
+- **Ver também:** conflito-06, conflito-14.
+
+### conflito-18
+**Identidade visual do quiz-01: Triad escura com verde neon contra o design system v1.0 e a #81.**
+- **O que é:** a cópia nova do quiz tem identidade visual própria, diferente das referências que já estão em conflito na base.
+- **Lado 1 · Triad escura com verde neon:** "variação da identidade da Triad: base escura, verde neon, fontes do site da Triad"; "A paleta do Safra (verde-claro, verde-folha, tomate) foi testada na v2 e reprovada por não ter cara de Triad"; "capa escura, verde neon; abertura e conversa em fundo claro". Fonte: CLAUDE.md do quiz ("Decisões (24/10/2026)", "Visual (24/10, corrigido)"); LEIA PRIMEIRO.md (regra 3); mockups/quiz-diagnostico.html. O mapa de fidelidade da REA (C1, C2, A7) ainda fala em fundo claro e verde-folha, de antes da correção.
+- **Lado 2 · design system v1.0 e a #81:** o DS v1.0 (fundo escuro, só a paleta oficial, Menta como ação primária, Geist), cuja adoção não está decidida, e a paleta branco e verde aprovada pelo Júnior "pela sequência (confirmar)". Fonte: fontes/design-system-v1.0/; base/design-system/design-system.md; #81; F25; #45 (Triad v2 vale até o nome novo sair).
+- **Quem decide:** o Otávio com o Júnior (como no conflito-08; levar ao Júnior).
+- **O que destrava:** o visual do quiz-01. Até a decisão, o visual do mockup fica como está (prompts/07-fila-da-noite.md, etapa 14).
+- **Bloqueado para entrega até a decisão.**
+- **Ver também:** conflito-08.
+
+### conflito-19
+**A promessa "pode aumentar seu faturamento em até X%" na cópia nova do quiz-01.**
+- **O que é:** a oferta do plano de ação de 90 dias, no fim do quiz, promete um aumento percentual de faturamento calculado na hora.
+- **Lado 1 · a promessa do quiz:** o plano de 90 dias é oferecido "para resgatar parte desse dinheiro e instalar um sistema de vendas que pode aumentar seu faturamento em até X%", com X = 70% do dinheiro na mesa por mês dividido pelo que o funil fatura hoje, arredondado para baixo. Quem decidiu não está escrito. Fonte: CLAUDE.md do quiz ("Decisões (08/11/2026): oferta do plano de ação de 90 dias"); mockups/quiz-diagnostico.html (função `planoPct` e tela "plano").
+- **Lado 2 · a conformidade:** "Sem garantia" e "nenhuma promessa em contrato, de nenhum tipo" (#39); nada de percentual de melhora em peça antes de caso comprovado (Promessa central online; Mecanismo único online; CONAR; CDC, art. 30); o próprio manual do quiz manda escrever o dinheiro na mesa "como conta, nunca como promessa" e, numa sugestão ainda sem aprovação do Júnior, proíbe "vai dobrar" (MANUAL DO DIAGNÓSTICO, seções 5 e 6). Fonte: #39; CTX §8; base/provas-e-conformidade.md; base/tom-de-voz.md ("Promessa percentual de melhora").
+- **Quem decide:** o Otávio com o Júnior (o quiz é do Júnior; CTX §3).
+- **O que destrava:** a tela da oferta do plano no quiz-01. A copy do quiz-01 sai sem o percentual, como a etapa 13 manda, e a troca vai para o Júnior aprovar (pauta, item 29).
+- **Bloqueado para entrega até a decisão.**
+- **Ver também:** conflito-09, conflito-10.
 
 ---
 

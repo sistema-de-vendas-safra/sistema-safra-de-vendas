@@ -11,7 +11,7 @@ depende_de:
     versao: 3
   - id: lacunas
     versao: 4
-desatualizado: false
+desatualizado: true
 ---
 
 # Produto · IASV Safra
