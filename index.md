@@ -48,7 +48,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## entregas/
 
-- landings/ · vazio
+- landings/landing-page-01/briefing.md · briefing da landing-page-01: básico, estrutura de partida pelo wireframe corrigido, direcionamentos de copy, UX e design, bloqueios (v1, rascunho)
 - quizzes/ · vazio
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas

@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 8 · briefing da landing-page-01
+
+- entregas/landings/landing-page-01/briefing.md v1, rascunho (otavio: pendente). Novo. Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 8.1 a 8.15.
+- Revisão: um revisor independente e uma rodada de correção. Corrigidos a legenda das marcas de design (a adoção do v1.0 não está decidida), a #68 citada inteira, campos e lacunas que faltavam nas linhas de credenciais e contador, bloqueios que faltavam na tabela (reunião de safra, "eu mando no seu comercial", endereço da landing, postura da #26, datas de trabalho das entregas, teste com donos), elementos da seção 08 sem tratamento, uma data sem fonte, o mock-up decidido (é o do PDV-90, bloqueado) e a fonte da captura do contato (funil-01).
+
 ## 2026-11-08 · etapa 7 · pauta de aprovacao
 
 - entregas/pautas/README.md e entregas/pautas/pauta-aprovacao-01.md v1, rascunho (otavio: pendente). Novos. 26 itens para decidir em três partes (o que trava o funil-01, primeira venda e agenda, conteúdo e postura), adiados e dois itens para informar (#92 e #93). Inclui o reembolso de 7 dias pela Hotmart e o risco da Análise na semana 1, sem solução inventada. Apoia-se em documentos desatualizados pela cascata (6.9 e 4.5). Perguntas 7.1 a 7.9.

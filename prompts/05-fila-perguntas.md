@@ -234,3 +234,97 @@ Detalhe em entregas/pautas/pauta-aprovacao-01.md.
    - *O que fiz:* mantive o item 7 na pauta, com "o Otávio decide antes da reunião" e a justificativa de que a reunião de venda é feita pelo Júnior (#51; ficha-de-fatos#quem-faz-a-reuniao): a duração e quem conduz mexem na agenda dele. Tirei a atribuição ao plano e ao documento mestre.
    - *Recomendação:* o Otávio decidir o nome público sozinho, antes da reunião, e levar aos dois só a duração e quem conduz, porque dependem da agenda do Júnior.
    - *Se decidir diferente:* se o Otávio decidir os três sozinho, o item 7 sai da Parte 1 e vira um item da Parte 5 (para informar); se quiser os três com os dois, o item fica como está.
+
+## Etapa 8 · Briefing da landing-page-01
+
+Detalhe em entregas/landings/landing-page-01/briefing.md.
+
+8.1. **A meta da landing não está registrada.**
+   - *Dúvida:* a etapa pede a meta da landing pela ficha de fatos. A ficha tem a meta de vendas do funil (ficha-de-fatos#meta-de-vendas) e as metas por etapa do método (ficha-de-fatos#metas-por-etapa), que começam no captado, depois do quiz. Nenhum campo diz quantos visitantes devem começar ou terminar o quiz.
+   - *O que fiz:* escrevi que a meta não está registrada. Não inventei número. A medição fica pelos eventos visita e inicio_quiz da planta, por versão da landing.
+   - *Recomendação:* não fixar meta agora. Medir a passagem de visita para início do quiz e de início para fim do quiz por versão e por origem, e fixar a meta (um campo novo na ficha) só depois de uma amostra mínima, que também precisa ser decidida, como foi feito para o lead score (outros-22).
+   - *Se decidir diferente:* se o Otávio der uma meta agora, ela entra como campo novo na ficha de fatos (a ficha sobe de versão) e o briefing passa a citá-la.
+
+8.2. **A #68 ("nada de entrega na primeira etapa") e a seção 05, que mostra as entregas.**
+   - *Dúvida:* a #68 diz "nada de GSAAS, gerente e entrega na primeira etapa". A aplicação do registro de 08/11 (prompts/04, seção 2) manda a landing mostrar as entregas de ficha-de-fatos#numero-de-entregas, com as Sessões de Comando e a Análise na semana de ficha-de-fatos#quando-entrega-1. Não está escrito se "entrega" na #68 quer dizer as entregas do serviço ou outra coisa.
+   - *O que fiz:* mantive a seção 05 com as entregas, como manda a instrução mais nova e explícita do Otávio, e marquei a tensão no briefing.
+   - *Recomendação:* confirmar que a #68 não proíbe mostrar as entregas na página (o wireframe as mostra desde antes de 08/11) e, se for o caso, registrar a leitura na própria linha da #68.
+   - *Se decidir diferente:* a seção 05 sai da página ou vira só a linha do tempo sem as entregas, e a seção 09 perde a resposta "É mais uma mentoria?" com as entregas.
+
+8.3. **O hero com a promessa bloqueada.**
+   - *Dúvida:* o título do Hero A usa a #33 e a promessa nova é a #85, as duas pendentes do Júnior e do Euclides. O título do Hero B é texto do Otávio (04/11) e não é a promessa, mas o subtítulo do B adapta a #33. Sem o A, o teste A/B que o Júnior aprovou deixa de existir.
+   - *O que fiz:* título e subtítulo do A e o subtítulo do B ficaram como placeholder marcado ({{BLOQUEADO: #85}}). O título do B ficou registrado como disponível, sem escolher se vai sozinho.
+   - *Recomendação:* no rascunho da etapa 9, usar o título do Hero B como hero único provisório, com subtítulo neutro sem promessa, e retomar o teste A/B quando a #85 for aprovada (o A recebe a versão fria).
+   - *Se decidir diferente:* se o Otávio preferir esperar a #85, o hero inteiro fica como placeholder e a etapa 9 escreve só o resto da página.
+
+8.4. **O texto dos botões.**
+   - *Dúvida:* o texto do botão decidido pelo Otávio é um dos valores concorrentes de ficha-de-fatos#analise-nome-publico, campo em conflito.
+   - *O que fiz:* o briefing pede texto neutro, que diga a ação (começar as perguntas do diagnóstico) sem o nome da Análise, marcado com o campo.
+   - *Recomendação:* decidir o nome público antes da etapa 9 (pauta, item 7, recomendação de 7.9: o Otávio decide sozinho). Com o nome, o botão volta ao texto decidido ou ao nome escolhido.
+   - *Se decidir diferente:* se o texto decidido do botão puder ficar mesmo com o nome em conflito, ele entra literal e o placeholder sai só do botão.
+
+8.5. **O destino dos botões.**
+   - *Dúvida:* no wireframe, todos os botões levam à seção 08 (âncora) e só o botão de lá leva ao quiz. O funil-01 diz só que a landing leva ao quiz. A ação esperada é começar o quiz.
+   - *O que fiz:* mantive o desenho do wireframe como partida: um destino só para todos os botões (a seção 08), e da seção 08 para o quiz-01.
+   - *Recomendação:* manter, porque a seção 08 explica o que o quiz entrega e quem conversa com o Júnior; a etapa 10 confere se o caminho ficou longo no celular.
+   - *Se decidir diferente:* se os botões forem direto ao quiz, a seção 08 vira uma seção como as outras, e a etapa 10 muda o caminho até o quiz.
+
+8.6. **O vídeo na página (#51).**
+   - *Dúvida:* a #51 (Júnior, decidida) diz "quiz e página com vídeo"; a #66 fala de versões com e sem VSL. O wireframe não tem vídeo, e o funil-01 não fala de vídeo na landing.
+   - *O que fiz:* não reservei lugar de vídeo no briefing e registrei o ponto nos bloqueios.
+   - *Recomendação:* decidir se a landing-page-01 tem vídeo e onde (hero ou seção própria). Os roteiros de VSL estão no acervo, fora da base, e a voz passa pela junior-neves-voice.
+   - *Se decidir diferente:* se tiver vídeo, o briefing ganha um lugar para ele, a etapa 10 trata o carregamento, e o roteiro vira uma entrega própria.
+
+8.7. **As credenciais enquanto não há comprovante.**
+   - *Dúvida:* a seção 04 inteira depende de comprovantes e autorizações (conflito-05; #44). Mesmo a linha "você não me conhece, mas conhece o que eu fiz" só vai com comprovante (provas-e-conformidade, regra jurídica 2).
+   - *O que fiz:* seção oculta, inteira.
+   - *Recomendação:* avaliar uma versão mínima: só os dois nomes (Junior Neves e Euclides Vieira), o papel de cada um no serviço (o que a ficha já diz das Sessões de Comando e das calls em grupo) e a citação do Euclides escrita pelo Otávio, sem a assinatura que cita terceiro e número. Sem números, sem nomes de terceiros, sem fotos com terceiros.
+   - *Se decidir diferente:* se o Otávio aceitar a versão mínima, a etapa 9 a escreve; se não, a seção continua oculta até a pauta com o Júnior e o Euclides (item 9).
+
+8.8. **"Para quem é" sem o critério.**
+   - *Dúvida:* o critério de qualificação está em conflito (ficha-de-fatos#criterio-de-qualificacao) e a proposta do lead score está pendente (#98). Alguns itens da seção não são corte de número, mas postura (decide sobre o comercial; quer instalação, não conteúdo; topa abrir os números; não quer que vendam no lugar dele; não busca resultado garantido).
+   - *O que fiz:* bloqueei todo item que é corte de faturamento, valor de venda, tamanho do time, volume de leads ou tipo de venda; deixei os de postura como direção.
+   - *Recomendação:* aceitar. Os itens de postura não atropelam nenhuma das cinco versões do critério.
+   - *Se decidir diferente:* se o Otávio quiser a seção inteira bloqueada, ela fica oculta até a #98.
+
+8.9. **O valor da Análise depois das gratuitas, na página.**
+   - *Dúvida:* o valor está decidido (ficha-de-fatos#analise-valor), mas a cobrança ainda não foi desenhada (5.9). O preço riscado e o rodapé "passa a custar" só valem se o valor passar a ser cobrado de verdade (provas-e-conformidade, CDC e CONAR).
+   - *O que fiz:* preço riscado e rodapé como seção oculta até a cobrança existir. A gratuidade fica, pelos campos da ficha.
+   - *Recomendação:* desenhar a cobrança (5.9) antes de mostrar o valor; quando existir, o rodapé volta com {{ficha-de-fatos#analise-valor}} e {{ficha-de-fatos#analises-gratuitas}}.
+   - *Se decidir diferente:* se o Otávio quiser o valor na página desde já, ele entra pela ficha, com o compromisso registrado de cobrar depois das gratuitas.
+
+8.10. **A conversa com o Júnior não é para todos.**
+   - *Dúvida:* a seção 08 do wireframe tem três passos, o último a conversa com o Júnior. No funil-01, só as faixas A e B do lead score vão para a fila do SDR; eliminatórios e faixa C vão para a nutrição. O FAQ diz que a pergunta que faltar se faz ao Júnior.
+   - *O que fiz:* o passo 3 e a frase do FAQ ficam com texto neutro, que não promete a conversa a todos; o diagnóstico, sim, é para todos (#92; funil-01).
+   - *Recomendação:* dizer na página que a conversa com o Júnior é para quem o perfil encaixa, sem dizer o critério enquanto ele estiver em conflito.
+   - *Se decidir diferente:* se todos forem para a conversa, muda a porta de qualificação do funil-01 e do lead score, não só a página.
+
+8.11. **A parte de cada fase de cor na linha do tempo.**
+   - *Dúvida:* a #80 decide as fases de cor, e o wireframe e a F25 dão a parte de cada fase na linha do tempo. Esse número é fato fora da ficha (tom-de-voz; glossário, verbete Fases de cor).
+   - *O que fiz:* o briefing pede as fases de cor sem a parte de cada uma.
+   - *Recomendação:* se a parte de cada fase for para a página, registrá-la como campo da ficha de fatos, com a fonte F25.
+   - *Se decidir diferente:* sem o campo, a linha do tempo mostra as três fases só pela ordem e pelo que acontece em cada uma.
+
+8.12. **"Reunião de safra" nas seções 03b, 05 e 06.**
+   - *Dúvida:* a linha da Inteligência Humana (03b), o cartão do Treinamento para Otimização da Conversão (05) e uma tela do painel (06) falam em "reunião de safra" ou "reunião semanal de safra", o rito semanal do formato anterior a 07/11. No formato de 07/11, o rito semanal são as calls em grupo (#78), e "reunião" é palavra queimada para a persona.
+   - *O que fiz:* marquei as três como texto a trocar, com texto neutro até a troca, e pus o ponto na tabela de bloqueios.
+   - *Recomendação:* usar o nome do rito de ficha-de-fatos#calls-em-grupo e a análise de calls (ficha-de-fatos#analise-de-calls) nas três.
+   - *Se decidir diferente:* se a reunião de safra continuar como rito próprio do cliente (com o time dele, sem a Triad), ela precisa entrar em entregas-do-servico ou produto antes de ir para a página.
+
+8.13. **As vagas na página.**
+   - *Dúvida:* o FAQ do wireframe tem a pergunta das vagas (que diz "as dez começam juntas" e revela o preço) e o número de vagas entre os destaques. A Oferta saiu da página em 03/11 ("preço e condições ficam para a conversa"), e a única urgência da oferta é a de ficha-de-fatos#urgencia.
+   - *O que fiz:* a pergunta das vagas e o número de vagas saem da página.
+   - *Recomendação:* manter fora: as vagas são condição da oferta e ficam para a conversa com o Júnior.
+   - *Se decidir diferente:* se as vagas voltarem, a pergunta é reescrita pelo registro (ficha-de-fatos#vagas, sem início comum, #65) e sem preço.
+
+8.14. **Contato no clique e WhatsApp no topo: da landing ou do quiz-01?**
+   - *Dúvida:* o Júnior pediu (03/11) capturar o contato no clique, "senão a gente perde ele"; o wireframe sugere pedir o WhatsApp no topo da página intermediária. Nenhuma fonte diz que isso fica no quiz-01. O funil-01 ("Caminho do dado", passos 1 e 2) diz que a landing só lê a etiqueta e que quem envia o contato, com o consentimento, é o quiz.
+   - *O que fiz:* a landing não colhe contato; o pedido do Júnior e a sugestão do WhatsApp ficaram registrados como assunto do quiz-01, com a fonte no funil-01.
+   - *Recomendação:* manter, porque assim o consentimento LGPD fica num lugar só (conflito-09) e a página não fala com o banco.
+   - *Se decidir diferente:* se a landing pedir o contato no clique, ela ganha um campo com texto de consentimento, o garçom passa a receber dado pessoal da landing, e funil-01 e a planta do banco mudam.
+
+8.15. **O passo "Traga os números" e o título da seção 08.**
+   - *Dúvida:* o wireframe tem um passo 2 próprio ("Traga os números", do último mês) e um título que pede os números do último mês. No funil-01, os números do funil são respondidos dentro do quiz, e o quiz-01 ainda não foi escrito (o período que ele pede não está registrado).
+   - *O que fiz:* fundi o passo 2 no passo 1 (responder o quiz com os números do funil). O título fica como partida para a etapa 9, condicionado ao que o quiz-01 pedir.
+   - *Recomendação:* aceitar a fusão; conferir o título contra o quiz-01 quando ele existir.
+   - *Se decidir diferente:* se o pedido de números for um passo à parte (por exemplo, enviado depois do quiz), a seção 08 volta a ter três passos antes da conversa e o caminho do funil-01 ganha esse passo.
