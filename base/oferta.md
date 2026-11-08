@@ -21,7 +21,7 @@ depende_de:
     versao: 1
   - id: promessa
     versao: 1
-desatualizado: false
+desatualizado: true
 ---
 
 # Oferta · Implementação Avançada do Sistema de Vendas Safra

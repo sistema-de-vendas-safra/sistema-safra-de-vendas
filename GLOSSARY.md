@@ -1,31 +1,33 @@
 ---
 id: glossario
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: produto
-    versao: 1
+    versao: 2
   - id: metodo
-    versao: 1
+    versao: 2
   - id: mecanismo
     versao: 1
   - id: oferta
     versao: 1
   - id: promessa
-    versao: 1
+    versao: 2
   - id: entregas-do-servico
-    versao: 1
+    versao: 2
   - id: persona
-    versao: 1
+    versao: 2
   - id: tom-de-voz
+    versao: 2
+  - id: lead-score
     versao: 1
 desatualizado: false
 ---
@@ -95,7 +97,7 @@ _Fonte_: CTX §13
 
 **Safra**:
 Os leads que entraram num mesmo mês.
-_Fonte_: F11; F12; CTX §13
+_Fonte_: F12; CTX §13
 
 **Relógio de maturação**:
 O prazo para o lead amadurecer, contado do dia em que ele entra; cada negócio tem o seu. O exemplo da operação do Júnior está em ficha-de-fatos#relogio-da-operacao.
@@ -113,7 +115,7 @@ _Fonte_: F12; ficha-de-fatos#tentativas-ate-abandonado
 **Perdido**:
 Só o lead que disse não. Quem não respondeu ainda está no campo.
 _Avoid_: chamar de perdido quem só não respondeu
-_Fonte_: F1 ("perdido é quem falou não"); F11
+_Fonte_: F1 ("perdido é quem falou não")
 
 **Metas por etapa**:
 A taxa mínima de cada passagem do funil, aprovada pelo dono. Os valores estão em ficha-de-fatos#metas-por-etapa.
@@ -121,8 +123,9 @@ _Avoid_: metas assinadas
 _Fonte_: F12; PAINEL, regra 4
 
 **Etapas**:
-As passagens do funil que recebem meta. Em conflito, ver lacunas (conflito-12): o método e o DS v1.0 nomeiam as etapas de formas diferentes.
-_Fonte_: Ficha do Serviço online; DS; conflito-12
+As passagens do funil que recebem meta. Em público, com os nomes do método: pré-qualificação, agendamento, comparecimento e fechamento (Otávio, 08/11/2026; conflito-12, resolvido). Em títulos e chamadas de topo vale também a regra de 22/10 (ver `tom-de-voz`).
+_Avoid_: lead qualificado, reunião marcada, reunião realizada (forma do DS v1.0; "reunião" é palavra queimada para a persona); "SDR" e "closer" na comunicação de topo
+_Fonte_: Ficha do Serviço online; DS; conflito-12; ficha-de-fatos#metas-por-etapa
 
 **Leitura de trás para frente**:
 A forma de ler uma safra que começa no fechamento e recua, etapa por etapa, até a etapa que quebrou.
@@ -139,9 +142,9 @@ O momento em que, na Gestão Mensal de Leads, o lead pago sai da mesa sem ter di
 _Fonte_: Mecanismo único online ("O vilão"); Big Idea final online; One pager online ("O problema em três camadas")
 
 **Rúcula, morango e melancia**:
-A analogia dos tempos de decisão: cada lead amadurece no seu tempo, como cada cultura. Os tempos de cada uma são fato fora da ficha.
+A analogia dos tempos de decisão: cada lead amadurece no seu tempo, como cada cultura. Os tempos de cada uma estão em ficha-de-fatos#tempos-da-analogia.
 _Avoid_: rúcula e tomate
-_Fonte_: F14; dossiê §11
+_Fonte_: F14; dossiê §11; ficha-de-fatos#tempos-da-analogia
 
 **Vendedor chato**:
 A postura do serviço: persistência com data marcada, sem pressão. Depende de confirmação do Júnior.
@@ -178,8 +181,8 @@ _Avoid_: turma
 _Fonte_: #65; ficha-de-fatos#vagas
 
 **Análise Estratégica do seu Comercial**:
-A porta de entrada gratuita, aberta pelo quiz. Em conflito, ver lacunas (conflito-02): nome, valor, gratuidade, duração e condutor estão em ficha-de-fatos#analise-nome-publico e nos campos seguintes.
-_Fonte_: #66; ficha-de-fatos#analise-nome-publico
+A porta de entrada: desde a #92, é o diagnóstico do quiz, gratuito nas análises de ficha-de-fatos#analises-gratuitas e cobrado depois (ficha-de-fatos#analise-valor). A reunião com o Júnior é a conversa de venda, sem preço. O nome público está em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico).
+_Fonte_: #66; #92; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
 
 **Calculadora**:
 A Calculadora do Valor Potencial de Recuperação de Leads, a outra porta do quiz.
@@ -210,8 +213,8 @@ _Fonte_: #86; #68; CTX §13
 ### As entregas e os ritos
 
 **Entregas**:
-As partes do serviço, com os nomes oficiais em ficha-de-fatos#nomes-das-entregas, usados exatamente assim; a horta fica na descrição, nunca no nome. O número de entregas do contrato está em ficha-de-fatos#numero-de-entregas, em conflito, ver lacunas (outros-06).
-_Fonte_: #56; ficha-de-fatos#nomes-das-entregas
+As partes do serviço, com os nomes oficiais em ficha-de-fatos#nomes-das-entregas, usados exatamente assim; a horta fica na descrição, nunca no nome. O número está em ficha-de-fatos#numero-de-entregas; o contrato ainda tem o formato antigo, ver lacunas (outros-06).
+_Fonte_: #52; #56; ficha-de-fatos#nomes-das-entregas; ficha-de-fatos#numero-de-entregas
 
 **Análise Estratégica das Safras**:
 A entrega 1 (ficha-de-fatos#quando-entrega-1).
@@ -274,12 +277,12 @@ _Fonte_: #80; CTX §13
 
 **Preparo do solo**:
 A etapa do serviço em que o Júnior passa as mudanças (Implementação da Infraestrutura) e entrega o Playbook da Gestão de Vendas por Safra; vocabulário do método, só depois de o mecanismo ser explicado.
-_Avoid_: em títulos e chamadas antes do mecanismo (regra de vocabulário, em aberto; ver `tom-de-voz`)
+_Avoid_: em promessas, títulos e chamadas antes de o mecanismo ser explicado (regra de 22/10, reafirmada pelo Otávio em 08/11/2026; ver `tom-de-voz`)
 _Fonte_: Ficha do Serviço online (tabela das etapas); Sistema de Vendas Safra online
 
 **Colheita**:
 A etapa do serviço em que os leads antigos que nunca disseram não voltam ao funil, dentro do sistema de safras (Recuperação de Ativos).
-_Avoid_: em títulos e chamadas antes do mecanismo (regra de vocabulário, em aberto; ver `tom-de-voz`)
+_Avoid_: em promessas, títulos e chamadas antes de o mecanismo ser explicado (regra de 22/10, reafirmada pelo Otávio em 08/11/2026; ver `tom-de-voz`)
 _Fonte_: Ficha do Serviço online (tabela das etapas); Sistema de Vendas Safra online
 
 **Plantio**:
@@ -307,13 +310,13 @@ O desenho de entrada do funil decidido em 03/11: "três portas com e sem VSL, ca
 _Fonte_: #66; #90
 
 **Quiz**:
-A peça que qualifica o lead e abre as portas da Análise e da Calculadora. Nome público em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico). A falta de consentimento LGPD e a promessa percentual do quiz estão em conflito-09.
-_Fonte_: #66; quiz; conflito-02
+A peça que qualifica o lead e abre as portas da Análise e da Calculadora; desde a #92, o diagnóstico do quiz é a própria Análise. A proposta de qualificação por nota está em `lead-score` (#98, pendente). Nome público em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico). A falta de consentimento LGPD e a promessa percentual do quiz estão em conflito-09.
+_Fonte_: #66; #92; #98; quiz; conflito-02
 
 **Temperatura**:
 A escala de frio, morno e quente do público do funil; mede só se a pessoa já conhece o Júnior, não se ela está pronta para comprar.
 _Fonte_: F22 ("Temperatura")
 
 **Barra de resgates**:
-A barra da página que mostraria quantas Análises já foram resgatadas. Em conflito, ver lacunas (conflito-04): só com contagem real (ficha-de-fatos#barra-de-resgates).
-_Fonte_: landing; ficha-de-fatos#barra-de-resgates
+O contador de escassez da página: conta as análises gratuitas reais, a partir do banco de dados, e só aparece acima do limite da regra (ficha-de-fatos#barra-de-resgates). Até lá, nada de porcentagem de resgate nem de barra de vagas. Não é o contador "Total gerado" das credenciais, que segue em conflito (conflito-05).
+_Fonte_: #93; landing; ficha-de-fatos#barra-de-resgates

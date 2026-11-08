@@ -2,6 +2,30 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 4 · decisoes de 08-11 e lead score
+
+Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08/11/2026 e respostas às 9 perguntas da etapa 3). Resposta e perguntas em prompts/04-decisoes-de-08-11-e-lead-score-resposta.md e prompts/05-fila-perguntas.md (4.1 a 4.9).
+
+- base/decisoes.md v1 para v2, decidido. Motivo: resposta 1 de 08/11 (depende_de passa para a ficha v2; desatualizado volta a false). Forma.
+- base/ficha-de-fatos.md v2 para v3, decidido. Motivo: #92 e #93 (analise-valor, analise-gratuidade e analise-conteudo decididos; campo novo analises-gratuitas; barra-de-resgates passa a guardar a regra da #93, com os números da landing só como histórico); resposta 2 (campos novos credenciais-44 como [PROVA REAL], tempos-da-analogia e deming-percentual com a nota "Adaptado de"); resposta 7 (sai o "confirmar com o Júnior" de relogio-da-operacao; vale a #41); seção 2 (numero-de-entregas decidido: a landing segue o registro); notas em urgencia, analise-nome-publico, analise-duracao, analise-quem-conduz, analise-abatimento, bonus-analise-base, criterio-de-qualificacao e grafia-junior. Sentido, aprovado pelo Otávio; nada do Júnior e do Euclides tocado.
+- base/decisoes.md v2 para v3, decidido. Motivo: decisões novas #92 a #98; #62 substituída por #92; #49, #59 e #61 revistas por #92; remissões da #36 e da #44 aos campos novos. Sentido, decisões do Otávio; a #98 fica pendente-aprovacao (junior e euclides: pendente).
+- base/lacunas.md v2 para v3, rascunho. Motivo: resolvidos lacuna-05, lacuna-14, lacuna-15, conflito-11, conflito-12, conflito-13 e outros-17 (risco aceito, #97); resolvidos em parte lacuna-11, lacuna-17, lacuna-21, conflito-02 e conflito-04; conflito-01 e lacuna-12 apontam para base/lead-score.md; conflito-08 com a marca "levar ao Júnior"; novos outros-20 (Cultivo, levar ao Júnior), outros-21 (18 tentativas, levar ao Júnior) e outros-22 (revisão programada do lead score); lacuna-20 inclui a #98 e a informação da #92. Sentido.
+- base/lead-score.md v1, pendente-aprovacao (otavio: 2026-11-08; junior e euclides: pendente). Novo (#98).
+- base/persona.md v1 para v2, decidido. Motivo: cascata; a linha do tema 5 reflete a #92. Forma e reflexo de decisão do Otávio.
+- base/produto.md v1 para v2, decidido. Motivo: cascata; o número de entregas deixa de aparecer em conflito. Reflexo de decisão do Otávio.
+- base/metodo.md v1 para v2, decidido. Motivo: cascata, só depende_de. Forma.
+- base/entregas-do-servico.md v1 para v2, decidido. Motivo: cascata; número de entregas e a Análise da porta (#92). Reflexo de decisão do Otávio.
+- base/promessa.md v1 para v2, pendente-aprovacao (sem mudança em aprovado_por). Motivo: cascata; exceção do Deming (#94) e a linha da regra de vocabulário, resolvida. Reflexo de decisão do Otávio.
+- base/tom-de-voz.md v1 para v2, pendente-aprovacao (sem mudança em aprovado_por). Motivo: resposta 3 (colheita, plantio e relógio), resposta 5 (etapas em público e jargão), exceção do Deming (#94) e grafia confirmada. Sentido nas partes do Otávio; nada do Júnior tocado.
+- base/provas-e-conformidade.md v1 para v2, decidido. Motivo: cascata; Deming, credenciais de #44, barra de resgates e Análise passam a citar os campos novos e a #92 e a #93. Reflexo de decisão do Otávio.
+- base/design-system/design-system.md v1 para v2, rascunho. Motivo: seção nova "Divergências decididas" (grafia "Junior Neves", confirmada em 08/11, e nomes de etapa); adoção do DS com a marca "levar ao Júnior" (resposta 4). Sentido, documento continua rascunho.
+- GLOSSARY.md (id glossario) v1 para v2, decidido. Motivo: resposta 9 (sai a F11, forma); verbetes Etapas, Análise Estratégica do seu Comercial, Quiz, Barra de resgates, Entregas, Rúcula, Colheita, Plantio e Preparo do solo refletem as decisões de 08/11. depende_de ganha lead-score v1.
+- Cascata: mecanismo (v1, aprovado) e oferta (v1, pendente-aprovacao) ficam com desatualizado: true, sem mudar conteúdo nem versão: a #92 faz da Análise o diagnóstico do quiz, e os dois tratam a versão rápida da Análise na call como demonstração (pergunta 4.5). Os demais dependentes foram atualizados direto.
+- CLAUDE.md: regra 10 (projeto Estrategista de Negócio como arquivo histórico, #96) e a Regra de pausas como regra permanente.
+- conexoes.md: só o Otávio tem acesso no MVP (#95).
+
+- Revisão: um revisor independente. Corrigidos números copiados no texto novo da #92, da #93 e do lead-score (agora citam ficha-de-fatos#analises-gratuitas, #barra-de-resgates e #vagas), a remissão "substitui #62" no status da #92, quem decide o "Total gerado" no conflito-04 (alinhado ao provas-e-conformidade) e a linha da lacuna-20 neste log.
+
 ## 2026-11-08 · base lote 3
 
 - base/persona.md v1, decidido (otavio: 2026-11-08, pela aprovação do plano).
@@ -47,12 +71,13 @@ Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. En
 
 ## Pendências
 
-- [ ] **Base:** 9 perguntas da etapa 3 em prompts/03-escrever-a-base-resposta.md (a primeira é atualizar decisoes para a ficha v2).
+- [x] **Base:** 9 perguntas da etapa 3 em prompts/03-escrever-a-base-resposta.md. Respondidas pelo Otávio em 08/11/2026 (prompts/04-decisoes-de-08-11-e-lead-score.md, seção 5a) e aplicadas na etapa 4; os itens 4, 6 e 8 ficam em base/lacunas.md com a marca "levar ao Júnior".
 
 - [ ] **Decisão #90:** o funil-01 (landing-page-01, quiz-01, Supabase, planilha, SDR) substitui a página das três portas (#66) e o CRM do Doc Mestre. Pendente de aprovação do Júnior e do Euclides.
-- [ ] **Design:** o design system v1.0 é escuro e proíbe cores fora da paleta, o que conflita com a paleta branco e verde (#81) e com os botões laranja de 03/11. Decidir antes da etapa de design da landing. Dono das próximas versões do design system a definir.
-- [ ] **Segurança:** o site sv-safra.soulstory.com.br está aberto, sem senha, com o painel interno.
-- [ ] **Acesso:** confirmar quem mais acessa o sistema (o Doc Mestre cita Lalas no design e Miranda na infra).
-- [ ] **Migração:** depois da migração, o projeto do estrategista no Claude vira arquivo histórico (a confirmar).
+- [ ] **Design:** o design system v1.0 é escuro e proíbe cores fora da paleta, o que conflita com a paleta branco e verde (#81) e com os botões laranja de 03/11. Decidir antes da etapa de design da landing. Dono das próximas versões do design system a definir. Vai para a pauta com o Júnior (resposta 4 do Otávio, 08/11/2026).
+- [ ] **Lead score (#98):** base/lead-score.md pendente do Júnior e do Euclides. Na mesma pauta, informar aos dois a nova Análise (#92).
+- [x] **Segurança · risco aceito:** o site sv-safra.soulstory.com.br está aberto, sem senha, com o painel interno. Risco aceito no MVP: fica aberto, sem porteiro (#97, 08/11/2026).
+- [x] **Acesso:** confirmar quem mais acessa o sistema (o Doc Mestre cita Lalas no design e Miranda na infra). Fechada: ninguém além do Otávio acessa o sistema no MVP (#95, 08/11/2026; conexoes.md).
+- [x] **Migração:** o projeto "Estrategista de Negócio" no Claude é arquivo histórico desde 08/11/2026; mudança no Safra entra só pelo repositório (#96; CLAUDE.md, regra 10).
 - [ ] **Chaves:** antes de existir a primeira chave, instalar o detector de chaves (pre-commit) e fechar a brecha do .env no terminal (hoje o .claude/settings.json bloqueia só a ferramenta de leitura, não comandos como cat).
 - [ ] **Prazo:** a data de 10/11 do funil pode atrasar. Começar certo vale mais que começar na data.

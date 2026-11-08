@@ -1,21 +1,21 @@
 ---
 id: tom-de-voz
-versao: 1
+versao: 2
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-08
   junior: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: persona
-    versao: 1
+    versao: 2
   - id: promessa
-    versao: 1
+    versao: 2
 desatualizado: false
 ---
 
@@ -25,7 +25,7 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 
 **Manual de tom de voz do Safra:** não encontrado (dossiê §7: "não encontrado neste projeto").
 
-**Status.** Pendente de aprovação do Júnior. O que é do Otávio está decidido; dependem da confirmação do Júnior a postura do "vendedor chato" (#26), publicar sobre gestão comercial (#29) e a tese do closer (#87) (CTX §10, lacuna 20; CTX §11). Enquanto o Júnior estiver pendente, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md).
+**Status.** Pendente de aprovação do Júnior. O que é do Otávio está decidido; dependem da confirmação do Júnior a postura do "vendedor chato" (#26), publicar sobre gestão comercial (#29) e a tese do closer (#87) (CTX §10, lacuna 20; CTX §11). Enquanto o Júnior estiver pendente, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md). Em 08/11/2026 o Otávio resolveu os pontos que eram dele: a regra de vocabulário para colheita, plantio e relógio, o nome das etapas e o jargão em inglês, e a exceção do Deming (#94).
 
 **Como ler.** Fatos são citados pelo id do campo em `ficha-de-fatos`; decisões, por #n; pendências, pelo id de `lacunas`. Abreviações de fonte como na ficha de fatos. Texto entre aspas é literal da fonte.
 
@@ -49,7 +49,7 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 
 | O quê | Como escrever | Fonte |
 |---|---|---|
-| O Júnior | ficha-de-fatos#grafia-junior: "Junior Neves" em público; "Júnior" no texto corrido. O design system v1.0 escreve "Júnior Neves"; vale o CTX, e o DS será corrigido na próxima versão dele (decisão do Otávio, 08/11/2026) | CTX §6; ficha-de-fatos#grafia-junior |
+| O Júnior | ficha-de-fatos#grafia-junior: "Junior Neves" em público; "Júnior" no texto corrido. O design system v1.0 escreve "Júnior Neves" e está errado nesse ponto; vale o CTX, confirmado em 08/11/2026, e a divergência está registrada em `design-system` | CTX §6; ficha-de-fatos#grafia-junior |
 | As Sessões de Comando | "Sessões de Comando com o Junior Neves" | #83; CTX §6 |
 | O sistema | "Sistema de Vendas Safra", no singular. "Sistema de Vendas Safras" (plural) não | dossiê §11 (conversa "Wireframe da página de vendas Triad"); landing, "Copy" |
 | O sistema, depois da primeira menção | O DS v1.0 manda escrever o nome completo, com iniciais maiúsculas, na primeira menção, e depois "o Safra" ou "o Sistema"; o lettering em caixa baixa pertence só ao logotipo. **Regra do DS v1.0, cuja adoção nenhuma decisão registra** (conflito-08) | DS, pagina-documentacao.html ("Nome em texto corrido") |
@@ -66,11 +66,11 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 
 Fonte: Oferta online ("Regra de vocabulário (22/10)"). Status: decidido (Otávio, 22/10; exceção do nome em 23/10) (dossiê §7).
 
-**Em aberto: se a regra continua valendo para colheita, plantio e relógio em títulos e chamadas.** É decisão do cliente nos dois documentos online (Oferta online, "Decisões do cliente", item 1; Promessa central online, "Decisões do cliente", item 3). As leituras registradas:
-- A Oferta online: "Leio que ela continua valendo para os outros termos do método (colheita, plantio, relógio) em títulos e chamadas; falta confirmar."
-- O DS v1.0 lista entre o que evitar: as palavras "safra" (fora do nome do sistema), "colheita", "plantio" e "relógio" "em promessas, títulos e chamadas antes de o mecanismo ser explicado" (DS, "Linguagem"; adoção do DS sem decisão, conflito-08).
+**Colheita, plantio e relógio: decidido.** Vale a regra de 22/10, reafirmada pelo Otávio em 08/11/2026 (vocabulário público só com palavras do comprador; resposta 3 às perguntas da etapa 3). Esses termos não entram em promessa, título nem chamada antes de o mecanismo ser explicado. A exceção continua sendo o nome Sistema de Vendas Safra. O DS v1.0 traz a mesma regra: evita "safra" (fora do nome do sistema), "colheita", "plantio" e "relógio" "em promessas, títulos e chamadas antes de o mecanismo ser explicado" (DS, "Linguagem"). A leitura que a Oferta online pedia para confirmar ("Leio que ela continua valendo para os outros termos do método (colheita, plantio, relógio) em títulos e chamadas; falta confirmar.") fica confirmada.
 
-Até a decisão, o caminho mais conservador é aplicar a regra também a esses termos. Isso não decide a questão: fica para o Otávio.
+**Vocabulário público** (Otávio, 08/11/2026; conflito-12): na comunicação de topo, só as palavras que o comprador já usa. Os termos do método e os nomes de etapa do DS ficam para dentro.
+
+**Nomes das etapas em público** (Otávio, 08/11/2026, resposta 5): os do método, pré-qualificação, agendamento, comparecimento e fechamento (ficha-de-fatos#metas-por-etapa). A forma do DS ("lead qualificado, reunião marcada, reunião realizada, venda") perde nesse ponto, porque "reunião" é palavra queimada para a persona (ver `persona`). Em títulos e chamadas de topo vale também a regra de 22/10 (prompts/05-fila-perguntas.md, 4.6).
 
 **Vocabulário próprio a proteger:** "safra, relógio, maturação, solo, adubo, plantio, cultivo, colheita, 'o lead é a semente' e 'perdido é quem falou não'. Esse vocabulário é da narrativa do método e das descrições das entregas" (Sistema de Vendas Safra online, "Limites e cuidados"; F12).
 
@@ -139,7 +139,7 @@ Esta é a lista de frases e alegações proibidas que o plano aprovado tira do g
 | "Treinamento" e "Playbook" fora dos nomes das entregas | Só como nomes de entregas | CTX §6; Doc Mestre online, regra 7 |
 | "10x" | Proibido | CTX §6; F5 ("Evitar") |
 | "Os 4% como métrica de mercado" | A conversão é consequência das metas por etapa (ficha-de-fatos#metas-por-etapa), "e não como referência de mercado sem fonte" (Sistema de Vendas Safra online) | CTX §6; F12 |
-| "94% do seu problema de vendas" | O número de Deming fala de empresas em geral (CTX §7); na página, o título da seção 2 diverge (conflito-13) | CTX §6 |
+| "94% do seu problema de vendas" | O número de Deming fala de empresas em geral (CTX §7); em peça, só com a nota "Adaptado de" (ficha-de-fatos#deming-percentual). **Exceção decidida:** o título da seção 2 da landing fica como está, com o asterisco (#94; conflito-13) | CTX §6; #94 |
 | Totais autodeclarados | Credencial anunciada precisa de comprovante (CTX §8; ficha-de-fatos#total-dos-dois, ficha-de-fatos#lancamento-finch, ficha-de-fatos#camila-vieira) | CTX §6 |
 | Tema político | Proibido; também "referências políticas" e "ironia sobre fé" (F5) | CTX §6; F5 |
 | Resultado ligado ao contrato ou a prazo ("colher resultado em 15 dias"; prazo: ficha-de-fatos#sistema-instalado) | Só "sistema instalado", se cumprido (ficha-de-fatos#sistema-instalado; #39) | CTX §6, §8 |
@@ -162,7 +162,7 @@ Esta é a lista de frases e alegações proibidas que o plano aprovado tira do g
 | Marçal como aval | Marçal só nas credenciais, com comprovante (#25, #44); "citar Marçal como aval" está entre o que evitar | CTX §6; F5 |
 | "fórmula secreta", "do zero ao milhão", "sem esforço" | Evitar | F5 ("Vocabulário a usar e a evitar") |
 | "CRM" e "o lead ficou mais caro" na versão da Big Idea para o comprador | Direcionamento de 22/10 (alcance para outras peças não registrado) | dossiê §7, §11 |
-| Jargão em inglês na comunicação de topo ("SDR", "closer", "pipeline") | O DS v1.0 prefere "quem agenda", "quem fecha", "vendedor"; a landing usa "closer" e "SDR" no diagrama da seção 2. **Em conflito, sem decisão** (conflito-12) | DS ("Linguagem"); landing |
+| Jargão em inglês na comunicação de topo ("SDR", "closer", "pipeline") | "SDR" e "closer" saem da comunicação de topo (Otávio, 08/11/2026, resposta 5; conflito-12). O DS v1.0 prefere "quem agenda", "quem fecha", "vendedor"; o diagrama da seção 2 da landing precisa trocar "closer" e "SDR" | DS ("Linguagem"); landing; conflito-12 |
 
 ### Frases gastas do mercado
 
@@ -194,11 +194,10 @@ Fonte: F10 online ("O que já está gasto"). O CTX §5 resume: "'sem depender de
 |---|---|---|
 | A postura do "vendedor chato" (#26) e publicar sobre gestão comercial (#29) | O Júnior | lacuna-20 |
 | A tese do closer como macronarrativa (#87): autoria e publicação | O Júnior | lacuna-08 |
-| Se a regra de vocabulário continua para colheita, plantio e relógio em títulos e chamadas | Decisão do cliente (Oferta online, item 1; Promessa central online, item 3) | este documento |
-| Jargão em inglês na comunicação de topo e o nome das etapas (DS contra método e landing) | O Otávio | conflito-12 |
-| O "94%" de Deming no título da seção 2 da landing (fato fora da ficha) | O Otávio | conflito-13 |
 | Quem assina as peças | O Júnior e o Euclides | lacuna-07, conflito-07 |
 | "hackeando" contra "ajustando" ou "destravando" | O Otávio (ajustes da promessa) | lacuna-02 |
+
+Resolvidos em 08/11/2026 pelo Otávio: a regra de vocabulário para colheita, plantio e relógio (resposta 3), o jargão em inglês e o nome das etapas (resposta 5; conflito-12) e o Deming no título da seção 2 (#94; conflito-13).
 
 ---
 
@@ -212,4 +211,5 @@ Fonte: F10 online ("O que já está gasto"). O CTX §5 resume: "'sem depender de
 - PAINEL: 02-arquivos-do-projeto/claude/PAINEL-iasv-safra.md (regras 4, 8, 13, 16; "Onde o painel difere das fontes").
 - Dossiê: 01-dossie/safra-dossie.md (§7, §11). Landing: 01-dossie/safra-landing.md ("Parte 2").
 - DS: fontes/design-system-v1.0/pagina-documentacao.html ("Nome em texto corrido", "Linguagem"); adoção sem decisão (conflito-08).
-- Decisões #25, #26, #29, #38, #39, #44, #53, #56, #65, #68, #80, #81, #83, #85, #86, #87 (base/decisoes.md).
+- Decisões #25, #26, #29, #38, #39, #44, #53, #56, #65, #68, #80, #81, #83, #85, #86, #87, #94 (base/decisoes.md).
+- Otávio, 08/11/2026: respostas 3 e 5 às perguntas da etapa 3 (prompts/04-decisoes-de-08-11-e-lead-score.md, seção 5a) e seção 2 do mesmo prompt.

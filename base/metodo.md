@@ -1,16 +1,16 @@
 ---
 id: metodo
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-03
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
 desatualizado: false
 ---
 

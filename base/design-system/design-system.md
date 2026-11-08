@@ -1,21 +1,21 @@
 ---
 id: design-system
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
   junior: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: tom-de-voz
-    versao: 1
+    versao: 2
   - id: provas-e-conformidade
-    versao: 1
+    versao: 2
 desatualizado: false
 ---
 
@@ -65,14 +65,15 @@ Resumo para localizar a regra; o valor exato (cor, peso, medida) fica nos tokens
 ## O que coincide com o registro
 
 - Os nomes de ficha-de-fatos#nomes-das-entregas: iguais no DS (#56).
-- "Implementação, nunca mentoria" (#53) e a regra de vocabulário de 22/10 aparecem na lista de linguagem do DS (ver `tom-de-voz`).
+- "Implementação, nunca mentoria" (#53) e a regra de vocabulário de 22/10 aparecem na lista de linguagem do DS (ver `tom-de-voz`). A regra para colheita, plantio e relógio, reafirmada pelo Otávio em 08/11/2026, é a mesma que o DS traz.
+- "SDR" e "closer" fora da comunicação de topo: o DS e a decisão do Otávio de 08/11/2026 coincidem (`tom-de-voz`).
 - Mockup não é prova: coerente com a regra de números ilustrativos (ver `provas-e-conformidade`).
 
 ---
 
 ## Conflitos registrados, sem resolver
 
-Nenhum lado é escolhido aqui. Todos ficam **em conflito · bloqueado para entrega até a decisão**.
+Nenhum lado é escolhido aqui. Todos ficam **em conflito · bloqueado para entrega até a decisão**. A adoção do DS v1.0 vai para a pauta com o Júnior (**levar ao Júnior**; resposta 4 do Otávio, 08/11/2026).
 
 | Conflito | Um lado | Outro lado | Onde |
 |---|---|---|---|
@@ -80,9 +81,19 @@ Nenhum lado é escolhido aqui. Todos ficam **em conflito · bloqueado para entre
 | Paleta | #81: "referência The Profit e paleta branco e verde aprovada" (F25: "Júnior, pela sequência (confirmar)") | O DS v1.0: fundos escuros e cores só da paleta oficial | conflito-08 |
 | Cor dos botões | Botões laranja (Otávio, 03/11, landing, "Design system antigo") | O DS v1.0: a ação primária é a Menta e não há cor fora da paleta | conflito-08 |
 | Tipografia | Tipografia "cyberpunk" pedida pelo Júnior (landing; referência não encontrada) | O DS v1.0: só Geist | conflito-08 |
-| Vocabulário | O método e a landing usam "SDR", "closer" e etapas próprias (ficha-de-fatos#metas-por-etapa) | O DS v1.0 evita jargão em inglês no topo e nomeia as etapas "Lead qualificado, Reunião marcada, Reunião realizada, Venda" | conflito-12 |
 | Nome da agência | ficha-de-fatos#nome-agencia, **em conflito** | O DS v1.0 escreve "Euclides Vieira e Júnior Neves formam a Triad" | lacuna-07 |
 | Proposta de valor | O DS v1.0 traz como proposta de valor o texto da #33 | Substituição proposta em #85, pendente | lacuna-02, conflito-03 |
+
+---
+
+## Divergências decididas
+
+Pontos em que o DS v1.0 diverge do registro e o registro já decidiu. O DS está errado nesses pontos e será corrigido na próxima versão dele; fontes/ não muda.
+
+| Ponto | O DS v1.0 diz | O que vale | Decisão |
+|---|---|---|---|
+| Grafia do Júnior | "Júnior Neves" ("Euclides Vieira e Júnior Neves formam a Triad", pagina-documentacao.html) | "Junior Neves" em público; "Júnior" no texto corrido (ficha-de-fatos#grafia-junior) | Otávio, 08/11/2026 (vale o CTX; confirmado de novo em 08/11/2026, prompts/04, seção 2) |
+| Nomes das etapas | "Lead qualificado, Reunião marcada, Reunião realizada, Venda" | Em público, os nomes do método: pré-qualificação, agendamento, comparecimento, fechamento (ficha-de-fatos#metas-por-etapa); "reunião" é palavra queimada para a persona | Otávio, 08/11/2026, resposta 5 (conflito-12, resolvido) |
 
 ---
 
@@ -92,8 +103,7 @@ Nenhum lado é escolhido aqui. Todos ficam **em conflito · bloqueado para entre
 |---|---|---|
 | Adotar ou não o DS v1.0, e o que acontece com #45 e #81 | O Otávio e o Júnior | conflito-08; log.md, "Design" |
 | Cor dos botões e tipografia da landing | O Otávio e o Júnior | conflito-08 |
-| Nome das etapas e jargão em inglês | O Otávio | conflito-12 |
-| Corrigir a grafia "Júnior Neves" para a de ficha-de-fatos#grafia-junior na próxima versão do DS (já decidido pelo Otávio: vale o CTX) | Dono das próximas versões do DS (a definir) | ficha-de-fatos#grafia-junior |
+| Corrigir a grafia "Júnior Neves" para a de ficha-de-fatos#grafia-junior e os nomes de etapa na próxima versão do DS (ver "Divergências decididas") | Dono das próximas versões do DS (a definir) | ficha-de-fatos#grafia-junior; conflito-12 |
 | Dono das próximas versões do DS | Não registrado | log.md |
 
 Decidir antes da etapa de design da landing (log.md).
@@ -108,3 +118,4 @@ Decidir antes da etapa de design da landing (log.md).
 - Doc Mestre online, regra 9; F25 (call de 07/11).
 - log.md (pendência "Design").
 - Decisões #33, #45, #53, #56, #81, #85 (base/decisoes.md).
+- Otávio, 08/11/2026: respostas 3, 4 e 5 às perguntas da etapa 3 e seção 2 de prompts/04-decisoes-de-08-11-e-lead-score.md.

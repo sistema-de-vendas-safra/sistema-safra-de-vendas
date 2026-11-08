@@ -27,3 +27,13 @@ O mapa do que existe está em index.md; o histórico e as pendências, em log.md
 7. **Nunca fazer push.** O Claude faz os commits; o Otávio faz o push pelo GitHub Desktop.
 8. **Nunca escrever chave, senha ou token** em nenhum arquivo do repositório.
 9. **Seguir as diretrizes andrej-karpathy-skills:** pensar antes de agir, simplicidade, mudanças cirúrgicas, objetivo verificável.
+10. **O projeto "Estrategista de Negócio" no Claude é arquivo histórico desde 08/11/2026.** Mudança no Safra entra só pelo repositório (decisão #96).
+
+## Regra de pausas
+
+Regra permanente da casa (Otávio, 08/11/2026, prompts/04-decisoes-de-08-11-e-lead-score.md).
+
+- Não parar para perguntar. Quando aparecer uma dúvida que seria do Otávio, seguir pelo caminho mais conservador: o status mais restritivo; o conflito registrado com os dois lados e bloqueado para entrega; nada inventado; nenhum lado escolhido pelo Claude.
+- Registrar cada escolha provisória na lista "Perguntas para o Otávio", no fim do arquivo de resposta da etapa em prompts/, com: a dúvida, o que foi feito, a recomendação e o que muda se o Otávio decidir diferente.
+- Só parar de verdade para: alterar ou apagar algo em fontes/; contrariar uma instrução escrita do prompt ou deste CLAUDE.md; qualquer ação que não dê para desfazer pelo Git.
+- No fim, entregar a lista inteira de uma vez.

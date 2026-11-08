@@ -1,16 +1,16 @@
 ---
 id: produto
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
 desatualizado: false
 ---
 
@@ -34,7 +34,7 @@ O formato da IASV Safra (Implementação Avançada do Sistema de Vendas Safra): 
 | Quando o relógio começa | ficha-de-fatos#inicio-do-relogio | #72; Ficha do Serviço online |
 | Sistema instalado | ficha-de-fatos#sistema-instalado; dali até o fim é acompanhamento e otimização | #73; Ficha do Serviço online ("Como funcionam os 90 dias") |
 | Onde roda | No CRM que o cliente já usa: "ninguém precisa trocar de CRM". CRM próprio da Triad só depois da validação | #70; Ficha do Serviço online ("Em 30 segundos"; "Fica para depois") |
-| Entregas | As de ficha-de-fatos#nomes-das-entregas, detalhadas em `entregas-do-servico`. O número está em ficha-de-fatos#numero-de-entregas, **campo em conflito · bloqueado para entrega até a decisão**: o registro decidido (#52, #56) diverge da página e do contrato (lacuna-05, outros-06) | #52, #56; Ficha do Serviço online |
+| Entregas | As de ficha-de-fatos#nomes-das-entregas, detalhadas em `entregas-do-servico`. O número está em ficha-de-fatos#numero-de-entregas (#52, #56). A página segue o registro (lacuna-05, resolvida em 08/11/2026); o contrato ainda tem o formato antigo (outros-06) | #52, #56; Ficha do Serviço online |
 | Em uma linha | "Um jeito novo de gerir o comercial: cada mês de leads vira uma safra, com prazo para amadurecer e meta em cada etapa" | Ficha do Serviço online ("Em 30 segundos") |
 | O que muda para o dono | "O dono passa a saber em que etapa a venda trava e para de largar o lead que ainda não disse não" | Ficha do Serviço online ("Em 30 segundos") |
 | Para quem | ficha-de-fatos#criterio-de-qualificacao, **campo em conflito · bloqueado para entrega até a decisão** (lacuna-12, conflito-01) | Ficha do Serviço online; landing; quiz; F22 |

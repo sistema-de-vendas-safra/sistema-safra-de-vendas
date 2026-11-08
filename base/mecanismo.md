@@ -15,7 +15,7 @@ depende_de:
     versao: 2
   - id: metodo
     versao: 1
-desatualizado: false
+desatualizado: true
 ---
 
 # Mecanismo · Gestão Mensal de Leads, Big Idea e crença

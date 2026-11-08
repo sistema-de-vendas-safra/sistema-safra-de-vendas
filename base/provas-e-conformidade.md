@@ -1,26 +1,26 @@
 ---
 id: provas-e-conformidade
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: mecanismo
     versao: 1
   - id: promessa
-    versao: 1
+    versao: 2
   - id: oferta
     versao: 1
   - id: persona
-    versao: 1
+    versao: 2
   - id: tom-de-voz
-    versao: 1
+    versao: 2
 desatualizado: false
 ---
 
@@ -60,7 +60,7 @@ Do CTX §7 ("Inventário de provas reais"), salvo onde indicado.
 | Curso gravado do Júnior | Produto | "sem resultados conhecidos" | CTX §7; ficha-de-fatos#bonus-curso |
 | Autoridade de lançamento | Autodeclarada | Sem comprovante (F9) | CTX §7 |
 | Seguidores do Júnior | Fato de pesquisa | ficha-de-fatos#seguidores-junior; a autoridade pública dele "não é de vendas (forte, F10)" | CTX §9, leitura 7 |
-| Deming, Out of the Crisis (1982) | Dado de terceiro | "forte como citação, indicativa para vendas"; o percentual: fato fora da ficha. Em peça, só "adaptado de" e nunca como "94% do seu problema de vendas" (conflito-13; ver `tom-de-voz`) | CTX §7, §6 |
+| Deming, Out of the Crisis (1982) | Dado de terceiro | "forte como citação, indicativa para vendas"; o percentual: ficha-de-fatos#deming-percentual. Em peça, só com a nota "Adaptado de" e nunca como "94% do seu problema de vendas", com a exceção do título da seção 2 da landing (#94; conflito-13; ver `tom-de-voz`) | CTX §7, §6 |
 | HBR 2011, lead de teste em empresas dos EUA | Dado de terceiro | moderada; os números: fato fora da ficha | CTX §7 |
 | Na reserva: Ramper 2022 e HBR 2015 (receita com processo formal) | Dado de terceiro | Ramper indicativa; HBR 2015 moderada, correlação; os números: fato fora da ficha | CTX §7 |
 | A pós-graduação que escalava o criativo e trazia estudantes sem perfil, achada olhando os dados | Candidata a história de bastidor (F25) | Sem número comprovado nem autorização; o custo por lead citado: fato fora da ficha | CTX §7 |
@@ -84,8 +84,8 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 | [PROVA REAL: comprovante do lançamento com o Finch] | ficha-de-fatos#lancamento-finch | **em conflito · bloqueado para entrega até a decisão** |
 | [PROVA REAL: comprovante do caso da Camila Vieira] | ficha-de-fatos#camila-vieira | **em conflito · bloqueado para entrega até a decisão** |
 | [PROVA REAL: comprovante das credenciais de 07/11 do Júnior] | Sem campo na ficha; os itens estão em outros-11 | Autodeclaradas na call de 07/11, sem comprovante (F25) |
-| [PROVA REAL: comprovante das credenciais de #44] (com quem o Júnior e o Euclides trabalharam, além do Finch e da Camila Vieira) | Sem campo na ficha: **fato fora da ficha** | "credenciais com comprovante" (#44), que depende de confirmação do Júnior e do Euclides (lacuna-20) |
-| [PROVA REAL: contagem real para o contador "Total gerado" e para a barra de vagas da página] | ficha-de-fatos#barra-de-resgates, ficha-de-fatos#total-dos-dois | **em conflito · bloqueado para entrega até a decisão** (conflito-04). Número de Análises gratuitas: não encontrado |
+| [PROVA REAL: comprovante das credenciais de #44] (com quem o Júnior e o Euclides trabalharam, além do Finch e da Camila Vieira) | ficha-de-fatos#credenciais-44 ([PROVA REAL]; levar ao Júnior, outros-21) | "credenciais com comprovante" (#44), que depende de confirmação do Júnior e do Euclides (lacuna-20) |
+| [PROVA REAL: contagem real para o contador "Total gerado" da página] | ficha-de-fatos#total-dos-dois | **em conflito · bloqueado para entrega até a decisão** (conflito-04, conflito-05). A barra de vagas segue a regra de ficha-de-fatos#barra-de-resgates (#93): contagem real, a partir do banco de dados, sobre ficha-de-fatos#analises-gratuitas |
 
 ### Autorização de nome e imagem
 
@@ -119,10 +119,10 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 |---|---|
 | A promessa integra o contrato: pelo art. 30 do CDC, "a publicidade suficientemente precisa obriga quem a faz e passa a integrar o contrato, quando a relação for de consumo"; o CONAR "exige que toda alegação possa ser comprovada" | Oferta online ("As opções estudadas em 22/10", "Um cuidado jurídico") |
 | A promessa só vai a público "com prova do primeiro caso e revisão de advogado"; a de 08/11 (#85, pendente) torna vinculante a liderança do Júnior e do Euclides durante o serviço (CDC, art. 30; duração em ficha-de-fatos#duracao) | CTX §8; ver `promessa` |
-| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19) e ficha-de-fatos#analise-valor (#62; **em conflito · bloqueado para entrega até a decisão**) | CTX §8 |
+| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19) e ficha-de-fatos#analise-valor (#92; a Análise precisa passar a ser cobrada de verdade depois das gratuitas) | CTX §8 |
 | Credencial anunciada precisa de comprovante (ver a lista acima) | CTX §8; Doc Mestre online, regra 2 |
-| Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR) | CTX §8; landing ("Regras de conformidade") |
-| A promoção precisa de um fim real, e a Análise precisa passar a ser cobrada de verdade depois (as condições da Análise estão em conflito: conflito-02) | landing ("Regras de conformidade") |
+| Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR). A regra do contador de escassez está em ficha-de-fatos#barra-de-resgates (#93) | CTX §8; landing ("Regras de conformidade"); #93 |
+| A promoção precisa de um fim real, e a Análise precisa passar a ser cobrada de verdade depois. Com a #92, o fim real é o número de ficha-de-fatos#analises-gratuitas, e o valor depois está em ficha-de-fatos#analise-valor | landing ("Regras de conformidade"); #92 |
 | Escassez só a verdadeira, sem prazo nem data: ficha-de-fatos#urgencia, ficha-de-fatos#vagas, ficha-de-fatos#vendas-que-contam | Doc Mestre online, regra 3; CTX §8 |
 | "todo o dinheiro" é alegação absoluta | CTX §8 |
 | Nenhum percentual de melhora antes de caso comprovado | Mecanismo único online; Promessa central online ("Conformidade"). O quiz promete percentual (conflito-09) |
@@ -141,7 +141,7 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 
 ### O contrato
 
-- Só o escopo das entregas, com critério de pronto e portabilidade de dados (#39; CTX §8). O número de entregas do contrato está em ficha-de-fatos#numero-de-entregas, **campo em conflito · bloqueado para entrega até a decisão** (outros-06).
+- Só o escopo das entregas, com critério de pronto e portabilidade de dados (#39; CTX §8). O número de entregas está em ficha-de-fatos#numero-de-entregas; o contrato ainda tem o formato antigo (outros-06).
 - "'por 90 dias eu mando no seu comercial' e 'liderar o comercial' (#85) são metáforas: o time é do cliente, e nenhum poder de gestão vai ao contrato" (CTX §8; duração: ficha-de-fatos#duracao).
 - Contrato revisado por advogado, só com o escopo das entregas (Doc Mestre online, E.M.V.); ritos, presença do Júnior e do Euclides que a promessa anuncia, gravações e dados (lacuna-10).
 
@@ -177,7 +177,7 @@ O Doc Mestre online tem nove Regras do funil; "as três primeiras são jurídica
 
 1. **Preço.** A forma de escrever o preço registrada em ficha-de-fatos#preco-avancada; nunca "de [preço depois] por [preço das vagas]" enquanto o preço depois não for praticado (ficha-de-fatos#preco-avancada-depois).
 2. **Prova.** "Credenciais (... e cada nome citado) só com comprovante guardado." Os números de credencial que a regra cita estão em ficha-de-fatos#total-dos-dois e ficha-de-fatos#lancamento-finch, **em conflito**. Vale também "para a linha 'você não me conhece, mas conhece o que eu fiz' e para o vídeo da página. Nenhum depoimento, caso ou número inventado."
-3. **Escassez.** "Só a verdadeira": ficha-de-fatos#vagas e ficha-de-fatos#urgencia ("Nenhuma peça cita prazo nem data"); vendas da Essencial não contam (ficha-de-fatos#vendas-que-contam). A regra traz também o valor e a gratuidade da Análise, que estão **em conflito · bloqueados para entrega até a decisão** (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade; conflito-02). Ela não resolve o conflito: é um dos lados.
+3. **Escassez.** "Só a verdadeira": ficha-de-fatos#vagas e ficha-de-fatos#urgencia ("Nenhuma peça cita prazo nem data"); vendas da Essencial não contam (ficha-de-fatos#vendas-que-contam). A regra traz também o valor e a gratuidade da Análise, hoje decididos pela #92 (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade).
 8. **Dados.** Ver LGPD, acima.
 
 Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e pode ser substituído pela #90, pendente de aprovação do Júnior e do Euclides (plano aprovado, parte 6; conflito-06, conflito-14). As regras de vocabulário e de marca (7 e 9) estão em `tom-de-voz`.
@@ -194,9 +194,8 @@ Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e p
 | Autorizações de nome e imagem | Os terceiros, pedidas pelo Júnior e pelo Euclides | conflito-05, lacuna-21 |
 | Art. 49 do CDC numa venda para empresa | Um advogado | outros-18 |
 | Contrato com o formato novo, revisado por advogado | Não registrado | lacuna-10, outros-06 |
-| Barra de resgates e contador com contagem real | O Otávio (copy); o número depende do funil-01 | conflito-04 |
+| Contador "Total gerado" com contagem real (a barra de resgates já tem regra, #93; a contagem depende do funil-01) | O Júnior e o Euclides (credenciais) | conflito-04, conflito-05 |
 | Consentimento LGPD e promessa percentual no quiz | O Otávio com o Júnior | conflito-09 |
-| O "94%" de Deming na landing (fato fora da ficha) | O Otávio | conflito-13, lacuna-21 |
 | Números finais da safra de julho | O Júnior | outros-12, lacuna-24 |
 | Fonte do "95%" (fato fora da ficha) | Não registrado | `mecanismo` |
 | Painel do leilão como prova pública | Estacionado (#27) | `mecanismo` |
@@ -211,4 +210,4 @@ Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e p
 - Oferta online, Promessa central online, Mecanismo único online, Big Idea final online, Sistema de Vendas Safra online, Downsell online: 03-documentos-online/.
 - PAINEL: 02-arquivos-do-projeto/claude/PAINEL-iasv-safra.md (regras 9 e 11).
 - DS: fontes/design-system-v1.0/pagina-documentacao.html ("Aplicações da marca"; "Regras e acessibilidade").
-- Decisões #19, #23, #25, #27, #39, #44, #55, #62, #85, #89, #90, #91 (base/decisoes.md).
+- Decisões #19, #23, #25, #27, #39, #44, #55, #62, #85, #89, #90, #91, #92, #93, #94 (base/decisoes.md).

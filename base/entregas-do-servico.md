@@ -1,18 +1,18 @@
 ---
 id: entregas-do-servico
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-01
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: produto
-    versao: 1
+    versao: 2
 desatualizado: false
 ---
 
@@ -24,7 +24,7 @@ As entregas da IASV Safra: o nome oficial, o que cada uma é, a descrição da h
 
 **Como ler.**
 - **Nomes:** os nomes oficiais e a ordem estão em ficha-de-fatos#nomes-das-entregas. O design system manda usá-los "exatamente assim em materiais e interfaces" (DS, pagina-documentacao.html, "Implementação em 8 entregas"). Os títulos abaixo repetem esses nomes para o documento ser legível; o que vale é a ficha.
-- **Número de entregas:** ficha-de-fatos#numero-de-entregas, **campo em conflito · bloqueado para entrega até a decisão**. O registro decidido é o de #52 e #56; a página (com a "Mentoria 1:1" como entrega a mais) e o contrato divergem (lacuna-05, outros-06). As Sessões de Comando são rito, não entrega (#83; `produto`).
+- **Número de entregas:** ficha-de-fatos#numero-de-entregas (#52, #56). A página segue o registro, sem a "Mentoria 1:1" como entrega a mais (lacuna-05, resolvida em 08/11/2026); o contrato ainda diverge (outros-06). As Sessões de Comando são rito, não entrega (#83; `produto`).
 - **Quando:** cada entrega cita o seu campo, de ficha-de-fatos#quando-entrega-1 a ficha-de-fatos#quando-entrega-8. "As datas ainda são de trabalho": até a engenharia reversa, valem três marcos, a Análise na semana de ficha-de-fatos#quando-entrega-1, tudo entregue em ficha-de-fatos#sistema-instalado e o fechamento em ficha-de-fatos#quando-entrega-8 (Ficha do Serviço online).
 - **Horta:** "A horta fica no método e nas descrições, nunca no nome nem no problema" (CTX §6; #56). Por isso a imagem da horta aparece em linha própria, separada do que a entrega é.
 - **Calendário por dia:** **não entra.** O calendário por dia da engenharia reversa (ficha-de-fatos#calendario-por-dia) é proposta, não confirmada (ficha-de-fatos#calendario-por-dia; lacuna-01; outros-01).
@@ -40,7 +40,7 @@ As entregas da IASV Safra: o nome oficial, o que cada uma é, a descrição da h
 - **Está pronta quando:** "Foi apresentada ao dono, que aprovou as metas de cada etapa".
 - **Quem faz:** "O Júnior, com os dados do cliente".
 - **Decisões:** #56 (nome), #72 (semana e relógio a partir da primeira call).
-- **Atenção:** a entrega 1 não é a Análise da porta de entrada. A da porta é a versão da call (ficha-de-fatos#analise-conteudo); a completa, "com documento e painel, é a entrega 1" (Ficha do Serviço online, "Porta de entrada"). O nome público da Análise da porta está em ficha-de-fatos#analise-nome-publico, **campo em conflito · bloqueado para entrega até a decisão**. Nome antigo: Leitura das Safras (CTX §13).
+- **Atenção:** a entrega 1 não é a Análise da porta de entrada. A da porta, desde a #92, é o diagnóstico do quiz (ficha-de-fatos#analise-conteudo; a Ficha do Serviço online ainda a descreve como a versão da call); a completa, "com documento e painel, é a entrega 1" (Ficha do Serviço online, "Porta de entrada"). O nome público da Análise da porta está em ficha-de-fatos#analise-nome-publico, **campo em conflito · bloqueado para entrega até a decisão**. Nome antigo: Leitura das Safras (CTX §13).
 
 ## 2. Implementação da Infraestrutura
 
@@ -135,7 +135,7 @@ Nas etapas do serviço (`produto`), as entregas se agrupam assim: a entrega 1 é
 
 | O que falta | Onde |
 |---|---|
-| Número de entregas na página e no contrato | ficha-de-fatos#numero-de-entregas; lacuna-05, outros-06 |
+| Número de entregas no contrato (a página segue o registro desde 08/11/2026) | ficha-de-fatos#numero-de-entregas; outros-06 |
 | Calendário por dia e horas por entrega | ficha-de-fatos#calendario-por-dia; lacuna-01 |
 | Quem faz CS, IA de consulta e a ligação do painel | lacuna-04, outros-05 |
 | Uso real de IA nas entregas 1, 3, 5 e 8, antes de a página ir ao ar | lacuna-21 |

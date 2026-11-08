@@ -1,18 +1,18 @@
 ---
 id: decisoes
-versao: 1
+versao: 3
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
 depende_de:
   - id: ficha-de-fatos
-    versao: 1
-desatualizado: true
+    versao: 3
+desatualizado: false
 ---
 
 # Decisões
 
-O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular nenhum. O documento é decidido como registro fiel; cada decisão tem o seu status na própria linha.
+O registro das decisões do Safra, de #1 a #98, uma linha por número, sem pular nenhum. O documento é decidido como registro fiel; cada decisão tem o seu status na própria linha.
 
 ## Nota do CONTEXTO (CTX §11)
 
@@ -25,7 +25,7 @@ O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular
 - **Texto da decisão.** Frase curta com as palavras da fonte, entre aspas quando é literal. Quando o valor é o próprio texto da decisão, ele aparece com a remissão ao campo da ficha de fatos, que é onde o fato vale. Número sem texto em nenhuma fonte do acervo fica com "texto não encontrado".
 - **Status.** decidido · aprovado · pendente-aprovacao (com quem falta) · depende de confirmação do Júnior · estacionada · substituída por #N · texto não encontrado. Uma decisão só vira "substituída por #N" quando a substituta for aprovada; até lá leva a nota "substituição proposta em #N" (critério do Otávio, 08/11/2026). Depois do status, separado por ponto e vírgula, pode vir uma nota (ex.: "decidido; formato superado na call de 07/11"); a nota informa, não muda o status.
 - **Nada se apaga.** Uma decisão substituída fica na tabela com "substituída por #N"; quem substitui leva "substitui #N".
-- **Decisões novas** entram a partir da #92 (a #91 foi a primeira, em 08/11/2026), sempre com a palavra do Otávio. Cada uma sobe a versão deste documento, ganha linha no log.md, e a cascata marca os dependentes (nucleo/regras/versionamento.md).
+- **Decisões novas** entram a partir da #99 (a #91 foi a primeira, em 08/11/2026; as #92 a #98 vieram em 08/11/2026, prompts/04-decisoes-de-08-11-e-lead-score.md), sempre com a palavra do Otávio. Cada uma sobe a versão deste documento, ganha linha no log.md, e a cascata marca os dependentes (nucleo/regras/versionamento.md).
 
 ## Registro
 
@@ -66,7 +66,7 @@ O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular
 | 33 | 2026-10-23 | Promessa: "Em 90 dias, a Triad instala o Sistema de Vendas Safra no seu comercial para o seu time vender gastando menos, vender mais e vender mais vezes para o mesmo cliente." | Otávio | pendente-aprovacao (junior: pendente; euclides: pendente); substituição proposta em #85. Não pode ir para entrega antes da aprovação | #85 (pendente) | F16; dossiê §3; CTX §6 |
 | 34 | 2026-10-23 | texto não encontrado (citada só nas listas da linha "Análise da porta de entrada" do CTX §3 e de "Nomes" do CTX §6) | Otávio | texto não encontrado | | CTX §3, §6 |
 | 35 | 2026-10-23 | texto não encontrado | Otávio | texto não encontrado | | CTX §11 (grupo #33 a #42) |
-| 36 | 2026-10-23 | Analogia: "rúcula em cerca de 30 dias, morango em 60, melancia em 90; o '95%' não tem fonte" | Otávio | decidido; aprovada com a Big Idea (#48) | #56 (a horta sai do nome e vai para a descrição) | CTX §6; Macronarrativas online; dossiê §1 |
+| 36 | 2026-10-23 | Analogia: "rúcula em cerca de 30 dias, morango em 60, melancia em 90; o '95%' não tem fonte" (ver ficha-de-fatos#tempos-da-analogia) | Otávio | decidido; aprovada com a Big Idea (#48) | #56 (a horta sai do nome e vai para a descrição) | CTX §6; Macronarrativas online; dossiê §1 |
 | 37 | 2026-10-23 | Downsell, citada com #42 e #60: entregas, duração, bônus e preço registrados em 23/10 (ver ficha-de-fatos#downsell-desenho e ficha-de-fatos#downsell-preco) | Otávio | decidido; desenho em revisão desde 07/11 (lacuna 3) | #60 | CTX §3 (linha Downsell); Downsell online ("Já decidido em 23/10") |
 | 38 | 2026-10-23 | "a continuidade passa a se chamar GSAAS" | Otávio | decidido | #58, #84 | Oferta online (Decisões de 23/10); CTX §3, §6 |
 | 39 | 2026-10-23 | "Sem garantia; contrato só com o escopo"; "nenhuma promessa em contrato, de nenhum tipo" | Otávio | decidido | | CTX §3, §8; Oferta online; Mecanismo único online |
@@ -74,12 +74,12 @@ O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular
 | 41 | 2026-10-23 | Relógio da safra "contado do dia em que ele entra" (o lead) | Otávio | decidido | | CTX §3; Mecanismo único online; PAINEL (regra 10) |
 | 42 | 2026-10-23 | Downsell, citada só em conjunto com #37 e #60; texto próprio não encontrado | Otávio | decidido; desenho em revisão desde 07/11 (lacuna 3) | #60 | CTX §3 (linha Downsell); Engenharia reversa online |
 | 43 | 2026-10-25 | Pilares da Triad: "Gestão, fora do tripé (#43; Euclides)"; no grupo "tese" (#43 a #45) | Otávio | decidido | #82 (a tese muda de direção; os pilares seguem sem decisão) | CTX §3, §11 |
-| 44 | 2026-10-25 | "credenciais com comprovante" | Otávio | depende de confirmação do Júnior (e do Euclides, CTX §10, lacuna 20) | | CTX §6, §10, §11; Roteiros de vídeo modelados online |
+| 44 | 2026-10-25 | "credenciais com comprovante" (ver ficha-de-fatos#credenciais-44) | Otávio | depende de confirmação do Júnior (e do Euclides, CTX §10, lacuna 20) | | CTX §6, §10, §11; Roteiros de vídeo modelados online |
 | 45 | 2026-10-25 | "Design system Triad v2" | Otávio | decidido | | CTX §6, §11; Doc Mestre online (regra 9: "vale até o nome novo sair") |
 | 46 | 2026-10-27 | "IASV Safra, primeiro produto do pilar de Vendas" | Otávio | decidido | | CTX §11 |
 | 47 | 2026-10-27 | texto não encontrado | não encontrado | texto não encontrado | | CTX cabeçalho (#46 a #49 de 27/10) |
 | 48 | 2026-10-27 | "Big Idea, mecanismo, oferta, entregáveis e bônus aprovados" | Júnior e Euclides | aprovado | #52 a #89 ("revista por #52 a #89", CTX §11) | CTX §11 |
-| 49 | 2026-10-27 | "Análise gratuita até a 10ª venda" | Otávio | decidido | #59, #62 | CTX §11 |
+| 49 | 2026-10-27 | "Análise gratuita até a 10ª venda" | Otávio | decidido; gratuidade revista por #92 | #59, #62, #92 | CTX §11 |
 | 50 | 2026-10-28 | "Sem lançamento: funil perpétuo desde 10/11"; meta de trabalho de 10 vendas em 30 dias (ver ficha-de-fatos#inicio-do-funil e ficha-de-fatos#meta-de-vendas) | Júnior | decidido | | CTX §2, §11 |
 | 51 | 2026-10-28 | "quiz e página com vídeo, pré-qualificação obrigatória, o Júnior faz as reuniões" | Júnior | decidido | | CTX §11 |
 | 52 | 2026-10-28 | "a Mecanização sai, ficam 8 entregas" (ver ficha-de-fatos#numero-de-entregas) | Euclides | decidido | | CTX §11; dossiê §5 |
@@ -89,10 +89,10 @@ O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular
 | 56 | 2026-11-01 | "Nomes das 8 entregas" (ver ficha-de-fatos#nomes-das-entregas) | Otávio | decidido | | CTX §11 |
 | 57 | 2026-11-01 | "R$ 45 mil até a 10ª venda" (ver ficha-de-fatos#preco-avancada) | Otávio | decidido | | CTX §11 |
 | 58 | 2026-11-01 | "Mecanização no GSAAS" | Otávio | decidido | #84 (GSAAS para depois) | CTX §11 |
-| 59 | 2026-11-01 | "Análise da call, a mesma para todos, R$ 4.997, gratuita nas 10 primeiras vendas" (registrada em conjunto com #61 e #62; ver ficha-de-fatos#analise-valor e ficha-de-fatos#analise-gratuidade) | Otávio | decidido | | CTX §11 |
+| 59 | 2026-11-01 | "Análise da call, a mesma para todos, R$ 4.997, gratuita nas 10 primeiras vendas" (registrada em conjunto com #61 e #62; ver ficha-de-fatos#analise-valor e ficha-de-fatos#analise-gratuidade) | Otávio | decidido; valor e gratuidade revistos por #92 | #92 | CTX §11 |
 | 60 | 2026-11-01 | "downsell Implementação Essencial, R$ 22.500" (ver ficha-de-fatos#downsell-nome e ficha-de-fatos#downsell-preco) | Otávio | decidido; desenho em revisão desde 07/11 (lacuna 3) | | CTX §3, §11; PAINEL ("o nome do downsell fechado pela #60") |
-| 61 | 2026-11-01 | "o escopo da Análise gratuita": "a versão da call, a mesma para todos os públicos" | Otávio | decidido | | CTX §11; PAINEL |
-| 62 | 2026-11-01 | "a cobrança de R$ 4.997 depois da 10ª venda" (ver ficha-de-fatos#analise-valor) | Otávio | decidido | | CTX §11; PAINEL |
+| 61 | 2026-11-01 | "o escopo da Análise gratuita": "a versão da call, a mesma para todos os públicos" | Otávio | decidido; a #92 faz da Análise o diagnóstico do quiz | #92 | CTX §11; PAINEL |
+| 62 | 2026-11-01 | "a cobrança de R$ 4.997 depois da 10ª venda" (ver ficha-de-fatos#analise-valor) | Otávio | substituída por #92 | #92 | CTX §11; PAINEL |
 | 63 | 2026-11-01 | "só vendas da Avançada" (ver ficha-de-fatos#vendas-que-contam) | Otávio | decidido | | CTX §3, §11 |
 | 64 | 2026-11-01 | "sem reduzir vagas"; "a condição interna das 10 vagas" (ver ficha-de-fatos#vagas) | Otávio | decidido | | CTX §11; PAINEL |
 | 65 | 2026-11-03 | "As 10 vagas são as 10 primeiras vendas, sem turma nem início comum" (ver ficha-de-fatos#vagas) | Otávio | decidido | | CTX §3, §11 |
@@ -122,9 +122,22 @@ O registro das decisões do Safra, de #1 a #91, uma linha por número, sem pular
 | 89 | 2026-11-08 | "nome provisório 'Triad H.'" (ver ficha-de-fatos#nome-agencia) | Otávio | pendente-aprovacao (junior: pendente; euclides: pendente) | | CTX §1, §6, §11 |
 | 90 | 2026-11-08 | "O funil-01 (landing-page-01, quiz-01, Supabase, planilha, SDR) substitui a página das três portas (#66) e o CRM do Doc Mestre" | Otávio | pendente-aprovacao (junior: pendente; euclides: pendente); substitui #66 quando aprovada | | log.md, Pendências (fora do acervo) |
 | 91 | 2026-11-08 | "na Hotmart, serviço online de consultoria tem sempre 7 dias de reembolso, sem justificativa, independente do CDC"; se o art. 49 do CDC se aplica numa venda para empresa, só um advogado define; "Isso não muda a #39: não existe garantia de resultado; existe o reembolso em 7 dias pela plataforma" (ver ficha-de-fatos#arrependimento) | Otávio | decidido | | Otávio na etapa 3 (08/11/2026), a partir da Central de Ajuda da Hotmart, "Como ajustar o prazo de garantia do produto que criei?" (fora do acervo) |
+| 92 | 2026-11-08 | Análise: "A Análise passa a ser o diagnóstico do quiz"; gratuita nas primeiras análises de ficha-de-fatos#analises-gratuitas e cobrada depois (ver ficha-de-fatos#analises-gratuitas, ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analise-valor); "A reunião com o Júnior continua sendo a conversa de venda, sem preço". Substitui a #62 no valor e revisa a #49 e a #59 na gratuidade (que era até a última vaga de ficha-de-fatos#vagas) | Otávio | decidido; substitui #62 (valor); revisa #49, #59 e #61 (gratuidade e escopo); o Júnior e o Euclides devem ser informados na pauta de aprovação | | Otávio, 08/11/2026 (prompts/04-decisoes-de-08-11-e-lead-score.md, seção 1, item 1) |
+| 93 | 2026-11-08 | Contador de escassez: conta as análises gratuitas reais, a partir do banco de dados, e só aparece na página acima do limite registrado em ficha-de-fatos#barra-de-resgates; até lá, nenhuma porcentagem de resgate nem barra de vagas (ver ficha-de-fatos#barra-de-resgates). Vale só para o contador de escassez: o contador "total gerado" das credenciais continua no conflito de credenciais, com o Júnior e o Euclides (ficha-de-fatos#total-dos-dois) | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 2) |
+| 94 | 2026-11-08 | Deming: o título da seção 2 da landing fica como está, com o asterisco. É exceção registrada à regra de nunca dizer o percentual de Deming como "do seu problema de vendas" (ver ficha-de-fatos#deming-percentual e `tom-de-voz`) | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 3); landing (seção 2) |
+| 95 | 2026-11-08 | Acesso no MVP: "Ninguém além de mim acessa o sistema no MVP" | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 4); conexoes.md |
+| 96 | 2026-11-08 | O projeto "Estrategista de Negócio" no Claude vira arquivo histórico a partir de 08/11/2026; mudança no Safra entra só pelo repositório | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 5); CLAUDE.md |
+| 97 | 2026-11-08 | O site sv-safra.soulstory.com.br fica aberto, sem porteiro, no MVP. Risco aceito | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 6); log.md (Pendências) |
+| 98 | 2026-11-08 | Lead score como critério de qualificação: a proposta de base/lead-score.md (eliminatórios, pontos de 0 a 100 e faixas A, B e C para a fila do SDR) | Otávio | pendente-aprovacao (junior: pendente; euclides: pendente), porque a regra atual do quiz é do Júnior. Não pode ir para entrega antes da aprovação | | Otávio, 08/11/2026 (prompts/04, seção 1, item 7, e seção 3); `lead-score` |
 
 ## Enquanto a #90 estiver pendente
 
 - A #66 continua "decidido", com a nota "substituição proposta em #90".
 - funis/funil-01, a landing-page-01 e o quiz-01 levam `depende_de: decisoes` e só podem ser feitos como rascunho, avisando que podem mudar (nucleo/regras/versionamento.md, status pendente-aprovacao).
 - Quando o Júnior e o Euclides aprovarem: a #90 vira "aprovado" com as datas, a #66 vira "substituída por #90", este documento sobe de versão e a cascata marca o que dependia da versão anterior.
+
+## Enquanto a #98 estiver pendente
+
+- ficha-de-fatos#criterio-de-qualificacao continua em conflito · bloqueado para entrega até a decisão.
+- base/lead-score.md é pendente-aprovacao: o funil-01 e o quiz-01 podem usá-lo só como rascunho, avisando que pode mudar (nucleo/regras/versionamento.md).
+- Quando o Júnior e o Euclides aprovarem: a #98 vira "aprovado" com as datas, lead-score e este documento sobem de versão, e a cascata marca o que dependia da versão anterior.

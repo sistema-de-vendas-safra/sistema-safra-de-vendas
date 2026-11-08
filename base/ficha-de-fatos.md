@@ -1,6 +1,6 @@
 ---
 id: ficha-de-fatos
-versao: 2
+versao: 3
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -67,6 +67,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** a única urgência é o preço até a 10ª venda. Nenhuma data, nenhum prazo.
 - **Fonte:** #57, #65; CTX §6 ("Nunca dizer: ... prazo ou data para as 10 vagas"); Ficha do Serviço online; Doc Mestre online (regra 3).
 - **Status:** decidido.
+- **Obs.:** vale para a oferta da Implementação Avançada. A escassez da Análise gratuita é outra regra: ficha-de-fatos#barra-de-resgates (#93).
 
 ### inicio-de-cada-cliente
 - **Valor:** em aberto. Propostas na fonte, nenhuma confirmada: venda com data de início marcada, em janelas de até 3 clientes a cada duas semanas (Engenharia reversa online, caminho A); duas datas fixas por mês para os inícios, sem criar turma (CTX §13, "Janela de início"); teto de 4 a 5 inícios por mês, em duas janelas fixas (Oferta online, "O que as 10 vagas exigem").
@@ -192,17 +193,15 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** 90 dias de maturação na operação do Júnior, contados do dia em que o lead entra. É o exemplo da operação demonstrada: o relógio varia por negócio.
 - **Fonte:** Mecanismo único online ("Dar relógio"); Sistema de Vendas Safra online (tabela, "Relógio de maturação"); F7 ("os 90 dias são o exemplo da operação demonstrada"); #41.
 - **Status:** fato registrado (entrou na v2, pedido do Otávio em 08/11/2026).
-- **Obs.:** F1 descreve a safra "tratada por 90 dias depois do fim do mês", contagem diferente da do Sistema de Vendas Safra online (do dia em que o lead entra). Confirmar com o Júnior antes de usar a contagem em peça.
+- **Obs.:** F1 descreve a safra "tratada por 90 dias depois do fim do mês", contagem diferente da do Sistema de Vendas Safra online (do dia em que o lead entra). Vale a #41: a contagem começa no dia em que o lead entra (Otávio, 08/11/2026, resposta 7 às perguntas da etapa 3).
 
 ## Entregas, ritos e suporte
 
 ### numero-de-entregas
-- **Em conflito · bloqueado para entrega até a decisão.**
-- **Valores concorrentes:**
-  - 8 entregas (#52, #56; CTX §3; Ficha do Serviço online; DS, "Implementação em 8 entregas").
-  - 9 entregas, com a "Mentoria 1:1" como a nona (wireframe, seções 5 e 9: "09 · Do começo ao fim"; landing, FAQ "É mais uma mentoria?" e números "9 entregas").
-  - 9 entregas no contrato (CTX §12: "Ainda com 9 entregas"; o contrato está fora do projeto).
-- **Status:** em conflito · bloqueado para entrega até a decisão (lacuna 5 do CTX).
+- **Valor:** 8 entregas.
+- **Fonte:** #52, #56; CTX §3; Ficha do Serviço online; DS, "Implementação em 8 entregas".
+- **Status:** decidido. A landing segue o registro, com as Sessões de Comando no lugar da "Mentoria 1:1" (Otávio, 08/11/2026: aplicação do registro, sem decisão nova; lacuna-05, conflito-11).
+- **Histórico (formato antigo, não é valor):** 9 entregas, com a "Mentoria 1:1" como a nona (wireframe, seções 5 e 9: "09 · Do começo ao fim"; landing, FAQ "É mais uma mentoria?" e números "9 entregas"); 9 entregas no contrato (CTX §12: "Ainda com 9 entregas"; o contrato está fora do projeto e ainda precisa ser refeito: lacuna-10, outros-06).
 
 ### nomes-das-entregas
 - **Valor:** os nomes oficiais, na ordem:
@@ -257,21 +256,24 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - Botão "Faça uma Análise Estratégica do seu Sistema de Vendas" (landing, decidido pelo Otávio).
   - "Diagnóstico de vendas" e o selo "Teste gratuito" (quiz).
 - **Status:** em conflito (nome).
+- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público continua em conflito (Otávio, 08/11/2026).
 
 ### analise-valor
-- **Em conflito · bloqueado para entrega até a decisão.**
-- **Valores concorrentes:**
-  - Valor de R$ 4.997 (#62; CTX §3; Ficha do Serviço online; Oferta online; Doc Mestre online).
-  - R$ 497 riscado no cartão da oferta, e "Quando a promoção de lançamento acabar, a Análise passa a custar R$ 497." no rodapé (landing, seção 08; o R$ 497 está no wireframe sem decisão registrada).
-  - "Agora ele é gratuito. Em breve, vai custar R$ 497.", dito do plano de ação de 90 dias (quiz).
-- **Status:** em conflito (lacuna 11 do CTX; decisão 4 do Doc Mestre online).
+- **Valor:** R$ 497 por Análise, cobrado depois das análises gratuitas de ficha-de-fatos#analises-gratuitas.
+- **Fonte:** #92 (substitui a #62 no valor).
+- **Status:** decidido (otavio: 2026-11-08). O Júnior e o Euclides devem ser informados na pauta de aprovação (#92; o Doc Mestre online punha o valor entre as decisões dos dois, decisão 4).
+- **Histórico (não é valor):** R$ 4.997 (#59, #62; CTX §3; Ficha do Serviço online; Oferta online; Doc Mestre online), superado pela #92. A landing (cartão da oferta e rodapé da seção 08) e o quiz ("Agora ele é gratuito. Em breve, vai custar R$ 497.", dito do plano de ação de 90 dias) já traziam o valor novo, sem decisão registrada até a #92.
 
 ### analise-gratuidade
-- **Em conflito · bloqueado para entrega até a decisão.**
-- **Valores concorrentes:**
-  - Gratuita nas 10 primeiras vendas e cobrada pelo valor de `analise-valor` depois da 10ª venda (#49, #59, #62; CTX §3; Ficha do Serviço online; Oferta online).
-  - Gratuita "na promoção de lançamento", sem citar a 10ª venda (landing; pedido do Otávio de 03/11, fora do registro numerado).
-- **Status:** em conflito.
+- **Valor:** gratuita nas primeiras análises, até completar o número de ficha-de-fatos#analises-gratuitas; depois, cobrada pelo valor de ficha-de-fatos#analise-valor.
+- **Fonte:** #92 (revisa a #49 e a #59 na gratuidade).
+- **Status:** decidido (otavio: 2026-11-08); informar o Júnior e o Euclides na pauta de aprovação (#92).
+- **Histórico (não é valor):** gratuita nas 10 primeiras vendas da Avançada (#49, #59, #62; CTX §3; Ficha do Serviço online; Oferta online); gratuita "na promoção de lançamento", sem citar o fim (landing; pedido do Otávio de 03/11, fora do registro numerado).
+
+### analises-gratuitas
+- **Valor:** 100 análises gratuitas.
+- **Fonte:** #92.
+- **Status:** decidido (otavio: 2026-11-08). A contagem sai do banco de dados (#93; ficha-de-fatos#barra-de-resgates).
 
 ### analise-duracao
 - **Em conflito · bloqueado para entrega até a decisão.**
@@ -279,6 +281,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - 30 a 45 minutos (#59, #61; CTX §3; Ficha do Serviço online; Oferta online).
   - "Uma conversa de 60 minutos." (landing, passo 3; no wireframe sem decisão registrada).
 - **Status:** em conflito.
+- **Obs.:** com a #92, a Análise é o diagnóstico do quiz e a reunião com o Júnior é a conversa de venda, sem preço. A #92 não define a duração da reunião: continua em aberto (conflito-02). Ver também ficha-de-fatos#duracao-call-de-venda (proposta).
 
 ### analise-quem-conduz
 - **Em conflito · bloqueado para entrega até a decisão.**
@@ -286,24 +289,26 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - O Júnior, "que conduz e fecha nesse começo" (#51, #62; CTX §10, lacuna 11; Doc Mestre online).
   - "Converse com o time de Junior Neves" (landing, passo 3).
 - **Status:** em conflito.
+- **Obs.:** com a #92, a pergunta passa a ser quem conduz a reunião com o Júnior (a conversa de venda), que a #92 não define: continua em aberto (conflito-02). Ver também ficha-de-fatos#quem-faz-a-reuniao (#51).
 
 ### analise-conteudo
-- **Valor:** a versão da call, sobre a última safra do prospect, a mesma para todos os públicos (orgânico e pago; frio, morno e quente). A Análise completa, com documento e painel, é a entrega 1.
-- **Fonte:** #59, #61; CTX §3; Ficha do Serviço online; Oferta online.
-- **Status:** decidido.
+- **Valor:** a Análise é o diagnóstico do quiz, o mesmo para todos os públicos. A reunião com o Júnior é a conversa de venda, sem preço. A Análise completa, com documento e painel, é a entrega 1.
+- **Fonte:** #92; #59 e #61 para "a mesma para todos os públicos"; CTX §3; Ficha do Serviço online.
+- **Status:** decidido (otavio: 2026-11-08).
+- **Histórico (não é valor):** "a versão da call, sobre a última safra do prospect, a mesma para todos os públicos (orgânico e pago; frio, morno e quente)" (#59, #61; Ficha do Serviço online; Oferta online), revista pela #92.
 
 ### analise-abatimento
 - **Valor:** se o valor pago pela Análise depois da 10ª venda é abatido na implementação.
 - **Fonte:** Ficha do Serviço online ("O que ainda falta decidir": "(proposta)"); PAINEL ("a F17 mantém, como proposta, o abatimento da Análise paga depois da 10ª venda; a #62 deixa essa proposta onde já estiver"). Para as 10 primeiras vendas, a Oferta online registra "sem versão paga nem abatimento" (decisão de 01/11).
 - **Status:** proposta.
+- **Obs.:** com a #92, a Análise paga é a que vem depois de ficha-de-fatos#analises-gratuitas, não mais depois da 10ª venda. A proposta não foi revista.
 
 ### barra-de-resgates
-- **Em conflito · bloqueado para entrega até a decisão.** Campo acrescentado ao plano para que o número da página não fique fora da ficha.
-- **Valores concorrentes:**
-  - "Restam 19%" e "81% das Análises gratuitas já foram resgatadas" (landing; pedido do Otávio de 03/11, "para FOMO"; a landing marca o número como de exemplo).
-  - Barra e contador só com contagem real e um número fixo de Análises gratuitas; a promoção precisa de fim real (CTX §7, §8; Doc Mestre online, regra 3).
-- **Número de Análises gratuitas:** não encontrado nas fontes.
-- **Status:** em conflito; [PROVA REAL: contagem real para a barra de vagas da página] (CTX §7).
+- **Valor (regra):** o contador de escassez conta as análises gratuitas reais já usadas, a partir do banco de dados, e só aparece na página quando mais de 60 das análises de ficha-de-fatos#analises-gratuitas já tiverem sido usadas. Até lá, nenhuma porcentagem de resgate e nenhuma barra de vagas.
+- **Fonte:** #93; CTX §7, §8 e Doc Mestre online, regra 3 (contagem real, número fixo de Análises gratuitas e promoção com fim real).
+- **Status:** decidido (otavio: 2026-11-08). A contagem real depende do banco de dados do funil-01 (#90, pendente-aprovacao).
+- **Não vale para** o contador "Total gerado" do hero, que segue no conflito de credenciais com o Júnior e o Euclides (ficha-de-fatos#total-dos-dois; conflito-05).
+- **Histórico de exemplo da landing (não é valor):** "Restam 19%" e "81% das Análises gratuitas já foram resgatadas" (landing; pedido do Otávio de 03/11, "para FOMO"; a landing marca o número como de exemplo).
 
 ### quem-agenda
 - **Valor:** o SDR agenda a reunião. Quem é o SDR (a Tati ou alguém a contratar) está em aberto.
@@ -338,6 +343,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** Análise Estratégica da base de clientes, feita sobre quem já comprou. Valor apresentado: "valor de R$ 4.997" (CTX §3) ou "referência: R$ 4.997" (One pager online). Entregue até a semana 12 (Oferta online).
 - **Fonte:** #48, #59; CTX §3; Oferta online; One pager online.
 - **Status:** aprovado.
+- **Obs.:** o valor de referência do bônus era o mesmo da Análise antiga (#59, #62). Com a #92, ficha-de-fatos#analise-valor mudou e os dois deixaram de coincidir. O bônus é aprovado (#48) e não muda aqui; a revisão do valor apresentado fica para o Otávio (prompts/05-fila-perguntas.md, 4.3).
 
 ### bonus-caso
 - **Valor:** uma sessão extra com o Júnior para quem autoriza virar caso documentado.
@@ -384,6 +390,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - (d) Já tem leads, já tem time, vende acima de R$ 10 mil (landing: Hero B; One pager online, "Acima do título").
   - (e) No quiz, é qualificado quem não marca "Menos de R$ 50 mil" de faturamento e não marca "Nenhum por enquanto" em "Quantos vendedores fazem reunião de vendas com clientes?". O valor médio da venda é perguntado, mas não filtra (quiz, função `qualificado`).
 - **Status:** em conflito · bloqueado para entrega até a decisão (lacuna 12 do CTX; Doc Mestre online, decisão 9).
+- **Proposta de 08/11:** o lead score de base/lead-score.md (#98), pendente do Júnior e do Euclides. Até a aprovação, o campo segue em conflito.
 
 ### volume-minimo
 - **Valor:** cerca de 100 leads por mês.
@@ -433,10 +440,30 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Fonte:** CTX §3; Criativos rodada 1 online.
 - **Status:** em conflito · bloqueado para entrega até a decisão; [PROVA REAL].
 
+### credenciais-44
+- **Valor:** Junior Neves: trabalhou com Pablo Marçal, Thiago Nigro e Bruno Perini. Euclides Vieira: trabalhou também com Paulo Vieira. (O lançamento com Thiago Finch e a Camila Vieira estão em ficha-de-fatos#lancamento-finch e ficha-de-fatos#camila-vieira.)
+- **Fonte:** #44; CTX §3 ("Pessoas"); Tese de mercado da Triad online; VSLs de 3 minutos online e VSL de 3 a 4 minutos online (cartões de credencial, que pedem "[PROVA REAL: comprovante de cada credencial e autorização de nome e imagem]").
+- **Status:** [PROVA REAL] (entrou na v3, resposta 2 do Otávio em 08/11/2026). Uso em peça só com comprovante e autorização de nome e imagem (#25, #44; Código Civil, art. 18); a confirmação é do Júnior e do Euclides e vai para a pauta com o Júnior (lacuna-20, outros-21).
+
 ### seguidores-junior
 - **Valor:** 130 mil seguidores.
 - **Fonte:** Doc Mestre online ("Autoridade em vendas"); F10.
 - **Status:** fato de pesquisa (20/10).
+
+---
+
+## Analogia e dados de terceiros
+
+### tempos-da-analogia
+- **Valor:** rúcula em cerca de 30 dias; morango em cerca de 60; melancia em cerca de 90.
+- **Fonte:** #36; Big Idea final online ("Rúcula, morango e melancia"); CTX §6.
+- **Status:** aprovado (com a Big Idea, #48; entrou na v3, resposta 2 do Otávio em 08/11/2026). O "95%" da mesma analogia não tem fonte e não entra.
+
+### deming-percentual
+- **Valor:** 94% dos problemas pertencem ao sistema (W. Edwards Deming, Out of the Crisis, 1982). Em peça, sempre com a nota "Adaptado de".
+- **Fonte:** CTX §7; landing (seção 2, título e nota de rodapé); Otávio, 08/11/2026, resposta 2 às perguntas da etapa 3.
+- **Status:** fato de pesquisa, "forte como citação, indicativa para vendas" (CTX §7); entrou na v3. Nunca como "do seu problema de vendas" (CTX §6), com a exceção do título da seção 2 da landing (#94).
+- **Obs.:** a nota de rodapé da landing hoje não tem o "Adaptado de" (o Otávio tirou em 03/11; landing, "Nota de rodapé"). Pela resposta 2 de 08/11, a nota volta a ter (prompts/05-fila-perguntas.md, 4.4).
 
 ---
 
@@ -454,13 +481,12 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 ### grafia-junior
 - **Valor:** "Junior Neves" em público; "Júnior" no texto corrido.
 - **Fonte:** CTX §6.
-- **Status:** decidido (Otávio, 08/11/2026: vale o CTX; o DS será corrigido na próxima versão dele). **Divergência:** o DS escreve "Júnior Neves" ("Euclides Vieira e Júnior Neves formam a Triad", pagina-documentacao.html).
+- **Status:** decidido (Otávio, 08/11/2026: vale o CTX; confirmado de novo em 08/11/2026, prompts/04, seção 2). **Divergência:** o DS v1.0 escreve "Júnior Neves" ("Euclides Vieira e Júnior Neves formam a Triad", pagina-documentacao.html) e está errado nesse ponto; a divergência está registrada em base/design-system/design-system.md.
 
 ---
 
 ## Não encontrado nas fontes
 
-- O número de Análises gratuitas que a barra de resgates usaria (ver `barra-de-resgates`).
 - O teto de reuniões de venda do Júnior por semana (o Doc Mestre online tem a subtarefa "Agenda do Júnior, com teto de reuniões por semana", sem número).
 - A verba de mídia.
 - O número do WhatsApp da Triad (vazio no quiz: `WHATS = {numero:''}`).

@@ -1,14 +1,14 @@
 ---
 id: lacunas
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
 desatualizado: false
 ---
 
@@ -21,6 +21,8 @@ A lista viva do que falta decidir, confirmar ou provar. Tem três partes:
 3. **Os conflitos que não afetam a landing nem o quiz** (mesma parte 5 do plano).
 
 Os itens se repetem entre as partes quando o CTX e o plano olham o mesmo ponto; cada repetição aponta para a outra em "Ver também". Nenhum item resolve conflito: lista os lados e quem decide.
+
+Item resolvido continua na lista, com a linha **Resolvido** e a decisão de origem (nada se apaga). A marca **levar ao Júnior** indica o que vai para a pauta com ele (Otávio, 08/11/2026).
 
 Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que destrava**. Valores de fato não se repetem aqui: são citados pelo id do campo em `ficha-de-fatos` (por exemplo, ficha-de-fatos#analise-valor). Decisões são citadas pelo número de `decisoes` (#n). As abreviações de fonte são as da ficha de fatos. "Quem decide: não registrado" quer dizer que nenhuma fonte diz quem decide.
 
@@ -66,6 +68,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#numero-de-entregas, ficha-de-fatos#sessoes-de-comando; #52, #56, #83, #86; CTX §10; landing (seções 5 e 9, FAQ).
 - **Quem decide:** o Otávio (plano aprovado, parte 5, conflito 11: "as regras são suas").
 - **O que destrava:** as seções de entregas, ritos e FAQ da landing-page-01.
+- **Resolvido em 08/11/2026 (aplicação do registro, sem decisão nova):** a landing segue o registro: as entregas de ficha-de-fatos#numero-de-entregas (#52, #56), "Sessões de Comando" no lugar de "Mentoria 1:1" (#53, #83). Continua em aberto só o que depende da promessa (#85, pendente): a promessa fria no Hero A e o alinhamento do "gerente comercial" (#86) com ela (lacuna-02).
 - **Ver também:** conflito-11.
 
 ### lacuna-06
@@ -114,6 +117,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analise-duracao, ficha-de-fatos#analise-quem-conduz; #59, #61, #62; CTX §10; landing.
 - **Quem decide:** ver conflito-02.
 - **O que destrava:** a seção da Análise da landing-page-01 e a fala final do quiz-01.
+- **Resolvido em parte (#92, 08/11/2026):** valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas). Continuam em aberto o nome público, a duração e quem conduz a reunião com o Júnior (conflito-02).
 - **Ver também:** conflito-02.
 
 ### lacuna-12
@@ -122,6 +126,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#criterio-de-qualificacao; CTX §4, §10; Doc Mestre online (decisão 9).
 - **Quem decide:** ver conflito-01.
 - **O que destrava:** o filtro do quiz-01 e o texto "Para quem é" da landing-page-01.
+- **Situação em 08/11/2026:** proposta registrada em base/lead-score.md (#98), pendente do Júnior e do Euclides.
 - **Ver também:** conflito-01.
 
 ### lacuna-13
@@ -138,6 +143,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #68, #86; CTX §6, §10; landing.
 - **Quem decide:** o Otávio (#68 e #86 são dele).
 - **O que destrava:** as seções 5, 6 e o FAQ da landing-page-01.
+- **Resolvido em 08/11/2026 (aplicação do registro, sem decisão nova):** a landing segue o registro: nada de GSAAS nem de gerente de safra (#68); "gerente comercial" só como a exceção de #86.
 - **Ver também:** conflito-11.
 
 ### lacuna-15
@@ -146,6 +152,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#vagas, ficha-de-fatos#inicio-de-cada-cliente; #65; CTX §10; landing (FAQ).
 - **Quem decide:** o Otávio (#65 é dele).
 - **O que destrava:** o FAQ da landing-page-01.
+- **Resolvido em 08/11/2026 (aplicação do registro, sem decisão nova):** nada de "as dez começam juntas" (#65).
 - **Ver também:** conflito-11.
 
 ### lacuna-16
@@ -162,6 +169,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#quando-entrega-1, ficha-de-fatos#sistema-instalado, ficha-de-fatos#sessoes-de-comando, ficha-de-fatos#calls-em-grupo; #72, #73, #80, #83; CTX §10; landing.
 - **Quem decide:** o Otávio (o pedido é dele).
 - **O que destrava:** a seção "Como funciona" da landing-page-01.
+- **Resolvido em parte em 08/11/2026 (aplicação do registro, sem decisão nova):** a Análise Estratégica das Safras (entrega 1) fica na semana de ficha-de-fatos#quando-entrega-1 (#72). Levar à página os demais marcos é tarefa da landing-page-01; a quantidade de calls em grupo segue em conflito (outros-03).
 - **Ver também:** conflito-11.
 
 ### lacuna-18
@@ -182,8 +190,8 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 
 ### lacuna-20
 **Aprovações do Júnior e do Euclides.**
-- **O que é:** credenciais (#44), promessa (#85), nome (#89), frase filosófica do problema, Big Domino v2 e Ponte da Epifania, falas do Euclides nos criativos, narrativas do Doc Mestre; e se o Júnior aceita a safra de clientes (#16), o "vendedor chato" (#26), publicar sobre gestão comercial (#29) e as histórias pessoais dos criativos.
-- **Valores e fontes:** #16, #26, #29, #44, #85, #89; CTX §10, §11.
+- **O que é:** credenciais (#44; ficha-de-fatos#credenciais-44), promessa (#85), nome (#89), lead score como critério de qualificação (#98; base/lead-score.md), a informação da nova Análise (#92, só para informar), frase filosófica do problema, Big Domino v2 e Ponte da Epifania, falas do Euclides nos criativos, narrativas do Doc Mestre; e se o Júnior aceita a safra de clientes (#16), o "vendedor chato" (#26), publicar sobre gestão comercial (#29) e as histórias pessoais dos criativos.
+- **Valores e fontes:** #16, #26, #29, #44, #85, #89, #92, #98; CTX §10, §11.
 - **Quem decide:** o Júnior e o Euclides.
 - **O que destrava:** as peças que usam cada um desses itens; enquanto pendentes, só como rascunho.
 
@@ -193,6 +201,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** CTX §7, §10; landing.
 - **Quem decide:** não registrado.
 - **O que destrava:** a publicação da landing-page-01.
+- **Resolvido em parte em 08/11/2026:** o Deming está em ficha-de-fatos#deming-percentual, com a nota "Adaptado de" (resposta 2 do Otávio), e o título da seção 2 fica como está (#94). Os demais pontos continuam.
 - **Ver também:** conflito-05, conflito-13.
 
 ### lacuna-22
@@ -235,6 +244,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#criterio-de-qualificacao (versões a até e, cada uma com a sua fonte); ficha-de-fatos#volume-minimo.
 - **Quem decide:** o Otávio com o Júnior e o Euclides (Doc Mestre online, decisão 9; a regra do quiz é do Júnior na E.M.V.).
 - **O que destrava:** o filtro `qualificado` do quiz-01, o texto "Para quem é" e o FAQ da landing-page-01, e o público dos criativos.
+- **Situação em 08/11/2026:** proposta registrada em base/lead-score.md, pendente do Júnior e do Euclides (#98). Até a aprovação, o campo segue em conflito e o lead score só serve como rascunho.
 - **Ver também:** lacuna-12.
 
 ### conflito-02
@@ -243,6 +253,8 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analise-duracao, ficha-de-fatos#analise-quem-conduz, ficha-de-fatos#analise-nome-publico.
 - **Quem decide:** o Otávio (#59 a #62 são dele); o Doc Mestre online põe o valor entre as decisões do Júnior e do Euclides (decisão 4), então o plano aprovado recomenda levar aos dois.
 - **O que destrava:** a seção da Análise, o cartão da oferta e o passo 3 da landing-page-01; a fala final e o nome do quiz-01.
+- **Resolvido em parte (#92, 08/11/2026):** a Análise passa a ser o diagnóstico do quiz (ficha-de-fatos#analise-conteudo); valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas); a reunião com o Júnior é a conversa de venda, sem preço. O Júnior e o Euclides devem ser informados na pauta de aprovação.
+- **Continua em aberto:** o nome público (ficha-de-fatos#analise-nome-publico) e o que a #92 não define sobre a reunião com o Júnior: a duração (ficha-de-fatos#analise-duracao) e quem conduz (ficha-de-fatos#analise-quem-conduz).
 - **Ver também:** lacuna-11, conflito-04.
 
 ### conflito-03
@@ -257,8 +269,9 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 **Escassez e contador.**
 - **O que é:** a barra de resgates e o contador "Total gerado" estão na página com números de exemplo; a regra pede contagem real, número fixo de Análises gratuitas e promoção com fim real.
 - **Valores e fontes:** ficha-de-fatos#barra-de-resgates, ficha-de-fatos#total-dos-dois, ficha-de-fatos#urgencia; CTX §7, §8; Doc Mestre online (regra 3); landing.
-- **Quem decide:** o Otávio (copy); o número real depende do funil-01 (#90).
+- **Quem decide:** o Otávio (copy da barra, já resolvida pela #93); o contador "Total gerado", o Júnior e o Euclides (conflito-05); o número real depende do funil-01 (#90).
 - **O que destrava:** a barra embaixo dos botões e o contador do hero da landing-page-01.
+- **Resolvido em parte (#93, 08/11/2026):** o contador de escassez segue a regra de ficha-de-fatos#barra-de-resgates (contagem real, a partir do banco de dados, visível só acima do limite da regra). O contador "Total gerado" continua no conflito de credenciais, com o Júnior e o Euclides (conflito-05).
 - **Ver também:** conflito-02, conflito-14.
 
 ### conflito-05
@@ -289,7 +302,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 **Design.**
 - **O que é:** quatro referências visuais que não batem: o DS v1.0 (fundo escuro, só a paleta oficial, Menta como ação primária, Geist); a paleta branco e verde aprovada pelo Júnior "pela sequência (confirmar)" (#81; F25); os botões laranja #FF8400 pedidos pelo Otávio em 03/11 (landing); "O design system Triad v2 vale até o nome novo sair" (#45; Doc Mestre online, regra 9).
 - **Valores e fontes:** #45, #81; F25; DS (LEIA.md, safra-tokens.json, pagina-documentacao.html); landing; Doc Mestre online.
-- **Quem decide:** o Otávio com o Júnior (#81 foi dele); já está nas pendências do log.md.
+- **Quem decide:** o Otávio com o Júnior (#81 foi dele); já está nas pendências do log.md. **Levar ao Júnior** (resposta 4 do Otávio, 08/11/2026: a adoção do design system v1.0 vai para a pauta com o Júnior e fica como está).
 - **O que destrava:** a etapa de design da landing-page-01 e do quiz-01.
 
 ### conflito-09
@@ -313,6 +326,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#numero-de-entregas, ficha-de-fatos#quando-entrega-1, ficha-de-fatos#vagas; #52, #53, #65, #68, #72, #83, #86; landing; CTX §10 (lacunas 5, 14, 15, 17).
 - **Quem decide:** o Otávio (as regras são dele).
 - **O que destrava:** as seções 5, 6, 9 e o FAQ da landing-page-01.
+- **Resolvido em 08/11/2026 (aplicação do registro, sem decisão nova):** a landing segue o registro: as entregas de ficha-de-fatos#numero-de-entregas (#52, #56), "Sessões de Comando" no lugar de "Mentoria 1:1" (#53, #83), a Análise Estratégica das Safras (entrega 1) na semana de ficha-de-fatos#quando-entrega-1 (#72), nada de GSAAS nem de gerente de safra (#68), nada de "as dez começam juntas" (#65). Continua em aberto só o alinhamento do "gerente comercial" (#86) com a promessa (#85, pendente; lacuna-02).
 - **Ver também:** lacuna-05, lacuna-14, lacuna-15, lacuna-17.
 
 ### conflito-12
@@ -321,6 +335,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#metas-por-etapa, ficha-de-fatos#grafia-junior; DS (pagina-documentacao.html, Linguagem); Ficha do Serviço online; F12; quiz; landing.
 - **Quem decide:** o Otávio.
 - **O que destrava:** o vocabulário da landing-page-01 e do quiz-01 e o glossário (lote 3).
+- **Resolvido em 08/11/2026 (respostas 3 e 5 do Otávio às perguntas da etapa 3):** na comunicação de topo, só as palavras que o comprador já usa (regra de 22/10, reafirmada em 08/11). Em público, as etapas têm os nomes do método (pré-qualificação, agendamento, comparecimento, fechamento; ficha-de-fatos#metas-por-etapa); a forma do DS ("lead qualificado, reunião marcada, reunião realizada") perde, porque "reunião" é palavra queimada para a persona. "SDR" e "closer" saem da comunicação de topo. Os termos do método e os nomes de etapa do DS ficam para dentro. Grafia: "Junior Neves" em público, confirmado em 08/11 (ficha-de-fatos#grafia-junior); a divergência do DS está em base/design-system/design-system.md.
 
 ### conflito-13
 **O número de Deming no título da seção 2.**
@@ -328,6 +343,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** CTX §6, §7, §10 (lacuna 21); landing (seção 2).
 - **Quem decide:** o Otávio.
 - **O que destrava:** o título da seção 2 da landing-page-01.
+- **Resolvido (#94, 08/11/2026):** o título da seção 2 fica como está, com o asterisco; é exceção registrada em `tom-de-voz`. O percentual e a nota "Adaptado de" estão em ficha-de-fatos#deming-percentual.
 - **Ver também:** lacuna-21.
 
 ### conflito-14
@@ -481,6 +497,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** CTX §12; log.md (Pendências: "Segurança").
 - **Quem decide:** o Otávio (pendência de segurança do log.md).
 - **O que destrava:** fecha a exposição do material interno.
+- **Resolvido como risco aceito (#97, 08/11/2026):** o site fica aberto, sem porteiro, no MVP.
 
 ### outros-18
 **Art. 49 do CDC numa venda para empresa.**
@@ -496,3 +513,25 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** Promessa central online; One pager online; promessa (base/promessa.md).
 - **Quem decide:** o Otávio, confirmando com o Júnior (Otávio, 08/11/2026).
 - **O que destrava:** o roteiro da call e as peças que citam a fala.
+
+### outros-20
+**Cultivo como nome antigo de Plantio · levar ao Júnior.**
+- **O que é:** o glossário liga o Cultivo ao Plantio como nome a evitar, com a nota de que a correspondência não está confirmada (CTX §13).
+- **Valores e fontes:** GLOSSARY.md (verbete Plantio); CTX §13.
+- **Quem decide:** o Júnior (resposta 6 do Otávio, 08/11/2026: vai para a pauta com o Júnior e fica como está).
+- **O que destrava:** o verbete Plantio do glossário.
+
+### outros-21
+**Liberação das 18 tentativas · levar ao Júnior.**
+- **O que é:** a fonte pede confirmar com o Júnior que a regra das tentativas segue valendo e liberar as histórias da operação usadas nos talking heads.
+- **Valores e fontes:** ficha-de-fatos#tentativas-ate-abandonado, ficha-de-fatos#credenciais-44; Criativos rodada 1 online; F1.
+- **Quem decide:** o Júnior (resposta 8 do Otávio, 08/11/2026: vai para a pauta com o Júnior, junto com as credenciais, e fica como está).
+- **O que destrava:** o uso das tentativas e das credenciais em peça.
+- **Ver também:** lacuna-20, lacuna-24.
+
+### outros-22
+**Revisão programada do lead score.**
+- **O que é:** depois das primeiras 50 respostas reais do quiz, conferir se as faixas do lead score batem com quem agendou e comprou. Nada vai para aprendizados/ antes disso, porque ainda não há dado.
+- **Valores e fontes:** base/lead-score.md ("Revisão programada"); #98.
+- **Quem decide:** o Otávio, com os dados do banco; a mudança no lead score segue a aprovação da #98.
+- **O que destrava:** uma ficha em aprendizados/ (hipótese, confirmado ou descartado) e, se for o caso, nova versão do lead score.

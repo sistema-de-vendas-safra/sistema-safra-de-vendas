@@ -1,6 +1,6 @@
 ---
 id: promessa
-versao: 1
+versao: 2
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-08
@@ -8,13 +8,13 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 2
+    versao: 3
   - id: metodo
-    versao: 1
+    versao: 2
   - id: mecanismo
     versao: 1
 desatualizado: false
@@ -125,7 +125,7 @@ Fonte: Promessa central online ("Versões com os ajustes").
 - "todo o dinheiro" é alegação absoluta (CONAR) (CTX §8; ajuste sugerido acima).
 - Promessa percentual: "continua guardada até haver casos com base de comparação" (Promessa central online, "Conformidade"); "Nada de percentual de melhora em peça antes de caso comprovado (CONAR)" (Mecanismo único online).
 - Nenhuma promessa em contrato, de nenhum tipo (#39; ficha-de-fatos#garantia).
-- "10x"; "94% do seu problema de vendas"; "a oferta mais robusta do mercado" sem base publicada; prazo ou data para as vagas (CTX §6, "Nunca dizer"; ficha-de-fatos#urgencia).
+- "10x"; "94% do seu problema de vendas" (exceção: o título da seção 2 da landing, #94; ver `tom-de-voz`); "a oferta mais robusta do mercado" sem base publicada; prazo ou data para as vagas (CTX §6, "Nunca dizer"; ficha-de-fatos#urgencia).
 
 **Pontos frágeis registrados:**
 - "sem precisar mudar uma vírgula no seu marketing" contradiz o método: a primeira meta do sistema é de marketing (ficha-de-fatos#metas-por-etapa), e "a promessa quebraria no primeiro cliente com gargalo antes da reunião" (CTX §9, leitura 23, forte como lógica).
@@ -167,7 +167,6 @@ As variações de 23/10 e o resto da análise daquela promessa "valem só como r
 | Os ajustes sugeridos | O Otávio | lacuna-02, conflito-03 |
 | Qual das duas falas do Júnior para a call ("3 semanas" ou "uma semana") | O Otávio, com o Júnior | outros-19 (bloqueada para entrega) |
 | Quem assina: a Triad ou o Júnior em primeira pessoa | Decisão do cliente (Promessa central online, item 2) | lacuna-07, conflito-07 |
-| Se a regra de vocabulário de 22/10 continua valendo para colheita, plantio e relógio em títulos e chamadas | Decisão do cliente (Promessa central online, item 3; Oferta online, item 1) | Fica para o tom-de-voz (lote 3) |
 | Safra de clientes no método | O Júnior | #16; outros-10 |
 
 ---
