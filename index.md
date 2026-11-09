@@ -9,16 +9,18 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - log.md · histórico de alterações e pendências
 - conexoes.md · contas e serviços (sem chaves)
 - GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido; desatualizado)
+- .githooks/pre-commit · gancho de pré-commit versionado que roda o detector de chaves (nucleo/ferramentas/detector-de-chaves/); num clone novo, ligar com `git config core.hooksPath .githooks`
 - prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta)
 
 ## nucleo/
 
 - regras/versionamento.md · cabeçalho padrão, status, forma e sentido, cascata (v2, decidido)
-- regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v1, decidido)
+- regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v2, decidido)
 - modelos/ · vazio
 - receitas/ · vazio
 - ferramentas/README.md · o que mora na pasta de ferramentas
 - ferramentas/prints/ · print.js (prints em 375 e 1440 pixels) e testar-quiz-01.js (teste da página do quiz-01: exemplo 96 faixa a, eliminatório, consentimento)
+- ferramentas/detector-de-chaves/ · detector de chaves em Node puro (detector.mjs, testar-detector.mjs, README.md): recusa o commit com chave, senha, token ou arquivo de segredos no que está preparado, sem repetir o valor; modos --rastreados e --historico; testes 87 de 87 (v1, rascunho; otavio: pendente)
 
 ## fontes/ (somente leitura)
 

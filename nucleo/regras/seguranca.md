@@ -1,6 +1,6 @@
 ---
 id: regra-seguranca
-versao: 1
+versao: 2
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -17,4 +17,4 @@ depende_de: []
 
 ## Detector de chaves
 
-Um detector de chaves (por exemplo, gitleaks) roda antes de cada commit e bloqueia o commit se encontrar algo parecido com chave, senha ou token. Ele precisa estar instalado antes de existir a primeira chave do sistema. Enquanto não estiver instalado, nenhuma chave é criada.
+Um detector de chaves (nucleo/ferramentas/detector-de-chaves/, ligado pelo gancho .githooks/pre-commit) roda antes de cada commit e bloqueia o commit se encontrar algo parecido com chave, senha ou token. Ele precisa estar instalado antes de existir a primeira chave do sistema. Enquanto não estiver instalado, nenhuma chave é criada.

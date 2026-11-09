@@ -1,0 +1,17 @@
+#!/bin/sh
+# Gancho de pré-commit do Sistema de Vendas Safra: roda o detector de chaves
+# sobre o que está preparado para o commit (nucleo/ferramentas/detector-de-chaves/).
+# Ligar num clone novo, uma vez: git config core.hooksPath .githooks
+
+raiz="$(git rev-parse --show-toplevel)" || exit 1
+
+# Programas abertos pelo Finder (como o GitHub Desktop) às vezes não enxergam o Node do Homebrew.
+PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Commit bloqueado: o detector de chaves precisa do Node, e o Node não foi encontrado." >&2
+  echo "Instale o Node ou faça o commit por um terminal onde o comando node funcione." >&2
+  exit 1
+fi
+
+exec node "$raiz/nucleo/ferramentas/detector-de-chaves/detector.mjs" --preparados

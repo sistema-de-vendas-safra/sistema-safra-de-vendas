@@ -2,3 +2,10 @@
 .env.*
 .DS_Store
 node_modules/
+.dev.vars
+.dev.vars.*
+*.pem
+.wrangler/
+*.env
+.envrc
+id_rsa*
