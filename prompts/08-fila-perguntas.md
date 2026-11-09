@@ -404,3 +404,77 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* o contorno existe (`npm run ensaio:sem-wrangler`, ou sozinho depois de cerca de 1 minuto sem resposta do wrangler), roda o resto do ensaio e diz o modo na saída. Quando o contorno entra sozinho, a conferência "wrangler dev no ar" fica FALHOU e o ensaio termina com código 1, para ninguém achar que o Worker foi conferido. Nesta máquina o wrangler dev subiu sem login, e o contorno só foi usado de propósito (86 de 86).
    - *Recomendação:* manter.
    - *Se decidir diferente:* para o contorno automático contar como sucesso, trocar essa conferência por um aviso.
+
+## Etapa 26
+
+26.1. **O Terminal entra já na parte 2, para copiar os arquivos .sql.**
+   - *Dúvida:* o pedido põe o Terminal na parte 3 (Cloudflare). Na parte 2, o Otávio precisa colar no editor SQL três arquivos inteiros, e o esquema é comprido; copiar abrindo o arquivo num editor de texto arrisca perder um pedaço ou trocar aspas.
+   - *O que foi feito:* LIGAR.md abre o Terminal no passo 2.1 (com o cd entre aspas) e copia cada arquivo com `pbcopy < arquivo`, que põe o arquivo exato na área de transferência. A parte 3 começa conferindo que o Terminal continua na pasta (passo 3.1). O mesmo jeito copia o Codigo.gs e o appsscript.json na parte 4. A ordem das sete partes não mudou.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* para copiar pelo site do GitHub (botão de copiar o arquivo, depois do push), trocar os passos 2.3, 2.5, 2.7, 4.6 e 4.9; o Terminal volta a entrar só na parte 3.
+
+26.2. **O caminho da CHAVE_PLANILHA até as propriedades do script, sem arquivo e sem chat.**
+   - *Dúvida:* a mesma CHAVE_PLANILHA vai para o cofre do Worker e para as propriedades do script. Era preciso conferir se `wrangler secret put` aceita o valor pela entrada padrão e achar um caminho em que o valor não passe por arquivo, tela, histórico do Terminal nem chat.
+   - *O que foi feito:* conferido no código do wrangler 4.158.0 instalado (nucleo/ferramentas/prototipo/node_modules/wrangler/wrangler-dist/cli.js, comando "Create or update a secret for a Worker"): quando a entrada não é o teclado (process.stdin.isTTY falso), o wrangler lê o valor da entrada padrão e tira os espaços e a quebra de linha do fim; com o teclado, pergunta "Enter a secret value" sem mostrar o que se digita. O `--help` não diz isso. LIGAR.md usa, no fim da parte 3, `openssl rand -hex 32 | tr -d '\n' | pbcopy && pbpaste | wrangler secret put CHAVE_PLANILHA --config ...` (64 caracteres, acima do mínimo de 32, pergunta 22.4). O `tr -d '\n'` tira a quebra de linha, para o valor colado nas propriedades ser igual ao do cofre. Na parte 4, as propriedades vêm antes de copiar o código (a ordem muda em relação ao README da planilha), para a chave sair da área de transferência logo, e a área é limpa com `pbcopy < /dev/null`. Se a área de transferência se perder no meio, o mesmo comando gera outra chave e troca a do cofre. As duas chaves do Supabase seguem o mesmo caminho (botão de copiar no painel, `pbpaste | wrangler secret put`). Nada disso foi rodado de verdade: só conferido no código e com `openssl rand -hex 32` sem guardar a saída.
+   - *Recomendação:* manter. Se o Mac usar um programa de histórico da área de transferência, ou a Área de Transferência Universal com o iPhone, o valor pode ficar guardado lá; vale pausar o programa durante as partes 3 e 4, ou apagar o item depois.
+   - *Se decidir diferente:* o caminho pelo painel da Cloudflare (fim da parte 3) e a pergunta "Enter a secret value" (parte 6, erro 3) continuam no roteiro como alternativa.
+
+26.3. **A chave publicável usada é a que o projeto já tem.**
+   - *Dúvida:* a #100 pede uma chave secreta nova e não diz se a publicável ganha chave própria. Não confirmei, sem entrar no painel, se o Supabase deixa criar mais de uma publicável.
+   - *O que foi feito:* LIGAR.md usa a Publishable key que o painel mostra (passo 3.8). No desligar (7.3), se o painel não deixar apagar a única, cria-se uma nova e apaga-se a antiga.
+   - *Recomendação:* se o painel oferecer criar uma publicável com nome, criar "garcom-quiz-prototipo" e usar essa, para poder apagá-la sem mexer em mais nada.
+   - *Se decidir diferente:* muda só o passo 3.8 (qual chave copiar) e o 7.3.
+
+26.4. **Chaves que ninguém usa: as antigas e a secreta "default".**
+   - *Dúvida:* conexoes.md e dados/banco/README.md citam a desativação das chaves antigas (legacy) como passo do roteiro da etapa 26, sem dizer se é opcional. A antiga service_role abre o mesmo que a secreta nova (no banco, o esquema só deixa esse papel chamar leads_para_planilha; fora do banco, a administração do Supabase), mas não dá para apagá-la sozinha: se vazar, o único corte é desligar todas as antigas. O projeto pode ter também uma chave secreta "default", que o sistema não usa.
+   - *O que foi feito:* caminho conservador: o passo 2.11 desativa as antigas, como passo obrigatório, porque nada do sistema as usa e dá para reativar no mesmo lugar. A secreta "default", se existir, é apagada depois de o teste da parte 5 dar certo (7.9 repete as duas coisas, se sobrarem).
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* para voltar a ter as antigas, reativar em Project Settings, API Keys, Legacy API keys; enquanto estiverem ligadas, a antiga service_role abre o mesmo que a secreta nova e só se corta desligando todas. Registrar em conexoes.md que elas seguem valendo.
+
+26.5. **O registro do Worker só pelos envios do quiz.**
+   - *Dúvida:* o garçom não escreve dado pessoal no registro, mas o `wrangler tail` e o painel mostram também o endereço de cada pedido. O pedido da planilha leva o cursor no endereço (com o id_pessoa, dado pessoal indireto, pergunta 24.3) e a CHAVE_PLANILHA no cabeçalho X-Chave-Planilha; o formato json do tail mostra os cabeçalhos. Não conferi, sem login, se a Cloudflare esconde cabeçalhos no tail.
+   - *O que foi feito:* LIGAR.md (parte 6) manda usar `wrangler tail --config ... --format pretty --method POST`, que mostra só os envios do quiz (POST /api/fim-quiz, sem nada no endereço), e proíbe o formato json. Para a planilha, o lugar de ver é Execuções, no Apps Script.
+   - *Recomendação:* manter. Numa versão nova do garçom, pensar em mandar o cursor no corpo de um POST, para ele não aparecer em endereço nenhum.
+   - *Se decidir diferente:* tirar o `--method POST` mostra também os pedidos da planilha; aceitável só com leads de teste.
+
+26.6. **O login do wrangler fica num arquivo do usuário do Mac.**
+   - *Dúvida:* o `wrangler login` guarda o acesso à Cloudflare num arquivo de texto na pasta do usuário, fora do repositório. O wrangler 4.158.0 tem a opção `--use-keyring`, que guarda no Acesso às Chaves (o cofre de senhas do macOS), mas não foi testada aqui.
+   - *O que foi feito:* LIGAR.md usa o `wrangler login` simples, como o pedido, e `export WRANGLER_SEND_METRICS=false` antes (o wrangler não manda estatísticas). No desligar, o passo 7.8 faz `wrangler logout`, que derruba esse acesso.
+   - *Recomendação:* depois do teste, se não for publicar de novo nos próximos dias, rodar o `wrangler logout` mesmo sem desligar o protótipo; o protótipo continua no ar sem o login.
+   - *Se decidir diferente:* para guardar no Acesso às Chaves, trocar o passo 3.4 por `wrangler login --use-keyring` e conferir com o `whoami`.
+
+26.7. **Três testes, com três pessoas de mentira, e a planilha com duas linhas.**
+   - *Dúvida:* o pedido pede o quiz no celular e no computador, um teste da faixa A, um eliminatório e dois envios quase juntos.
+   - *O que foi feito:* teste A no computador pela variante A (exemplo de base/lead-score.md, 96, faixa A, utm bio, e a empresa "=1+1" para conferir a 24.12); teste B no celular pela variante B (eliminatório, faturamento "Menos de R$ 50 mil", utm stories); teste C em duas abas do computador, a mesma pessoa enviando quase junto. Cada pessoa com telefone (00 90000-00xx; com o +55, 13 dígitos) e e-mail @teste.invalid só dela, para não cair na recusa da 21.2. Esperado: 3 pessoas, 4 fins de quiz no banco (2 da pessoa C, no mesmo id_pessoa) e 2 linhas na planilha (A e C). O teste C prova que a mesma pessoa enviando duas vezes quase juntas vira uma só; dois cliques à mão quase nunca chegam ao banco no mesmo instante, e, se não chegarem, o caso realmente simultâneo (a espera no índice único) continua sem prova (21.15). LIGAR.md diz isso no 5.3.
+   - *Recomendação:* manter; se a prova do caso simultâneo importar antes de ir ao ar, fazer à parte, com dois pedidos disparados juntos por um programa contra o garçom, só com lead de teste.
+   - *Se decidir diferente:* o teste C com a faixa eliminatória daria a mesma conferência no banco, e a planilha ficaria só com a linha A.
+
+26.8. **O protótipo subiu para a versão 2 só para apontar para o LIGAR.md.**
+   - *Dúvida:* o README do protótipo dizia que LIGAR.md "ainda não existe". O id prototipo-funil-01 também está no comentário de cabeçalho de wrangler.toml e de montar-site.mjs.
+   - *O que foi feito:* README.md v1 para v2 (forma): aponta para LIGAR.md, a tabela "O que tem dentro" ganha a linha e "O que não fazer" deixa de dizer que o roteiro não existe. Os comentários de cabeçalho de wrangler.toml e montar-site.mjs passam a dizer versao 2, sem outra mudança (nenhuma linha de configuração ou de código mudou). Cascata: dependem de prototipo-funil-01 1 o ensaio (já com desatualizado: true) e dados/banco/catalogo-prototipo.sql, que ganhou só a marca no comentário do cabeçalho ("desatualizado: true"), sem subir versão nem mudar conteúdo, como a regra manda. A troca para prototipo-funil-01 2 fica proposta para a próxima versão dele.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* voltar o README para a v1, tirar a marca do catalogo-prototipo.sql e deixar a referência ao LIGAR.md só no index.md e no log.md.
+
+26.9. **O tempo estimado.**
+   - *Dúvida:* a meta é menos de uma hora.
+   - *O que foi feito:* cerca de 58 minutos para as partes 1 a 5 (3, 15, 15, 10 e 15), contando 6 minutos para os dois envios em duas abas (5.3) e a espera da planilha como 1 minuto, com a busca rodada à mão. Esperando o gatilho, até 5 minutos a mais. As partes 6 e 7 ficam fora da conta. Os passos 3.8 e 3.9 têm duas ações seguidas cada (copiar no painel e rodar o comando), contra a regra de uma ação por passo: separar deixaria a chave na área de transferência entre dois passos, com o risco de um Cmd+C no meio; ficaram juntas e numeradas 1 e 2.
+   - *Recomendação:* manter; se o passo 2.4 ou o login da Cloudflare travarem, o tempo é o de resolver o erro, e o roteiro manda parar e trazer a mensagem.
+   - *Se decidir diferente:* separar 3.8 e 3.9 em dois passos cada é só numeração; o tempo não muda.
+
+26.10. **Nomes de botões dos painéis não conferidos.**
+   - *Dúvida:* sem login, não deu para ver os painéis do Supabase, da Cloudflare e do Google de hoje.
+   - *O que foi feito:* os nomes seguem os READMEs da casa e o que o Claude conhece (SQL Editor, Run this query, Project Settings, API Keys, Legacy API keys, Variables and Secrets, Domains & Routes, Extensões, Apps Script, Propriedades do script); onde o nome pode mudar, LIGAR.md diz "algo como". Os comandos do wrangler foram conferidos com `--help` no 4.158.0 instalado: `secret put`, `secret list`, `secret delete`, `deploy`, `delete` e `tail`, que aceitam `--config`, e `login`, `whoami` e `logout` (o `deploy --dry-run` rodou da raiz do repositório com esse `--config`, sem login). Não conferidos: login, publicação, segredos e tail de verdade, que pedem conta.
+   - *Recomendação:* se um nome estiver diferente amanhã, anotar e corrigir o LIGAR.md numa v2 (forma).
+   - *Se decidir diferente:* nada muda.
+
+26.11. **"Em até 5 minutos" na planilha vira "de 1 a 6 minutos".**
+   - *Dúvida:* o pedido diz que a linha aparece na planilha em até 5 minutos. Com a margem de 1 minuto do banco (21.6) e o gatilho de 5, ela aparece de 1 a 6 minutos depois do envio.
+   - *O que foi feito:* LIGAR.md diz de 1 a 6 minutos (5.6 e erro 2), ou cerca de 1 minuto rodando buscarLeadsNovos à mão.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* para caber em 5 minutos sempre, rodar a busca à mão no 5.6 (já está no roteiro) ou tirar a margem do banco, o que muda a decisão provisória 21.6 e o esquema.
+
+26.12. **Correções da revisão aplicadas ao LIGAR.md.**
+   - *Dúvida:* a revisão da etapa 26 pediu ajustes de segurança e de clareza.
+   - *O que foi feito:* aviso para não gravar nem compartilhar a tela nas partes 2 a 4; passo 3.0 para pausar o histórico da área de transferência e o Handoff (Área de Transferência Universal); o olho da chave secreta escondido de novo; nome com sublinhado se o painel recusar o hífen; botões pelo nome da página ("Quero responder as perguntas do meu funil", "Ver meu diagnóstico", campo WhatsApp); não usar o "protótipo · preencher exemplo" nem pular telas pelo botão Telas; registro só pelo wrangler tail filtrado; "Editar propriedades do script"; conferência do acento depois de colar o código; passo 7.9 para as chaves que sobrarem; a data da "Última troca" contada ao Claude para conexoes.md.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* cada ajuste é um trecho do LIGAR.md; nenhum outro arquivo depende deles.

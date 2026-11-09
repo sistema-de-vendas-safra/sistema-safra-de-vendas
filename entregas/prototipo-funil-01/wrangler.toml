@@ -1,5 +1,5 @@
 # Worker do protótipo do funil-01 · configuração da Cloudflare. RASCUNHO, nunca publicado.
-# id: prototipo-funil-01 · versao 1 · rascunho · otavio: pendente (ver README.md desta pasta)
+# id: prototipo-funil-01 · versao 2 · rascunho · otavio: pendente (ver README.md desta pasta)
 #
 # Um Worker só para o protótipo (decisão #101): serve a variante A da landing em /, a variante B
 # em /b/, o quiz em /quiz/ e o garçom em /api/ (entregas/garcom/garcom.mjs), no mesmo endereço.

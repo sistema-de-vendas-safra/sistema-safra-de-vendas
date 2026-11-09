@@ -1,6 +1,7 @@
 -- Linha do catálogo de entregas para o protótipo do funil-01 (Postgres, no Supabase)
 -- id: banco-catalogo-prototipo · versao 1 · rascunho · otavio: pendente
 -- depende_de: banco-rascunho v2, quiz-01-pagina v2, prototipo-funil-01 v1, decisoes v4
+-- desatualizado: true (prototipo-funil-01 subiu para a versão 2; etapa 26, pergunta 26.8)
 --
 -- RASCUNHO. Nada daqui está no ar. Sem dado pessoal.
 --

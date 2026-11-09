@@ -1,5 +1,5 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 1 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 2 · rascunho · otavio: pendente (ver README.md desta pasta)
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
 // O que faz (decisão #101):

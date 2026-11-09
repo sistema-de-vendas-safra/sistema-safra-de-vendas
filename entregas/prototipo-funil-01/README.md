@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -26,7 +26,9 @@ desatualizado: true
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Nunca foi publicado.** Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas e os prints do site montado.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Nunca foi publicado.** Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+
+**Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
 **Protótipo de teste não é entrega.** Serve só para o Otávio testar o caminho do dado com leads de mentira (#102: nome começando por TESTE, e-mail @teste.invalid). Ir ao ar com gente de verdade continua travado: o destino dos contatos está em conflito (conflito-17, em base/lacunas.md; o garçom segue o lado 2, #90, sem escolher), as páginas e o garçom são rascunhos pendentes de aprovação (do Otávio e, nas páginas, do Júnior e do Euclides) e, antes de tráfego real, falta a proteção contra robô e o limite de pedidos (log.md, Pendências).
 
@@ -36,6 +38,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 
 | Arquivo | O que é |
 |---|---|
+| LIGAR.md | O roteiro para ligar o protótipo, para iniciante, passo a passo, com o tempo de cada passo e como saber que deu certo (id prototipo-funil-01-ligar) |
 | wrangler.toml | A configuração do Worker: nome, main apontando para ../garcom/garcom.mjs, arquivos pelo binding ASSETS com run_worker_first, preview_urls = false (um endereço só, #101), as duas variáveis comuns e, só em comentário, o nome dos três segredos. Sem id de conta e sem segredo |
 | montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências |
 | prints/ | Prints das três páginas montadas em 375 e 1440 pixels |
@@ -119,7 +122,7 @@ Como ler: o pacote do Worker (o garçom) tem 15,91 KiB (4,78 KiB comprimido); os
 | SUPABASE_CHAVE_SECRETA | Chave secreta do Supabase (papel service_role) | Só a porta privada |
 | CHAVE_PLANILHA | Abre a porta privada | O garçom e o Apps Script da planilha |
 
-Nenhum valor passa por arquivo da máquina nem pelo chat: vão direto do painel do serviço para o cofre da Cloudflare (conexoes.md; roteiro da etapa 26). SUPABASE_URL e ORIGEM_PERMITIDA não são segredo e ficam em [vars].
+Nenhum valor passa por arquivo da máquina nem pelo chat: vão direto do painel do serviço para o cofre da Cloudflare (conexoes.md; LIGAR.md, parte 3). SUPABASE_URL e ORIGEM_PERMITIDA não são segredo e ficam em [vars].
 
 ## Prints
 
@@ -133,15 +136,15 @@ Em 1440, as landings saíram com a mesma altura dos prints das entregas (entrega
 
 ## Antes do teste
 
-O banco confere o par (entrega, versão) do pacote no catálogo (public.entregas), que o esquema não preenche. Sem a linha ('quiz-01', 1), todo envio do quiz volta 422 e o visitante vê o aviso de falha (pergunta 23.10; etapas 25 e 26).
+O banco confere o par (entrega, versão) do pacote no catálogo (public.entregas), que o esquema não preenche. Sem a linha ('quiz-01', 1), todo envio do quiz volta 422 e o visitante vê o aviso de falha (pergunta 23.10; etapa 25). A linha é gravada por dados/banco/catalogo-prototipo.sql, nos passos 2.7 e 2.8 de LIGAR.md.
 
 ## O que não fazer
 
-- **Não publicar.** Publicar é só amanhã, pelo roteiro da etapa 26 (entregas/prototipo-funil-01/LIGAR.md, que ainda não existe), depois do push, do SQL no Supabase e dos segredos no cofre.
+- **Não publicar.** Publicar é só pelo roteiro LIGAR.md, nesta pasta, depois do push e do SQL no Supabase.
 - Não fazer login na Cloudflare fora do roteiro; não pôr account_id nem segredo no wrangler.toml.
 - Não editar nada em site/: ela é refeita a cada montagem. Mudança vai na entrega, que sobe de versão.
 - Não usar o protótipo com gente de verdade (conflito-17, aprovações e proteção contra robô, acima).
 
 ## Perguntas
 
-prompts/08-fila-perguntas.md, seção "Etapa 23".
+prompts/08-fila-perguntas.md, seções "Etapa 23" e "Etapa 26".
