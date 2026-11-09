@@ -1,6 +1,6 @@
 ---
 id: pauta-aprovacao-01
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -33,12 +33,14 @@ depende_de:
     versao: 1
   - id: funil-01-roteiros-sdr
     versao: 1
+  - id: quiz-01-pagina
+    versao: 2
 desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides
 
-**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13). O item 6a entrou na versão 4, com as duas variantes de design da página (etapa 17); ganhou letra, e não número, para não mudar a numeração que outros documentos citam (pergunta 17.6). Os acréscimos da versão 5 vêm da triagem da etapa 19 (perguntas 13.2, 13.3, 13.6, 13.7, 13.8, 13.9, 13.13, 13.14, 14.6, 14.14, 15.2, 15.9, 15.12, 16.2, 16.3, 16.13, 17.2 e 17.3). No item 7, se a pergunta 7.9 for aceita e o Otávio escolher o nome sozinho, o acréscimo sobre "seu diagnóstico" vira confirmação dele.
+**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13). O item 6a entrou na versão 4, com as duas variantes de design da página (etapa 17); ganhou letra, e não número, para não mudar a numeração que outros documentos citam (pergunta 17.6). Os acréscimos da versão 5 vêm da triagem da etapa 19 (perguntas 13.2, 13.3, 13.6, 13.7, 13.8, 13.9, 13.13, 13.14, 14.6, 14.14, 15.2, 15.9, 15.12, 16.2, 16.3, 16.13, 17.2 e 17.3). No item 7, se a pergunta 7.9 for aceita e o Otávio escolher o nome sozinho, o acréscimo sobre "seu diagnóstico" vira confirmação dele. Os acréscimos da versão 6 vêm da triagem da etapa 27 (perguntas 23.2 e 23.8, no item 29).
 
 **Como ler.** Cada item traz o que é, as opções registradas, a posição do Otávio e o que a decisão destrava. Quando só existe uma proposta, as opções são aprovar, ajustar ou recusar. Onde a posição do Otávio não está escrita, o item diz "o Otávio decide antes da reunião". A linha "Referência", no fim de cada item, serve só para rastrear de onde veio cada ponto.
 
@@ -319,9 +321,12 @@ desatualizado: true
   - Os números das metas escritos no relatório passam a vir do campo das metas da ficha de fatos, para mudarem junto com ele.
   - A página do quiz trocou "Triad" nos avisos ("abre o WhatsApp da Triad" virou "o nosso WhatsApp") e tirou o nome da marca do cabeçalho e dos rodapés até o nome sair; o triângulo do logo ficou.
   - Na ajuda da tela de contato, acrescentar a ressalva "nos canais que você aceitou", como já está no texto do relatório.
+- **Também na mesa, do site de teste:**
+  - Um aviso novo, para quando o contato não chega à equipe (falha de internet ou do sistema): "Não conseguimos enviar o seu contato para a nossa equipe agora. O seu diagnóstico continua aqui na tela.", com o botão "Tentar de novo". O diagnóstico continua na tela. Sugestão: entrar na copy do quiz como mudança nova e ganhar também um botão "Fechar".
+  - No celular, a página do quiz aparece encolhida, porque falta nela uma linha técnica que diz ao navegador para usar a largura da tela. No site de teste, essa linha é acrescentada na montagem, sem mexer na página. Sugestão: a próxima versão da página do quiz já trazer essa linha, sem mudar nada do visual; decidir junto com a identidade visual do quiz (item 6).
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** o texto do quiz.
-- **Referência:** documento: quiz-01-copy, seção "Mudanças no texto do Júnior" (entregas/quizzes/quiz-01/copy.md). Lacunas: conflito-16, conflito-17, conflito-18, conflito-19. Perguntas 13.1 a 13.14, 14.6 e 16.13.
+- **Referência:** documento: quiz-01-copy, seção "Mudanças no texto do Júnior" (entregas/quizzes/quiz-01/copy.md). Lacunas: conflito-16, conflito-17, conflito-18, conflito-19. Perguntas 13.1 a 13.14, 14.6 e 16.13; documento: quiz-01-pagina (entregas/quizzes/quiz-01/pagina/). Perguntas 23.2 e 23.8.
 
 ---
 
