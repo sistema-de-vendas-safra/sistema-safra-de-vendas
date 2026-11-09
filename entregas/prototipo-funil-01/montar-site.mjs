@@ -1,5 +1,5 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 2 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 3 · rascunho · otavio: pendente (ver README.md desta pasta)
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
 // O que faz (decisão #101):
@@ -8,7 +8,8 @@
 //   /quiz/       página do quiz-01 (index.html, poster-junior.jpg)
 //   /api/...     não é arquivo: é o garçom (entregas/garcom/garcom.mjs), pela configuração wrangler.toml
 //
-// Nos HTML montados (nunca nas entregas), acrescenta <meta name="robots" content="noindex, nofollow">
+// Nos HTML montados (nunca nas entregas), acrescenta <meta charset="utf-8"> como primeiríssima linha quando
+// não houver nos primeiros 1024 bytes (o quiz; v3, pedido 09), <meta name="robots" content="noindex, nofollow">
 // quando não houver, a meta viewport (width=device-width) quando não houver, e troca o link do botão da landing para o quiz (caminho do repositório) por /quiz/.
 // Depois confere cada caminho relativo de css, imagem e link nos arquivos montados.
 // A pasta montada (site/) fica fora do Git (.gitignore). Ela é apagada e montada de novo a cada vez.
@@ -29,6 +30,13 @@ const LINK_QUIZ_NO_SITE = '/quiz/';
 const META_ROBOTS = '<meta name="robots" content="noindex, nofollow">';
 // O quiz não tem viewport (vem do mockup): sem ela, o celular desenha a página com 980 pixels e encolhe (23.8)
 const META_VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+// O quiz não tem <meta charset> nem doctype (vem do mockup): sem o charset, o navegador o lia como
+// windows-1252 e os acentos quebravam (pedido 09). O navegador só procura o charset nos primeiros 1024 bytes,
+// e o comentário de cabeçalho do quiz passa disso; por isso a meta vai antes de tudo. O doctype não entra
+// aqui: muda o modo de desenho da página (pergunta 09.1).
+const META_CHARSET = '<meta charset="utf-8">';
+const BYTES_DO_CHARSET = 1024;
+const temCharsetNoInicio = html => /<meta\s+charset=["']?utf-8["']?\s*\/?>/i.test(Buffer.from(html, 'utf8').subarray(0, BYTES_DO_CHARSET).toString('utf8'));
 
 // O que vai para onde. Só estes arquivos entram no site (README.md e prints ficam no repositório).
 const MAPA = [
@@ -59,6 +67,12 @@ function garantirViewport(html, nome) {
   return { html: html.replace(/<title[\s>]/i, m => META_VIEWPORT + '\n' + m), acrescentou: true };
 }
 
+// Acrescenta a meta charset como primeiríssima linha se não houver nos primeiros 1024 bytes
+function garantirCharset(html) {
+  if (temCharsetNoInicio(html)) return { html, acrescentou: false };
+  return { html: META_CHARSET + '\n' + html, acrescentou: true };
+}
+
 // ··· 1. Montar ···
 if (!SITE.startsWith(AQUI + '/')) throw new Error('pasta do site fora de entregas/prototipo-funil-01');
 rmSync(SITE, { recursive: true, force: true });
@@ -80,6 +94,9 @@ for (const item of MAPA) {
       html = html.replace('href="' + LINK_QUIZ_NO_REPOSITORIO + '"', 'href="' + LINK_QUIZ_NO_SITE + '"');
       if (vezes === 1) mudancas.push('link do quiz trocado por ' + LINK_QUIZ_NO_SITE);
     }
+    const c = garantirCharset(html);
+    html = c.html;
+    mudancas.push(c.acrescentou ? 'meta charset acrescentada na primeira linha' : 'meta charset já existia no início');
     const r = garantirNoindex(html, nomeNoSite);
     html = r.html;
     mudancas.push(r.acrescentou ? 'meta noindex acrescentada' : 'meta noindex já existia');
@@ -127,6 +144,7 @@ for (const arquivo of arquivosDoSite) {
   }
   if (arquivo.endsWith('.html')) {
     const html = readFileSync(join(SITE, arquivo), 'utf8');
+    if (!temCharsetNoInicio(html)) problema(arquivo + ': sem meta charset utf-8 nos primeiros ' + BYTES_DO_CHARSET + ' bytes');
     if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) problema(arquivo + ': sem meta noindex');
     if (!/<meta\s+name=["']viewport["'][^>]*width=device-width/i.test(html)) problema(arquivo + ': sem meta viewport');
     if (html.includes(LINK_QUIZ_NO_REPOSITORIO)) problema(arquivo + ': ainda tem o caminho do quiz no repositório');
@@ -145,4 +163,4 @@ if (problemas.length) {
   for (const p of problemas) console.log('  ' + p);
   process.exit(1);
 }
-console.log('Tudo certo: noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site.');
+console.log('Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site.');

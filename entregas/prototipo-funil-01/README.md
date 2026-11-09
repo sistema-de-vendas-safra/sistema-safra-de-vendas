@@ -1,12 +1,12 @@
 ---
 id: prototipo-funil-01
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: garcom
-    versao: 2
+    versao: 3
   - id: quiz-01-pagina
     versao: 2
   - id: landing-page-01-variante-a
@@ -26,7 +26,7 @@ desatualizado: true
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Nunca foi publicado.** Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09), ainda não publicada. Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
@@ -54,7 +54,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | POST /api/fim-quiz | Porta pública do garçom: o quiz manda o pacote do fim | entregas/garcom/garcom.mjs |
 | GET /api/planilha/leads-novos | Porta privada do garçom: só a planilha do SDR, com a CHAVE_PLANILHA | entregas/garcom/garcom.mjs |
 
-As rotas /api/ são atendidas pelo garçom antes dos arquivos. Todo pedido passa pelo Worker (run_worker_first = true), e o garçom põe o cabeçalho X-Robots-Tag: noindex em toda resposta, inclusive nos arquivos. Além do cabeçalho, todo HTML do site tem a meta robots noindex, nofollow.
+As rotas /api/ são atendidas pelo garçom antes dos arquivos. Todo pedido passa pelo Worker (run_worker_first = true), e o garçom põe o cabeçalho X-Robots-Tag: noindex em toda resposta, inclusive nos arquivos, e o charset utf-8 em todo HTML, CSS e JavaScript que a Cloudflare entrega sem charset (garçom v3). Além do cabeçalho, todo HTML do site tem a meta robots noindex, nofollow e a meta charset utf-8 no começo.
 
 O botão da seção 08 das duas variantes leva a /quiz/ com as utm do endereço da landing (as que existirem: utm_source, utm_medium, utm_campaign, utm_content, utm_term) e um código de sessão. Exemplo para testar: /?utm_source=bio&utm_campaign=funil-01. O quiz só lê utm_source e utm_campaign, da lista do funil-01 (pergunta 23.5).
 
@@ -66,22 +66,24 @@ Da raiz do repositório:
 node entregas/prototipo-funil-01/montar-site.mjs
 ```
 
-O script apaga site/ e monta de novo. Copia só os arquivos do mapa (nada de README nem prints). Nos HTML montados, e nunca nas entregas: acrescenta `<meta name="robots" content="noindex, nofollow">` quando não houver (o quiz não tinha; as landings já tinham); acrescenta `<meta name="viewport" content="width=device-width, initial-scale=1">` antes do `<title>` quando não houver (só o quiz: sem ela, o celular desenha a página com 980 pixels e encolhe; a entrega fica para uma v3, conflito-18, pergunta 23.8); e troca o link do botão da landing para o quiz, que nas entregas é o caminho do repositório (para a revisão local), por /quiz/. Depois confere cada caminho relativo de css, imagem e link nos arquivos montados, a meta noindex e a meta viewport em todo HTML e a ausência do caminho do repositório. Se algo falhar, diz o que e sai com erro.
+O script apaga site/ e monta de novo. Copia só os arquivos do mapa (nada de README nem prints). Nos HTML montados, e nunca nas entregas: acrescenta `<meta charset="utf-8">` como primeiríssima linha quando não houver nos primeiros 1024 bytes (só o quiz, que não tem; o navegador só procura o charset nesse começo, e o comentário de cabeçalho do quiz passa disso; v3, pedido 09); acrescenta `<meta name="robots" content="noindex, nofollow">` quando não houver (o quiz não tinha; as landings já tinham); acrescenta `<meta name="viewport" content="width=device-width, initial-scale=1">` antes do `<title>` quando não houver (só o quiz: sem ela, o celular desenha a página com 980 pixels e encolhe; a entrega fica para uma v3, conflito-18, pergunta 23.8); e troca o link do botão da landing para o quiz, que nas entregas é o caminho do repositório (para a revisão local), por /quiz/. Depois confere cada caminho relativo de css, imagem e link nos arquivos montados, a meta charset nos primeiros 1024 bytes, a meta noindex e a meta viewport em todo HTML e a ausência do caminho do repositório. Se algo falhar, diz o que e sai com erro.
 
-Resultado (08/11/2026):
+Resultado (09/11/2026, v3):
 
 ```
 Site montado em entregas/prototipo-funil-01/site/
-  index.html (link do quiz trocado por /quiz/; meta noindex já existia; meta viewport já existia)
+  index.html (link do quiz trocado por /quiz/; meta charset já existia no início; meta noindex já existia; meta viewport já existia)
   tokens.css (cópia)
   estilo.css (cópia)
-  b/index.html (link do quiz trocado por /quiz/; meta noindex já existia; meta viewport já existia)
+  b/index.html (link do quiz trocado por /quiz/; meta charset já existia no início; meta noindex já existia; meta viewport já existia)
   b/estilo.css (cópia)
-  quiz/index.html (meta noindex acrescentada; meta viewport acrescentada)
+  quiz/index.html (meta charset acrescentada na primeira linha; meta noindex acrescentada; meta viewport acrescentada)
   quiz/poster-junior.jpg (cópia)
 7 arquivos, 505 KB; 6 caminhos relativos conferidos
-Tudo certo: noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site.
+Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site.
 ```
+
+O doctype não é acrescentado: ele tira o quiz do modo de compatibilidade (document.compatMode "BackCompat") e pode mexer no desenho da página. Fica para antes de ir ao ar (pergunta 09.1, em prompts/09-acentos-do-quiz-resposta.md).
 
 Conferido também num servidorzinho local em 127.0.0.1: em / e em /b/, com `?utm_source=bio&utm_medium=social&utm_campaign=funil-01&utm_term=`, o botão vira `/quiz/?utm_source=bio&utm_medium=social&utm_campaign=funil-01&id_sessao=...` (a utm vazia não vai) e o clique abre a capa do quiz.
 

@@ -1,6 +1,6 @@
 // Garçom do funil-01 · Cloudflare Worker, sem dependências externas
-// id: garcom · versao 2 · rascunho · otavio: pendente
-// Ver entregas/garcom/README.md. RASCUNHO: nunca foi publicado nem ligado a um banco real.
+// id: garcom · versao 3 · rascunho · otavio: pendente
+// Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com leads de teste.
 //
 // Um Worker só para o protótipo (decisão #101): safra-prototipo-funil-01 serve as páginas e o
 // garçom no mesmo endereço. As rotas /api/ são atendidas antes dos arquivos.
@@ -15,6 +15,7 @@
 //   todo o resto                     arquivos do protótipo, pelo binding de assets (env.ASSETS)
 //
 // Toda resposta leva X-Robots-Tag: noindex (#101).
+// Todo arquivo HTML, CSS ou JavaScript que chega sem charset sai com "; charset=utf-8" (v3, pedido 09).
 //
 // Segredos: só os nomes. Os valores ficam nas variáveis secretas da Cloudflare (o cofre):
 //   env.SUPABASE_CHAVE_PUBLICAVEL  chave publicável do Supabase; só a porta pública usa
@@ -437,7 +438,19 @@ async function portaPlanilha(request, env, url) {
   }, null);
 }
 
-// ··· Arquivos do protótipo, pelo binding de assets, com noindex ···
+// ··· Charset dos arquivos de texto (v3, pedido 09) ···
+// Na Cloudflare, os arquivos chegam como "text/html", sem charset. A página do quiz não tem
+// <meta charset> nem doctype (herança do mockup), e o navegador a lia como windows-1252.
+const TIPOS_DE_TEXTO = ['text/html', 'text/css', 'text/javascript', 'application/javascript', 'application/x-javascript'];
+export function comCharset(tipo) {
+  if (!tipo) return tipo;
+  const base = tipo.split(';')[0].trim().toLowerCase();
+  if (!TIPOS_DE_TEXTO.includes(base)) return tipo;
+  if (/;\s*charset\s*=/i.test(tipo)) return tipo;
+  return tipo.replace(/;?\s*$/, '') + '; charset=utf-8';
+}
+
+// ··· Arquivos do protótipo, pelo binding de assets, com noindex e charset ···
 async function arquivos(request, env) {
   if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') {
     return new Response('nao encontrado', {
@@ -458,6 +471,9 @@ async function arquivos(request, env) {
   // A resposta dos arquivos não pode ser mexida direto: copia e acrescenta o cabeçalho.
   const copiaResposta = new Response(r.body, r);
   copiaResposta.headers.set('X-Robots-Tag', 'noindex');
+  const tipo = copiaResposta.headers.get('Content-Type');
+  const tipoCerto = comCharset(tipo);
+  if (tipoCerto !== tipo) copiaResposta.headers.set('Content-Type', tipoCerto);
   return copiaResposta;
 }
 

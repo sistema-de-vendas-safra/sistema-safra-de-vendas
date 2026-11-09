@@ -1,14 +1,14 @@
 ---
 id: prototipo-funil-01-ligar
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: prototipo-funil-01
-    versao: 2
+    versao: 3
   - id: garcom
-    versao: 2
+    versao: 3
   - id: banco-rascunho
     versao: 2
   - id: banco-conferir
@@ -18,7 +18,7 @@ depende_de:
   - id: planilha-sdr-funil-01
     versao: 1
   - id: ensaio-prototipo-funil-01
-    versao: 1
+    versao: 2
   - id: quiz-01-pagina
     versao: 2
   - id: landing-page-01-variante-a
@@ -221,9 +221,9 @@ pbcopy < dados/banco/catalogo-prototipo.sql
 
 ### 2.10 · Criar a chave secreta do garçom
 
-**Faça:** na área **Secret keys**, clique para criar uma chave nova (algo como **Add new secret key**) e dê o nome **garcom-planilha-prototipo** (se o painel recusar o hífen, use **garcom_planilha_prototipo**; daqui em diante, leia o nome que você usou). Se já existir uma chave com esse nome, não crie outra.
+**Faça:** na área **Secret keys**, clique para criar uma chave nova (algo como **Add new secret key**) e dê o nome **garcom_planilha_prototipo**, com sublinhado (o painel não aceita hífen; foi o nome usado em 09/11/2026). Se já existir uma chave com esse nome, não crie outra.
 
-**Como saber que deu certo:** a lista de chaves secretas mostra garcom-planilha-prototipo. Não copie ainda: o valor só vai ser copiado no passo 3.9, direto para o cofre da Cloudflare.
+**Como saber que deu certo:** a lista de chaves secretas mostra garcom_planilha_prototipo. Não copie ainda: o valor só vai ser copiado no passo 3.9, direto para o cofre da Cloudflare.
 
 **Tempo:** 1 min.
 
@@ -233,9 +233,11 @@ O projeto ainda tem as chaves antigas (legacy anon e legacy service_role). A ant
 
 **Faça:** em **Legacy API keys**, clique para desativar as chaves antigas (algo como **Disable JWT-based API keys**) e confirme.
 
-Se, na área Secret keys, existir também uma chave secreta chamada **default** que não é a garcom-planilha-prototipo, ela também não é usada; dá para apagá-la no mesmo dia, depois do teste da parte 5 dar certo (passo 7.9 e pergunta 26.4).
+Se, na área Secret keys, existir também uma chave secreta chamada **default** que não é a garcom_planilha_prototipo, ela também não é usada; dá para apagá-la no mesmo dia, depois do teste da parte 5 dar certo (passo 7.9 e pergunta 26.4).
 
-**Como saber que deu certo:** a área das chaves antigas mostra que estão desativadas. A publicável e a garcom-planilha-prototipo continuam na lista.
+**Como saber que deu certo:** a área das chaves antigas mostra que estão desativadas. A publicável e a garcom_planilha_prototipo continuam na lista.
+
+**Atenção:** desativar não aposenta as chaves antigas de vez. O painel avisa que elas continuam válidas como JWT, porque são assinadas pela assinatura antiga do projeto. Aposentar de vez é trocar essa assinatura (JWT signing keys), o que fica para antes de ir ao ar com gente de verdade (log.md, Pendências).
 
 **Tempo:** 2 min.
 
@@ -305,6 +307,14 @@ O navegador abre uma página da Cloudflare pedindo para autorizar o wrangler. Co
 
 **Como saber que deu certo:** o navegador diz que pode fechar a página, e o Terminal mostra "Successfully logged in". O wrangler guarda esse login no seu usuário do Mac, fora do repositório.
 
+**Plano B, se aparecer "request_forbidden" (No CSRF value):** aperte Ctrl+C no Terminal e rode:
+
+```
+nucleo/ferramentas/prototipo/node_modules/.bin/wrangler login --browser=false
+```
+
+O Terminal mostra um endereço. Copie e cole no navegador onde a conta da Cloudflare do Safra já está aberta, e clique em **Allow**. Foi o que funcionou em 09/11/2026.
+
 **Tempo:** 2 min.
 
 ### 3.5 · Conferir a conta
@@ -327,7 +337,7 @@ nucleo/ferramentas/prototipo/node_modules/.bin/wrangler whoami
 node entregas/prototipo-funil-01/montar-site.mjs
 ```
 
-**Como saber que deu certo:** a última linha diz "Tudo certo: noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site."
+**Como saber que deu certo:** a última linha diz "Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, link da landing para /quiz/ e todos os caminhos existem no site."
 
 **Tempo:** 30 s.
 
@@ -341,7 +351,13 @@ nucleo/ferramentas/prototipo/node_modules/.bin/wrangler deploy --config entregas
 
 Se o wrangler perguntar qual conta usar, escolha a do Safra com as setas e aperte Enter.
 
-**Como saber que deu certo:** o Terminal mostra o endereço **https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev** e uma linha de versão (Current Version ID). Abra o endereço no navegador: aparece a landing (variante A). Abra também o endereço com /b/ no fim (variante B) e com /quiz/ no fim (a capa do quiz). O quiz ainda não grava: faltam os segredos, logo abaixo.
+**Como saber que deu certo:** o Terminal mostra o endereço **https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev** e uma linha de versão (Current Version ID). Abra o endereço no navegador: aparece a landing (variante A). Abra também o endereço com /b/ no fim (variante B) e com /quiz/ no fim (a capa do quiz), que mostra os acentos certos (por exemplo, "diagnóstico", e não "diagnÃ³stico"). O quiz ainda não grava: faltam os segredos, logo abaixo.
+
+**Para publicar de novo depois de uma correção** (o login e os segredos continuam valendo): rode os passos 3.6 e 3.7 de novo, ou os dois num comando só:
+
+```
+node entregas/prototipo-funil-01/montar-site.mjs && nucleo/ferramentas/prototipo/node_modules/.bin/wrangler deploy --config entregas/prototipo-funil-01/wrangler.toml
+```
 
 **Tempo:** 2 min.
 
@@ -366,7 +382,7 @@ O comando pbpaste entrega ao wrangler o que está na área de transferência, se
 
 **Faça, em duas ações seguidas:**
 
-1. No Supabase, na área Secret keys, clique no botão de copiar da chave **garcom-planilha-prototipo** (ou garcom_planilha_prototipo). Se o botão de copiar só aparecer depois do olho, revele, copie e clique no olho de novo para esconder.
+1. No Supabase, na área Secret keys, clique no botão de copiar da chave **garcom_planilha_prototipo**. Se o botão de copiar só aparecer depois do olho, revele, copie e clique no olho de novo para esconder.
 2. Sem copiar mais nada no meio, rode:
 
 ```
@@ -692,7 +708,7 @@ Primeiro, espere 6 minutos inteiros depois do envio (a margem de 1 minuto do ban
 | "o garçom respondeu 401..." | A CHAVE_PLANILHA das propriedades não é igual à do cofre. Rode o comando do passo 3.11 de novo (sorteia outra e troca no cofre), cole nas propriedades no lugar da antiga (4.3) e limpe a área de transferência (4.4) |
 | "faltam as propriedades do script..." | Passos 4.3 e 4.5; depois rode instalar de novo |
 | "não deu para falar com o garçom..." | Confira GARCOM_URL: https://, termina em .workers.dev, sem barra e sem /api (4.5) |
-| "o garçom respondeu com erro..." | O garçom ou o banco está fora, ou a chave secreta no cofre está errada. Refaça o passo 3.9 copiando a garcom-planilha-prototipo (ou garcom_planilha_prototipo) e limpe a área de transferência (3.10) |
+| "o garçom respondeu com erro..." | O garçom ou o banco está fora, ou a chave secreta no cofre está errada. Refaça o passo 3.9 copiando a garcom_planilha_prototipo e limpe a área de transferência (3.10) |
 | Nenhuma execução em Execuções | O gatilho não foi criado: veja Acionadores e rode instalar de novo (4.11) |
 
 ### Erro 3 · O wrangler pede login ou dá erro de conta
@@ -714,7 +730,7 @@ Ordem: **primeiro cortar o acesso, depois apagar.** Se uma chave puder ter vazad
 
 **7.1 · Parar a planilha.** No editor do Apps Script, escolha **desligar** e clique em Executar. *Deu certo se:* Acionadores fica vazio. (1 min)
 
-**7.2 · Apagar a chave secreta no Supabase.** Project Settings, API Keys, Secret keys, apagar a **garcom-planilha-prototipo** (ou garcom_planilha_prototipo). *Deu certo se:* ela some da lista; a porta privada deixa de ler o banco na hora. (1 min)
+**7.2 · Apagar a chave secreta no Supabase.** Project Settings, API Keys, Secret keys, apagar a **garcom_planilha_prototipo**. *Deu certo se:* ela some da lista; a porta privada deixa de ler o banco na hora. (1 min)
 
 **7.3 · Apagar a chave publicável no Supabase.** Na mesma página, apagar a **Publishable key** usada. Se o painel não deixar apagar a única que existe, crie uma nova e apague a antiga; a nova não vai para lugar nenhum. *Deu certo se:* a chave usada some da lista; o quiz deixa de gravar na hora. (1 min)
 

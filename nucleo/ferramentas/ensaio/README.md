@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -12,9 +12,9 @@ depende_de:
   - id: banco-catalogo-prototipo
     versao: 1
   - id: garcom
-    versao: 2
+    versao: 3
   - id: prototipo-funil-01
-    versao: 1
+    versao: 3
   - id: quiz-01-pagina
     versao: 2
   - id: landing-page-01-variante-a
@@ -67,9 +67,9 @@ Contorno, se o wrangler não subir: `npm run ensaio:sem-wrangler` roda o garçom
 
 1. **Banco.** Um Postgres que roda dentro do Node (PGlite 0.5.15, PostgreSQL 18.6), só na memória. Cria de mentira os papéis do Supabase: anon, authenticated, service_role (que passa por cima da RLS, como no Supabase) e **dono**, no lugar do postgres do Supabase (dono das tabelas, sem ser superusuário). Para conferir o pior caso, o dono começa com as permissões padrão que o Supabase daria (tudo para anon, authenticated e service_role no que ele criar). Aplica dados/banco/esquema.sql como o dono, duas vezes; roda dados/banco/conferir.sql e confere a linha "tudo certo" (13 de 13). Depois troca de papel (SET ROLE) e tenta de verdade: anon executa registrar_fim_quiz e nada mais; anon não lê tabela nem visão e não chama leads_para_planilha; authenticated não pode nada; service_role chama leads_para_planilha e nada mais; um papel qualquer, sem permissão dada, também não executa nada (PUBLIC).
 2. **Supabase de mentira** em 127.0.0.1, porta livre (supabase-de-mentira.mjs). Recebe `POST /rest/v1/rpc/<funcao>` e, para os casos de erro, `GET` e `POST /rest/v1/<tabela>`. Lê o cabeçalho apikey: a chave publicável de mentira vira o papel anon, a secreta de mentira vira service_role; sem chave ou com chave desconhecida, 401. Cada pedido roda numa transação com SET LOCAL ROLE, como o PostgREST, e os erros do Postgres viram status parecidos com os do PostgREST: permissão negada é 401 para anon e 403 para os outros; chave estrangeira é 409; função que não existe é 404; restrição (CHECK) é 400. O PGlite tem uma conexão só: os pedidos entram numa fila e rodam um de cada vez.
-3. **Site e garçom.** Roda entregas/prototipo-funil-01/montar-site.mjs. Copia entregas/prototipo-funil-01/wrangler.toml para uma pasta temporária **fora do repositório**, com só quatro trocas: os caminhos de main e de assets ficam absolutos, SUPABASE_URL aponta para o Supabase de mentira e ORIGEM_PERMITIDA para o endereço local. Confere que a cópia não tem endereço real (supabase.co, workers.dev). Os três segredos, de mentira, vão num arquivo dessa pasta temporária (`--env-file`), nunca num .dev.vars do repositório. Liga `wrangler dev --local` (workerd, o mesmo motor do Workers) com WRANGLER_SEND_METRICS=false, em 127.0.0.1. Confere /, /b/ e /quiz/ com noindex e uma rota /api/ desconhecida com 404.
+3. **Site e garçom.** Roda entregas/prototipo-funil-01/montar-site.mjs. Copia entregas/prototipo-funil-01/wrangler.toml para uma pasta temporária **fora do repositório**, com só quatro trocas: os caminhos de main e de assets ficam absolutos, SUPABASE_URL aponta para o Supabase de mentira e ORIGEM_PERMITIDA para o endereço local. Confere que a cópia não tem endereço real (supabase.co, workers.dev). Os três segredos, de mentira, vão num arquivo dessa pasta temporária (`--env-file`), nunca num .dev.vars do repositório. Liga `wrangler dev --local` (workerd, o mesmo motor do Workers) com WRANGLER_SEND_METRICS=false, em 127.0.0.1. Confere /, /b/ e /quiz/ com noindex e uma rota /api/ desconhecida com 404. Desde a v2 (pedido 09), confere também que as três páginas saem com Content-Type `text/html` com charset utf-8 e com a meta charset nos primeiros 1024 bytes, e que os três CSS saem com charset utf-8.
 4. **Catálogo** (pergunta 23.10). Sem a linha ('quiz-01', 1), o envio volta 422: o banco recusa pela chave estrangeira (409) e o garçom responde "pacote recusado". Depois aplica **dados/banco/catalogo-prototipo.sql**, o mesmo arquivo que o roteiro da etapa 26 vai mandar o Otávio rodar, duas vezes, e confere que fica uma linha só.
-5. **Quiz no navegador sem tela** (playwright-core e o Chromium do cache, como a ferramenta de prints). Entra pela landing, clica no botão e percorre o quiz: pela variante A (/) com `?utm_source=bio&utm_campaign=funil-01`, em 1440, com as respostas do exemplo de base/lead-score.md (nota 96, faixa A); pela variante B (/b/) com `utm_source=stories`, em 375, com o caso eliminatório (faturamento "Menos de R$ 50 mil"). Pessoas de teste: TESTE Marina Ensaio e TESTE Paulo Ensaio, e-mails @teste.invalid, telefones com zeros. O navegador só fala com 127.0.0.1: as fontes do Google que o mockup carrega são bloqueadas e contadas. Confere no banco as linhas de pessoas e eventos: nota, faixa, versão do lead score, consentimentos com texto e data, utm, etiquetas, sessão e respostas.
+5. **Quiz no navegador sem tela** (playwright-core e o Chromium do cache, como a ferramenta de prints). Entra pela landing, clica no botão e percorre o quiz: pela variante A (/) com `?utm_source=bio&utm_campaign=funil-01`, em 1440, com as respostas do exemplo de base/lead-score.md (nota 96, faixa A); pela variante B (/b/) com `utm_source=stories`, em 375, com o caso eliminatório (faturamento "Menos de R$ 50 mil"). Pessoas de teste: TESTE Marina Ensaio e TESTE Paulo Ensaio, e-mails @teste.invalid, telefones com zeros. O navegador só fala com 127.0.0.1: as fontes do Google que o mockup carrega são bloqueadas e contadas. Confere que o navegador leu o quiz como UTF-8 (document.characterSet) e o título com os acentos certos; o document.compatMode sai numa linha INFO (o quiz não tem doctype, pergunta 09.1). Confere no banco as linhas de pessoas e eventos: nota, faixa, versão do lead score, consentimentos com texto e data, utm, etiquetas, sessão e respostas; e que o texto do consentimento chegou com os acentos certos, igual ao da página (o combinado, a frase da política de privacidade e as duas caixas, lidos da fonte do quiz; sem "Ã", "Â" nem caractere de substituição).
 6. **Planilha do SDR.** Em outro processo (o UrlFetchApp de mentira é síncrono e trava a linha principal de quem chama), roda instalar() e buscar_() de Codigo.gs contra o garçom local, pela porta privada, com a CHAVE_PLANILHA de mentira. Confere: a primeira busca, logo depois do quiz, traz 0 linhas (a margem de 1 minuto do banco, 21.6); depois do contorno da margem (abaixo), traz 1 linha, só o lead faixa A, com as 19 colunas na ordem e os valores certos; rodar de novo não duplica; com o cursor perdido, também não; o registro da planilha não tem dado pessoal; com a chave errada, 401 e nada gravado.
 7. **Casos de erro.** Chave publicável lendo tabela, visão, gravando direto ou chamando leads_para_planilha pelo Supabase de mentira: 401. Chave secreta lendo tabela ou gravando o fim do quiz: 403. Porta privada do garçom com a chave da planilha errada, sem chave ou com a publicável no lugar: 401 sem detalhe. Pacote sem consentimento: o garçom recusa (422) sem chamar o banco, e a função chamada direto com a publicável também recusa (400, restrição 23514). A mesma pessoa enviando duas vezes ao mesmo tempo (dois POST simultâneos ao garçom): uma pessoa só no banco e dois eventos.
 8. **Fechamento.** conferir.sql de novo (13 de 13), a saída do garçom sem dado pessoal, sem id_pessoa e sem chave, e o garçom tendo usado só a publicável na porta pública e só a secreta na porta privada.
@@ -84,11 +84,12 @@ O que o contorno pula: a espera de verdade; a conta da margem com o relógio de 
 
 ## Resultado do ensaio
 
-Rodado do zero duas vezes seguidas depois da revisão, na madrugada de 08 para 09/11/2026, as duas com 88 de 88, e uma vez com `--sem-wrangler`, 86 de 86 (sem as duas conferências do wrangler). As linhas INFO só informam e não entram na contagem. Para provar que o ensaio pega erro, foi rodado uma vez com uma permissão de leitura a mais para anon acrescentada de propósito ao fim de esquema.sql (desfeita logo depois, pelo Git): 6 conferências deram FALHOU e o código de saída foi 1. Saída real da última rodada:
+**v2 (09/11/2026, pedido 09).** Rodado inteiro com o wrangler dev: 96 de 96. Com `--sem-wrangler`: 94 de 94. Para provar que as conferências novas pegam o defeito, rodado uma vez com o garçom v2 e o montador v2 de volta no lugar (desfeito logo depois): no contorno, que entrega sem charset como a Cloudflare, as três páginas e os três CSS deram FALHOU por falta de charset, e o quiz nem chegou ao fim (7 FALHOU, código 1); no wrangler dev, só a meta charset do quiz deu FALHOU (1 de 96), porque **o wrangler dev local já acrescenta o charset sozinho**. Foi por isso que o ensaio da v1 não pegou o problema: a Cloudflare de verdade entrega `text/html` sem charset, o wrangler dev não.
+
+As linhas INFO só informam e não entram na contagem. Saída real da rodada com o wrangler dev:
 
 ```
-
-Ensaio geral do protótipo do funil-01 · 2026-11-09T03:22:34.706Z
+Ensaio geral do protótipo do funil-01 · 2026-11-09T10:59:31.577Z
 Só 127.0.0.1, só valores de mentira, só leads de teste (#102).
 
 · 1. Banco local (PGlite) com os papéis do Supabase de mentira
@@ -131,8 +132,14 @@ OK     · wrangler dev --local no ar (workerd), sem login, com os segredos de me
   modo do garçom: wrangler dev --local
   avisos do wrangler: nenhum
 OK     · GET / (variante A): 200, X-Robots-Tag noindex e meta noindex (200)
+OK     · GET / (variante A): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
 OK     · GET /b/ (variante B): 200, X-Robots-Tag noindex e meta noindex (200)
+OK     · GET /b/ (variante B): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
 OK     · GET /quiz/ (quiz): 200, X-Robots-Tag noindex e meta noindex (200)
+OK     · GET /quiz/ (quiz): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
+OK     · GET /tokens.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
+OK     · GET /estilo.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
+OK     · GET /b/estilo.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
 OK     · GET /api/nao-existe: 404 com noindex (404)
 
 · 4. Catálogo de entregas (pergunta 23.10)
@@ -149,8 +156,11 @@ OK     · exemplo: POST /api/fim-quiz gravado (201), tela do plano, sem aviso de
 OK     · eliminatório (375): a landing /b/ leva a /quiz/ com utm_source=stories
 OK     · eliminatório: POST /api/fim-quiz gravado (201), tela do relatório, sem aviso de falha
 OK     · console das páginas sem dado de pessoa
+OK     · quiz lido como UTF-8 nos dois casos (document.characterSet UTF-8, UTF-8), título com os acentos certos
+INFO   · quiz em document.compatMode BackCompat (sem doctype; pergunta 09.1)
 OK     · banco · pessoas: o lead do exemplo, com nome TESTE, e-mail @teste.invalid e telefone como a página mandou
 OK     · banco · pessoas: consentimento por WhatsApp e e-mail, com o texto aceito e a data
+OK     · banco · pessoas: texto do consentimento com os acentos certos (o combinado, a política de privacidade e as duas caixas, iguais aos da página)
 OK     · banco · pessoas: primeira visita bio, funil-01
 OK     · banco · eventos: um fim_quiz com nota 96, faixa a, versão 2 do lead score (veio 96, a)
 OK     · banco · eventos: etiquetas funil-01, quiz-01 v1, utm bio e funil-01, gravado pelo garçom, com sessão
@@ -198,10 +208,12 @@ OK     · no fim · conferir.sql: linha "tudo certo" = true (13 de 13)
 OK     · saída do garçom (wrangler dev, 17 linhas [garcom]) sem dado pessoal, sem id_pessoa e sem chave
 OK     · o garçom só chamou registrar_fim_quiz com a publicável (anon) e leads_para_planilha com a secreta (service_role) (10 chamadas)
 OK     · navegador: fora de 127.0.0.1 só tentou as fontes do Google, e foram bloqueadas: 2 pedidos (fonts.googleapis.com)
-  tempo do ensaio: 22 s
+  tempo do ensaio: 25 s
 
-Tudo certo: 88 de 88 conferências passaram
+Tudo certo: 96 de 96 conferências passaram
 ```
+
+**v1 (madrugada de 08 para 09/11/2026).** 88 de 88 duas vezes seguidas e 86 de 86 com `--sem-wrangler`. Prova de que pega erro: uma permissão de leitura a mais para anon, acrescentada de propósito ao fim de esquema.sql e desfeita pelo Git, deu 6 FALHOU e código 1.
 
 ## Limitações e o que fica para amanhã
 
@@ -213,7 +225,7 @@ Tudo certo: 88 de 88 conferências passaram
 - **Versão do Postgres.** O PGlite é o PostgreSQL 18.6; o projeto do Supabase pode ter outra versão. O esquema não usa nada novo, mas a confirmação é o esquema.sql rodar sem erro no editor SQL amanhã.
 - **Fuso.** O banco do ensaio roda em UTC, como o Supabase; o horário de Brasília na planilha é conta do Apps Script de mentira (24.13).
 
-**O que o wrangler dev local não prova** (só se confere na Cloudflare de verdade): o endereço workers.dev, HTTPS, o `run_worker_first` na borda da Cloudflare, os segredos no cofre, o registro da Cloudflare (aqui, a saída do wrangler) e o garçom falando com o Supabase pela internet. O wrangler dev rodou sem login; o ensaio não confere se o wrangler fala com a rede por conta própria (por exemplo, para ver se há versão nova), mas o garçom só chama o Supabase de mentira e a configuração temporária não tem endereço real.
+**O que o wrangler dev local não prova** (só se confere na Cloudflare de verdade): o Content-Type que a Cloudflare dá aos arquivos (o wrangler dev já põe charset; a borda, não; v2), o endereço workers.dev, HTTPS, o `run_worker_first` na borda da Cloudflare, os segredos no cofre, o registro da Cloudflare (aqui, a saída do wrangler) e o garçom falando com o Supabase pela internet. O wrangler dev rodou sem login; o ensaio não confere se o wrangler fala com a rede por conta própria (por exemplo, para ver se há versão nova), mas o garçom só chama o Supabase de mentira e a configuração temporária não tem endereço real.
 
 **Para o roteiro da etapa 26:**
 
@@ -224,7 +236,7 @@ Tudo certo: 88 de 88 conferências passaram
 
 **O navegador:** as fontes do Google são bloqueadas no ensaio, então o visual não é conferido aqui (os prints da etapa 23 conferem). O quiz roda no site montado, servido pelo workerd, e não no celular de verdade (passo 5 do roteiro da etapa 26).
 
-**Contorno sem wrangler** (`--sem-wrangler`): o handler do garçom roda num servidor Node, com um ASSETS simples que lê a pasta montada. Não imita o binding de assets da Cloudflare (por exemplo, o redirecionamento de /quiz para /quiz/); serve só se o wrangler dev falhar.
+**Contorno sem wrangler** (`--sem-wrangler`): o handler do garçom roda num servidor Node, com um ASSETS simples que lê a pasta montada. Não imita o binding de assets da Cloudflare (por exemplo, o redirecionamento de /quiz para /quiz/); serve só se o wrangler dev falhar. Desde a v2, esse ASSETS entrega HTML e CSS sem charset, como a Cloudflare entregou em 09/11, para o garçom ter de acrescentar.
 
 ## O que não fazer
 

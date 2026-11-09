@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 1 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 2 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -11,9 +11,11 @@
 //   2. Supabase de mentira em 127.0.0.1 (supabase-de-mentira.mjs): chave de mentira vira papel.
 //   3. Site montado (montar-site.mjs) e o garçom no wrangler dev --local, com a configuração do
 //      protótipo copiada para uma pasta temporária e só SUPABASE_URL e ORIGEM_PERMITIDA trocadas.
+//      Todo HTML e CSS servido sai com charset utf-8 (v2, pedido 09).
 //   4. Sem a linha do catálogo, o envio é recusado (422); depois, dados/banco/catalogo-prototipo.sql.
 //   5. O quiz preenchido num navegador sem tela, entrando pela landing: exemplo do lead score
-//      (96, faixa A) e um eliminatório; as linhas no banco.
+//      (96, faixa A) e um eliminatório; o quiz lido como UTF-8; as linhas no banco, com o texto
+//      do consentimento com os acentos certos (v2, pedido 09).
 //   6. A planilha do SDR (Codigo.gs com o Google de mentira, em outro processo) pela porta privada.
 //   7. Casos de erro: chave publicável lendo tabela, chave da planilha errada, pacote sem
 //      consentimento, a mesma pessoa enviando duas vezes ao mesmo tempo.
@@ -313,7 +315,8 @@ async function principal() {
   if (modo === 'node') {
     // Contorno: o handler do garçom num servidor Node, com um ASSETS que lê a pasta montada.
     const garcom = (await import(pathToFileURL(join(RAIZ, 'entregas/garcom/garcom.mjs')).href)).default;
-    const TIPOS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.jpg': 'image/jpeg' };
+    // Sem charset, como a Cloudflare entrega (pedido 09): quem acrescenta é o garçom
+    const TIPOS = { '.html': 'text/html', '.css': 'text/css', '.jpg': 'image/jpeg' };
     const ASSETS = {
       fetch: async (req) => {
         let caminho = decodeURIComponent(new URL(req.url).pathname);
@@ -353,6 +356,17 @@ async function principal() {
     const html = await x.text();
     conferir(x.status === 200 && x.headers.get('x-robots-tag') === 'noindex' && /<meta\s+name="robots"[^>]*noindex/.test(html),
       'GET ' + caminho + ' (' + rotulo + '): 200, X-Robots-Tag noindex e meta noindex (' + x.status + ')');
+    // pedido 09: o cabeçalho com charset e, de reserva, a meta charset nos primeiros 1024 bytes
+    const tipo = x.headers.get('content-type') || '';
+    const inicio1024 = Buffer.from(html, 'utf8').subarray(0, 1024).toString('utf8');
+    conferir(/^text\/html\s*;.*charset=utf-8/i.test(tipo) && /<meta\s+charset=["']?utf-8/i.test(inicio1024),
+      'GET ' + caminho + ' (' + rotulo + '): Content-Type com charset utf-8 (' + tipo + ') e meta charset nos primeiros 1024 bytes');
+  }
+  for (const caminho of ['/tokens.css', '/estilo.css', '/b/estilo.css']) {
+    const x = await fetch(BASE + caminho);
+    await x.arrayBuffer();
+    const tipo = x.headers.get('content-type') || '';
+    conferir(x.status === 200 && /^text\/css\s*;.*charset=utf-8/i.test(tipo), 'GET ' + caminho + ': Content-Type com charset utf-8 (' + tipo + ')');
   }
   let x = await fetch(BASE + '/api/nao-existe');
   conferir(x.status === 404 && x.headers.get('x-robots-tag') === 'noindex', 'GET /api/nao-existe: 404 com noindex (' + x.status + ')');
@@ -403,6 +417,8 @@ async function principal() {
       await page.locator('[data-quiz]').first().click();
       await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 });
       const endereco = new URL(page.url());
+      // pedido 09: como o navegador leu o quiz (sem charset, lia windows-1252) e o título com acento
+      const leitura = await page.evaluate(() => ({ charset: document.characterSet, modo: document.compatMode, titulo: document.title }));
       const naTela = (id) => page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
       const opcao = (v) => page.locator('[data-corpo] .opcao[data-valor="' + v + '"]').click();
       await page.locator('.cartao__link[data-acao="proximo"]').click();
@@ -436,7 +452,7 @@ async function principal() {
       await naTela(telaFinal);
       await page.waitForTimeout(300);
       const aviso = await page.locator('#avisoEnvio').isVisible();
-      return { endereco, status: rr.status(), aviso, consoleTexto };
+      return { endereco, status: rr.status(), aviso, consoleTexto, leitura };
     } finally {
       await ctx.close();
     }
@@ -450,6 +466,9 @@ async function principal() {
   conferir(q2.endereco.pathname === '/quiz/' && q2.endereco.searchParams.get('utm_source') === 'stories', 'eliminatório (375): a landing /b/ leva a /quiz/ com utm_source=stories');
   conferir(q2.status === 201 && !q2.aviso, 'eliminatório: POST /api/fim-quiz gravado (' + q2.status + '), tela do relatório, sem aviso de falha');
   conferir([...q1.consoleTexto, ...q2.consoleTexto].every(t => !DADO_PESSOAL.test(t)), 'console das páginas sem dado de pessoa');
+  conferir([q1, q2].every(q => q.leitura.charset === 'UTF-8' && q.leitura.titulo.includes('público') && q.leitura.titulo.includes('Análise') && !/Ã|Â/.test(q.leitura.titulo)),
+    'quiz lido como UTF-8 nos dois casos (document.characterSet ' + q1.leitura.charset + ', ' + q2.leitura.charset + '), título com os acentos certos');
+  informar('quiz em document.compatMode ' + q1.leitura.modo + ' (sem doctype; pergunta 09.1)');
 
   const linhaPessoa = async (email) => (await naFila(() => db.query(`select * from public.pessoas where email = $1`, [email]))).rows;
   const eventosDe = async (id) => (await naFila(() => db.query(`select * from public.eventos where id_pessoa = $1 order by gravado_em`, [id]))).rows;
@@ -461,6 +480,13 @@ async function principal() {
   conferir(paDoBanco && pa.nome === PESSOA_A.nome && pa.telefone === '+55 (00) 90000-0001', 'banco · pessoas: o lead do exemplo, com nome TESTE, e-mail @teste.invalid e telefone como a página mandou');
   conferir(paDoBanco && pa.consentimento_whatsapp === 'sim' && pa.consentimento_email === 'sim' && pa.consentimento_texto.length > 50 && pa.consentimento_em instanceof Date,
     'banco · pessoas: consentimento por WhatsApp e e-mail, com o texto aceito e a data');
+  // pedido 09: o texto que a pessoa aceitou chega ao banco igual ao da página, com os acentos
+  const fonteQuiz = readFileSync(join(RAIZ, 'entregas/quizzes/quiz-01/pagina/index.html'), 'utf8');
+  const doQuiz = (campo) => (fonteQuiz.match(new RegExp('^\\s*' + campo + ":'([^']+)'", 'm')) || [])[1];
+  const esperadoCons = [doQuiz('texto'), 'Tudo explicado na política de privacidade', doQuiz('whatsapp'), doQuiz('email')];
+  const textoCons = paDoBanco ? pa.consentimento_texto : '';
+  conferir(esperadoCons.every(t => t && textoCons.includes(t)) && /diagnóstico/.test(textoCons) && !/Ã|Â|\uFFFD/.test(textoCons),
+    'banco · pessoas: texto do consentimento com os acentos certos (o combinado, a política de privacidade e as duas caixas, iguais aos da página)');
   conferir(paDoBanco && pa.primeira_utm_source === 'bio' && pa.primeira_utm_campaign === 'funil-01', 'banco · pessoas: primeira visita bio, funil-01');
   conferir(ea.length === 1 && ea[0].tipo === 'fim_quiz' && ea[0].lead_score_nota === 96 && ea[0].lead_score_faixa === 'a' && ea[0].lead_score_versao === 2,
     'banco · eventos: um fim_quiz com nota 96, faixa a, versão 2 do lead score' + (ea[0] ? ' (veio ' + ea[0].lead_score_nota + ', ' + ea[0].lead_score_faixa + ')' : ''));

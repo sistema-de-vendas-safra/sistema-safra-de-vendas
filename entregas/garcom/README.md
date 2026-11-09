@@ -1,6 +1,6 @@
 ---
 id: garcom
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -26,7 +26,7 @@ desatualizado: true
 
 # Garçom · rascunho
 
-A função que fica entre as páginas do protótipo e o banco (funis/funil-01/funil.md, "Caminho do dado", passos 2 e 5), escrita como um Cloudflare Worker em JavaScript, sem dependências externas. **Nunca foi publicada nem ligada a um banco real.**
+A função que fica entre as páginas do protótipo e o banco (funis/funil-01/funil.md, "Caminho do dado", passos 2 e 5), escrita como um Cloudflare Worker em JavaScript, sem dependências externas. **Publicada pela primeira vez em 09/11/2026, na v2, no Worker do protótipo, ligada ao banco de teste, só com leads de teste (#102). A v3 ainda não foi publicada** (o Otávio publica pelo LIGAR.md).
 
 **Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (planta-do-banco, banco-rascunho, funil-01, planilha-sdr, quiz-01-pagina; regra provisória 11.1).
 
@@ -39,8 +39,15 @@ A função que fica entre as páginas do protótipo e o banco (funis/funil-01/fu
 | Arquivo | O que é |
 |---|---|
 | garcom.mjs | O Worker: as duas portas em /api/, os arquivos do protótipo pelo binding de assets e as funções `conferirPacote`, `lerCursor` e `chaveConfere` |
-| wrangler.toml.exemplo | Só a lista do que a configuração precisa ter. A configuração de verdade do Worker vai para entregas/prototipo-funil-01/ na etapa 23 |
 | teste/testar-garcom.mjs | Teste local, com um fetch falso que só registra o que seria chamado e um ASSETS falso |
+
+## O que mudou da versão 2 para a 3
+
+Pedido 09 (prompts/09-acentos-do-quiz.md), 09/11/2026. Depois da primeira publicação, o quiz em /quiz/ apareceu com os acentos quebrados ("estÃ¡", "diagnÃ³stico"): a Cloudflare entrega os arquivos como `text/html`, sem charset, e a página do quiz não tem `<meta charset>` (herança do mockup), então o navegador a lia como windows-1252. Isso estragaria também o texto do consentimento e as respostas que o quiz manda ao banco.
+
+- **Charset nos arquivos de texto.** Toda resposta de arquivo do tipo text/html, text/css ou JavaScript (text/javascript, application/javascript, application/x-javascript) que chega sem charset sai com `; charset=utf-8`. Se o arquivo já vem com um charset, fica como veio. Outros tipos (imagem, JSON) e arquivo sem Content-Type não mudam. O corpo nunca é mexido. Função `comCharset`, exportada para o teste.
+- **Forma, guardada para esta versão (triagem da etapa 27):** wrangler.toml.exemplo apagado, porque a configuração de verdade mora em entregas/prototipo-funil-01/wrangler.toml (22.8); o teste não troca mais o nome e o e-mail do exemplo, que o README do quiz já traz marcados como teste, e passa a parar com erro se o exemplo deixar de vir marcado (23.4).
+- O resto da v2 continua igual.
 
 ## O que mudou da versão 1 para a 2
 
@@ -113,7 +120,7 @@ Decisões #100 e #101 (base/decisoes.md) e o banco v2 (dados/banco/README.md).
 
 ## Arquivos do protótipo
 
-Tudo o que não é /api/ vai para `env.ASSETS.fetch(request)`, o binding de assets do Workers. A resposta dos arquivos é copiada e ganha o cabeçalho `X-Robots-Tag: noindex`; os outros cabeçalhos ficam como vieram. Sem ASSETS (no teste), 404 simples; com falha do ASSETS, 502 simples, os dois com noindex.
+Tudo o que não é /api/ vai para `env.ASSETS.fetch(request)`, o binding de assets do Workers. A resposta dos arquivos é copiada e ganha o cabeçalho `X-Robots-Tag: noindex`; HTML, CSS e JavaScript sem charset ganham `; charset=utf-8` no Content-Type (v3); os outros cabeçalhos ficam como vieram. Sem ASSETS (no teste), 404 simples; com falha do ASSETS, 502 simples, os dois com noindex.
 
 **Para a etapa 23:** a configuração do Worker precisa rodar o garçom antes dos arquivos em todo pedido (`run_worker_first = true` no bloco de assets). Sem isso, a Cloudflare entrega os arquivos direto, sem passar pelo garçom, e eles saem sem o cabeçalho noindex (só com a meta da página).
 
@@ -145,9 +152,9 @@ Só os nomes aparecem no código. Os valores dos segredos moram nas variáveis s
 node entregas/garcom/teste/testar-garcom.mjs
 ```
 
-Precisa só do Node (18 ou mais novo), sem instalar nada. O teste importa o handler de garcom.mjs e troca o `fetch` por um falso, que só registra o que seria chamado e recusa qualquer endereço que não seja o de mentira; os arquivos vêm de um ASSETS falso. Os valores do ambiente são de mentira, e os endereços ficam num domínio `.invalid`, que não existe. A porta pública usa o pacote do exemplo do README do quiz-01 (entregas/quizzes/quiz-01/pagina/README.md, dados fictícios), lido do próprio README e marcado como lead de teste (nome com TESTE na frente, e-mail @teste.invalid; #102), e casos inválidos. A porta privada usa dois leads de mentira com a mesma marca. O teste captura o console e confere que nenhum nome, e-mail, telefone, id_pessoa, cursor ou chave de teste aparece no registro do garçom, que nenhuma resposta vaza detalhe interno e que toda resposta leva noindex. O caminho do Workers para a comparação de tempo constante (`crypto.subtle.timingSafeEqual`) é conferido com um timingSafeEqual de mentira, feito com o do próprio Node.
+Precisa só do Node (18 ou mais novo), sem instalar nada. O teste importa o handler de garcom.mjs e troca o `fetch` por um falso, que só registra o que seria chamado e recusa qualquer endereço que não seja o de mentira; os arquivos vêm de um ASSETS falso. Os valores do ambiente são de mentira, e os endereços ficam num domínio `.invalid`, que não existe. A porta pública usa o pacote do exemplo do README do quiz-01 (entregas/quizzes/quiz-01/pagina/README.md, dados fictícios), lido do próprio README, que já o traz marcado como lead de teste (nome com TESTE na frente, e-mail @teste.invalid; #102), e casos inválidos. A porta privada usa dois leads de mentira com a mesma marca. O teste captura o console e confere que nenhum nome, e-mail, telefone, id_pessoa, cursor ou chave de teste aparece no registro do garçom, que nenhuma resposta vaza detalhe interno, que toda resposta leva noindex e que HTML, CSS e JavaScript sem charset saem com charset utf-8, com o corpo intacto (v3). O caminho do Workers para a comparação de tempo constante (`crypto.subtle.timingSafeEqual`) é conferido com um timingSafeEqual de mentira, feito com o do próprio Node.
 
-### Resultado do teste (08/11/2026)
+### Resultado do teste (09/11/2026)
 
 ```
 OK     · pacote do exemplo do quiz-01 (status 201, chamadas ao banco 1, resposta {"ok":true})
@@ -266,6 +273,18 @@ OK     · arquivo /b/ vai para ASSETS e ganha noindex, mantendo os outros cabeç
 OK     · arquivo /quiz/ vai para ASSETS e ganha noindex, mantendo os outros cabeçalhos (status 200)
 OK     · ASSETS recebeu só os pedidos de arquivo, nunca os de /api/
 OK     · /api/fim-quiz com ASSETS ligado é atendido pelo garçom, antes dos arquivos
+OK     · arquivo com Content-Type "text/html" sai como "text/html; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "text/css" sai como "text/css; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "application/javascript" sai como "application/javascript; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "text/javascript" sai como "text/javascript; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "TEXT/HTML" sai como "TEXT/HTML; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "text/html; charset=utf-8" sai como "text/html; charset=utf-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "text/html;charset=UTF-8" sai como "text/html;charset=UTF-8", corpo com acentos intacto
+OK     · arquivo com Content-Type "text/html; charset=iso-8859-1" sai como "text/html; charset=iso-8859-1", corpo com acentos intacto
+OK     · arquivo com Content-Type "image/jpeg" sai como "image/jpeg", corpo com acentos intacto
+OK     · arquivo com Content-Type "application/json" sai como "application/json", corpo com acentos intacto
+OK     · arquivo sem Content-Type continua sem (o garçom não inventa tipo)
+OK     · comCharset: ";" ou espaço no fim, vazio e nulo
 OK     · arquivo sem ASSETS (teste): 404 simples (status 404, chamadas ao banco 0, resposta nao encontrado)
 OK     · ASSETS com falha: 502 simples (status 502, chamadas ao banco 0, resposta servico indisponivel)
 OK     · X-Robots-Tag: noindex em toda resposta
@@ -282,7 +301,7 @@ O que seria pedido pela porta privada (fetch falso):
   endereço: {SUPABASE_URL}/rest/v1/rpc/leads_para_planilha
   método: POST · cabeçalhos: Content-Type, Accept, apikey · corpo: apos_gravado_em, apos_id_pessoa, quantos
 
-Tudo certo: 121 de 121 conferências passaram
+Tudo certo: 133 de 133 conferências passaram
 ```
 
 O teste não cobre o banco: o fetch falso não executa as funções. A chamada de verdade às duas funções, com cada chave, fica para o ensaio geral (etapa 25) e para o teste de amanhã no Supabase.

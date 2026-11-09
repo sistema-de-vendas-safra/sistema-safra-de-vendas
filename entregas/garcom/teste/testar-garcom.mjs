@@ -1,4 +1,4 @@
-// Teste local do garçom v2 · não toca nenhum serviço real
+// Teste local do garçom v3 · não toca nenhum serviço real
 // Rodar da raiz do repositório:  node entregas/garcom/teste/testar-garcom.mjs
 //
 // Importa o handler de entregas/garcom/garcom.mjs e o chama nas três partes do Worker:
@@ -13,7 +13,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import garcom from '../garcom.mjs';
+import garcom, { comCharset } from '../garcom.mjs';
 
 const aqui = dirname(fileURLToPath(import.meta.url));
 const raiz = join(aqui, '..', '..', '..');
@@ -22,8 +22,8 @@ const raiz = join(aqui, '..', '..', '..');
 const readmeQuiz = readFileSync(join(raiz, 'entregas/quizzes/quiz-01/pagina/README.md'), 'utf8');
 const linha = readmeQuiz.split('\n').find(l => l.trim().startsWith('pacote do exemplo:'));
 const PACOTE_EXEMPLO = JSON.parse(linha.slice(linha.indexOf('{')));
-PACOTE_EXEMPLO.pessoa.nome = 'TESTE ' + PACOTE_EXEMPLO.pessoa.nome;
-PACOTE_EXEMPLO.pessoa.email = 'marina@teste.invalid';
+// o exemplo do README já vem marcado como teste (22.9); v3 tirou a troca que o teste fazia (23.4)
+if (!PACOTE_EXEMPLO.pessoa.nome.startsWith('TESTE ') || !PACOTE_EXEMPLO.pessoa.email.endsWith('@teste.invalid')) throw new Error('o exemplo do README do quiz não está marcado como teste (#102)');
 const copia = () => structuredClone(PACOTE_EXEMPLO);
 
 // ··· Ambiente de mentira ···
@@ -350,6 +350,39 @@ await caso('rota /api/fim-quiz/ com barra no fim', pedido({ corpo: copia(), cami
   pedidosAosArquivos = [];
   const r = await garcom.fetch(pedido({ corpo: copia() }), { ...ENV, ASSETS });
   marcar(r.status === 201 && pedidosAosArquivos.length === 0 && chamadas.length === 1, '/api/fim-quiz com ASSETS ligado é atendido pelo garçom, antes dos arquivos'); }
+// novo na v3: charset nos arquivos de texto (pedido 09). Na Cloudflare, o HTML chega sem charset.
+{ const ACENTOS = '<title>nome público da Análise</title><p>está, diagnóstico</p>';
+  const assetsCom = (tipo) => ({ async fetch() {
+    const h = tipo === null ? {} : { 'Content-Type': tipo };
+    const r = new Response(new TextEncoder().encode(ACENTOS), { status: 200, headers: h });
+    if (tipo === null) r.headers.delete('Content-Type');
+    return r;
+  } });
+  const casos = [
+    ['text/html', 'text/html; charset=utf-8'],
+    ['text/css', 'text/css; charset=utf-8'],
+    ['application/javascript', 'application/javascript; charset=utf-8'],
+    ['text/javascript', 'text/javascript; charset=utf-8'],
+    ['TEXT/HTML', 'TEXT/HTML; charset=utf-8'],
+    ['text/html; charset=utf-8', 'text/html; charset=utf-8'],
+    ['text/html;charset=UTF-8', 'text/html;charset=UTF-8'],
+    ['text/html; charset=iso-8859-1', 'text/html; charset=iso-8859-1'],
+    ['image/jpeg', 'image/jpeg'],
+    ['application/json', 'application/json']
+  ];
+  for (const [veio, esperado] of casos) {
+    const r = await garcom.fetch(new Request(ORIGEM + '/quiz/'), { ...ENV, ASSETS: assetsCom(veio) });
+    const bytes = new Uint8Array(await r.arrayBuffer());
+    const corpoIgual = new TextDecoder('utf-8').decode(bytes) === ACENTOS;
+    if (r.headers.get('X-Robots-Tag') !== 'noindex') semNoindex.push('charset ' + veio);
+    marcar(r.status === 200 && r.headers.get('Content-Type') === esperado && corpoIgual,
+      'arquivo com Content-Type "' + veio + '" sai como "' + r.headers.get('Content-Type') + '", corpo com acentos intacto');
+  }
+  const r = await garcom.fetch(new Request(ORIGEM + '/quiz/'), { ...ENV, ASSETS: assetsCom(null) });
+  marcar(r.status === 200 && r.headers.get('Content-Type') === null, 'arquivo sem Content-Type continua sem (o garçom não inventa tipo)');
+  marcar(comCharset('text/html;') === 'text/html; charset=utf-8' && comCharset('text/css ') === 'text/css; charset=utf-8' && comCharset('') === '' && comCharset(null) === null,
+    'comCharset: ";" ou espaço no fim, vazio e nulo');
+}
 await caso('arquivo sem ASSETS (teste): 404 simples', new Request(ORIGEM + '/'), 404, 0);
 await caso('ASSETS com falha: 502 simples', new Request(ORIGEM + '/quiz/'), 502, 0, { env: { ...ENV, ASSETS: { fetch: async () => { throw new Error('falha de mentira'); } } } });
 
