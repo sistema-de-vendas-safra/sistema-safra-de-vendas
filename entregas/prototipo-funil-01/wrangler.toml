@@ -1,0 +1,34 @@
+# Worker do protótipo do funil-01 · configuração da Cloudflare. RASCUNHO, nunca publicado.
+# id: prototipo-funil-01 · versao 1 · rascunho · otavio: pendente (ver README.md desta pasta)
+#
+# Um Worker só para o protótipo (decisão #101): serve a variante A da landing em /, a variante B
+# em /b/, o quiz em /quiz/ e o garçom em /api/ (entregas/garcom/garcom.mjs), no mesmo endereço.
+# Os arquivos vêm da pasta montada por montar-site.mjs (site/, fora do Git).
+#
+# Sem id de conta (account_id) e sem nenhum segredo neste arquivo. Publicar é só pelo roteiro da
+# etapa 26 (LIGAR.md), depois do login do wrangler feito pelo Otávio.
+#
+# Segredos: só pelo nome, nunca aqui. Entram pelo painel da Cloudflare ou pelo comando de segredo
+# do wrangler, com o valor copiado direto do painel do serviço (roteiro da etapa 26):
+#   SUPABASE_CHAVE_PUBLICAVEL   chave publicável do Supabase; só a porta pública usa
+#   SUPABASE_CHAVE_SECRETA      chave secreta do Supabase; só a porta privada usa
+#   CHAVE_PLANILHA              abre a porta privada; mora também nas propriedades do script da planilha
+
+name = "safra-prototipo-funil-01"
+main = "../garcom/garcom.mjs"
+compatibility_date = "2026-11-04"
+workers_dev = true
+# Um endereço só (decisão #101): sem os links de prévia por versão
+preview_urls = false
+
+[assets]
+directory = "./site"
+binding = "ASSETS"
+# O Worker roda antes dos arquivos em todo pedido; senão a Cloudflare entrega os arquivos direto,
+# sem o cabeçalho X-Robots-Tag: noindex que o garçom acrescenta (pergunta 22.7).
+run_worker_first = true
+
+# Variáveis comuns: não são segredo (conexoes.md).
+[vars]
+SUPABASE_URL = "https://bvrvdlhpralmzizobsvu.supabase.co"
+ORIGEM_PERMITIDA = "https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev"

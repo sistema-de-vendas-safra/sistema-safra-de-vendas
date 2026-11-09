@@ -9,3 +9,6 @@ node_modules/
 *.env
 .envrc
 id_rsa*
+
+# Site montado do protótipo (entregas/prototipo-funil-01/montar-site.mjs); sai das entregas, não entra no Git
+entregas/prototipo-funil-01/site/

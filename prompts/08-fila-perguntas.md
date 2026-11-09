@@ -212,3 +212,71 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* o teste lê o exemplo e troca, só na memória, o nome para "TESTE Marina" e o e-mail para marina@teste.invalid. O README do quiz-01 não foi mexido.
    - *Recomendação:* na versão nova da página do quiz (etapa 23), trocar o exemplo do README pelos dados marcados; aí a troca no teste sai.
    - *Se decidir diferente:* nada muda no garçom.
+
+## Etapa 23
+
+23.1. **Aberta do arquivo, a página do quiz não envia e não avisa na tela.**
+   - *Dúvida:* o pedido manda o quiz continuar funcionando quando aberto direto do repositório (file://), só sem gravar, e deixa escolher entre um aviso discreto ou nenhum.
+   - *O que foi feito:* com location.protocol igual a file:, enviarPacote não faz nada: nenhum pedido, nenhum aviso de falha, nada no console. O único sinal é a nota do painel "Telas" do protótipo, que continua dizendo "nada é enviado" (23.3). Todo o resto da página funciona igual.
+   - *Recomendação:* manter; quem abre do arquivo é quem revisa, e o painel já diz.
+   - *Se decidir diferente:* para um aviso na tela, enviarPacote mostra uma linha no lugar de sair calado quando ENVIO_LIGADO é falso; o teste do caso file:// passa a esperar o aviso.
+
+23.2. **O texto do aviso de falha do envio é novo e precisa de olho do Júnior.**
+   - *Dúvida:* o pedido manda mostrar ao visitante uma mensagem clara se o envio falhar, sem perder o diagnóstico na tela e sem detalhe técnico. A copy do quiz (quiz-01-copy) não tem esse texto.
+   - *O que foi feito:* aviso preso no alto da tela, por cima do diagnóstico: "Não conseguimos enviar o seu contato para a nossa equipe agora. O seu diagnóstico continua aqui na tela.", com o botão "Tentar de novo" (enquanto reenvia, "Enviando…"). O texto mora no objeto AVISO_ENVIO, num lugar só. O mesmo aviso vale para recusa do garçom (400, 422), garçom fora (502, 503) e falta de rede. O reenvio manda o mesmo pacote. Não há botão de fechar. O aviso é role="alert".
+   - *Recomendação:* levar o texto à próxima revisão da copy do quiz (entra em quiz-01-copy como mudança nova) e, numa v3, acrescentar um "Fechar". Se o garçom gravou mas a resposta se perdeu no caminho, o reenvio cria um segundo evento fim_quiz da mesma pessoa (a pessoa não duplica, pelo banco v2); aceitável no teste, a conferir no ensaio (etapa 25).
+   - *Se decidir diferente:* mudar o texto é mudar AVISO_ENVIO; separar recusa de falha é olhar o status em enviarPacote (4xx sem "Tentar de novo").
+
+23.3. **A nota do painel "Telas" e o "preencher exemplo" mudaram para não mentir no site de teste.**
+   - *Dúvida:* o painel "Telas" do protótipo dizia "Dados de exemplo, nada é enviado", e o botão "protótipo · preencher exemplo" preenchia Marina Souza, um e-mail @empresaexemplo.com.br e um celular com cara de real. No site do protótipo, com o envio ligado, as duas coisas ficaram erradas, e a #102 manda marcar os leads de teste.
+   - *O que foi feito:* aberta do arquivo, a nota continua igual. No site, troca para "Protótipo de teste. O contato enviado vai para o banco de teste: use nome começando por TESTE e e-mail @teste.invalid.". O "preencher exemplo" passa a pôr TESTE Marina Souza, marina@teste.invalid, telefone com zeros e TESTE Empresa Exemplo. São controles do protótipo, não copy do quiz.
+   - *Recomendação:* manter enquanto o painel "Telas" existir; antes de ir ao ar com gente de verdade, o painel e o botão saem da página (já era assim: "O botão 'Telas', no canto, é do protótipo").
+   - *Se decidir diferente:* voltar a nota e o exemplo é desfazer duas linhas; aí o teste de amanhã precisa digitar TESTE e @teste.invalid à mão.
+
+23.4. **O exemplo do pacote no README do quiz agora é de teste; o teste do garçom ainda acrescenta TESTE.**
+   - *Dúvida:* a 22.9 recomendou trocar o exemplo do README do quiz pelos dados marcados e, aí, tirar a troca feita no teste do garçom. O teste do garçom não é desta etapa.
+   - *O que foi feito:* o exemplo do README do quiz (a saída do teste) passou a ser TESTE Marina e marina@teste.invalid. O teste do garçom não foi mexido: ele continua pondo "TESTE " na frente do nome (fica "TESTE TESTE Marina", só na memória) e trocando o e-mail. Rodado de novo: 121 de 121. No console da página do quiz, a linha dos dois critérios do fim (conflito-16) continua, porque não tem dado de pessoa (só o critério em uso, qualificado ou não e a faixa).
+   - *Recomendação:* tirar a troca do teste do garçom na próxima versão dele (junto com apagar o wrangler.toml.exemplo, 22.8).
+   - *Se decidir diferente:* nada muda no quiz.
+
+23.5. **A landing repassa as cinco utm, mas o quiz só lê duas; o código de sessão da landing é ignorado.**
+   - *Dúvida:* a orientação do coordenador manda repassar utm_source, utm_medium, utm_campaign, utm_content e utm_term, as que existirem, e conferir se o quiz lê com os mesmos nomes; a etapa 23 só diz "carregando as utm".
+   - *O que foi feito:* as duas variantes repassam as cinco, só as que vierem com valor (na v1 iam só utm_source e utm_campaign, vazias quando faltavam). Os nomes batem: o quiz lê utm_source e utm_campaign com os mesmos nomes, minúsculas, e só aceita os valores da lista do funil-01. utm_medium, utm_content e utm_term ficam no endereço do quiz, mas não entram no pacote: a planta (dados/planta/planta.md) e o garçom só têm utm_source e utm_campaign, e o garçom recusa campo a mais. O id_sessao que a landing manda (um UUID) não é lido pelo quiz, que cria o seu próprio (sessao-...), como já era na v1.
+   - *Recomendação:* manter no teste; se as outras três utm ou a ligação da visita da landing com o quiz forem úteis para a medição, decidir junto com a 18.5 (visitas e início do quiz), porque mexe na planta, no banco e no garçom.
+   - *Se decidir diferente:* para repassar só as duas, a lista da landing fica com utm_source e utm_campaign.
+
+23.6. **O link da landing para o quiz: caminho do repositório no arquivo, /quiz/ no site.**
+   - *Dúvida:* o pedido manda o botão levar a /quiz/ e deixa decidir como o link se comporta aberto do repositório.
+   - *O que foi feito:* nas entregas, o href do botão continua sendo o caminho do quiz no repositório (../../../quizzes/quiz-01/pagina/index.html), e o programa da página acrescenta as utm a esse href. A montagem do site troca esse href por /quiz/ (e confere que a troca aconteceu uma vez em cada variante). Assim a revisão local continua funcionando e o site leva a /quiz/, sem a landing precisar saber onde está.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* a landing pode escolher sozinha (file: usa o href, o resto usa /quiz/); aí a montagem deixa de trocar o link.
+
+23.7. **compatibility_date ficou em 2026-11-04, não em 08/11.**
+   - *Dúvida:* a orientação do coordenador diz "compatibility_date atual". O wrangler 4.158.0 instalado vem com o workerd de 04/11/2026, o mais novo que ele conhece; com 2026-11-08 o dry-run também passou, sem aviso.
+   - *O que foi feito:* 2026-11-04, a data mais nova que o motor instalado conhece, para o ensaio local (etapa 25) rodar com o mesmo comportamento da publicação.
+   - *Recomendação:* manter; a data só muda o comportamento do Worker quando a Cloudflare liga uma mudança nova, e nada entre 04/11 e 08/11 afeta o garçom.
+   - *Se decidir diferente:* trocar a data em wrangler.toml; se o ensaio local avisar que não conhece a data, atualizar o wrangler em nucleo/ferramentas/prototipo/.
+
+23.8. **No celular, o quiz precisa da meta viewport: a montagem acrescenta só no site do protótipo.**
+   - *Dúvida:* a página do quiz (e o mockup do Júnior, e o docs/index.html do repositório dele) não tem `<meta name="viewport" content="width=device-width, initial-scale=1">`. O mockup nasceu num artefato do Claude, que põe a viewport por fora. Num navegador de celular, sem ela, a página é desenhada com 980 pixels de largura e encolhida (conferido imitando um celular de 375: largura útil 981). A página também não tem `<!doctype html>` e roda em modo quirks, no navegador e nos prints. Charset: conferido pelo revisor no wrangler dev local, o servidor manda text/html; charset=utf-8 e o document.characterSet dá UTF-8; nenhuma meta charset foi acrescentada.
+   - *O que foi feito:* por decisão do coordenador, montar-site.mjs acrescenta a meta viewport, só nos HTML montados e só quando falta, antes do `<title>` (como faz com o noindex), e a conferência da montagem barra HTML montado sem viewport. Só o quiz precisou; as landings já tinham. A entrega do quiz não muda (conflito-18). print.js ganhou a opção --celular (imita celular no print de 375); os prints de 375 do site montado foram refeitos assim, com largura útil 375 nas três páginas.
+   - *Recomendação:* na entrega, decidir numa v3 do quiz (conflito-18) se ela ganha a viewport e o `<!doctype html>`, e aí a montagem deixa de acrescentar. O modo quirks fica para a mesma v3.
+   - *Se decidir diferente:* tirar a viewport do site é apagar garantirViewport da montagem; o quiz volta a abrir encolhido no celular.
+
+23.9. **Os comentários de cabeçalho das entregas vão junto para o site.**
+   - *Dúvida:* os HTML das entregas começam com um comentário com o cabeçalho (id, versão, status, aprovações, conflitos, "rascunho, nada vai ao ar"). A montagem copia o HTML como está.
+   - *O que foi feito:* os comentários foram junto: aparecem para quem abrir o código-fonte da página do protótipo. Nenhuma chave nem dado pessoal; só nomes internos e o status.
+   - *Recomendação:* manter no protótipo de teste (o endereço não é divulgado e tem noindex); antes de ir ao ar com gente de verdade, a montagem passa a tirar os comentários de cabeçalho.
+   - *Se decidir diferente:* uma linha na montagem tira o primeiro comentário de cada HTML.
+
+23.10. **O catálogo de entregas precisa da linha ('quiz-01', 1) antes do teste.**
+   - *Dúvida:* a página v2 manda versao_entrega 1, e o banco confere o par (entrega, versão) por chave estrangeira em public.entregas, que o esquema não preenche. Sem a linha ('quiz-01', 1), todo envio volta 422 ("pacote recusado"), e o visitante vê o aviso de falha.
+   - *O que foi feito:* mantido 1 (primeira publicação da entrega). Nada foi gravado em lugar nenhum.
+   - *Recomendação:* a etapa 26 (LIGAR.md) manda gravar a linha do catálogo antes do teste, e o ensaio da etapa 25 confere.
+   - *Se decidir diferente:* mudar ETIQUETAS na página e a linha do catálogo juntos.
+
+23.11. **garcom e quiz-01-pagina dependem um do outro.**
+   - *Dúvida:* o garcom declara quiz-01-pagina em depende_de, e a página v2 passou a declarar garcom. Cada versão nova de um marca o outro como desatualizado, num círculo.
+   - *O que foi feito:* mantidas as duas dependências; registrado no log.md.
+   - *Recomendação:* na próxima versão do garçom, ele deixa de depender da página e cita só a planta (dados/planta/planta.md), que é quem define o pacote.
+   - *Se decidir diferente:* manter o círculo e, a cada versão de um, atualizar o outro só na versão citada (forma).

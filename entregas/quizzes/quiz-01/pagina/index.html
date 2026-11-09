@@ -1,7 +1,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -22,11 +22,15 @@ depende_de:
     versao: 2
   - id: lacunas
     versao: 5
+  - id: garcom
+    versao: 2
+  - id: decisoes
+    versao: 4
 desatualizado: true
 ---
 Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html.
 Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30). Visual do mockup sem mudanca (conflito-18).
-Envio desligado: enviarPacote so mostra o pacote no console. Detalhes em README.md nesta pasta.
+Envio: enviarPacote manda o pacote ao garcom por POST em /api/fim-quiz (mesma origem, decisao #101); aberta direto do arquivo (file://), nao envia nada. O pacote nao vai mais para o console. Detalhes em README.md nesta pasta.
 -->
 <title>[a definir: nome público da Análise]</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -481,6 +485,10 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 
 /* ··· Selo conquistado (T15) ··· */
 .aviso-selo{position:fixed;z-index:40;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 150px);padding:10px 16px;border-radius:12px;border:1px solid color-mix(in srgb,var(--folha-viva) 45%,transparent);background:var(--painel);color:var(--sobre-painel);font-family:var(--f-titulo);font-weight:650;font-size:.95rem;box-shadow:0 18px 40px -18px var(--sombra);animation:sobe .4s var(--curva) both}
+.aviso-envio{position:fixed;z-index:45;left:calc(12px + env(safe-area-inset-left,0px));right:calc(12px + env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));max-width:560px;margin-inline:auto;padding:14px 16px;border-radius:12px;border:1px solid color-mix(in srgb,var(--tomate) 55%,transparent);background:var(--painel);color:var(--sobre-painel);font-family:var(--f-texto);font-size:.95rem;line-height:1.45;box-shadow:0 18px 40px -18px var(--sombra);display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.aviso-envio[hidden]{display:none}
+.aviso-envio p{margin:0;flex:1 1 240px}
+.aviso-envio .botao{padding:9px 18px;font-size:.92rem;background:var(--folha-viva);border-color:var(--folha-viva);color:var(--sobre-folha);box-shadow:none}
 .aviso-selo small{display:block;font-family:var(--f-dado);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--folha-viva)}
 
 /* ··· Relatório ··· */
@@ -708,9 +716,11 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 
 <div class="aviso-selo" id="avisoSelo" role="status" hidden></div>
 
+<div class="aviso-envio" id="avisoEnvio" role="alert" hidden></div>
+
 <div class="proto" id="proto">
   <div class="proto__painel" id="protoPainel" hidden>
-    <p class="proto__nota">Protótipo para revisão. Dados de exemplo, nada é enviado.</p>
+    <p class="proto__nota" id="protoNota">Protótipo para revisão. Dados de exemplo, nada é enviado.</p>
     <ol id="protoLista"></ol>
   </div>
   <button type="button" class="proto__botao" id="protoBotao" aria-expanded="false" aria-controls="protoPainel">Telas <span id="protoNum"></span></button>
@@ -1711,11 +1721,40 @@ function montarPacote(){
     }
   };
 }
-// Envio desligado (conflito-17; #90): no lugar do garçom, o pacote só aparece no console do navegador.
-// Nenhum endereço externo, nenhuma chave. Quando houver garçom, só esta função muda.
-function enviarPacote(pacote){
-  console.log('[quiz-01] pacote fim_quiz ' + JSON.stringify(pacote));
+// Envio ao garçom (entregas/garcom/, v2): POST na mesma origem, em /api/fim-quiz (#101). Endereço
+// relativo, nenhuma chave na página. O garçom confere o pacote e grava (destino em conflito,
+// conflito-17; o protótipo de teste segue o lado 2, #90).
+// O pacote tem dado pessoal: não vai para o console nem fica guardado no navegador.
+// Aberta direto do arquivo (file://), para revisão: não há garçom, então nada é enviado.
+const ROTA_FIM_QUIZ = '/api/fim-quiz';
+const ENVIO_LIGADO = location.protocol !== 'file:';
+// Texto do aviso de falha (pergunta 23.2): o diagnóstico continua na tela; o detalhe técnico não aparece
+const AVISO_ENVIO = {
+  texto:'Não conseguimos enviar o seu contato para a nossa equipe agora. O seu diagnóstico continua aqui na tela.',
+  botao:'Tentar de novo',
+  enviando:'Enviando…'
+};
+let pacotePendente = null, enviando = false;
+function avisoEnvio(mostrar){
+  const el = $('#avisoEnvio');
+  if (!mostrar) { el.hidden = true; el.innerHTML = ''; return; }
+  el.innerHTML = '<p>' + AVISO_ENVIO.texto + '</p><button type="button" class="botao" id="reenviar">' + AVISO_ENVIO.botao + '</button>';
+  el.hidden = false;
 }
+function enviarPacote(pacote){
+  if (!ENVIO_LIGADO || enviando) return;
+  pacotePendente = pacote; enviando = true;
+  fetch(ROTA_FIM_QUIZ, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pacote), credentials:'same-origin', cache:'no-store'})
+    .then(r => { if (!r.ok) throw new Error('envio'); pacotePendente = null; avisoEnvio(false); })
+    .catch(() => { avisoEnvio(true); })
+    .then(() => { enviando = false; });
+}
+$('#avisoEnvio').addEventListener('click', e => {
+  const b = e.target.closest('#reenviar');
+  if (!b || !pacotePendente || enviando) return;
+  b.disabled = true; b.textContent = AVISO_ENVIO.enviando;
+  enviarPacote(pacotePendente);
+});
 
 /* ··· Motor do protótipo ··· */
 const palco = $('#palco');
@@ -1964,7 +2003,8 @@ palco.addEventListener('click', e => {
     case 'tentar': mostrar('montando', {fluxo:true}); break;
     case 'aviso': { const alvo = document.getElementById(b.dataset.alvo); if (alvo) { alvo.textContent = b.dataset.aviso; alvo.hidden = false; } break; }
     case 'encher':
-      R.contato = {nome:'Marina Souza', email:'marina@empresaexemplo.com.br', pais:'BR', tel:'11987654321', empresa:'Empresa Exemplo'};
+      // Dados de teste marcados (#102): no site do protótipo o envio grava de verdade no banco de teste
+      R.contato = {nome:'TESTE Marina Souza', email:'marina@teste.invalid', pais:'BR', tel:'00900000000', empresa:'TESTE Empresa Exemplo'};
       mostrar('contato'); break;
     case 'corrigir-email':
       R.contato.email = R.contato.email.split('@')[0] + '@' + b.dataset.dominio; $('#email').value = R.contato.email; validarContato(); break;
@@ -2035,6 +2075,8 @@ palco.addEventListener('change', e => {
 });
 
 /* ··· Início ··· */
+// Nota do painel "Telas": diz a verdade sobre o envio em cada modo (pergunta 23.3)
+if (ENVIO_LIGADO) $('#protoNota').textContent = 'Protótipo de teste. O contato enviado vai para o banco de teste: use nome começando por TESTE e e-mail @teste.invalid.';
 document.title = fato('analise_nome_publico');
 $('#topo .marca').lastChild.nodeValue = fato('nome_agencia');
 const h = (location.hash || '').slice(1);

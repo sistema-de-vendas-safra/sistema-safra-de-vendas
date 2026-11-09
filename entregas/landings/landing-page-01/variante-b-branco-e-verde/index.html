@@ -1,7 +1,7 @@
 <!--
 ---
 id: landing-page-01-variante-b
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -702,14 +702,18 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
     });
   });
 
-  /* Botão da 08: leva ao quiz-01 com as etiquetas do endereço e um código de sessão, só na memória da aba. */
+  /* Botão da 08: leva ao quiz-01 com as utm do endereço da landing (as que existirem) e um código de
+     sessão, só na memória da aba. O destino é o href do botão: aqui, o caminho do quiz no repositório,
+     para a revisão local; no site do protótipo, a montagem (entregas/prototipo-funil-01/) troca por /quiz/. */
   var botaoQuiz = d.querySelector('[data-quiz]');
   if (botaoQuiz) {
     var params = new URLSearchParams(window.location.search);
     var sessao = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
     var ida = new URLSearchParams();
-    ida.set('utm_source', params.get('utm_source') || '');
-    ida.set('utm_campaign', params.get('utm_campaign') || '');
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+      var valor = params.get(k);
+      if (valor) ida.set(k, valor);
+    });
     ida.set('id_sessao', sessao);
     botaoQuiz.href = botaoQuiz.getAttribute('href') + '?' + ida.toString();
     /* Envio da visita desligado: no lugar do garçom, só o console. */

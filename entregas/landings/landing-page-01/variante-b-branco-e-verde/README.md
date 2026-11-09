@@ -1,6 +1,6 @@
 ---
 id: landing-page-01-variante-b
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -52,7 +52,11 @@ Uma das duas variantes de design da landing-page-01, feitas para o Júnior e o E
 - **"a definir"**: etiqueta tracejada no lugar de cada campo bloqueado, de cada trecho [PENDENTE] e de cada [PROVA REAL] da copy, com o nome do campo ou da pergunta.
 - **Seções ocultas** (hero A, contador "Total gerado", faixa de bastidores, credenciais, PDV-90, preço riscado, barra de resgates, "Posso parcelar?") não ocupam lugar; ficam como comentário HTML onde voltariam.
 - **Imagens**: bloco cinza com a descrição, igual nas duas variantes.
-- **Botões**: os blocos de chamada levam à seção 08 (#destino) e põem o foco no título; o botão da 08 abre ../../../quizzes/quiz-01/pagina/index.html com utm_source, utm_campaign e um código de sessão. Nada é guardado no navegador; o registro da visita fica desligado (só no console). Nenhum endereço externo.
+- **Botões**: os blocos de chamada levam à seção 08 (#destino) e põem o foco no título; o botão da 08 abre o quiz-01 repassando as utm que estiverem no endereço da landing (utm_source, utm_medium, utm_campaign, utm_content e utm_term; a que não existe não vai) e um código de sessão. O destino é o href do botão: no arquivo, ../../../quizzes/quiz-01/pagina/index.html, para a revisão local; no site do protótipo, a montagem (entregas/prototipo-funil-01/montar-site.mjs) troca por /quiz/. Nada é guardado no navegador; o registro da visita continua desligado (só no console, sem dado de pessoa; 18.5). Nenhum endereço externo.
+
+## O que mudou na versão 2
+
+Etapa 23 (prompts/08-fila-da-madrugada.md). Só o programa do botão da 08: repassa ao quiz as cinco utm que existirem no endereço (na v1, só utm_source e utm_campaign, e vazias quando faltavam) e explica que, no site do protótipo, o caminho do quiz vira /quiz/ pela montagem. Texto, marcação e visual sem mudança; o `<body>` continua igual nas duas variantes. O quiz-01 só lê utm_source e utm_campaign; as outras três vão no endereço, mas não chegam ao banco (pergunta 23.5).
 
 ## Como abrir
 
