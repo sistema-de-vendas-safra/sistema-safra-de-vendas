@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-ligar
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -41,6 +41,8 @@ desatualizado: true
 O passo a passo para o Otávio ligar amanhã o site de teste do funil-01: o banco no Supabase, o site e o garçom na Cloudflare e a planilha do SDR no Google. **Tempo total estimado: cerca de 58 minutos** (partes 1 a 5), menos de uma hora. As partes 6 e 7 só entram se algo der errado ou na hora de desligar.
 
 **Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (garcom, banco-rascunho, quiz-01-pagina, as variantes da landing, planilha-sdr-funil-01, ensaio, lead-score e lacunas; regra provisória 11.1).
+
+**Ligado e testado em 09/11/2026** pelo Otávio, com este roteiro (v2). A v3 forma o roteiro com o que aconteceu: o porteiro nos passos 3.8 e 3.9, o Erro 4 (`banco-401`), o cuidado entre 4.6 e 4.7 e o campo Seu nome na parte 5 (log.md, pedido 10).
 
 > **Leia antes de começar**
 >
@@ -369,8 +371,10 @@ node entregas/prototipo-funil-01/montar-site.mjs && nucleo/ferramentas/prototipo
 2. Sem copiar mais nada no meio, rode no Terminal:
 
 ```
-pbpaste | nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUPABASE_CHAVE_PUBLICAVEL --config entregas/prototipo-funil-01/wrangler.toml
+if pbpaste | tr -d '[:space:]' | grep -q '^sb_publishable_'; then pbpaste | tr -d '[:space:]' | nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUPABASE_CHAVE_PUBLICAVEL --config entregas/prototipo-funil-01/wrangler.toml; else echo "PAREI: o que esta copiado nao e a chave publicavel. Copie de novo no Supabase."; fi
 ```
+
+**Por que o porteiro:** em 09/11/2026 o botão de copiar do Supabase falhou sem avisar e o cofre recebeu o que já estava na área de transferência; o comando agora confere o começo da chave (sb_publishable_) antes de mandar ao cofre, sem mostrar o valor. Se aparecer **PAREI**, copie de novo no Supabase e repita o comando (seta para cima e Enter).
 
 O comando pbpaste entrega ao wrangler o que está na área de transferência, sem mostrar na tela. O valor não aparece no Terminal, não vai para arquivo nenhum e não fica no histórico do Terminal (o histórico guarda só o texto do comando, que não tem a chave).
 
@@ -386,8 +390,10 @@ O comando pbpaste entrega ao wrangler o que está na área de transferência, se
 2. Sem copiar mais nada no meio, rode:
 
 ```
-pbpaste | nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUPABASE_CHAVE_SECRETA --config entregas/prototipo-funil-01/wrangler.toml
+if pbpaste | tr -d '[:space:]' | grep -q '^sb_secret_'; then pbpaste | tr -d '[:space:]' | nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUPABASE_CHAVE_SECRETA --config entregas/prototipo-funil-01/wrangler.toml && pbcopy < /dev/null; else echo "PAREI: o que esta copiado nao e uma chave secreta. Copie de novo no Supabase."; fi
 ```
+
+O mesmo porteiro do 3.8 (o botão de copiar falhou sem avisar em 09/11/2026), agora conferindo o começo sb_secret_; quando dá certo, ele mesmo esvazia a área de transferência. Se aparecer **PAREI**, copie de novo no Supabase e repita o comando (seta para cima e Enter).
 
 **Como saber que deu certo:** "Success! Uploaded secret SUPABASE_CHAVE_SECRETA".
 
@@ -401,7 +407,7 @@ pbpaste | nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUP
 pbcopy < /dev/null
 ```
 
-Isso esvazia a área de transferência, para a chave secreta não ficar lá esperando um Cmd+V por engano.
+Isso esvazia a área de transferência, para a chave secreta não ficar lá esperando um Cmd+V por engano. O comando do 3.9 já esvazia quando dá certo; rode mesmo assim, que não custa nada.
 
 **Como saber que deu certo:** apertar Cmd+V em qualquer campo de texto não cola nada.
 
@@ -503,6 +509,8 @@ Clique em **Salvar propriedades do script**.
 pbcopy < entregas/planilha-sdr-funil-01/Codigo.gs
 ```
 
+Daqui até colar no 4.7, não copie mais nada nem tire print: qualquer cópia no meio troca o código pelo que foi copiado.
+
 **Como saber que deu certo:** o Terminal não mostra nada.
 
 **Tempo:** 30 s.
@@ -511,7 +519,7 @@ pbcopy < entregas/planilha-sdr-funil-01/Codigo.gs
 
 **Faça:** volte ao **Editor** (o ícone `< >`, à esquerda), abra Código.gs, apague tudo o que está lá, cole e salve (Cmd+S). Se pedir nome para o projeto, use **planilha-sdr-funil-01**.
 
-**Como saber que deu certo:** a lista de funções, no alto, mostra instalar, buscarLeadsNovos e desligar. Procure no código (Cmd+F) a palavra **pré-qualificado**: ela aparece com o acento certo, sem sinais estranhos no lugar do "é".
+**Como saber que deu certo:** a lista de funções, no alto, mostra instalar, buscarLeadsNovos e desligar. Se o editor mostrar outra coisa no lugar do código, rode o 4.6 de novo e cole outra vez. Procure no código (Cmd+F) a palavra **pré-qualificado**: ela aparece com o acento certo, sem sinais estranhos no lugar do "é".
 
 **Tempo:** 1 min.
 
@@ -594,7 +602,7 @@ O telefone começa por 00 de propósito, para não ser de ninguém; com o +55 qu
 | Primeiro contato | Em até 1 hora |
 | Tentativas antes de desistir | 1 ou 2 |
 | Sobra lead sem contato? | Alguns |
-| Contato | Em **Seu nome**, o nome completo; em **E-mail** e em **WhatsApp**, o e-mail e o telefone da tabela de cima; marque as duas caixas, "Aceito receber o diagnóstico e o contato da equipe por WhatsApp." e "... por e-mail."; depois o botão **Ver meu diagnóstico** |
+| Contato | Em **Seu nome**, que já chega preenchido com o nome da primeira tela (TESTE), apague tudo e escreva o nome completo; em **E-mail** e em **WhatsApp**, o e-mail e o telefone da tabela de cima; marque as duas caixas, "Aceito receber o diagnóstico e o contato da equipe por WhatsApp." e "... por e-mail."; depois o botão **Ver meu diagnóstico** |
 
 **O eliminatório:** as mesmas respostas, só trocando o faturamento por **Menos de R$ 50 mil**.
 
@@ -672,7 +680,7 @@ Pronto: o protótipo está ligado para teste. Volte à parte 7 quando quiser des
 
 ## Parte 6 · Se algo der errado
 
-Os três erros mais prováveis, escolhidos pelo que as etapas 21 a 25 registraram.
+Os três erros mais prováveis, escolhidos pelo que as etapas 21 a 25 registraram, e um quarto, que aconteceu de verdade em 09/11/2026 (Erro 4).
 
 ### Como ver o registro do Worker sem expor dado pessoal
 
@@ -692,7 +700,7 @@ Abra o registro (acima), clique em **Tentar de novo** no quiz e veja a linha `[g
 |---|---|---|
 | `banco-409` | Falta a linha do catálogo (pergunta 23.10) | Passos 2.7 e 2.8 |
 | `configuracao-incompleta` | Falta a chave publicável no cofre | Passo 3.8 |
-| `banco-401` ou `banco-403` | A chave publicável no cofre está errada (por exemplo, a secreta colada no lugar) | Passo 3.8 de novo, copiando a **Publishable key**; depois limpe a área de transferência (3.10) |
+| `banco-401` ou `banco-403` | A chave publicável no cofre está errada (por exemplo, a secreta colada no lugar, ou outra coisa que estava na área de transferência) | Veja o Erro 4; passo 3.8 de novo com o porteiro, copiando a **Publishable key**; depois limpe a área de transferência (3.10) |
 | `origem` | O endereço do quiz aberto não é o do protótipo, ou ORIGEM_PERMITIDA está errada | Abra o quiz pelo endereço https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. Se for esse, confira em entregas/prototipo-funil-01/wrangler.toml que ORIGEM_PERMITIDA é esse endereço, sem barra no fim, e publique de novo (3.7) |
 | `banco-400` | O banco recusou o pacote; o mais comum é telefone de uma pessoa de teste com e-mail de outra (21.2) | Use outra pessoa de teste, com telefone e e-mail novos |
 | `recusado: ...` | O garçom recusou o pacote (por exemplo, telefone curto) | Confira os campos do contato |
@@ -708,7 +716,7 @@ Primeiro, espere 6 minutos inteiros depois do envio (a margem de 1 minuto do ban
 | "o garçom respondeu 401..." | A CHAVE_PLANILHA das propriedades não é igual à do cofre. Rode o comando do passo 3.11 de novo (sorteia outra e troca no cofre), cole nas propriedades no lugar da antiga (4.3) e limpe a área de transferência (4.4) |
 | "faltam as propriedades do script..." | Passos 4.3 e 4.5; depois rode instalar de novo |
 | "não deu para falar com o garçom..." | Confira GARCOM_URL: https://, termina em .workers.dev, sem barra e sem /api (4.5) |
-| "o garçom respondeu com erro..." | O garçom ou o banco está fora, ou a chave secreta no cofre está errada. Refaça o passo 3.9 copiando a garcom_planilha_prototipo e limpe a área de transferência (3.10) |
+| "o garçom respondeu com erro..." | O garçom ou o banco está fora, ou a chave secreta no cofre está errada (veja o Erro 4). Refaça o passo 3.9 com o porteiro, copiando a garcom_planilha_prototipo, e limpe a área de transferência (3.10) |
 | Nenhuma execução em Execuções | O gatilho não foi criado: veja Acionadores e rode instalar de novo (4.11) |
 
 ### Erro 3 · O wrangler pede login ou dá erro de conta
@@ -719,6 +727,20 @@ Primeiro, espere 6 minutos inteiros depois do envio (a margem de 1 minuto do ban
 | Pede para escolher a conta, ou diz que há mais de uma conta e não consegue escolher (acontece com os comandos que começam por pbpaste, que não deixam o wrangler perguntar) | Antes, copie o valor: para as chaves do Supabase, o botão de copiar no painel (3.8 ou 3.9); para a CHAVE_PLANILHA, rode só `openssl rand -hex 32 \| tr -d '\n' \| pbcopy`. Depois rode o mesmo comando **sem** a parte `pbpaste \|`, por exemplo `nucleo/ferramentas/prototipo/node_modules/.bin/wrangler secret put SUPABASE_CHAVE_PUBLICAVEL --config entregas/prototipo-funil-01/wrangler.toml`. Escolha a conta do Safra; quando aparecer "Enter a secret value", cole (Cmd+V) e aperte Enter. O Terminal não mostra o que foi colado. No fim, limpe a área de transferência (3.10), menos na CHAVE_PLANILHA, que só se limpa no 4.4. Ou use o caminho pelo painel (fim da parte 3) |
 | "whoami" mostra outra conta | logout, e o passo 3.4 com a conta do Safra aberta no navegador |
 | Erro sobre o subdomínio workers.dev | No painel da Cloudflare, Workers & Pages, confira que o subdomínio da conta é sistemadevendassafra. Se for outro, o endereço muda: pare e traga a mensagem ao repositório, porque ORIGEM_PERMITIDA e GARCOM_URL dependem dele |
+
+### Erro 4 · O garçom registra `banco-401`
+
+Aconteceu em 09/11/2026: o cofre recebeu as duas chaves do Supabase com valor errado, porque o botão de copiar falhou sem avisar. O quiz mostra o aviso de falha e a planilha não recebe nada.
+
+**Como ver:** deixe rodando numa janela do Terminal
+
+```
+nucleo/ferramentas/prototipo/node_modules/.bin/wrangler tail --config entregas/prototipo-funil-01/wrangler.toml --format pretty
+```
+
+e repita o envio do quiz (ou rode buscarLeadsNovos à mão). Sem o filtro `--method POST`, aparecem também os pedidos da planilha (GET), com o cursor no endereço (um id interno de pessoa de teste): não copie, não fotografe e pare com Ctrl+C assim que vir a linha. No Supabase, abra **Logs**, **API Gateway** e veja o campo **error_code** dos pedidos recusados.
+
+**Se for `UNAUTHORIZED_INVALID_API_KEY`:** o cofre tem valor errado. Refaça os passos 3.8 e 3.9 com o porteiro e limpe a área de transferência (3.10). Não precisa publicar de novo: o `secret put` já publica.
 
 ---
 
