@@ -2,6 +2,14 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 16 · politica de privacidade
+
+- entregas/documentos/politica-de-privacidade.md v1 (id politica-de-privacidade), rascunho (otavio, junior e euclides: pendente). Novo. No topo: "Precisa de revisão de advogado antes de ir ao ar." O que a landing e o quiz coletam (campos da planta), finalidades, consentimento por canal como base legal, nota automática (art. 20), onde fica e quem acessa, operadores por categoria com a lista bloqueada (conflito-17), cookies e medição, segurança, direitos do art. 18 e como pedir. Empresa, CNPJ, encarregado, contato, nomes dos serviços e prazo de guarda (outros-23) ficam {{a definir}}. Nasce desatualizado (16.11).
+- entregas/documentos/README.md: novo, o que mora na pasta.
+- Quiz-01 sem mudança: o link da política continua {{a definir}} até a política ter endereço (16.1).
+- index.md: a pasta documentos/ e os dois arquivos.
+- Perguntas 16.1 a 16.12 em prompts/07-fila-perguntas.md (16.12 do revisor: ligação no número de WhatsApp).
+
 ## 2026-11-08 · etapa 15 · sdr planilha e roteiros
 
 - funis/funil-01/planilha-sdr.md v1 (id funil-01-planilha-sdr), rascunho (otavio, junior e euclides: pendente). Novo. Colunas com o que guardam, quem preenche, se o SDR edita e se são dado pessoal (lista da planta, mais entrou_em e tentativas_feitas como proposta, 15.3); lista fechada de status igual à do funil-01, com a grafia do banco; ordem da fila pelo lead score; eventos que voltam para o banco; exemplo fictício marcado. Destino dos contatos com os dois lados do conflito-17, bloqueado. Nasce desatualizado (15.15).

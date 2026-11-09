@@ -301,3 +301,83 @@
    - *O que foi feito:* as falas servem aos dois casos; nenhuma diz "você pediu para conversar".
    - *Recomendação:* junto com a 14.15, gravar o clique como evento e levar à planilha como coluna só de leitura; aí o roteiro ganha uma abertura para quem pediu.
    - *Se decidir diferente:* fica como está.
+
+## Etapa 16
+
+16.1. **O quiz ainda não aponta para a política.**
+   - *Dúvida:* a copy e a página do quiz-01 têm {{a definir: link da politica de privacidade}} na letra miúda e no consentimento.
+   - *O que foi feito:* o quiz não foi mexido; o link continua {{a definir}}, porque a política ainda não tem endereço e não pode ir ao ar sem a revisão de advogado.
+   - *Recomendação:* quando a política tiver endereço e passar pelo advogado, trocar o link nos dois lugares da copy (M7, M16) e no objeto A_DEFINIR da página, numa correção de forma.
+   - *Se decidir diferente:* se quiser um endereço provisório já agora, a copy e a página sobem uma versão com ele.
+
+16.2. **Destino dos dados em conflito (conflito-17).**
+   - *Dúvida:* o lado 1 manda os contatos para o Triad CRM; o lado 2 (#90), para o banco pelo garçom e para a planilha do SDR.
+   - *O que foi feito:* o texto para o lead fala em "sistema de gestão de contatos", que vale para os dois lados; a lista de serviços que guardam os dados ficou {{BLOQUEADO: conflito-17}}. A região São Paulo do banco (conexoes.md) não entrou no texto, porque só vale no lado 2.
+   - *Recomendação:* decidir o conflito-17 com o Júnior e o Euclides (aprovação da #90) e então preencher a tabela.
+   - *Se decidir diferente:* se o lado 1 vencer, a seção 10 (segurança) precisa ser reescrita com o que o CRM oferece, porque hoje descreve as chaves separadas do lado 2.
+
+16.3. **Nomes dos serviços ficaram {{a definir}}, mesmo os que conexoes.md cita.**
+   - *Dúvida:* conexoes.md cita Cloudflare (hospedagem e garçom) e Supabase (banco), mas as contas estão "a criar" e o destino está em conflito (16.2). Os serviços de planilha, de envio de e-mail e WhatsApp e de fontes de letra não estão escolhidos.
+   - *O que foi feito:* todos os nomes ficaram {{a definir}}, só com a categoria.
+   - *Recomendação:* preencher os nomes junto com a decisão do conflito-17 e da 5.4 (onde mora a planilha).
+   - *Se decidir diferente:* se quiser já nomear Cloudflare e Supabase, a tabela ganha os dois nomes e continua bloqueada até o conflito-17.
+
+16.4. **"Nada além disso" e os números somados.**
+   - *Dúvida:* o texto de consentimento do quiz (M16) diz que os dados servem para mandar o diagnóstico e para a equipe falar com o lead, "nada além disso". A planta e o funil também usam os dados para números somados no painel e em aprendizados/, e para a ordem da fila pela nota.
+   - *O que foi feito:* a política lista as quatro finalidades, deixando claro que os números somados não identificam ninguém. O texto do quiz não foi mexido.
+   - *Recomendação:* levar ao advogado se o texto do consentimento precisa citar a ordem da fila e os números somados, ou se a política basta.
+   - *Se decidir diferente:* se o consentimento precisar citar, a copy do quiz (M16) muda e vai ao Júnior (pauta, item 29).
+
+16.5. **A nutrição não está na política.**
+   - *Dúvida:* quem cai nos eliminatórios ou na faixa C vai para a nutrição, sem canal nem conteúdo definidos (5.3). Do lado do Júnior (conflito-16), quem clica "Tenho interesse" recebe contato.
+   - *O que foi feito:* nada sobre nutrição entrou; a finalidade 2 ("alguém da equipe falar com você sobre o diagnóstico") cobre os dois lados do conflito-16, porque nos dois a equipe fala sobre o diagnóstico.
+   - *Recomendação:* quando a nutrição for desenhada, ver com o advogado se ela cabe no aceite atual ou pede aceite próprio.
+   - *Se decidir diferente:* a seção 3 ganha a finalidade da nutrição, e o consentimento do quiz talvez precise de uma frase a mais.
+
+16.6. **Revisão da nota automática (art. 20).**
+   - *Dúvida:* a etapa pede os direitos do art. 18. O lead score decide de forma automática quem entra na fila do SDR, o que pode cair no art. 20 da LGPD.
+   - *O que foi feito:* a seção 4 diz que a nota é automática e que o lead pode pedir revisão e os critérios, citando o art. 20.
+   - *Recomendação:* manter e confirmar com o advogado.
+   - *Se decidir diferente:* sai o parágrafo "Sobre a nota"; nada mais muda.
+
+16.7. **Fontes de letra carregadas de fora.**
+   - *Dúvida:* a página do quiz carrega as fontes de letra de um serviço externo, que recebe o IP de quem abre a página.
+   - *O que foi feito:* entrou na tabela de serviços como categoria, com nome {{a definir}}.
+   - *Recomendação:* servir as fontes junto com a página, no mesmo endereço; aí a linha sai da política.
+   - *Se decidir diferente:* a linha fica, com o nome do serviço.
+
+16.8. **Quem acessa, contra a #95.**
+   - *Dúvida:* a #95 diz que só o Otávio acessa o sistema no MVP, mas o funil tem o SDR na planilha e a conversa de venda com o Júnior. Quem é o SDR está em aberto.
+   - *O que foi feito:* a política fala em funções (quem cuida do sistema, quem faz o contato, quem conduz a conversa), sem nomes, e diz que quem faz o contato vê só os campos da planilha.
+   - *Recomendação:* manter por função; a política não precisa nomear pessoas.
+   - *Se decidir diferente:* se o SDR não existir no MVP, a linha "quem faz o contato" sai ou passa a ser a mesma pessoa que cuida do sistema.
+
+16.9. **O pedido de apagamento ainda não tem procedimento.**
+   - *Dúvida:* a planta registra a retirada do consentimento e tira o lead da planilha, mas não diz como os dados são apagados do banco nem em quanto tempo (outros-23). A planta também diz que nada é apagado automaticamente até a decisão.
+   - *O que foi feito:* a política promete só o que a base tem (sair da lista de contatos) e deixa o como e o quando {{a definir}}, junto com o prazo de guarda e o prazo de resposta.
+   - *Recomendação:* decidir outros-23 com o advogado antes de publicar; o direito de apagar precisa de um caminho real antes de o quiz ir ao ar.
+   - *Se decidir diferente:* nada muda no texto até a decisão; os três {{a definir}} são preenchidos.
+
+16.10. **Transferência para fora do Brasil e aviso de incidente.**
+   - *Dúvida:* a base não diz se algum serviço processa dados fora do Brasil. O aviso de incidente à ANPD e ao titular vem da LGPD, não de uma decisão da base.
+   - *O que foi feito:* a transferência ficou {{a definir}}; o aviso de incidente entrou em termos gerais, como obrigação da lei.
+   - *Recomendação:* o advogado confere os dois junto com a escolha dos serviços.
+   - *Se decidir diferente:* se o aviso não deve aparecer, sai a última frase da seção 10.
+
+16.11. **A política nasce desatualizada.**
+   - *Dúvida:* ela se apoia em documentos marcados (planta, copy e página do quiz, copy da landing, funil-01, planilha do SDR, provas-e-conformidade).
+   - *O que foi feito:* desatualizado: true (regra provisória 11.1).
+   - *Recomendação:* a mesma da 11.1.
+   - *Se decidir diferente:* passa a desatualizado: false numa correção de forma.
+
+16.12. **Ligação no número de WhatsApp (revisor).**
+   - *Dúvida:* o lead aceita contato "por WhatsApp" ou "por e-mail", mas a planilha registra contato por telefone, e os roteiros do SDR permitem ligar com consentimento_whatsapp = sim (`funil-01-roteiros-sdr`, "Antes de qualquer contato", escolha provisória da etapa 15). A política não dizia ao lead que ele pode receber ligação.
+   - *O que foi feito:* a finalidade 2 da política ganhou a frase "Se você aceitou o WhatsApp, a equipe pode mandar mensagem ou ligar para esse número", e `funil-01-roteiros-sdr` v1 entrou no depende_de. O texto de consentimento do quiz não foi mexido.
+   - *Recomendação:* levar ao advogado se a ligação cabe no aceite "por WhatsApp" ou se o quiz precisa de uma caixa própria para ligação.
+   - *Se decidir diferente:* se a ligação pedir aceite próprio, a copy e a página do quiz ganham uma terceira caixa, a planta ganha um campo de consentimento, e a frase da política muda para citar esse aceite; se o SDR não puder ligar, a frase sai e os roteiros mudam.
+
+16.13. **A página do quiz diz mais do que grava, e a ajuda do contato perdeu uma ressalva.**
+   - *Dúvida:* a revisão da política notou duas diferenças na página do quiz (etapa 14): (1) as telas finais dizem "Seu interesse fica registrado" e "Horário reservado", mas nem o pedido do plano, nem o dia e horário, nem o "Tenho interesse" entram no pacote ou na planta (ver 14.15); (2) a ajuda da tela de contato diz "uma cópia vai para o seu e-mail e WhatsApp", sem a ressalva "nos canais que você aceitou" que a M21 da copy tem.
+   - *O que foi feito:* nada na página, que já foi commitada como v1; a política descreve só o que o sistema grava hoje.
+   - *Recomendação:* numa v2 da página, pôr a ressalva da M21 na ajuda e gravar essas escolhas como eventos (planta e garçom), e então citá-las na política.
+   - *Se decidir diferente:* se as escolhas não forem gravadas, as frases "fica registrado" e "Horário reservado" saem da página, porque prometem algo que não acontece.
