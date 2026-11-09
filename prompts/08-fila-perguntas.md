@@ -280,3 +280,83 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* mantidas as duas dependências; registrado no log.md.
    - *Recomendação:* na próxima versão do garçom, ele deixa de depender da página e cita só a planta (dados/planta/planta.md), que é quem define o pacote.
    - *Se decidir diferente:* manter o círculo e, a cada versão de um, atualizar o outro só na versão citada (forma).
+
+## Etapa 24
+
+24.1. **A planilha do teste mora no Google Drive, e a regra 4 diz que dado pessoal não entra no Drive.**
+   - *Dúvida:* CLAUDE.md e nucleo/regras/seguranca.md (regra 4) dizem que dado pessoal nunca entra no Google Drive; a planilha-sdr diz que onde a planilha mora está em aberto (5.4). O pedido manda fazer a planilha no Drive do Safra para o teste de amanhã.
+   - *O que foi feito:* o código e o passo a passo seguem o pedido, para o teste, só com leads de mentira (#102: nome TESTE..., e-mail @teste.invalid). O README e o topo de Codigo.gs têm o aviso "só dados de teste até a decisão". Nada na regra 4 foi mexido. Esta pergunta trava ir ao ar com gente de verdade, não o teste.
+   - *Recomendação:* decidir 5.4 antes do primeiro lead de verdade. Se a planilha do Google for o lugar, mudar a regra 4 para "dado pessoal só no banco e na planilha do SDR, que mora no Drive do Safra, sem compartilhamento" (a própria regra 4 já cita a planilha do SDR) e registrar como decisão nova.
+   - *Se decidir diferente:* se a planilha sair do Google, este script não serve; o desenho das colunas e da lista continua valendo para a ferramenta nova, e a porta privada do garçom também.
+
+24.2. **Permissões mínimas: o script tem de nascer dentro da planilha.**
+   - *Dúvida:* o pedido pede escopos mínimos.
+   - *O que foi feito:* appsscript.json com spreadsheets.currentonly (só a planilha que contém o script), script.external_request (UrlFetchApp) e script.scriptapp (gatilho). Sem Drive, sem Gmail, sem as outras planilhas. Isso só funciona com o script criado em Extensões, Apps Script, de dentro da planilha, e com SpreadsheetApp.getActiveSpreadsheet(), que num script ligado à planilha funciona também no gatilho. Não foi conferido num Google de verdade (24.13).
+   - *Recomendação:* manter; conferir na autorização de amanhã que o Google lista só as três.
+   - *Se decidir diferente:* um projeto solto precisaria do escopo spreadsheets inteiro (todas as planilhas da conta) e do id da planilha numa propriedade.
+
+24.3. **O cursor guardado nas propriedades tem um id_pessoa.**
+   - *Dúvida:* o pedido manda guardar o cursor nas propriedades do script e também manda não pôr dado pessoal nas propriedades. O cursor do garçom é (horário, id_pessoa), e a planilha-sdr diz que o id_pessoa é dado pessoal indireto ("não sai do banco nem da planilha").
+   - *O que foi feito:* guardado como o pedido manda (CURSOR_GRAVADO_EM e CURSOR_ID_PESSOA, os dois numa gravação só), porque as propriedades do script moram dentro da própria planilha e o mesmo id está na coluna A. Nunca vai para o registro. Nenhuma outra informação de pessoa vai para as propriedades.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* guardar só o horário e mandar o id zero (00000000-0000-0000-0000-000000000000) no cursor; o garçom devolve de novo os leads do mesmo instante, e a conferência do id_pessoa na aba os descarta. Uma linha em lerCursor_ e uma no salvamento.
+
+24.4. **O lead chega como captado; estado vazio fica vazio; valor fora da lista fica vazio.**
+   - *Dúvida:* a função do banco manda estagio vazio (21.9), e a planilha-sdr diz que o lead chega como captado (15.5). O banco escreve pre-qualificado sem acento, e a lista da planilha tem pré-qualificado.
+   - *O que foi feito:* estágio vazio vira captado na linha nova, como 21.9 combinou ("quem escreve captado na linha nova é a planilha"). Estado vazio fica vazio (o exemplo da planilha-sdr mostra assim). pre-qualificado do banco vira pré-qualificado; o resto é igual. Valor que não é da lista fica vazio, porque "valor fora da lista não entra na planilha". A validação da aba usa os nomes "Na planilha", com acento.
+   - *Recomendação:* manter; quando existir a volta do status, ela traduz pré-qualificado para pre-qualificado na ida ao banco.
+   - *Se decidir diferente:* para o lead chegar com estágio vazio, uma linha em linhaDoLead_; para a lista da planilha sem acento, mudar ESTAGIOS e o mapa.
+
+24.5. **Como alguns valores aparecem na planilha.**
+   - *Dúvida:* o banco manda consentimento como "nao", entrou_em em UTC com microssegundos e respostas_a_confirmar como objeto; a planilha-sdr não diz o formato na célula.
+   - *O que foi feito:* "nao" vira "não" (como o exemplo da planilha-sdr); entrou_em vai no horário de Brasília, como texto AAAA-MM-DD HH:MM:SS; respostas como "valor-medio: ...; vendedores: ..."; data_volta como veio. Nota e tentativas como número.
+   - *Recomendação:* manter no teste; ver com o SDR, quando houver, se prefere outro formato.
+   - *Se decidir diferente:* tudo em linhaDoLead_ e nas funções pequenas logo abaixo dela.
+
+24.6. **Erro na busca vira falha da execução, para o Google avisar por e-mail.**
+   - *Dúvida:* a orientação do coordenador manda tratar 401, erro e resposta ilegível sem dado pessoal; não diz se o Otávio deve ser avisado.
+   - *O que foi feito:* buscarLeadsNovos termina com erro e uma mensagem em português sem dado pessoal (por exemplo, "o garçom respondeu 401: a CHAVE_PLANILHA das propriedades não é a mesma do Worker"). O Google manda o resumo das falhas do gatilho para a conta do Safra (por padrão, uma vez por dia). Trava ocupada não é erro. buscar_() faz o trabalho e devolve o resumo sem lançar erro (é a que o teste e o ensaio usam).
+   - *Recomendação:* manter; no editor, em Acionadores, dá para escolher "Notificar imediatamente".
+   - *Se decidir diferente:* para falhar calado, buscarLeadsNovos passa a só chamar buscar_(); aí o único sinal é o registro em Execuções.
+
+24.7. **A planilha só trava os valores da lista, não as regras da lista, nem as colunas do banco.**
+   - *Dúvida:* a planilha-sdr diz que a planilha recusa estágio anterior ao atual, stand-by sem data_volta e que o SDR não edita as colunas do banco. A validação de lista do Google não faz as duas primeiras sozinha.
+   - *O que foi feito:* só a lista fechada em estagio, estado e canal, sem aceitar valor de fora. Nenhuma trava de "só avança", de stand-by com data, nem proteção das colunas do banco. O README diz isso em "O que não faz". Como não há volta do status, o que o SDR mudar fica só na planilha.
+   - *Recomendação:* deixar para a versão que tiver a volta do status: lá, a conferência das regras fica no garçom e no banco (que recusam), e a planilha ganha um aviso por linha. Para as colunas do banco e a coluna produto (que ninguém edita até a decisão 5.3), uma proteção só de aviso nas colunas A a O e S, que dá para acrescentar ao instalar().
+   - *Se decidir diferente:* a proteção de aviso é poucas linhas em instalar(); a regra "só avança" na planilha precisaria de um gatilho de edição (onEdit), que roda a cada mudança na aba e desfaz a que voltar o estágio.
+
+24.8. **Aba "fila" com outro cabeçalho: nada é mexido.**
+   - *Dúvida:* a orientação do coordenador manda reaproveitar a aba sem apagar.
+   - *O que foi feito:* o cabeçalho só é escrito numa aba vazia. Aba com o cabeçalho certo é mantida. Aba com outra coisa na linha 1 faz instalar() parar com aviso, e a busca não grava nada nela. A conferência olha as 19 primeiras colunas; colunas a mais à direita são toleradas, e anotação nelas não empurra os leads. Quando instalar() cria a aba (por exemplo, depois de renomear a antiga), o cursor guardado é apagado, para a aba nova receber todos os leads desde o início; a conferência do id_pessoa evita duplicata.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* para consertar o cabeçalho sozinho, instalar() reescreve a linha 1; o risco é gravar leads em colunas trocadas.
+
+24.9. **GARCOM_URL só com https, e o pedido não segue redirecionamento.**
+   - *Dúvida:* nem o pedido nem a orientação do coordenador dizem o que fazer com endereço sem https ou com redirecionamento.
+   - *O que foi feito:* endereço sem https:// (ou com ?, # ou espaço) é recusado antes de chamar, e o pedido vai com followRedirects falso, para a chave não seguir para outro endereço. Barra no fim é tirada. Um 3xx conta como erro do garçom.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* uma linha em conferirPropriedades_ e uma nas opções do fetch.
+
+24.10. **Até 10 páginas (2.000 leads) por rodada.**
+   - *Dúvida:* a orientação do coordenador manda um limite de voltas por execução, sem número.
+   - *O que foi feito:* MAX_VOLTAS = 10. Uma rodada leva poucos segundos com 2.000 leads; o limite do Apps Script é de 6 minutos por execução. O resto fica para a rodada seguinte, 5 minutos depois.
+   - *Recomendação:* manter; no protótipo, o volume é de poucos leads.
+   - *Se decidir diferente:* mudar a constante.
+
+24.11. **Lead fora das faixas a e b não entra (defesa).**
+   - *Dúvida:* o banco só manda faixas a e b; o pedido não diz o que fazer se vier outra.
+   - *O que foi feito:* lead com faixa fora de a e b não entra na aba (a planilha "não recebe c nem eliminatorio"), conta no registro como "fora da faixa" e o cursor segue.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* tirar a linha da conferência em buscar_.
+
+24.12. **Proteção contra fórmula: apóstrofo na frente.**
+   - *Dúvida:* a orientação do coordenador manda gravar como texto o valor com cara de fórmula; há mais de um jeito.
+   - *O que foi feito:* todo valor que começa por = + - @, tabulação, retorno ou apóstrofo vai com um apóstrofo na frente, o jeito comum do Google Planilhas de guardar texto (o apóstrofo não aparece na célula). O telefone, que começa com +, entra assim também, como texto. Além disso, por decisão do coordenador, instalar() põe formato de texto simples (@) em nome, telefone, email, empresa e respostas_a_confirmar, para o Google não transformar "00123", "TRUE" ou "1/2" em número, verdadeiro ou data; as linhas que a aba ganhar depois recebem o mesmo formato.
+   - *Recomendação:* manter; conferir amanhã que uma empresa "=1+1" de teste aparece como texto e sem o apóstrofo visível numa coluna com formato de texto simples (24.13).
+   - *Se decidir diferente:* tirar o formato é apagar aplicarFormatos_; tirar o apóstrofo deixaria as outras colunas (e o telefone, se o formato sair) abertas a fórmula.
+
+24.13. **O que o Google de mentira não prova.**
+   - *Dúvida:* o teste local imita o Google, não é o Google.
+   - *O que foi feito:* conferido aqui só o que depende do código. Fica para o teste de amanhã: a autorização com só três permissões (24.2); o getActiveSpreadsheet() no gatilho; o apóstrofo guardando texto e não aparecendo nas colunas com formato de texto simples (@), e o formato @ mantendo "00123", "TRUE" e "1/2" como texto (24.12); a lista suspensa com acento; o horário de Brasília; o gatilho de 5 minutos rodando sozinho; o aviso de falha por e-mail (24.6).
+   - *Recomendação:* o roteiro da etapa 26 confere cada um desses no passo da planilha.
+   - *Se decidir diferente:* nada muda no código.
