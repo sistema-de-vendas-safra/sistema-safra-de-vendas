@@ -1,13 +1,30 @@
-# Exemplo de configuração do garçom para a Cloudflare (wrangler). RASCUNHO, nunca publicado.
-# Só nomes: nenhum valor, nenhum endereço, nenhum identificador de conta.
-# Para usar, copiar para wrangler.toml quando a conta da Cloudflare do Safra estiver pronta
-# (conexoes.md) e o detector de chaves estiver ligado (nucleo/regras/seguranca.md).
-
-name = "garcom-funil-01"
-main = "garcom.mjs"
-compatibility_date = "2026-11-01"
-
-# Os três valores entram como variáveis secretas, lidas do cofre, nunca neste arquivo:
-#   wrangler secret put SUPABASE_URL
-#   wrangler secret put SUPABASE_SERVICE_KEY
-#   wrangler secret put ORIGEM_PERMITIDA
+# Garçom v2 · configuração da Cloudflare. RASCUNHO, nunca publicado.
+#
+# A configuração de verdade NÃO mora aqui. Na v2 o garçom é parte de um Worker só, o
+# safra-prototipo-funil-01 (decisão #101), que serve também as páginas do protótipo. O arquivo
+# de configuração desse Worker vai para entregas/prototipo-funil-01/ na etapa 23
+# (prompts/08-fila-da-madrugada.md), sem id de conta e sem segredo. Este exemplo fica só como
+# lista do que aquela configuração precisa ter, para não existirem duas configurações.
+#
+# O que a configuração da etapa 23 precisa ter para o garçom funcionar:
+#
+#   name = "safra-prototipo-funil-01"
+#   main = caminho para entregas/garcom/garcom.mjs
+#
+#   Arquivos do protótipo pelo binding de assets, com o nome ASSETS (o garçom chama
+#   env.ASSETS.fetch). A pasta é a pasta montada pelo script da etapa 23, fora do Git.
+#   O Worker precisa rodar antes dos arquivos em todo pedido (run_worker_first = true),
+#   senão a Cloudflare entrega os arquivos direto, sem passar pelo garçom, e eles saem sem o
+#   cabeçalho X-Robots-Tag: noindex.
+#
+#   Variáveis comuns (não são segredo), em [vars]:
+#     SUPABASE_URL      endereço do projeto no Supabase (conexoes.md)
+#     ORIGEM_PERMITIDA  o próprio endereço do protótipo (conexoes.md, linha da Cloudflare)
+#
+#   Segredos: só pelo nome, nunca no arquivo. Entram pelo painel da Cloudflare ou pelo comando
+#   de segredo do wrangler, com o valor copiado direto do painel do serviço (roteiro da etapa 26):
+#     SUPABASE_CHAVE_PUBLICAVEL
+#     SUPABASE_CHAVE_SECRETA
+#     CHAVE_PLANILHA
+#
+# SUPABASE_SERVICE_KEY, da v1, não existe mais.

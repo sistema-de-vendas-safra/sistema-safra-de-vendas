@@ -156,3 +156,59 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* entrou_em é o gravado_em do fim de quiz de entrada, a hora do servidor do banco no fim da gravação (o mesmo valor de cursor_gravado_em). A diferença para o fim do quiz é de milissegundos quando o envio dá certo. O ocorrido_em continua gravado no evento.
    - *Recomendação:* manter, e corrigir a frase da 15.3 e da planilha-sdr na próxima versão ("hora em que o banco recebeu o fim do quiz").
    - *Se decidir diferente:* para usar o ocorrido_em, trocar uma linha em leads_para_planilha; o prazo da faixa A passa a depender do relógio do lead.
+
+## Etapa 22
+
+22.1. **O "+" do horário sem codificar é recusado, não consertado.**
+   - *Dúvida:* o horário do cursor vem do banco com "+00:00". Num endereço, o "+" sem codificar chega ao garçom como espaço. Dava para trocar o espaço de volta por "+", mas seria adivinhar o que o cliente quis mandar.
+   - *O que foi feito:* o garçom devolve o cursor_seguinte já com o fuso em Z (o mesmo instante, com os mesmos microssegundos), que vai no endereço sem codificar. Aceita de volta Z, +HH:MM codificado como %2B e -HH:MM. O "+" que chega como espaço é recusado com 400, sem chamar o banco. O README explica como o cliente deve codificar.
+   - *Recomendação:* manter; a etapa 24 guarda o cursor_seguinte como veio e o manda com encodeURIComponent.
+   - *Se decidir diferente:* para aceitar o espaço como "+", uma linha em lerCursor troca o espaço antes do fuso por "+"; o caso de teste correspondente passa a esperar 200.
+
+22.2. **O pré-voo (OPTIONS) da porta pública continua, só para a própria origem.**
+   - *Dúvida:* com o protótipo e o garçom no mesmo endereço (#101), o navegador não manda pré-voo nem precisa de cabeçalho de CORS. O pedido manda que todos os casos da v1 continuem passando, e um deles é o pré-voo respondido com 204.
+   - *O que foi feito:* a porta pública continua respondendo ao OPTIONS e pondo Access-Control-Allow-Origin, sempre com o valor exato de ORIGEM_PERMITIDA, nunca "*". Na mesma origem esse cabeçalho não abre nada a mais; outra origem continua recusada com 403. A conferência do Origin no POST continua igual. A porta privada não tem nenhum cabeçalho de CORS.
+   - *Recomendação:* depois do ensaio geral (etapa 25) e do teste de amanhã confirmarem a mesma origem, tirar o OPTIONS e o Access-Control-Allow-Origin numa v3 (o OPTIONS passa a dar 405).
+   - *Se decidir diferente:* tirar já: apagar o bloco do OPTIONS e o parâmetro origem de responder em portaFimQuiz; o caso do pré-voo no teste passa a esperar 405.
+
+22.3. **Limite acima de 200 é recusado, não cortado.**
+   - *Dúvida:* o pedido deixa escolher entre cortar ou recusar. O banco corta sozinho em 200.
+   - *O que foi feito:* recusado (400), como o garçom faz com campo a mais no pacote: pedido fora do combinado não é consertado em silêncio. Limite que não é inteiro de 1 a 200 (0, negativo, fração, texto, vazio) também é recusado. Sem limite, 200.
+   - *Recomendação:* manter; a etapa 24 manda 200 ou nada.
+   - *Se decidir diferente:* para cortar, trocar o "return { motivo: 'limite' }" de quantos > 200 por "quantos = 200"; o caso de 201 no teste passa a esperar 200.
+
+22.4. **A CHAVE_PLANILHA precisa ter pelo menos 32 caracteres no cofre.**
+   - *Dúvida:* o pedido manda 401 com o segredo vazio no cofre; não diz o que fazer com um segredo curto, fácil de adivinhar.
+   - *O que foi feito:* segredo com menos de 32 caracteres no cofre deixa a porta fechada (401 para todo pedido, registro "planilha: chave"). A chave é conferida antes do método e do cursor: sem ela, qualquer pedido dá 401.
+   - *Recomendação:* o roteiro da etapa 26 gera a chave com 32 bytes aleatórios em hexadecimal (64 caracteres), por um comando que não grava em arquivo.
+   - *Se decidir diferente:* o mínimo é a constante CHAVE_PLANILHA_MINIMO em garcom.mjs; com 1, só o segredo vazio fecha a porta.
+
+22.5. **Parâmetro desconhecido ou repetido na porta privada é recusado.**
+   - *Dúvida:* o pedido não diz o que fazer com parâmetros além do cursor e do limite.
+   - *O que foi feito:* só depois_de_gravado_em, depois_de_id_pessoa e limite, cada um no máximo uma vez; qualquer outro (por exemplo select=*) dá 400 sem chamar o banco.
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* ignorar os desconhecidos é tirar a primeira linha de lerCursor.
+
+22.6. **Formato da resposta da porta privada.**
+   - *Dúvida:* o pedido diz { leads, cursor_seguinte }. Faltava dizer quando o cursor_seguinte é null e como o cliente sabe se há mais.
+   - *O que foi feito:* leads vai como o banco devolve, coluna por coluna, inclusive cursor_gravado_em. cursor_seguinte é o da última linha (com o fuso em Z, 22.1) sempre que vem pelo menos um lead, e null com a lista vazia (o cliente mantém o cursor que tem). Acrescentei pode_ter_mais: true quando a página veio cheia, para o cliente pedir de novo.
+   - *Recomendação:* manter; a etapa 24 guarda o cursor_seguinte depois de gravar as linhas na aba e repete enquanto pode_ter_mais for true.
+   - *Se decidir diferente:* tirar pode_ter_mais é uma linha; o cliente passa a pedir de novo sempre que vier o limite inteiro.
+
+22.7. **Os arquivos só levam o cabeçalho noindex se o Worker rodar antes deles.**
+   - *Dúvida:* com o binding de assets, a Cloudflare entrega um arquivo que existe sem chamar o Worker, a não ser que a configuração mande rodar o Worker primeiro. Aí o arquivo sai sem o X-Robots-Tag (só com a meta da página).
+   - *O que foi feito:* o garçom acrescenta o cabeçalho em toda resposta que passa por ele. O README e o wrangler.toml.exemplo dizem que a configuração da etapa 23 precisa de run_worker_first = true. A configuração em si não foi escrita aqui.
+   - *Recomendação:* run_worker_first = true na etapa 23. Cada página aberta passa a contar como pedido ao Worker, o que no plano grátis cabe com folga num protótipo de teste.
+   - *Se decidir diferente:* sem run_worker_first, um arquivo _headers na pasta montada põe o noindex nos arquivos, e o Worker só roda em /api/.
+
+22.8. **O wrangler.toml.exemplo virou só uma lista.**
+   - *Dúvida:* a configuração de verdade do Worker vai para entregas/prototipo-funil-01/ na etapa 23; duas configurações divergiriam.
+   - *O que foi feito:* o exemplo ficou só com comentários: aponta para a etapa 23 e lista o que ela precisa ter (nome, main, ASSETS com run_worker_first, as duas variáveis comuns, os três segredos pelo nome). Sem nenhuma chave de configuração, id de conta ou segredo.
+   - *Recomendação:* apagar o exemplo quando a configuração da etapa 23 existir, numa versão nova do garçom.
+   - *Se decidir diferente:* se o exemplo tiver de continuar valendo sozinho, ele ganha as chaves de configuração de novo, e a etapa 23 passa a copiar dele.
+
+22.9. **O pacote do exemplo do quiz-01 é marcado como teste só dentro do teste.**
+   - *Dúvida:* a #102 manda leads de teste com nome começando por TESTE e e-mail @teste.invalid. O exemplo do README do quiz-01, que o teste lê, usa "Marina" e um e-mail @example.com, e o README do quiz-01 não é deste pedido.
+   - *O que foi feito:* o teste lê o exemplo e troca, só na memória, o nome para "TESTE Marina" e o e-mail para marina@teste.invalid. O README do quiz-01 não foi mexido.
+   - *Recomendação:* na versão nova da página do quiz (etapa 23), trocar o exemplo do README pelos dados marcados; aí a troca no teste sai.
+   - *Se decidir diferente:* nada muda no garçom.
