@@ -6,6 +6,8 @@ Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. En
 
 - Pendência nova: repositório do quiz-01 na conta pessoal otavio-gif, com publicação automática na Cloudflare (ver Pendências).
 - conexoes.md: a conta da Cloudflare do Safra já existe (o endereço do quiz usa o subdomínio sistemadevendassafra); verificação em duas etapas a confirmar.
+- Triagem da etapa 19 · forma (grupo A; nenhum documento sobe de versão). 12.1: lista Fontes do briefing, da copy e da estrutura da landing mantida como registro da escrita (forma). 17.6: item 6a da pauta mantido; renumerar só numa pauta nova (forma). 16.1: a troca do link da política de privacidade fica nas pendências (forma).
+- Triagem da etapa 19 · já decidido (grupo B): nenhuma pergunta; sem commit.
 
 ## 2026-11-08 · etapa 18 · banco e garcom
 
@@ -214,3 +216,4 @@ Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08
 - [ ] **Chaves:** antes de existir a primeira chave, instalar o detector de chaves (pre-commit) e fechar a brecha do .env no terminal (hoje o .claude/settings.json bloqueia só a ferramenta de leitura, não comandos como cat).
 - [ ] **Prazo:** a data de 10/11 do funil pode atrasar. Começar certo vale mais que começar na data.
 - [ ] **Repositório do quiz:** o repositório do quiz-01 (github.com/otavio-gif/sistema-de-vendas-safra-quiz01) mora na conta pessoal otavio-gif, fora da organização do Safra, e está ligado a uma publicação automática na Cloudflare. Depois da migração para o sistema (cópia em fontes/quiz-01-repositorio-2026-11-08/), decidir se ele vira arquivo histórico e se a Cloudflare passa a publicar a partir do repositório do sistema (etapa 19, 08/11/2026).
+- [ ] **Link da política de privacidade:** quando a política de privacidade tiver endereço e passar pelo advogado, trocar {{a definir: link da politica de privacidade}} em quiz-01-copy (M7, M16) e no objeto A_DEFINIR da página do quiz, numa correção de forma (16.1).
