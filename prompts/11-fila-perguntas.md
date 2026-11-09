@@ -197,3 +197,77 @@ Dúvidas das etapas 30 a 36 (prompts/11-decisoes-de-09-11.md), no formato de sem
    - *O que foi feito:* nada mudou de lugar, para não mudar a numeração que outros documentos citam (como na 17.6); o rótulo no título e a primeira frase de cada item dizem que não são para decidir.
    - *Recomendação:* manter no lugar, com o rótulo; na versão impressa, a ordem continua a mesma.
    - *Se decidir diferente:* o item 7 vai para a Parte 5 como letra (C), e o item 5 ganha uma parte própria "Para confirmar"; os números citados em outros documentos não mudam.
+
+## Etapa 32
+
+32.1. **A migração usa o nome e a lista do clique que ainda são proposta (31.15).**
+   - *Dúvida:* a 18.4 manda registrar o clique no fim do quiz; o nome do tipo (interesse_pos_relatorio), o do campo (clique_fim_quiz) e os quatro valores (quero-conversa, chamar-whatsapp, tenho-interesse, agora-nao) são a proposta da planta v4, ainda sem resposta (31.15).
+   - *O que foi feito:* migracoes/001-v3.sql liga exatamente esses nomes, com a lista numa restrição própria (eventos_clique_lista), marcada como proposta no comentário.
+   - *Recomendação:* responder a 31.15 antes da etapa 34, que põe os valores nos botões do quiz.
+   - *Se decidir diferente:* uma migração nova (002) troca só a restrição eventos_clique_lista (e, se o nome do tipo mudar, eventos_tipo_lista e eventos_quem_grava); a planta, o garçom, o quiz e a planilha mudam junto. Nenhum clique de verdade existe ainda.
+
+32.2. **Clique sem fim do quiz na sessão é recusado; a ligação com a pessoa é só pela sessão.**
+   - *Dúvida:* a planta liga o clique à pessoa (o campo clique_fim_quiz tem dado pessoal ligado), mas não diz o que fazer com o clique de quem desmarcou a caixa e não enviou nada (30.3), nem com uma sessão em que duas pessoas diferentes terminaram o quiz (a mesma aba, dois contatos).
+   - *O que foi feito:* caminho conservador em registrar_evento: o clique só entra se a sessão tiver o fim do quiz de uma pessoa só; sem fim do quiz, ou com duas pessoas, é recusado (22023). A visita e o início do quiz entram sempre, sem pessoa; se o fim do quiz da sessão já tiver chegado (envio fora de ordem), já nascem ligados a ela, e com duas pessoas na sessão nascem sem pessoa, sem escolher.
+   - *Recomendação:* manter. Quem desmarca a caixa não deixa rastro de pessoa no banco, como a 30.3 pede; contar esses cliques sem pessoa, se for útil, é decisão junto com a 30.3.
+   - *Se decidir diferente:* para guardar o clique sem pessoa, a regra do v2 que exige pessoa em todo tipo fora de visita, início e fim do quiz (eventos_check3) muda numa migração nova, e a função deixa de recusar.
+
+32.3. **Na planilha vai o último clique, e só se ele vier antes da leitura.**
+   - *Dúvida:* a planta manda à planilha "o que a pessoa clicou no fim do quiz", sem dizer qual clique, se houver vários, e a linha que já foi para a planilha não é atualizada (21.5).
+   - *O que foi feito:* leads_para_planilha v3 manda o último clique da pessoa (de qualquer sessão), no momento da leitura. A margem de 1 minuto do banco (21.6) dá tempo para quem clica logo depois do diagnóstico; quem clica depois de a planilha ter lido a linha fica com o clique só no banco.
+   - *Recomendação:* manter no protótipo; quando a volta do status existir, avaliar se a planilha passa a atualizar essa coluna (só de leitura) nas linhas que já existem.
+   - *Se decidir diferente:* para o primeiro clique, muda só a ordem da subconsulta na função, numa migração nova; para atualizar linhas antigas, muda o Codigo.gs, que hoje nunca reescreve uma linha.
+
+32.4. **O catálogo do protótipo não tem a linha da landing.**
+   - *Dúvida:* o banco só aceita o evento se o par entrega e versão estiver no catálogo (18.8), e catalogo-prototipo.sql só tem o quiz-01 versão 1. O id já está decidido: landing-page-01, o nome da pasta da entrega (10.15, aceita; landing-page-01-estrutura v4, passo "Registra a visita", que diz que a linha entra junto com as etapas 32 e 34). Não está escrito qual versão a página manda (a página não tem ainda um cabeçalho de versão próprio; as variantes estão na versão 2 de cada README) nem se as duas variantes que estão no ar (/ e /b/) mandam o mesmo par, o que mistura as duas na medição (10.14, de volta como pergunta 31.7).
+   - *O que foi feito:* nada no catálogo nem no catalogo-prototipo.sql, porque o número da versão e o jeito de separar as variantes não estão escritos. O teste da migração grava a linha landing-page-01 versão 1 só na memória dele. Revisão: a correção mínima, quando a versão estiver escrita, é acrescentar a linha ao catalogo-prototipo.sql (v2) com o mesmo `on conflict (id_entrega, versao) do nothing` da linha do quiz, sem apagar nada; ela não entra na migração, que é só de esquema e roda também num projeto novo de verdade. O ensaio (que hoje confere "catálogo com uma linha só") muda junto, na etapa 35.
+   - *Recomendação:* na etapa 34, escrever a versão da página (versão 1 na primeira publicação que grava visita, recomendado) e se as variantes mandam o mesmo par, e acrescentar a linha ao catalogo-prototipo.sql nessa mesma etapa, para o roteiro da etapa 35 já rodar o arquivo com as duas linhas antes de publicar. **Bloqueia a etapa 35:** publicar a landing nova sem a linha deixa a visita sem gravar.
+   - *Se decidir diferente:* sem a linha, toda visita volta recusada pela chave estrangeira (23503) e o painel não tem visitas; o quiz e a planilha não quebram. Se cada variante virar uma versão, entram duas linhas (landing-page-01 versões 1 e 2, por exemplo) em vez de uma.
+
+32.5. **O Codigo.gs da planilha foi mexido, e só para a coluna do clique.**
+   - *Dúvida:* a etapa 32 não fala da planilha em Apps Script (a 31.20 apontou a lacuna). A função da planilha passou a mandar clique_fim_quiz, que a planilha-sdr v2 pede numa coluna própria.
+   - *O que foi feito:* Codigo.gs v2 (e o README e os testes dele) com a coluna clique_fim_quiz entre tentativas_feitas e estagio: a aba passa de 19 para 20 colunas, as do banco de 15 para 16. Teste local: 54 de 54. Nada mais mudou: o estado nutrição e a lista do produto continuam fora da lista da planilha (um estado nutricao vindo do banco aparece vazio na linha nova, como qualquer valor fora da lista). A aba de teste que já existe tem o cabeçalho de 19 colunas: a planilha v2 para nela com "cabeçalho diferente" até a aba ser renomeada e instalar() rodar de novo (README da planilha, "Atualizar da versão 1"). As duas ordens são seguras: a planilha v1 ignora o campo novo, e a v2 sem a migração deixa a coluna vazia.
+   - *Recomendação:* aceitar, e pôr o resto da planilha-sdr v2 (nutrição, produto) na etapa 33 com a porta privada, como a 31.20 recomenda; o passo de colar o código novo e renomear a aba vai para o roteiro da etapa 35.
+   - *Se decidir diferente:* para não mexer na planilha agora, o Codigo.gs volta à v1 pelo Git; o banco continua mandando o campo, que a v1 ignora.
+
+32.6. **A ordem dentro da faixa (15.6) não está no banco nem na planilha.**
+   - *Dúvida:* a 15.6 pede nota maior primeiro e, no empate, quem entrou antes. O pedido da etapa cita a ordem entre as mudanças possíveis no banco.
+   - *O que foi feito:* nada no banco: leads_para_planilha continua entregando na ordem do cursor (gravado_em e id_pessoa), que é o que garante não perder nem repetir lead. O Codigo.gs acrescenta as linhas na ordem em que chegam; não ordena.
+   - *Recomendação:* a ordem fica na planilha, numa versão nova do Codigo.gs (uma aba ou visão filtrada que ordena por faixa, nota e entrou_em, sem mexer na aba fila), junto com a 32.5.
+   - *Se decidir diferente:* ordenar na função do banco quebraria o cursor; teria de vir com outro cursor, numa migração nova.
+
+32.7. **O ensaio geral fica falso até a etapa 35, e o teste da migração mora em dados/banco/.**
+   - *Dúvida:* o ensaio geral (nucleo/ferramentas/ensaio/ensaio.mjs, v2) aplica só o esquema v2, espera do conferir.sql "13 de 13" e da planilha 19 colunas. Com o conferir.sql v2 e o Codigo.gs v2, ele dá FALHOU nesses pontos. A etapa 35 é a que atualiza o ensaio.
+   - *O que foi feito:* o ensaio não foi mexido. O teste da migração ficou em dados/banco/testar-migracao.mjs (usa o PGlite instalado em nucleo/ferramentas/ensaio/, sem rede), para não subir a versão do ensaio fora da etapa dele. Resultado: 64 de 64, conferir.sql 18 de 18. Rodado o ensaio com `--sem-wrangler` para ver o efeito: 90 de 108; os 18 FALHOU são só esses dois pontos (as linhas 4, 8 e 14 a 18 do conferir.sql, duas vezes, porque o ensaio não aplica a migração, e duas conferências da planilha, que esperam 19 colunas). O resto do ensaio, com o garçom v3 e o quiz, passou.
+   - *Recomendação:* na etapa 35, o ensaio aplica o esquema v2, dados de teste, a migração duas vezes e o conferir.sql v2 ("18 de 18"), e espera 20 colunas na planilha; ou chama testar-migracao.mjs.
+   - *Se decidir diferente:* se o ensaio tiver de continuar verde entre as etapas, a correção mínima no ensaio.mjs é aplicar a migração depois do esquema e trocar "13 de 13" e as 19 colunas, com o ensaio subindo para v3.
+
+32.8. **Os nomes das duas respostas do histórico na planilha.**
+   - *Dúvida:* a 15.4 diz que o histórico são as respostas de leads por mês e de CRM, sem dizer como aparecem. O quiz guarda o CRM como resposta própria (crm) e os leads por mês só dentro dos números do funil (a linha "Leads por mês"), e só quando a pessoa informa os números (no modo chute, não há esse número).
+   - *O que foi feito:* respostas_a_confirmar da faixa b ganhou leads-por-mes (o valor da linha "Leads por mês", como a pessoa digitou) e crm (o texto da resposta). Sem número, leads-por-mes não vem.
+   - *Recomendação:* aceitar. Se o rótulo "Leads por mês" mudar na página do quiz, a função precisa mudar junto.
+   - *Se decidir diferente:* muda só a lista de respostas na função, numa migração nova.
+
+32.9. **esquema.sql e o README do banco na versão 3, sem mudar o SQL do esquema.**
+   - *Dúvida:* o esquema não pode ser reescrito para rodar no banco de verdade (21.11), mas rodar esquema.sql de novo depois da migração desfaria parte dela, e o README e o esquema dividem o id banco-rascunho (25.3).
+   - *O que foi feito:* esquema.sql ganhou só um aviso no topo (é o v2 e não muda; a ordem esquema, migração, conferir; se rodar de novo, rodar a migração logo depois) e subiu para v3 junto com o README, como a 25.3 sugeria; nenhuma linha de SQL mudou e o depende_de dele continua o do SQL v2. O README v3 também aplica a 20.4 (regra-seguranca 3) e a 25.3 (linha do catalogo-prototipo.sql). A migração tem id próprio, banco-migracao-001, versão 1.
+   - *Recomendação:* manter: o esquema v2 fica como registro do que rodou no Supabase, e cada mudança do banco vira uma migração numerada.
+   - *Se decidir diferente:* se o esquema tiver de continuar v2 no cabeçalho, o aviso sai numa correção de forma e só o README fica v3.
+
+32.10. **O produto não é obrigatório na venda.**
+   - *Dúvida:* a planta v4 diz que o produto vai no evento venda, mas não diz se a venda sem produto entra, nem se o produto pode aparecer em outro tipo. O esquema v2 não confere "em que tipos" de nenhum campo.
+   - *O que foi feito:* só a lista fechada (iasv ou essencial). A venda sem produto continua entrando, como no v2; nenhuma regra nova que a planta não escreve.
+   - *Recomendação:* decidir quando a volta do status existir (é ela que grava a venda): exigir o produto na venda, porque só a IASV conta para as vagas (ficha-de-fatos#vendas-que-contam).
+   - *Se decidir diferente:* com a regra, uma migração nova põe a restrição (tipo diferente de venda, ou produto preenchido); hoje não há venda gravada que a impeça.
+
+32.11. **O cabeçalho da planilha v2 ainda cita garcom 2, regra-seguranca 2 e decisoes 4.** (revisão)
+   - *Dúvida:* Codigo.gs e o README da planilha subiram para a v2 com a coluna nova, mas o depende_de só trocou funil-01-planilha-sdr e banco-rascunho; hoje são garcom 3, regra-seguranca 3 e decisoes 5. O código segue o contrato da porta privada, que não mudou do garçom 2 para o 3.
+   - *O que foi feito:* nada; o documento já está com desatualizado: true, e a planilha-sdr v2 só foi aplicada em parte (32.5).
+   - *Recomendação:* trocar as três versões na próxima versão da planilha (a que puser nutrição e produto), como forma, depois de conferir que nada do garçom 3, da regra 3 (20.1) e da #114 muda o código.
+   - *Se decidir diferente:* trocar agora, como forma, na mesma v2 ainda não commitada; nenhuma linha de código muda.
+
+32.12. **conexoes.md diz que a chave publicável só executa registrar_fim_quiz.** (revisão)
+   - *Dúvida:* depois da migração, a chave publicável (papel anon) também executa registrar_evento. conexoes.md descreve o que está no ar, e a migração ainda não rodou.
+   - *O que foi feito:* nada em conexoes.md.
+   - *Recomendação:* no roteiro da etapa 35, logo depois de o Otávio rodar a migração e o conferir.sql, atualizar a linha do Supabase em conexoes.md (anon executa registrar_fim_quiz e registrar_evento).
+   - *Se decidir diferente:* atualizar já, com a ressalva "depois da migração 001"; o risco é a linha descrever um banco que ainda não existe.

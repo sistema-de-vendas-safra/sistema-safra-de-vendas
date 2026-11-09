@@ -1,5 +1,5 @@
 // Teste local de Codigo.gs (planilha do SDR do funil-01), sem Google e sem rede.
-// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v1, rascunho; ver README.md).
+// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v2, rascunho; ver README.md).
 //
 //   node entregas/planilha-sdr-funil-01/teste/testar-planilha.mjs
 //
@@ -15,7 +15,7 @@ const CHAVE = ['mentira', 'planilha', '0123456789abcdef'.repeat(3)].join('-');  
 const CHAVE_ERRADA = ['mentira', 'errada', 'fedcba9876543210'.repeat(3)].join('-');
 
 const COLUNAS = ['id_pessoa', 'nome', 'telefone', 'email', 'empresa', 'consentimento_whatsapp', 'consentimento_email',
-  'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas',
+  'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
   'estagio', 'estado', 'data_volta', 'canal', 'contato_em', 'reuniao_em', 'produto'];
 const COL = Object.fromEntries(COLUNAS.map((c, i) => [c, i + 1]));
 
@@ -41,6 +41,7 @@ function lead(n, extra = {}) {
     respostas_a_confirmar: faixa === 'b' ? { 'valor-medio': 'de-10-a-50-mil', vendedores: '2-a-5' } : null,
     entrou_em: g,
     tentativas_feitas: 0,
+    clique_fim_quiz: n === 2 ? 'quero-conversa' : null,
     estagio: null,
     estado: null,
     data_volta: null,
@@ -95,7 +96,7 @@ await caso('instalar sem propriedades: cria a aba, não cria gatilho e avisa em 
   const msg = erroDe(() => m.gs.instalar());
   certo(/GARCOM_URL/.test(msg) && /CHAVE_PLANILHA/.test(msg) && /gatilho não foi criado/.test(msg), 'mensagem: ' + msg);
   certo(m.aba(), 'aba não criada');
-  igual(m.aba().linha(1, 19), COLUNAS, 'cabeçalho');
+  igual(m.aba().linha(1, 20), COLUNAS, 'cabeçalho');
   igual(m.estado.gatilhos.length, 0, 'gatilhos');
   guardarRegistros(m);
   return 'gatilhos 0; mensagem com os nomes das propriedades';
@@ -127,14 +128,14 @@ await caso('instalar com CHAVE_PLANILHA curta (menos de 32): recusa e não cria 
   return 'gatilhos 0';
 });
 
-await caso('instalar: aba "fila", 19 cabeçalhos na ordem de planilha-sdr.md, primeira linha congelada', () => {
+await caso('instalar: aba "fila", 20 cabeçalhos na ordem de planilha-sdr.md, primeira linha congelada', () => {
   const m = montar();
   const aba = m.aba();
-  igual(aba.linha(1, 19), COLUNAS, 'cabeçalho');
+  igual(aba.linha(1, 20), COLUNAS, 'cabeçalho');
   igual(aba.getFrozenRows(), 1, 'linhas congeladas');
   igual(linhasDeDados(aba), 0, 'linhas de dados');
   guardarRegistros(m);
-  return '19 colunas, congelada 1';
+  return '20 colunas, congelada 1';
 });
 
 await caso('instalar: lista fechada em estagio, estado e canal, com os valores exatos e sem aceitar valor de fora', () => {
@@ -271,24 +272,24 @@ await caso('primeira busca: acrescenta os 3 leads na ordem, só nas colunas do b
   igual(linhasDeDados(aba), 3, 'linhas');
   igual([2, 3, 4].map(n => aba.valor(n, COL.id_pessoa)), leads(1, 3).map(l => l.id_pessoa), 'ordem');
   const escritasDoScript = aba.escritas.filter(e => e.quem === 'script' && e.linha > 1);
-  igual(escritasDoScript.map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[2, 1, 3, 15]], 'escritas');
+  igual(escritasDoScript.map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[2, 1, 3, 16]], 'escritas');
   for (let n = 2; n <= 4; n++) for (let c = COL.canal; c <= COL.produto; c++) igual(aba.valor(n, c), '', 'coluna do SDR ' + c);
   guardarRegistros(m);
-  return 'linhas 3; uma escrita, colunas 1 a 15';
+  return 'linhas 3; uma escrita, colunas 1 a 16';
 });
 
 await caso('valores da linha: captado no estágio vazio, não com acento, horário de Brasília, respostas da faixa b', () => {
   const m = montar();
   m.gs.buscarLeadsNovos();
   const aba = m.aba();
-  const l1 = aba.linha(2, 19), l2 = aba.linha(3, 19), l3 = aba.linha(4, 19);
-  igual(l1.slice(0, 15), [lead(1).id_pessoa, 'TESTE Pessoa 1', '+55 00 00000-0001', 'pessoa1@teste.invalid', 'TESTE Empresa 1',
-    'sim', 'sim', 'a', 96, '', '2026-11-08 09:00:01', 0, 'captado', '', ''], 'linha 1');
-  igual(l2.slice(5, 12), ['sim', 'sim', 'b', 55, 'valor-medio: de-10-a-50-mil; vendedores: 2-a-5', '2026-11-08 09:00:02', 0], 'linha 2');
+  const l1 = aba.linha(2, 20), l2 = aba.linha(3, 20), l3 = aba.linha(4, 20);
+  igual(l1.slice(0, 16), [lead(1).id_pessoa, 'TESTE Pessoa 1', '+55 00 00000-0001', 'pessoa1@teste.invalid', 'TESTE Empresa 1',
+    'sim', 'sim', 'a', 96, '', '2026-11-08 09:00:01', 0, '', 'captado', '', ''], 'linha 1');
+  igual(l2.slice(5, 13), ['sim', 'sim', 'b', 55, 'valor-medio: de-10-a-50-mil; vendedores: 2-a-5', '2026-11-08 09:00:02', 0, 'quero-conversa'], 'linha 2');
   igual(l3[COL.consentimento_email - 1], 'não', 'nao vira não');
   igual(aba.celula(2, COL.telefone).texto, true, 'telefone com + vai como texto');
   guardarRegistros(m);
-  return 'estagio captado; entrou_em 09:00:01';
+  return 'estagio captado; entrou_em 09:00:01; clique quero-conversa';
 });
 
 await caso('cursor salvo nas propriedades depois de gravar, igual ao cursor_seguinte (com Z)', () => {
@@ -541,19 +542,19 @@ await caso('colunas do SDR preenchidas à mão não são tocadas; linhas antigas
   aba.escreverAMao(2, COL.reuniao_em, '2026-11-10 10:00');
   aba.escreverAMao(3, COL.data_volta, '2026-11-20');
   aba.escreverAMao(3, COL.estado, 'stand-by');
-  const antes = [2, 3, 4].map(n => aba.linha(n, 19));
+  const antes = [2, 3, 4].map(n => aba.linha(n, 20));
   const escritasAntes = aba.escritas.length;
   trocarBase(m, leads(1, 6));
   m.gs.buscarLeadsNovos();
-  igual([2, 3, 4].map(n => aba.linha(n, 19)), antes, 'linhas antigas');
+  igual([2, 3, 4].map(n => aba.linha(n, 20)), antes, 'linhas antigas');
   const novas = aba.escritas.slice(escritasAntes).filter(e => e.quem === 'script');
-  igual(novas.map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[5, 1, 3, 15]], 'escritas novas');
+  igual(novas.map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[5, 1, 3, 16]], 'escritas novas');
   for (let n = 5; n <= 7; n++) for (let c = COL.canal; c <= COL.produto; c++) igual(aba.valor(n, c), '', 'coluna do SDR na linha nova');
   guardarRegistros(m);
-  return 'linhas 2 a 4 iguais; escrita só em 5 a 7, colunas 1 a 15';
+  return 'linhas 2 a 4 iguais; escrita só em 5 a 7, colunas 1 a 16';
 });
 
-await caso('anotação à direita das 19 colunas não empurra os leads para baixo', () => {
+await caso('anotação à direita das 20 colunas não empurra os leads para baixo', () => {
   const m = montar();
   m.gs.buscarLeadsNovos();
   const aba = m.aba();

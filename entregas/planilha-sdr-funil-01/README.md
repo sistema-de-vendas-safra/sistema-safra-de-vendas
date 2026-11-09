@@ -1,16 +1,16 @@
 ---
 id: planilha-sdr-funil-01
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: funil-01-planilha-sdr
-    versao: 1
+    versao: 2
   - id: garcom
     versao: 2
   - id: banco-rascunho
-    versao: 2
+    versao: 3
   - id: regra-seguranca
     versao: 2
   - id: decisoes
@@ -25,6 +25,8 @@ desatualizado: true
 O código que faz a planilha do SDR pedir ao garçom, a cada 5 minutos, os leads novos e acrescentá-los numa aba, com as colunas e a ordem de funis/funil-01/planilha-sdr.md. **Nunca foi rodado no Google.** Foi conferido só aqui, com um Google de mentira (ver "Teste local").
 
 **Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (funil-01-planilha-sdr e garcom; regra provisória 11.1).
+
+**Versão 2 (etapa 32, 09/11/2026).** Só a coluna nova **clique_fim_quiz** (o que a pessoa clicou no fim do quiz, só de leitura; 18.4 com 15.16), entre tentativas_feitas e estagio, como em funis/funil-01/planilha-sdr.md v2. Ela vem do banco v3 (migração dados/banco/migracoes/001-v3.sql). A aba passa de 19 para 20 colunas, e as que vêm do banco, de 15 para 16. As duas respostas do histórico da faixa B (15.4) já cabem na coluna respostas_a_confirmar, sem mudança no código. O estado nutrição, a lista do produto e o resto da planilha-sdr v2 ficam para a etapa que pegar a planilha (perguntas 31.20 e 32.5, em prompts/11-fila-perguntas.md). O resto do código não mudou. Para a planilha de teste que já existe, ver "Atualizar da versão 1".
 
 **Destino dos contatos em conflito · bloqueado para entrega até a decisão** (conflito-17, em base/lacunas.md). Este código segue o lado 2 (#90: banco e planilha), sem escolher. Protótipo de teste não é entrega.
 
@@ -42,7 +44,7 @@ O código que faz a planilha do SDR pedir ao garçom, a cada 5 minutos, os leads
 - **`instalar()`**, que o Otávio roda uma vez. Rodar de novo não estraga nada.
   1. Cria a aba **fila** (ou usa a que já existe, sem apagar nada).
   2. Se criou a aba agora, apaga o cursor guardado (de uma aba antiga renomeada ou apagada), para a aba nova receber todos os leads desde o início; a conferência do id_pessoa evita duplicata.
-  3. Numa aba vazia, escreve na linha 1 as 19 colunas de planilha-sdr.md, na ordem: id_pessoa, nome, telefone, email, empresa, consentimento_whatsapp, consentimento_email, lead_score_faixa, lead_score_nota, respostas_a_confirmar, entrou_em, tentativas_feitas, estagio, estado, data_volta, canal, contato_em, reuniao_em, produto. Se a aba já tem esse cabeçalho, deixa. Se tem outro, não mexe em nada e avisa.
+  3. Numa aba vazia, escreve na linha 1 as 20 colunas de planilha-sdr.md, na ordem: id_pessoa, nome, telefone, email, empresa, consentimento_whatsapp, consentimento_email, lead_score_faixa, lead_score_nota, respostas_a_confirmar, entrou_em, tentativas_feitas, clique_fim_quiz, estagio, estado, data_volta, canal, contato_em, reuniao_em, produto. Se a aba já tem esse cabeçalho, deixa. Se tem outro, não mexe em nada e avisa.
   4. Congela a primeira linha.
   5. Põe formato de texto simples nas colunas nome, telefone, email, empresa e respostas_a_confirmar, para o Google não transformar "00123", "TRUE" ou "1/2" em número, verdadeiro ou data (24.12).
   6. Põe lista fechada (sem aceitar valor de fora) em três colunas, com os nomes "Na planilha" de planilha-sdr.md: **estagio** (captado, pré-qualificado, agendado, realizado, venda), **estado** (conversando, tentativa, abandonado, stand-by, perdido) e **canal** (telefone, whatsapp). produto fica sem lista, porque está fora da lista fechada até a decisão de 5.3.
@@ -52,7 +54,7 @@ O código que faz a planilha do SDR pedir ao garçom, a cada 5 minutos, os leads
   1. Lê GARCOM_URL e CHAVE_PLANILHA das propriedades do script. Nunca estão no código.
   2. Chama `GET <GARCOM_URL>/api/planilha/leads-novos` com o cabeçalho `X-Chave-Planilha`, o cursor salvo (com `encodeURIComponent`) e `limite=200`. Na primeira vez, sem cursor. Não segue redirecionamento (a chave não vai para outro endereço).
   3. Com 401, erro do garçom, falha de rede ou resposta fora do formato `{ leads, cursor_seguinte, pode_ter_mais }` (entregas/garcom/README.md, "Porta privada"), não grava nada daquela página e não mexe no cursor.
-  4. Acrescenta as linhas **no fim** da aba (depois da última linha com algo nas 19 colunas da fila; uma anotação à direita delas não empurra os leads), só nas 15 colunas que vêm do banco (de id_pessoa a data_volta), na ordem da planilha. Nunca apaga, nunca reescreve uma linha que já existe, nunca escreve em canal, contato_em, reuniao_em nem produto.
+  4. Acrescenta as linhas **no fim** da aba (depois da última linha com algo nas 20 colunas da fila; uma anotação à direita delas não empurra os leads), só nas 16 colunas que vêm do banco (de id_pessoa a data_volta), na ordem da planilha. Nunca apaga, nunca reescreve uma linha que já existe, nunca escreve em canal, contato_em, reuniao_em nem produto.
   5. Nunca duplica: além do cursor, não acrescenta um id_pessoa que já está na aba (21.6). Se o cursor se perder, pede desde o início e só entra quem falta.
   6. Salva o `cursor_seguinte` nas propriedades **depois** de gravar as linhas. Se a gravação falhar, o cursor fica onde estava e a próxima rodada pede de novo (sem duplicar, pelo item 5).
   7. Repete enquanto `pode_ter_mais` for true, até 10 páginas (2.000 leads) por execução; o resto fica para a rodada seguinte.
@@ -111,9 +113,20 @@ Para o teste de amanhã, só com leads de mentira. Leva uns 10 minutos. Antes, o
    *Deu certo se:* o Registro de execução, embaixo, termina com `[planilha] instalar: aba criada; gatilho criado` e "Execução concluída".
 8. **Fazer o quiz com um lead de mentira** (TESTE no nome, e-mail @teste.invalid) e esperar até uns 6 minutos (1 minuto de margem do banco, 21.6, mais os 5 do gatilho). Para não esperar o gatilho, escolha `buscarLeadsNovos` e clique em Executar.
 
+## Atualizar da versão 1
+
+A planilha de teste do protótipo foi instalada com a versão 1 (19 colunas). Com a versão 2, o cabeçalho da aba antiga não confere, e a busca para com "o cabeçalho da aba fila não é o esperado", sem gravar nada. Para atualizar (o roteiro da etapa 35 traz o passo):
+
+1. Só depois de a migração do banco ter rodado (dados/banco/README.md, "Como aplicar"): sem ela, o garçom não manda o clique, e a coluna fica vazia.
+2. No Apps Script, apague o código do arquivo, cole o Codigo.gs novo inteiro e salve.
+3. Na planilha, renomeie a aba **fila** para **fila antiga**.
+4. Rode `instalar` de novo. A aba nova nasce com as 20 colunas e sem cursor, e recebe todos os leads desde o início, sem duplicar; a antiga fica como estava (só leads de teste, #102).
+
+*Deu certo se:* a aba **fila** nova tem clique_fim_quiz na coluna 13, e `buscarLeadsNovos` termina com "Execução concluída".
+
 ## Como saber que deu certo
 
-- A planilha tem a aba **fila**, com os 19 cabeçalhos na linha 1, congelada; estagio, estado e canal mostram a setinha da lista.
+- A planilha tem a aba **fila**, com os 20 cabeçalhos na linha 1, congelada; estagio, estado e canal mostram a setinha da lista.
 - No Apps Script, Acionadores (o relógio, à esquerda): um acionador só, `buscarLeadsNovos`, "Baseado no tempo", a cada 5 minutos.
 - Depois do quiz de teste: uma linha nova na aba, com o nome TESTE..., estagio **captado** e canal, contato_em, reuniao_em e produto vazios.
 - Em Execuções (a lista, à esquerda): rodadas de `buscarLeadsNovos` a cada 5 minutos, concluídas, com `[planilha] busca: 1 linha(s) nova(s)...` e, nas seguintes, `0 linha(s) nova(s)`.
@@ -159,14 +172,14 @@ Precisa só do Node (18 ou mais novo; conferido no 26), sem instalar nada. O tes
 
 O Google de mentira imita o que importa aqui: célula com apóstrofo na frente vira texto (e o apóstrofo some), "=" na frente vira fórmula, escrever fora do tamanho da aba dá erro, a trava pode estar com outra execução, gatilhos só com 1, 5, 10, 15 ou 30 minutos. O que só o Google de verdade confirma está na pergunta 24.13.
 
-### Resultado do teste (08/11/2026)
+### Resultado do teste (09/11/2026, versão 2)
 
 ```
 OK     · instalar sem propriedades: cria a aba, não cria gatilho e avisa em português (gatilhos 0; mensagem com os nomes das propriedades)
 OK     · instalar com só uma propriedade: também não cria gatilho (gatilhos 0)
 OK     · instalar com GARCOM_URL sem https: recusa e não cria gatilho (gatilhos 0)
 OK     · instalar com CHAVE_PLANILHA curta (menos de 32): recusa e não cria gatilho (gatilhos 0)
-OK     · instalar: aba "fila", 19 cabeçalhos na ordem de planilha-sdr.md, primeira linha congelada (19 colunas, congelada 1)
+OK     · instalar: aba "fila", 20 cabeçalhos na ordem de planilha-sdr.md, primeira linha congelada (20 colunas, congelada 1)
 OK     · instalar: lista fechada em estagio, estado e canal, com os valores exatos e sem aceitar valor de fora (estagio 5, estado 5, canal 2; produto sem lista (5.3))
 OK     · instalar: um gatilho de tempo, a cada 5 minutos, para buscarLeadsNovos (1 gatilho)
 OK     · instalar duas vezes (e três): continua um gatilho só, aba e linhas intactas (gatilhos 1; células iguais)
@@ -176,8 +189,8 @@ OK     · desligar: apaga o gatilho e não mexe na aba nem nas propriedades (gat
 OK     · instalar: texto simples (@) em nome, telefone, email, empresa e respostas_a_confirmar, e em nenhuma outra (5 colunas com @)
 OK     · aba renomeada e instalar de novo: a aba nova recebe os leads desde o início, sem duplicar (linhas 3 na aba nova; aba antiga com 3)
 OK     · instalar com a aba já existente não apaga o cursor (cursor igual)
-OK     · primeira busca: acrescenta os 3 leads na ordem, só nas colunas do banco (linhas 3; uma escrita, colunas 1 a 15)
-OK     · valores da linha: captado no estágio vazio, não com acento, horário de Brasília, respostas da faixa b (estagio captado; entrou_em 09:00:01)
+OK     · primeira busca: acrescenta os 3 leads na ordem, só nas colunas do banco (linhas 3; uma escrita, colunas 1 a 16)
+OK     · valores da linha: captado no estágio vazio, não com acento, horário de Brasília, respostas da faixa b (estagio captado; entrou_em 09:00:01; clique quero-conversa)
 OK     · cursor salvo nas propriedades depois de gravar, igual ao cursor_seguinte (com Z) (cursor do lead 3)
 OK     · pedido: endereço e chave das propriedades, chave no cabeçalho, limite 200, sem seguir redirecionamento (chamadas 1)
 OK     · GARCOM_URL com barra no fim: a barra sai (sem barra dupla)
@@ -209,8 +222,8 @@ OK     · sem a aba "fila": não chama o garçom (chamadas 0)
 OK     · cabeçalho mexido na aba: não grava nada (linhas 0)
 OK     · outra execução com a trava: sai sem fazer nada e sem erro (chamadas 0)
 OK     · a trava é solta depois da busca, mesmo com erro (trava solta)
-OK     · colunas do SDR preenchidas à mão não são tocadas; linhas antigas não são reescritas (linhas 2 a 4 iguais; escrita só em 5 a 7, colunas 1 a 15)
-OK     · anotação à direita das 19 colunas não empurra os leads para baixo (leads nas linhas 5 e 6)
+OK     · colunas do SDR preenchidas à mão não são tocadas; linhas antigas não são reescritas (linhas 2 a 4 iguais; escrita só em 5 a 7, colunas 1 a 16)
+OK     · anotação à direita das 20 colunas não empurra os leads para baixo (leads nas linhas 5 e 6)
 OK     · fórmula injetada pelo quiz vira texto (= + - @), nada vira fórmula (fórmulas 0; 6 empresas como texto)
 OK     · estágio e estado do banco: pre-qualificado vira pré-qualificado; valor fora da lista fica vazio (mapa conferido)
 OK     · lead fora das faixas a e b (defesa): não entra, mas o cursor avança (linhas 1; fora da faixa 2)
@@ -241,7 +254,7 @@ const gs = carregarCodigo(falsos);   // o contexto: gs.instalar(), gs.buscarLead
 gs.instalar();
 gs.buscarLeadsNovos();               // lança erro com mensagem em português se der errado
 const aba = falsos.estado.abas.find(a => a.getName() === 'fila');
-aba.linha(2, 19);                    // os 19 valores da primeira linha de dados
+aba.linha(2, 20);                    // os 20 valores da primeira linha de dados
 falsos.estado.registros;             // tudo o que foi para o registro (confira: sem dado pessoal)
 falsos.estado.propriedades;          // GARCOM_URL, CHAVE_PLANILHA e o cursor salvo
 http.fechar();

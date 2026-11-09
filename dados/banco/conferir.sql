@@ -1,6 +1,12 @@
--- Conferência do banco do funil-01, depois de rodar esquema.sql (Postgres, no Supabase)
--- id: banco-conferir · versao 1 · rascunho · otavio: pendente
--- depende_de: banco-rascunho v2, decisoes v4
+-- Conferência do banco do funil-01, depois de esquema.sql e da migração 001 (Postgres, no Supabase)
+-- id: banco-conferir · versao 2 · rascunho · otavio: pendente
+-- depende_de: banco-rascunho v3, banco-migracao-001 v1, planta-do-banco v4, decisoes v5
+--
+-- Versão 2 (etapa 32): confere o banco v3, que é o esquema v2 (esquema.sql) mais a migração
+-- dados/banco/migracoes/001-v3.sql. Tudo o que a versão 1 conferia continua, com a porta nova
+-- (registrar_evento) nas linhas 4 e 8, e entram as linhas 14 a 18, da migração. Num banco só com o
+-- esquema v2, sem a migração, as linhas 4, 8 e 14 a 18 dão false: é o aviso de que falta rodar a
+-- migração.
 --
 -- SÓ LEITURA. Nada aqui grava, muda ou apaga: só olha o catálogo do banco (quais tabelas,
 -- índices, funções e permissões existem). Pode rodar quantas vezes quiser.
@@ -13,15 +19,30 @@
 --   ok           · true quando o encontrado bate com o esperado
 -- A última linha, "tudo certo", só dá true se todas as outras derem true.
 -- Se alguma der false: não use as chaves, anote qual linha e o encontrado, e rode
--- esquema.sql de novo antes de seguir (dados/banco/README.md, "Como conferir").
+-- a migração de novo antes de seguir (dados/banco/README.md, "Como conferir").
 --
 -- Rode como o papel postgres (o padrão do editor SQL). A conferência 13 olha as permissões
 -- padrão desse papel.
 
 with
--- nomes que o esquema cria (dados/banco/esquema.sql, versão 2)
+-- nomes que o esquema v2 e a migração 001 criam
 tabelas(nome) as (values ('entregas'), ('pessoas'), ('eventos'), ('investimento')),
-funcoes(nome) as (values ('registrar_fim_quiz'), ('leads_para_planilha')),
+funcoes(nome) as (values ('registrar_fim_quiz'), ('registrar_evento'), ('leads_para_planilha')),
+
+-- as restrições da gaveta eventos que a migração 001 põe, com nome (001-v3.sql, passo 2)
+restricoes_v3(nome) as (values ('eventos_tipo_lista'), ('eventos_quem_grava'), ('eventos_estado_lista'),
+  ('eventos_produto_lista'), ('eventos_clique_lista'), ('eventos_clique_so_no_interesse'),
+  ('eventos_interesse_completo')),
+
+-- as restrições de CHECK da gaveta eventos, com as colunas que cada uma olha
+checks_eventos as (
+  select c.conname, c.convalidated, pg_catalog.pg_get_constraintdef(c.oid) as def,
+         (select pg_catalog.array_agg(a.attname::text order by a.attname::text)
+            from pg_catalog.pg_attribute a
+           where a.attrelid = c.conrelid and a.attnum = any (c.conkey)) as colunas
+    from pg_catalog.pg_constraint c
+   where c.conrelid = pg_catalog.to_regclass('public.eventos') and c.contype = 'c'
+),
 
 -- tudo o que existe no esquema public: tabelas, visões, sequências e funções
 objetos as (
@@ -79,14 +100,15 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
          (select pg_catalog.count(*) || ' políticas' from pg_catalog.pg_policies where schemaname = 'public'),
          (select pg_catalog.count(*) = 0 from pg_catalog.pg_policies where schemaname = 'public')
 
-  -- 4. anon (a chave publicável) só executa a função de gravação. Nada de tabela, visão
+  -- 4. anon (a chave publicável) só executa as duas funções de gravação: o fim do quiz e,
+  --    desde a migração 001, a visita, o início do quiz e o clique. Nada de tabela, visão
   --    nem outra função.
   union all
   select 4, 'anon pode só isto',
-         'funcao registrar_fim_quiz',
+         'funcao registrar_evento, funcao registrar_fim_quiz',
          coalesce((select pg_catalog.string_agg(objeto, ', ' order by objeto) from pode where papel = 'anon'), 'nada'),
          coalesce((select pg_catalog.array_agg(objeto order by objeto) from pode where papel = 'anon')
-                  = array['funcao registrar_fim_quiz'], false)
+                  = array['funcao registrar_evento', 'funcao registrar_fim_quiz'], false)
 
   -- 5. authenticated (login de usuário, que a casa não usa) não pode nada.
   union all
@@ -113,17 +135,17 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
                      from objetos o, pg_catalog.aclexplode(o.acl) a where a.grantee = 0), 'nada'),
          not exists (select 1 from objetos o, pg_catalog.aclexplode(o.acl) a where a.grantee = 0)
 
-  -- 8. As duas funções das portas rodam com os direitos do dono (SECURITY DEFINER) e com
+  -- 8. As três funções das portas rodam com os direitos do dono (SECURITY DEFINER) e com
   --    search_path vazio.
   union all
   select 8, 'funções das portas: SECURITY DEFINER e search_path vazio',
-         'registrar_fim_quiz e leads_para_planilha, as duas com definer e search_path=""',
+         'leads_para_planilha, registrar_evento e registrar_fim_quiz, as três com definer e search_path=""',
          coalesce((select pg_catalog.string_agg(p.proname || ' (definer=' || p.prosecdef || ', '
                             || coalesce(pg_catalog.array_to_string(p.proconfig, ' '), 'sem config') || ')',
                             ', ' order by p.proname)
                      from pg_catalog.pg_proc p join funcoes f on f.nome = p.proname
                     where p.pronamespace = 'public'::regnamespace), 'nenhuma'),
-         (select pg_catalog.count(*) = 2
+         (select pg_catalog.count(*) = 3
             from pg_catalog.pg_proc p join funcoes f on f.nome = p.proname
            where p.pronamespace = 'public'::regnamespace
              and p.prosecdef and p.proconfig = array['search_path=""'])
@@ -199,6 +221,78 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
                         and (d.defaclnamespace = 0 or d.defaclnamespace = 'public'::regnamespace)
                         and (a.grantee = 0 or a.grantee in (select oid from pg_catalog.pg_roles
                                                              where rolname in ('anon', 'authenticated', 'service_role'))))
+
+  -- 14. Migração 001 · a gaveta eventos tem o campo clique_fim_quiz, em texto.
+  union all
+  select 14, 'campo clique_fim_quiz na gaveta eventos',
+         'clique_fim_quiz (text)',
+         coalesce((select a.attname || ' (' || pg_catalog.format_type(a.atttypid, a.atttypmod) || ')'
+                     from pg_catalog.pg_attribute a
+                    where a.attrelid = pg_catalog.to_regclass('public.eventos')
+                      and a.attname = 'clique_fim_quiz' and not a.attisdropped), 'não existe'),
+         exists (select 1 from pg_catalog.pg_attribute a
+                  where a.attrelid = pg_catalog.to_regclass('public.eventos')
+                    and a.attname = 'clique_fim_quiz' and not a.attisdropped
+                    and a.atttypid = 'text'::regtype)
+
+  -- 15. Migração 001 · as sete restrições v3 existem e valem para todas as linhas (conferidas
+  --     ao ligar, sem NOT VALID).
+  union all
+  select 15, 'restrições v3 da gaveta eventos',
+         'as 7 de 001-v3.sql, todas conferidas',
+         coalesce((select pg_catalog.string_agg(r.nome || case when k.conname is null then ' (falta)'
+                                                             when not k.convalidated then ' (não conferida)'
+                                                             else '' end, ', ' order by r.nome)
+                     from restricoes_v3 r left join checks_eventos k on k.conname = r.nome
+                    where k.conname is null or not k.convalidated), 'todas lá'),
+         (select pg_catalog.count(*) = 7 from restricoes_v3 r join checks_eventos k on k.conname = r.nome
+           where k.convalidated)
+
+  -- 16. Migração 001 · as listas do v2 que ela troca não ficaram duplicadas: só uma restrição
+  --     olha cada um destes grupos de colunas (tipo; estado; produto; tipo e gravado_por), e é a v3.
+  union all
+  select 16, 'listas antigas trocadas, sem sobra',
+         'eventos_estado_lista, eventos_produto_lista, eventos_quem_grava, eventos_tipo_lista',
+         coalesce((select pg_catalog.string_agg(k.conname, ', ' order by k.conname)
+                     from checks_eventos k
+                    where k.colunas in (array['tipo'], array['estado'], array['produto'], array['gravado_por', 'tipo'])), 'nenhuma'),
+         coalesce((select pg_catalog.array_agg(k.conname::text order by k.conname)
+                     from checks_eventos k
+                    where k.colunas in (array['tipo'], array['estado'], array['produto'], array['gravado_por', 'tipo']))
+                  = array['eventos_estado_lista', 'eventos_produto_lista', 'eventos_quem_grava', 'eventos_tipo_lista'], false)
+
+  -- 17. Migração 001 · os valores novos estão nas listas: interesse_pos_relatorio nos tipos e
+  --     em quem grava (garçom), nutricao nos estados, iasv e essencial no produto.
+  union all
+  select 17, 'valores novos nas listas',
+         'interesse_pos_relatorio, nutricao, iasv e essencial',
+         coalesce((select pg_catalog.string_agg(k.conname, ', ' order by k.conname)
+                     from checks_eventos k
+                    where (k.conname in ('eventos_tipo_lista', 'eventos_quem_grava') and k.def like '%interesse_pos_relatorio%')
+                       or (k.conname = 'eventos_estado_lista' and k.def like '%nutricao%')
+                       or (k.conname = 'eventos_produto_lista' and k.def like '%iasv%' and k.def like '%essencial%')), 'nenhum'),
+         (select pg_catalog.count(*) = 4
+            from checks_eventos k
+           where (k.conname in ('eventos_tipo_lista', 'eventos_quem_grava') and k.def like '%interesse_pos_relatorio%')
+              or (k.conname = 'eventos_estado_lista' and k.def like '%nutricao%')
+              or (k.conname = 'eventos_produto_lista' and k.def like '%iasv%' and k.def like '%essencial%'))
+
+  -- 18. Migração 001 · a função da planilha é a v3: devolve clique_fim_quiz e manda as duas
+  --     respostas do histórico da faixa b (leads-por-mes e crm; 15.4).
+  union all
+  select 18, 'função da planilha v3',
+         'leads_para_planilha com clique_fim_quiz, leads-por-mes e crm',
+         coalesce((select 'leads_para_planilha ('
+                            || case when pg_catalog.pg_get_function_result(p.oid) like '%clique_fim_quiz%' then 'com' else 'sem' end
+                            || ' clique_fim_quiz, '
+                            || case when p.prosrc like '%''leads-por-mes''%' and p.prosrc like '%''crm''%' then 'com' else 'sem' end
+                            || ' o histórico)'
+                     from pg_catalog.pg_proc p
+                    where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'), 'não existe'),
+         exists (select 1 from pg_catalog.pg_proc p
+                  where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
+                    and pg_catalog.pg_get_function_result(p.oid) like '%clique_fim_quiz%'
+                    and p.prosrc like '%''leads-por-mes''%' and p.prosrc like '%''crm''%')
 )
 
 select n, conferencia, esperado, encontrado, ok from conferencias

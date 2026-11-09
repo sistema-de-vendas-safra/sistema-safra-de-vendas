@@ -1,17 +1,17 @@
 /*
  * ---
  * id: planilha-sdr-funil-01
- * versao: 1
+ * versao: 2
  * status: rascunho
  * aprovado_por:
  *   otavio: pendente
  * depende_de:
  *   - id: funil-01-planilha-sdr
- *     versao: 1
+ *     versao: 2
  *   - id: garcom
  *     versao: 2
  *   - id: banco-rascunho
- *     versao: 2
+ *     versao: 3
  *   - id: regra-seguranca
  *     versao: 2
  *   - id: decisoes
@@ -44,6 +44,12 @@
  *
  * Nada de dado pessoal no registro: só contagens e códigos.
  * A volta do status para o banco não existe ainda (não há porta para isso): não está aqui.
+ *
+ * Versão 2 (etapa 32): coluna nova clique_fim_quiz, só de leitura, entre tentativas_feitas e
+ * estagio, como em planilha-sdr v2; vem do banco v3 (leads_para_planilha, migração 001). A aba
+ * passa de 19 para 20 colunas. A aba de 19 colunas que já existe tem outro cabeçalho: renomear a
+ * aba e rodar instalar() de novo (README, "Atualizar da versão 1"). O estado nutrição e a lista do
+ * produto ainda não estão aqui (pergunta 31.20; prompts/11-fila-perguntas.md, 32.5).
  */
 
 var NOME_ABA = 'fila';
@@ -53,14 +59,14 @@ var COLUNAS = [
   'id_pessoa', 'nome', 'telefone', 'email', 'empresa',
   'consentimento_whatsapp', 'consentimento_email',
   'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar',
-  'entrou_em', 'tentativas_feitas',
+  'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
   'estagio', 'estado', 'data_volta',
   'canal', 'contato_em', 'reuniao_em', 'produto'
 ];
 
-// As que vêm do banco: as 15 primeiras (de id_pessoa a data_volta). estagio, estado e data_volta
+// As que vêm do banco: as 16 primeiras (de id_pessoa a data_volta). estagio, estado e data_volta
 // vêm do banco só na linha nova; depois, quem muda é o SDR. Linha que já existe nunca é reescrita.
-var COLUNAS_DO_BANCO = COLUNAS.slice(0, 15);
+var COLUNAS_DO_BANCO = COLUNAS.slice(0, 16);
 
 // Lista fechada (planilha-sdr.md, "Lista fechada de status"), com os nomes "Na planilha".
 var ESTAGIOS = ['captado', 'pré-qualificado', 'agendado', 'realizado', 'venda'];
@@ -340,6 +346,7 @@ function linhaDoLead_(lead) {
     respostas_a_confirmar: respostasEmTexto_(lead.respostas_a_confirmar),
     entrou_em: horarioLocal_(lead.entrou_em),
     tentativas_feitas: numero_(lead.tentativas_feitas),
+    clique_fim_quiz: vazio_(lead.clique_fim_quiz) ? '' : String(lead.clique_fim_quiz),
     estagio: estagio,
     estado: estado,
     data_volta: vazio_(lead.data_volta) ? '' : String(lead.data_volta)
@@ -355,7 +362,7 @@ function acrescentarLinhas_(aba, linhas) {
     aplicarValidacoes_(aba);
     aplicarFormatos_(aba);
   }
-  // Só as colunas do banco (1 a 15), só nas linhas novas. As do SDR (16 em diante) não são tocadas.
+  // Só as colunas do banco (1 a 16), só nas linhas novas. As do SDR (17 em diante) não são tocadas.
   aba.getRange(primeira, 1, linhas.length, COLUNAS_DO_BANCO.length).setValues(linhas);
 }
 
@@ -422,7 +429,7 @@ function cabecalhoConfere_(aba) {
   return true;
 }
 
-// A última linha com algo nas 19 colunas da fila. Anotação à direita delas não empurra os leads.
+// A última linha com algo nas 20 colunas da fila. Anotação à direita delas não empurra os leads.
 function ultimaLinhaDaFila_(aba) {
   var ultima = aba.getLastRow();
   if (ultima < 1) return 0;
