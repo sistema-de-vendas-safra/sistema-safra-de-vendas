@@ -1,12 +1,13 @@
 -- Esquema do banco do funil-01 (Postgres, no Supabase)
--- id: banco-rascunho · versao 3 · rascunho · otavio: pendente
+-- id: banco-rascunho · versao 4 · rascunho · otavio: pendente
 -- depende_de: planta-do-banco v3, decisoes v4, funil-01 v2, lead-score v2, funil-01-planilha-sdr v1,
 --             ficha-de-fatos v3, regra-seguranca v2, lacunas v5
 --   (as versões acima são as que o SQL deste arquivo segue; ele não mudou da versão 2)
 --
 -- ESTE ARQUIVO É O ESQUEMA v2 E NÃO MUDA (21.11). A versão 3 do banco é este arquivo mais a
 -- migração dados/banco/migracoes/001-v3.sql, que roda por cima, sem apagar nada (etapa 32).
--- A versão 3 deste arquivo só acrescenta este aviso; nenhuma linha de SQL mudou. Ordem:
+-- A versão 3 deste arquivo só acrescenta este aviso; a 4 só acompanha o README (catálogo, etapa 34);
+-- nenhuma linha de SQL mudou. Ordem:
 --   1. este arquivo (já rodado no projeto do Safra, que já tem dados);
 --   2. migracoes/001-v3.sql;
 --   3. conferir.sql (v2), que confere o banco depois da migração.

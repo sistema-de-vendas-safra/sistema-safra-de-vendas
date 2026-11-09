@@ -5,7 +5,11 @@ Não entra aqui: chave, senha, token nem dado pessoal; código das entregas (lan
 
 ## prints/
 
-Tira prints de páginas locais em 375 e 1440 pixels de largura: `node nucleo/ferramentas/prints/print.js <arquivo.html> <pasta-de-saida> <prefixo> [--celular]`. Com --celular, o print de 375 imita um celular (a meta viewport vale) e o script diz a largura útil. Usa o playwright-core instalado só nesta pasta (node_modules fica fora do Git pelo .gitignore) e o Chromium já presente no cache do Playwright da máquina. Para instalar de novo: `npm install` dentro de nucleo/ferramentas/prints/. O teste da página do quiz-01 (`node nucleo/ferramentas/prints/testar-quiz-01.js`) serve a página num servidorzinho em 127.0.0.1 só durante o teste e intercepta o envio para /api/fim-quiz no navegador sem tela; nada sai para serviço real.
+Tira prints de páginas locais em 375 e 1440 pixels de largura: `node nucleo/ferramentas/prints/print.js <arquivo.html> <pasta-de-saida> <prefixo> [--celular]`. Com --celular, o print de 375 imita um celular (a meta viewport vale) e o script diz a largura útil. Usa o playwright-core instalado só nesta pasta (node_modules fica fora do Git pelo .gitignore) e o Chromium já presente no cache do Playwright da máquina. Para instalar de novo: `npm install` dentro de nucleo/ferramentas/prints/. O teste da página do quiz-01 (`node nucleo/ferramentas/prints/testar-quiz-01.js`) serve a página num servidorzinho em 127.0.0.1 só durante o teste e intercepta o envio para /api/fim-quiz e /api/evento no navegador sem tela; nada sai para serviço real. Ele usa também as fontes de fontes/ (abaixo).
+
+## fontes/
+
+As fontes de licença livre que as páginas usam, servidas junto com o site em vez de pedidas ao Google (10.7): Inter, Space Grotesk e Geist (OFL) e Permanent Marker (Apache-2.0), pelos pacotes @fontsource 5.3.0 do package.json, só o arquivo latino de cada uma. fontes.json diz que arquivo vai para que página. Para instalar: `npm install --ignore-scripts` dentro de nucleo/ferramentas/fontes/ (node_modules fica fora do Git). O montador do protótipo (entregas/prototipo-funil-01/montar-site.mjs) copia cada fonte, com a licença, para a pasta fontes/ da página no site montado.
 
 ## detector-de-chaves/
 

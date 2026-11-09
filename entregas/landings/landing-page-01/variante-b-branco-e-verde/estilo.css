@@ -107,7 +107,7 @@ h4 { font-size: 17px; line-height: 1.35; font-weight: 600; }
 .hero { padding-top: 40px; padding-bottom: 56px; position: relative; overflow: hidden; }
 .qualificador { margin-bottom: 20px; }
 .hero .chamada { margin-top: 32px; }
-.hero-subtitulo { margin-top: 24px; }
+.hero-subtitulo { margin-top: 24px; max-width: 40em; }
 @media (min-width: 1024px) { .hero { padding-top: 120px; padding-bottom: 128px; } }
 
 /* Bloco de chamada */
@@ -326,7 +326,7 @@ figcaption { margin-top: 10px; font-size: 14px; color: var(--texto-2); max-width
    o verde de texto #0B6E3A, o verde escuro #0E2318, os tons claros e o marrom do relevo
    foram escolhidos aqui (pergunta 17.3). O #00FF87 não passa no contraste sobre branco,
    por isso só aparece como marca-texto sob letra escura e em detalhes sem texto.
-   Letra: a do sistema (nenhuma fonte de fora; pergunta 17.4).
+   Letra: a do sistema; esta variante não tem fonte própria e não pede nenhum arquivo de fonte (17.4; 10.7).
    ============================================================ */
 :root {
   --branco: #FFFFFF;

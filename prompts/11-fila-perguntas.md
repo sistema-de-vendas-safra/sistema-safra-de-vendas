@@ -321,3 +321,113 @@ Dúvidas das etapas 30 a 36 (prompts/11-decisoes-de-09-11.md), no formato de sem
    - *O que foi feito:* nada na porta privada nem na planilha em Apps Script; o contrato da porta privada não muda com nutrição e produto, que são listas da planilha.
    - *Recomendação:* fazer junto com a próxima versão da planilha (32.5, 32.6, 32.11), fora do garçom.
    - *Se decidir diferente:* uma etapa própria para a planilha v3, com o Codigo.gs, o README e o teste dela; o garçom não muda.
+
+## Etapa 34
+
+34.1. **O percentual da fala 2 do plano de 90 dias não voltou à página.**
+   - *Dúvida:* a 7.5 (#110) manda o quiz ficar como está, "promessa de percentual" incluída, e a copy v2 desfez a M19; mas a volta do percentual está em aberto na 31.3, e o pedido da etapa 34 diz que o texto fica como está salvo a caixa.
+   - *O que foi feito:* a página v3 continua sem o percentual, como a v2. Registrado no README da página (seção "Texto").
+   - *Recomendação:* decidir a 31.3 junto com a pauta (item 29); se o percentual voltar, ele entra pela copy e pela ficha de fatos, nunca escrito na mão na página.
+   - *Se decidir diferente:* muda uma frase do plano de 90 dias na página e no quiz-01-copy; os prints do resultado-a e do eliminatório mudam.
+
+34.2. **Com a caixa desmarcada, as frases que falam de envio continuam iguais.**
+   - *Dúvida:* quem desmarca não recebe nada, mas as telas seguintes continuam com o "Vai para o seu e-mail" e os botões de contato do fim (M21; 31.2). A 7.5 manda não mexer no texto do quiz fora da caixa.
+   - *O que foi feito:* o texto ficou como está; o aviso da copy v2 ("Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado.") aparece embaixo da caixa desmarcada; nenhum pacote nem clique sai. Só a linha da cópia no relatório, que a copy v2 já escreveu para os dois casos (M21), mudou: marcada, "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp."; desmarcada, "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." (correção do revisor da etapa 34: a página mostrava a quem desmarcou que a cópia ia para o e-mail e o WhatsApp, o que é falso).
+   - *Recomendação:* decidir na 31.2 se, com a caixa desmarcada, somem a nota do e-mail e os botões de contato do fim; até lá, o protótipo só roda com leads de teste.
+   - *Se decidir diferente:* a página esconde essas frases quando aceite é falso (mudança pequena em mostrarResultado e no fim), com copy v3 e prints novos de contato-sem-consentimento.
+
+34.3. **O quiz novo é a versão 2 da entrega quiz-01 no catálogo.**
+   - *Dúvida:* a página v3 muda o corte do fim e o aceite; o banco já gravou pacotes da versão 1 (página v2) no teste. A 10.15 diz que a versão sobe a cada publicação, mas não diz se uma página nunca publicada com gente conta.
+   - *O que foi feito:* versao_entrega 2 nas etiquetas e linha ('quiz-01', 2) nova em catalogo-prototipo.sql v2, sem mexer na ('quiz-01', 1).
+   - *Recomendação:* aceitar: separa no banco os testes da página antiga dos da nova.
+   - *Se decidir diferente:* volta versao_entrega 1 na página e sai a linha nova do catálogo; o teste muda uma expectativa.
+
+34.4. **As duas variantes da landing gravam a visita com o mesmo par (landing-page-01, 1).**
+   - *Dúvida:* a 10.15 dá à página publicada o nome da pasta da entrega; a pasta é landing-page-01 para as duas variantes, mas a escolha entre A e B é da reunião e a medição pode querer separar.
+   - *O que foi feito:* as duas mandam entrega landing-page-01, versão 1; uma linha só no catálogo. No protótipo, a A fica em / e a B em /b/, e o banco não distingue as duas.
+   - *Recomendação:* aceitar até a reunião escolher a variante; se as duas forem ao ar ao mesmo tempo, cada uma vira versão própria (como a 10.14 para os dois topos).
+   - *Se decidir diferente:* a B passa a mandar outra versão (ou outra entrega), com linha nova no catálogo; muda uma linha no script de cada variante e o catalogo-prototipo.sql.
+
+34.5. **A nota do "Tenho interesse" é a do lado do lead score.**
+   - *Dúvida:* a 31.14 pergunta qual nota usar; com o corte mais restritivo (14.2), nenhum dos dois lados venceu o conflito-16.
+   - *O que foi feito:* com CRITERIO_DO_FIM em 'mais-restritivo', a página mostra "Anotado. Seu interesse fica registrado com o seu diagnóstico.", que já estava na página e não promete ligação (13.7); a nota do Júnior só aparece se o critério for 'junior'.
+   - *Recomendação:* aceitar até a decisão do conflito-16.
+   - *Se decidir diferente:* troca uma condição em notaInteresse e o caso 2 do teste.
+
+34.6. **"Mandar no WhatsApp" do plano de 90 dias não manda clique.**
+   - *Dúvida:* a lista proposta da 31.15 tem quatro valores de clique, todos dos botões do relatório; o botão do fim do plano de 90 dias abre o WhatsApp com o plano e não está na lista.
+   - *O que foi feito:* esse botão não manda evento; os quatro botões do relatório mandam.
+   - *Recomendação:* aceitar; se o SDR precisar saber, um quinto valor entra na lista do banco e do garçom primeiro.
+   - *Se decidir diferente:* valor novo na restrição do banco (migração nova), no garçom e no mapa CLIQUES da página.
+
+34.7. **O custo mensal da nota usa o preço da Avançada enquanto houver vaga.**
+   - *Dúvida:* a 4.7 manda usar o preço que vale no dia da resposta; a página não sabe quantas vagas sobram.
+   - *O que foi feito:* a página continua com ficha-de-fatos#preco-avancada, como o lead-score v3 diz para enquanto houver vaga.
+   - *Recomendação:* quando as vagas acabarem, sobe a ficha de fatos e, pela cascata, a página.
+   - *Se decidir diferente:* a página passa a ler outro campo da ficha; muda FATOS e o total do exemplo no teste.
+
+34.8. **A página do quiz continua desatualizada.**
+   - *Dúvida:* todas as bases foram para a versão em vigor, mas a copy e o briefing do quiz continuam marcados pela cadeia da pauta, que declara a página v2 (31.19), e o garçom v4 pelo banco.
+   - *O que foi feito:* desatualizado: true na página v3 (regra 11.1), como nas landings v3.
+   - *Recomendação:* resolver a 31.19 (a pauta citar a página sem depender dela, como já faz com a copy, 13.15), o que solta a cadeia.
+   - *Se decidir diferente:* nada muda na página; só os cabeçalhos.
+
+34.9. **O quiz não ganhou lang nem a meta viewport na entrega.**
+   - *Dúvida:* a 09.1 pede doctype e meta charset como as duas primeiras linhas; a meta viewport e o lang="pt-BR" continuam faltando na entrega (23.8), e o montador acrescenta a viewport no site.
+   - *O que foi feito:* só o doctype e a charset (09.1), mais as fontes (10.7). Nenhuma outra mudança no `<head>` do mockup.
+   - *Recomendação:* pôr a viewport e o lang na próxima versão da página, com prints de 375 como celular, e tirar o acréscimo do montador.
+   - *Se decidir diferente:* duas linhas na página; o montador passa a dizer "já existia"; os prints de 375 do quiz mudam.
+
+34.10. **O que ainda aparece com http no site montado.**
+   - *Dúvida:* a 10.7 pede nenhuma ferramenta de terceiros nem fonte do Google. A busca por http no site montado acha o xmlns do SVG dentro de um data: no estilo.css da variante A, o https://wa.me/ do botão de WhatsApp do quiz e os endereços escritos dentro das licenças das fontes.
+   - *O que foi feito:* nada disso é pedido ao abrir a página: o xmlns é um nome, o wa.me só abre no clique com o número preenchido (hoje vazio), e as licenças são texto. O montador confere src, link, url() e @import para http(s) e qualquer fonts.googleapis ou fonts.gstatic, e o teste do quiz (no repositório) e o da landing (script da etapa 34 fora do repositório; entra no ensaio da etapa 35) conferem que nenhuma requisição sai para outro endereço.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* se o wa.me também não puder, o botão "Mandar no WhatsApp" sai até haver número e decisão (hoje, sem número, ele só mostra o aviso de protótipo).
+
+34.11. **A recompra no subtítulo do hero B aparece como etiqueta, não sai do texto.**
+   - *Dúvida:* a estrutura v4 diz que o subtítulo do hero B vai "sem o trecho {{BLOQUEADO: #16}}, que não vai ao ar enquanto bloqueado". Tirar o trecho quebra a frase ("vender mais e. Com os leads...").
+   - *O que foi feito:* seguido o padrão das outras marcas #16 da página: a etiqueta "a definir: #16" fica antes de "vender mais vezes para o mesmo cliente"; a página continua rascunho, que não vai ao ar.
+   - *Recomendação:* antes de ir ao ar com gente de verdade, decidir a #16 ou escrever na copy a versão da frase sem a recompra ("para vender gastando menos e vender mais").
+   - *Se decidir diferente:* muda só o `<p class="hero-subtitulo">` das duas variantes.
+
+34.12. **O subtítulo do hero fica depois do botão em toda largura.**
+   - *Dúvida:* a 10.16 deixa o subtítulo ir para baixo do botão no celular, quando o botão não couber; no computador, a copy põe o subtítulo antes do botão.
+   - *O que foi feito:* mantida a ordem que a página já tinha (título, bloco de chamada, subtítulo) nas duas larguras. Mudar a ordem só por CSS deixaria a ordem lida diferente da vista, e duplicar o texto também não serve.
+   - *Recomendação:* aceitar no rascunho; se o computador tiver de mostrar o subtítulo antes do botão, decidir junto com o design (conflito-08).
+   - *Se decidir diferente:* o subtítulo sobe para antes do bloco de chamada no código e, no celular, conferir que o botão ainda cabe na primeira tela.
+
+34.13. **Doctype e charset antes do comentário de cabeçalho nas landings.**
+   - *Dúvida:* o comentário de cabeçalho das landings passava de 1024 bytes; o montador punha a meta charset antes de tudo, inclusive do doctype, e as landings montadas rodavam em modo de compatibilidade (BackCompat) desde o pedido 09, sem ninguém notar (o ensaio mede o modo só do quiz). O pedido da etapa 34 não citava isso.
+   - *O que foi feito:* cada index.html das landings começa por `<!doctype html>`, `<html lang="pt-BR">`, `<head>` e `<meta charset="utf-8">`, com o comentário logo depois, como a 09.1 para o quiz; as duas ficam no modo padrão no site montado (conferido). O quiz também (doctype e charset antes do comentário).
+   - *Recomendação:* aceitar; na etapa 35, o ensaio passa a conferir o modo das landings também.
+   - *Se decidir diferente:* o comentário volta para o topo e o montador passa a inserir a charset depois do doctype; muda o montador.
+
+34.14. **A lista de peças por entrega é rascunho à parte, com duas peças sem entrega.**
+   - *Dúvida:* a 17.5 pede definir que peças cada entrega instala; nem `entregas-do-servico` nem `metodo` têm essa tabela, e Inteligência de Mercado e Inteligência Artificial não têm nenhuma entrega que as instale escrita na base (lacuna-21; #84).
+   - *O que foi feito:* entregas/landings/landing-page-01/pecas-por-entrega.md (v1, rascunho, otavio: pendente), com cada ligação proposta citando o trecho da base que a sustenta e "a definir" onde a base não diz. A copy e as páginas não mudaram; o filtro continua só marcando a peça.
+   - *Recomendação:* o Otávio aprovar ou cortar ligação por ligação e decidir o que o filtro mostra para as duas peças sem entrega; depois, a lista entra na copy v5 e o filtro passa a filtrar.
+   - *Se decidir diferente:* se o filtro sair, saem os botões e a frase "toque para filtrar" nas duas variantes, e a última linha da 03b muda.
+
+34.15. **banco-rascunho sobe para a versão 4 só pela documentação do catálogo.**
+   - *Dúvida:* o catálogo novo (32.4) é documentado no README do banco, que divide o id banco-rascunho com o esquema.sql; nenhuma linha de SQL do esquema mudou.
+   - *O que foi feito:* README do banco e cabeçalho do esquema.sql v4 (correção de forma, status mantido); conferir.sql (que já declarava banco-rascunho 3) ganhou desatualizado: true, sem outra mudança; os outros dependentes já estavam marcados.
+   - *Recomendação:* aceitar; atualizar os dependentes do banco junto com a etapa 35 e a próxima migração.
+   - *Se decidir diferente:* se o catálogo devesse ter id próprio, catalogo-prototipo.sql ganha cabeçalho com id próprio e o banco volta a não mudar de versão.
+
+34.16. **A política de privacidade ainda descreve a página do quiz de antes.**
+   - *Dúvida:* a política v2 diz que "a página de hoje ainda tem as duas caixas e carrega as fontes de fora"; a página v3 já tem a caixa única e as fontes servidas junto. A política não está no pedido da etapa 34.
+   - *O que foi feito:* nada na política; ela já está marcada como desatualizada e declara quiz-01-pagina 2.
+   - *Recomendação:* na próxima versão da política, tirar a frase e declarar quiz-01-pagina 3.
+   - *Se decidir diferente:* nada muda nas páginas.
+
+34.17. **O teste da landing ficou fora do repositório.**
+   - *Dúvida:* a visita das duas variantes foi conferida (44 de 44, no site montado: pacote aceito pelo garçom v4, sessão no formato do banco, botão com id_sessao e utm, falha do garçom sem mudança na página, file:// e sem programa sem envio, nenhum pedido a outro endereço, modo padrão), mas o script ficou na pasta temporária da sessão; o repositório só tem o teste do quiz. O revisor rodou o script de novo e passou.
+   - *O que foi feito:* nada no repositório; o log registra "script fora do repositório".
+   - *Recomendação:* na etapa 35, levar a conferência para dentro do ensaio (ou de nucleo/ferramentas/prints/testar-landing-01.js), para quem vier depois poder rodar.
+   - *Se decidir diferente:* a visita fica conferida só pelo ensaio e pelo teste manual do roteiro.
+
+34.18. **Com a caixa desmarcada, o início do quiz já foi gravado.**
+   - *Dúvida:* a 13.4 diz que, desmarcada a caixa, "nada é enviado ao banco nem à equipe". O início do quiz sai quando o quiz abre (10.6), antes de a pessoa ver a caixa, e a visita da landing também; nenhum dos dois leva dado de pessoa (etapa 33: evento sem dado de pessoa não pede aceite).
+   - *O que foi feito:* fica assim: com a caixa desmarcada, não saem o fim do quiz nem o clique do fim; o início e a visita, que vieram antes e não têm pessoa, ficam no banco só com a sessão.
+   - *Recomendação:* aceitar: sem eles, a diferença entre visitas, inícios e fins do quiz (10.10) não fecha, e a sessão sozinha não identifica ninguém.
+   - *Se decidir diferente:* o início do quiz passa a sair só junto com o fim (perde a 10.6), ou a política de privacidade passa a dizer que a visita e o início são contados mesmo sem o aceite.

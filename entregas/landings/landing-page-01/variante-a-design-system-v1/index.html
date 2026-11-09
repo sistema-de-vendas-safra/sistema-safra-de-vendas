@@ -1,7 +1,11 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
 <!--
 ---
 id: landing-page-01-variante-a
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -9,29 +13,32 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: landing-page-01-copy
-    versao: 3
+    versao: 4
   - id: landing-page-01-estrutura
-    versao: 3
+    versao: 4
   - id: landing-page-01-briefing
-    versao: 3
+    versao: 4
   - id: ficha-de-fatos
-    versao: 3
+    versao: 4
   - id: design-system
-    versao: 3
+    versao: 4
   - id: lacunas
-    versao: 5
+    versao: 6
   - id: decisoes
-    versao: 3
+    versao: 5
+  - id: garcom
+    versao: 4
+  - id: planta-do-banco
+    versao: 4
 desatualizado: true
 ---
 Landing-page-01 · variante A · design system v1.0 (rascunho para a reuniao; nada vai ao ar).
 Tokens em tokens.css (copia de fontes/design-system-v1.0/safra-tokens.css). Detalhes no README.md desta pasta.
+O doctype e a meta charset vem antes deste comentario, para a pagina ficar no modo padrao tambem no site montado (09.1).
 O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
+No catalogo de entregas do banco, a pagina publicada e a entrega landing-page-01, versao 1 (10.15; 32.4), igual nas duas variantes;
+usa landing-page-01-copy v4 e landing-page-01-estrutura v4. Registra a visita no garcom em /api/evento (18.5; etapa 34).
 -->
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Sistema de Vendas Safra · landing-page-01 (rascunho)</title>
@@ -51,20 +58,19 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
 
 <main id="conteudo">
 
-<!-- Seção oculta: 01 · Hero, versão A (título e subtítulo bloqueados pela #85). -->
+<!-- Seção oculta: 01 · Hero, versão A (a promessa de 08/11 para o público frio, #108; fica oculta até a 10.14, pergunta 31.7). -->
 <!-- Seção oculta: contador "Total gerado" (ficha-de-fatos#total-dos-dois; conflito-04, conflito-05). -->
 
 <section class="secao hero" aria-labelledby="titulo-hero">
   <div class="secao-dentro">
     <p class="qualificador"><span class="ad">a definir: qualificador (ficha-de-fatos#criterio-de-qualificacao)</span></p>
     <h1 id="titulo-hero" tabindex="-1"><span class="hero-linha-1">Resgate o lucro que está oculto no seu negócio.</span> <span class="hero-linha-2">Ele está nos leads que <em>nunca disseram não</em> e foram ignorados quando os novos leads chegaram.</span></h1>
-    <p class="marcas"><span class="ad">a definir: pergunta 8.3</span> <span class="ad">a definir: prova real de vendas colhidas de leads que nunca disseram não, num cliente fundador</span></p>
     <div class="chamada">
       <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
       <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
       <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
     </div>
-    <p class="hero-subtitulo"><span class="ad">a definir: subtítulo (#85)</span></p>
+    <p class="hero-subtitulo">Em <span class="fato" data-campo="duracao:dias">90 dias</span>, a gente instala o Sistema de Vendas Safra no seu comercial para vender gastando menos, vender mais e <span class="ad">a definir: #16</span> vender mais vezes para o mesmo cliente. Com os leads e o time que você já tem.</p>
   </div>
 </section>
 
@@ -190,7 +196,7 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
       </dl>
     </div>
 
-    <p class="nota-rodape"><span class="ad">a definir: pergunta 4.4</span> * Adaptado de W. Edwards Deming, o pai da qualidade, no livro Out of the Crisis.</p>
+    <p class="nota-rodape">* Adaptado de W. Edwards Deming, o pai da qualidade, no livro Out of the Crisis.</p>
 
     <div class="chamada">
       <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
@@ -293,7 +299,7 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
 
     <dl class="pecas">
       <div class="peca"><dt>Mentalidade de Vendas</dt><dd><span class="ad">a definir: #26</span> O time não larga o lead antes do não nem antes do fim do relógio dele, e cada contato tem data marcada.</dd></div>
-      <div class="peca"><dt>Inteligência Humana</dt><dd><span class="ad">a definir: pergunta 8.12</span> Quem vende, preparado com as calls de venda do próprio time analisadas (<span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>).</dd></div>
+      <div class="peca"><dt>Inteligência Humana</dt><dd>Quem vende, preparado com as calls de venda do próprio time analisadas (<span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>).</dd></div>
       <div class="peca"><dt>Inteligência de Mercado</dt><dd>O que o seu cliente pergunta e objeta vira roteiro e argumento.</dd></div>
       <div class="peca"><dt>Inteligência Artificial</dt><dd><span class="ad">a definir: lacuna-21</span> Apoio para o time ler os números e preparar os roteiros.</dd></div>
       <div class="peca"><dt>Processos</dt><dd>A régua de contato, as regras do CRM e o rito da semana, tudo por escrito no <span class="fato" data-campo="nomes-das-entregas:7">Playbook da Gestão de Vendas por Safra</span>.</dd></div>
@@ -342,7 +348,6 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
         <li><strong>Sistema instalado</strong> <span class="fato" data-campo="sistema-instalado:dia">dia 15</span></li>
         <li><strong><span class="fato" data-campo="nomes-das-entregas:8">Relatório de Produtividade</span></strong> <span class="fato" data-campo="quando-entrega-8">semana 13, na terceira Sessão de Comando</span></li>
       </ol>
-      <p class="marcas"><span class="ad">a definir: pergunta 8.11 (fases de cor)</span></p>
       <ol class="fases">
         <li class="fase fase-1"><strong>Primeira fase</strong> Logo depois da instalação, o time ainda estranha o jeito novo.</li>
         <li class="fase fase-2"><strong>Segunda fase</strong> Os primeiros números por safra aparecem no painel, e o time começa a acreditar.</li>
@@ -371,7 +376,7 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
         <h3>Colheita e plantio</h3>
         <ul>
           <li class="entrega"><p class="entrega-numero">04</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:4">Recuperação de Ativos</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-4">semanas 3 a 13</span></p><p class="entrega-texto">O seu time volta aos leads que você já pagou e que nunca disseram não.</p></li>
-          <li class="entrega"><p class="entrega-numero">06</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:6">Treinamento para Otimização da Conversão</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-6">a parte teórica até o dia 15; a call semanal em grupo das semanas 3 a 13</span></p><p class="entrega-texto"><span class="ad">a definir: pergunta 8.12</span> A parte teórica primeiro. Depois, <span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>, analisadas e devolvidas.</p></li>
+          <li class="entrega"><p class="entrega-numero">06</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:6">Treinamento para Otimização da Conversão</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-6">a parte teórica até o dia 15; a call semanal em grupo das semanas 3 a 13</span></p><p class="entrega-texto">A parte teórica primeiro. Depois, <span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>, analisadas e devolvidas.</p></li>
         </ul>
       </div>
       <div class="entregas-grupo">
@@ -420,7 +425,7 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
           <div><dt>Painel de Safras</dt><dd>Cada safra, cada etapa e cada vendedor, com o relógio à vista.</dd></div>
           <div><dt>Onde a safra trava</dt><dd>Cada etapa contra a meta que você aprovou. Você sabe onde mexer antes de a safra fechar.</dd></div>
           <div><dt>Leads que nunca disseram não</dt><dd>Os leads que você já pagou e que ainda estão no campo.</dd></div>
-          <div><dt>Prioridade da semana</dt><dd><span class="ad">a definir: pergunta 8.12</span> O esforço do time vai para a safra perto do fim e abaixo da meta.</dd></div>
+          <div><dt>Prioridade da semana</dt><dd>O esforço do time vai para a safra perto do fim e abaixo da meta.</dd></div>
           <div><dt>Avaliação de calls</dt><dd>Objeções e próximos passos das calls do seu time.</dd></div>
         </dl>
       </div>
@@ -493,23 +498,22 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
     <p class="sobretitulo"><span class="ad">a definir: nome público da Análise (ficha-de-fatos#analise-nome-publico)</span></p>
     <p class="selo selo-destino">Sem custo na promoção de lançamento</p>
     <h2 id="titulo-destino" tabindex="-1">Traga os números do seu último mês. A gente mostra onde a sua venda quebra.</h2>
-    <p class="marcas"><span class="ad">a definir: pergunta 8.15</span></p>
 
     <ol class="passos">
       <li class="passo">
         <p class="passo-numero">1</p>
         <h3>Responda as perguntas.</h3>
-        <p><span class="ad">a definir: pergunta 8.15</span> Com os números do seu funil: leads, agendamentos, comparecimentos e vendas.</p>
+        <p>Com os números do seu funil: leads, agendamentos, comparecimentos e vendas.</p>
       </li>
       <li class="passo">
         <p class="passo-numero">2</p>
         <h3>Receba a leitura dos seus números.</h3>
-        <p><span class="ad">a definir: pergunta 8.15 e quiz-01</span> A etapa onde a sua venda quebra e quanto ficou pelo caminho.</p>
+        <p>A etapa onde a sua venda quebra e quanto ficou pelo caminho.</p>
       </li>
       <li class="passo">
         <p class="passo-numero">3</p>
-        <h3>Se o seu perfil encaixa, a gente liga para marcar uma conversa.</h3>
-        <p>Com <span class="ad">a definir: quem conduz (ficha-de-fatos#analise-quem-conduz)</span>.</p>
+        <h3>Se o seu perfil encaixa, a gente liga para marcar a <span class="fato" data-campo="nome-call-de-venda:nome">Call de Direcionamento</span>.</h3>
+        <p><span class="fato" data-campo="duracao-call-de-venda:duracao">60 minutos</span> com o <span class="fato" data-campo="quem-faz-a-reuniao:condutor">Junior Neves</span>, com os seus números na mesa: ele mostra como o sistema ficaria no seu comercial.</p>
         <div class="imagem imagem-retrato" role="img" aria-label="Foto a definir: foto real ou nova do Júnior."><span class="imagem-descricao">Foto do passo 3 (a definir): prova real, foto real ou nova do Júnior; retrato por IA só sinalizado.</span></div>
       </li>
     </ol>
@@ -525,7 +529,6 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
         </div>
         <div class="relatorio-item">
           <p class="relatorio-item-titulo">1 · Onde a sua venda quebra <span class="relatorio-sub">Leads que ficaram pelo caminho</span></p>
-          <p class="marcas"><span class="ad">a definir: pergunta 8.15 e quiz-01</span></p>
           <table class="funil">
             <caption class="visualmente-oculto">Funil de exemplo, com a meta de cada etapa ao lado</caption>
             <thead><tr><th scope="col">Etapa</th><th scope="col">Seguem</th><th scope="col">Ficaram</th><th scope="col">Meta</th></tr></thead>
@@ -543,7 +546,6 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
         </div>
         <div class="relatorio-item">
           <p class="relatorio-item-titulo">2 · Potencial de dinheiro a sacar (sem comprar mais leads)</p>
-          <p class="marcas"><span class="ad">a definir: pergunta 8.15 e quiz-01</span></p>
           <p class="valor-sacar"><strong>R$ 300 mil</strong> em leads que você já pagou e que nunca disseram não.</p>
         </div>
         <!-- Seção oculta: 3 · PDV-90 (conflito-10; lacuna-22). -->
@@ -616,7 +618,8 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
 </footer>
 
 <script>
-/* Comportamento da página: igual nas duas variantes. Nada é guardado no navegador e nada é enviado. */
+/* Comportamento da página: igual nas duas variantes. Nada é guardado no navegador. O único envio é a visita,
+   sem dado de pessoa, ao garçom em /api/evento (18.5; etapa 34). */
 (function () {
   var d = document;
   d.documentElement.classList.add('js');
@@ -703,13 +706,49 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
     });
   });
 
-  /* Botão da 08: leva ao quiz-01 com as utm do endereço da landing (as que existirem) e um código de
-     sessão, só na memória da aba. O destino é o href do botão: aqui, o caminho do quiz no repositório,
-     para a revisão local; no site do protótipo, a montagem (entregas/prototipo-funil-01/) troca por /quiz/. */
+  /* Visita e ida ao quiz (18.5, 10.5, 10.8, 10.9, 10.10; estrutura v4, "Caminho até o quiz").
+     Ao abrir, a página cria um código de sessão no formato do banco (sessao- e até 60 letras minúsculas,
+     números e hífen), só na memória da aba: nada é guardado no navegador, e recarregar cria outro.
+     Manda a visita ao garçom (POST /api/evento, mesma origem) sem esperar a resposta: se falhar, a visita
+     se perde, sem aviso, sem nova tentativa e sem nenhuma mudança na página (10.10). As utm vão como vieram
+     no endereço, ou vazias quando não vieram (10.8); quem esvazia o que estiver fora da lista é o garçom.
+     Aberta direto do arquivo (file://), para revisão, não manda nada.
+     Etiquetas: a página publicada é a entrega landing-page-01, versão 1, nas duas variantes (10.15; 32.4).
+     O botão da 08 leva ao quiz-01 as utm presentes e o mesmo código, no parâmetro id_sessao (10.5). O destino
+     é o href do botão: aqui, o caminho do quiz no repositório, para a revisão local; no site do protótipo,
+     a montagem (entregas/prototipo-funil-01/) troca por /quiz/. Sem o programa, o botão abre o quiz sem
+     origem e sem código, e a visita não é registrada (10.9). */
+  var ETIQUETAS = { funil: 'funil-01', entrega: 'landing-page-01', versao_entrega: 1 };
+  var ROTA_EVENTO = '/api/evento';
+  function novaSessao() {
+    var letras = '';
+    if (window.crypto && crypto.getRandomValues) {
+      var n = crypto.getRandomValues(new Uint8Array(8));
+      for (var i = 0; i < n.length; i++) letras += (n[i] % 36).toString(36);
+    } else {
+      while (letras.length < 8) letras += Math.floor(Math.random() * 36).toString(36);
+    }
+    return 'sessao-' + Date.now().toString(36) + '-' + letras;
+  }
+  var params = new URLSearchParams(window.location.search);
+  var sessao = novaSessao();
+  var utm = function (k) { return (params.get(k) || '').trim(); };
+  if (window.location.protocol !== 'file:' && window.fetch) {
+    try {
+      fetch(ROTA_EVENTO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ evento: {
+          tipo: 'visita', funil: ETIQUETAS.funil, entrega: ETIQUETAS.entrega, versao_entrega: ETIQUETAS.versao_entrega,
+          utm_source: utm('utm_source'), utm_campaign: utm('utm_campaign'),
+          id_sessao: sessao, ocorrido_em: new Date().toISOString()
+        } }),
+        credentials: 'same-origin', cache: 'no-store', keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
   var botaoQuiz = d.querySelector('[data-quiz]');
   if (botaoQuiz) {
-    var params = new URLSearchParams(window.location.search);
-    var sessao = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
     var ida = new URLSearchParams();
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
       var valor = params.get(k);
@@ -717,8 +756,6 @@ O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
     });
     ida.set('id_sessao', sessao);
     botaoQuiz.href = botaoQuiz.getAttribute('href') + '?' + ida.toString();
-    /* Envio da visita desligado: no lugar do garçom, só o console. */
-    console.log('visita (envio desligado)', { funil: 'funil-01', entrega: 'a definir (10.15)', utm_source: ida.get('utm_source'), utm_campaign: ida.get('utm_campaign'), id_sessao: sessao });
   }
 })();
 </script>

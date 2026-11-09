@@ -1,0 +1,12 @@
+{
+  "_comentario": "Quais arquivos de fonte cada pagina do site do prototipo leva, e de qual pacote do npm (instalado nesta pasta). Lido pelo montador (entregas/prototipo-funil-01/montar-site.mjs) e pelo teste do quiz (nucleo/ferramentas/prints/testar-quiz-01.js). Decisao 10.7: fontes servidas junto com a pagina, nada do Google.",
+  "quiz": [
+    { "pacote": "@fontsource-variable/inter", "arquivo": "inter-latin-wght-normal.woff2" },
+    { "pacote": "@fontsource-variable/space-grotesk", "arquivo": "space-grotesk-latin-wght-normal.woff2" },
+    { "pacote": "@fontsource/permanent-marker", "arquivo": "permanent-marker-latin-400-normal.woff2" }
+  ],
+  "landing-a": [
+    { "pacote": "@fontsource-variable/geist", "arquivo": "geist-latin-wght-normal.woff2" }
+  ],
+  "landing-b": []
+}

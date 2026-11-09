@@ -1,7 +1,9 @@
+<!doctype html>
+<meta charset="utf-8">
 <!--
 ---
 id: quiz-01-pagina
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -9,35 +11,38 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 1
+    versao: 2
   - id: quiz-01-briefing
-    versao: 1
+    versao: 2
   - id: lead-score
-    versao: 2
-  - id: ficha-de-fatos
     versao: 3
-  - id: planta-do-banco
-    versao: 2
-  - id: funil-01
-    versao: 2
-  - id: lacunas
-    versao: 5
-  - id: garcom
-    versao: 2
-  - id: decisoes
+  - id: ficha-de-fatos
     versao: 4
+  - id: planta-do-banco
+    versao: 4
+  - id: funil-01
+    versao: 3
+  - id: lacunas
+    versao: 6
+  - id: garcom
+    versao: 4
+  - id: decisoes
+    versao: 5
 desatualizado: true
 ---
 Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html.
-Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30). Visual do mockup sem mudanca (conflito-18).
-Envio: enviarPacote manda o pacote ao garcom por POST em /api/fim-quiz (mesma origem, decisao #101); aberta direto do arquivo (file://), nao envia nada. O pacote nao vai mais para o console. Detalhes em README.md nesta pasta.
+Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104). Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
+Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 -->
 <title>[a definir: nome público da Análise]</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Permanent+Marker&family=Space+Grotesk:wght@300..700&display=swap">
 <style>
+/* Fontes servidas junto com a página (10.7; v3): nada do Google. Os arquivos vêm dos pacotes do npm em nucleo/ferramentas/fontes/
+   (lista em fontes.json) e o montador do site os copia para fontes/, ao lado desta página. Aberta direto do arquivo, sem a pasta
+   fontes/, a página cai na letra do sistema, sem pedir nada a ninguém. */
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('fontes/inter-latin-wght-normal.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url('fontes/space-grotesk-latin-wght-normal.woff2') format('woff2')}
+@font-face{font-family:'Permanent Marker';font-style:normal;font-weight:400;font-display:swap;src:url('fontes/permanent-marker-latin-400-normal.woff2') format('woff2')}
 /* Layout (estrutura da REA do Full Stack Marketing): capa em coluna de 640 com cartões escuros (teste + vídeo do Junior); abertura em duas colunas; teste em conversa + painel ao vivo à direita (abas no celular); relatório em blocos empilhados com a haste semente → fruto como assinatura.
    Identidade: variação da Triad (triad-www/styles.css). Do site: fundo #07070d, superfícies #11131d e #0d0e16, texto #f4f6f5, cinza #8b8f9c, verde #00ff87 com brilho, grade de 64px do hero, marca ▲ TRIAD e as fontes Space Grotesk, Inter e Permanent Marker (só 1 acento manuscrito por tela).
    Acréscimos do quiz: coral #ff5f6d = abaixo da meta, âmbar #ffb547 = dinheiro na mesa, fruto e estimativa. A marca é escura por natureza: os mesmos valores valem nos dois modos. */
@@ -731,7 +736,7 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 'use strict';
 
 /* ··· FATOS: os fatos da ficha que esta página usa, num lugar só ···
-   Fonte: base/ficha-de-fatos.md, versao 3. Cada linha leva o id do campo da ficha.
+   Fonte: base/ficha-de-fatos.md, versao 4. Cada linha leva o id do campo da ficha.
    Campo em conflito na ficha: bloqueado:true, e a página mostra o aviso visível "[a definir: ...]" no lugar do valor.
    Mudou a ficha? Mude aqui, e só aqui. */
 const FATOS = {
@@ -749,19 +754,19 @@ const FATOS = {
   // Os números das metas no texto (pelo menos 5, 1 a cada 4, 1 a cada 5, metade, conversão geral) saem daqui (pergunta 13.13).
   metas_por_etapa: {valor:[50, 50, 75, 20]},
   // ficha-de-fatos#preco-avancada · decidido. Não aparece na página: só entra na conta do lead score (custo mensal = preço ÷ 3).
-  // Qual preço vale depois das vagas (ficha-de-fatos#preco-avancada-depois) está na pergunta 4.7.
+  // Vale enquanto houver vaga de ficha-de-fatos#vagas; depois, ficha-de-fatos#preco-avancada-depois (4.7; lead-score v3). No protótipo, as vagas não acabaram.
   preco_avancada: {valor:45000}
 };
 const fato = (k, parte) => { const f = FATOS[k]; return f.bloqueado ? '[a definir: ' + f.rotulo + ']' : f[parte || 'valor']; };
 // Dados que ainda não existem (copy, "a definir")
 const A_DEFINIR = {whatsapp:'[a definir: número do WhatsApp]', politica:'[a definir: link da política de privacidade]'};
 
-/* ··· LEAD SCORE: a regra de base/lead-score.md, versao 2 (pendente-aprovacao; desatualizado: true), num lugar só ···
+/* ··· LEAD SCORE: a regra de base/lead-score.md, versao 3 (pendente-aprovacao), num lugar só ···
    Para ajustar pontos, faixas ou eliminatórios, mude só este objeto. As respostas entre aspas são as opções do quiz, letra por letra.
    A conta está em calcularLeadScore(); o exemplo de conferência de base/lead-score.md dá 96, faixa a. */
 const LEAD_SCORE = {
-  versao: 2,
-  // Eliminatórios: saem da fila do SDR, seja qual for o resto (lead-score, "Eliminatórios"). A faixa vira 'eliminatorio'.
+  versao: 3,
+  // Eliminatórios: saem da fila do SDR, seja qual for o resto (lead-score, "Eliminatórios"). A faixa vira 'eliminatorio', e a nota é calculada e guardada assim mesmo (14.8).
   eliminatorios: {
     faturamento: ['Menos de R$ 50 mil'],
     vendedores: ['Nenhum por enquanto'],
@@ -779,7 +784,8 @@ const LEAD_SCORE = {
     // Quem responde (15)
     cargo: {'Dono(a) ou sócio(a)':15, 'Diretor(a) comercial':10, 'Gestor(a) de vendas':7, 'Marketing':3, 'Outro':3, 'Vendedor(a)':2},
     // Dor e oportunidade (25)
-    // dinheiro na mesa por mês ÷ custo mensal da implementação (ficha-de-fatos#preco-avancada ÷ divisorDoPreco)
+    // dinheiro na mesa por mês ÷ custo mensal da implementação (ficha-de-fatos#preco-avancada ÷ divisorDoPreco).
+    // 14.9: funil todo na meta dá zero e vale a faixa "menos de 0,5"; modo chute, número faltando ou valor vazio valem semNumeros.
     dinheiroNaMesa: {divisorDoPreco:3, faixas:[{min:1, pontos:15}, {min:0.5, pontos:8}, {min:0, pontos:3}], semNumeros:7},
     vazamento: {
       maximo: 10,
@@ -794,13 +800,16 @@ const LEAD_SCORE = {
 };
 
 /* ··· Critério que decide o final do quiz ···
-   Em conflito (conflito-16; ficha-de-fatos#criterio-de-qualificacao), bloqueado para entrega. Nenhum lado foi escolhido:
-   a página mantém o comportamento do mockup do Júnior ('junior': fatura a partir de R$ 50 mil e tem vendedor) e calcula
-   os dois critérios, que aparecem lado a lado no console (pergunta 13.6). 'lead-score' troca o final: qualificado = faixas a e b. */
-const CRITERIO_DO_FIM = 'junior';
+   Em conflito (conflito-16; ficha-de-fatos#criterio-de-qualificacao), bloqueado para entrega. Nenhum lado foi escolhido.
+   Até a reunião, vale o mais restritivo dos dois cortes (14.2; lead-score v3; leitura da pergunta 31.13): 'mais-restritivo' só
+   qualifica quem passa nos dois, o do Júnior ('junior': fatura a partir de R$ 50 mil e tem vendedor) e o do lead score
+   ('lead-score': faixas a e b). Os dois critérios continuam aparecendo lado a lado no console (pergunta 13.6). */
+const CRITERIO_DO_FIM = 'mais-restritivo';
 
-/* ··· Etiquetas do pacote (dados/planta/planta.md, versao 2, "Etiquetas obrigatórias em todo evento") ··· */
-const ETIQUETAS = {funil:'funil-01', entrega:'quiz-01', versao_entrega:1};
+/* ··· Etiquetas do pacote (dados/planta/planta.md, versao 4, "Etiquetas obrigatórias em todo evento") ···
+   versao_entrega 2: esta versão da página muda o fim do quiz (14.2) e o aceite (13.4), então é uma versão nova da entrega
+   no catálogo (dados/banco/catalogo-prototipo.sql, linha quiz-01 versão 2; 10.15). A versão 1 foi a da página v2. */
+const ETIQUETAS = {funil:'funil-01', entrega:'quiz-01', versao_entrega:2};
 // Valores aceitos de cada utm, da tabela de origens do funil-01 (funis/funil-01/funil.md, "Origens e links"). Fora da lista: vazio (pergunta 5.5).
 // meta-ads está reservada e fora do MVP: fica fora da lista até sair da reserva.
 const UTM_ACEITAS = {utm_source:['stories', 'bio', 'reels', 'email', 'whatsapp'], utm_campaign:['funil-01']};
@@ -856,7 +865,7 @@ const ETAPAS = [
 ];
 
 /* ··· Respostas: o que a pessoa marcou, com exemplo quando pula ··· */
-const R = {nome:'', origem:[], ticket:'', nums:[{v:'',u:'n'},{v:'',u:'p'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null, consentimento:{whatsapp:false, email:false, em:null}};
+const R = {nome:'', origem:[], ticket:'', nums:[{v:'',u:'n'},{v:'',u:'p'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null, consentimento:{aceite:true, em:null}};
 const EX = {nome:'Marina', ramo:'Serviços para empresas', faturamento:'R$ 150 mil a R$ 500 mil', vendedores:'2 ou 3', 'quem-marca':'Sim. O vendedor faz tudo', 'valor-medio':'15.000', origem:['Anúncios pagos (Meta, Google)','Indicação de clientes'], crm:'Sim, mas pouca gente atualiza', cargo:'Dono(a) ou sócio(a)', lembra:'Sim', chute:'Menos de ' + METAS[2] + '%', causa:'No mesmo dia', causa2:'Depende do vendedor', causa3:'Alguns', plano:'Sim, eu quero'};
 const val = k => { const v = R[k]; if (Array.isArray(v)) return v.length ? v : EX[k]; return (typeof v === 'string' ? v.trim() : v) || EX[k]; };
 const qualificado = () => val('faturamento') !== 'Menos de R$ 50 mil' && val('vendedores') !== 'Nenhum por enquanto';
@@ -1244,10 +1253,9 @@ const CORPO = {
     const opts = PAISES.map(x => x ? '<option value="' + x.c + '"' + (x.c === c.pais ? ' selected' : '') + '>' + x.f + ' ' + x.n + ' ' + x.d + '</option>' : '<option disabled>──────────</option>').join('');
     return '<div class="cartao-form recuo"><form class="form" id="form" novalidate>' +
       '<div class="campo"><label for="nome">Seu nome</label><input id="nome" autocomplete="name" placeholder="Como podemos chamar você" value="' + esc(c.nome) + '"></div>' +
-      // Consentimento (M16): antes dos campos de e-mail e WhatsApp, as duas caixas desmarcadas
+      // Consentimento (M16; #104): antes dos campos de e-mail e WhatsApp (#110), uma caixa só, que já vem marcada
       '<div class="consentimento" id="consentimento"><p class="dica">' + CONSENTIMENTO.texto + ' Tudo explicado na política de privacidade ' + A_DEFINIR.politica + '.</p>' +
-      '<p class="dica"><label><input type="checkbox" id="consWhats"' + (R.consentimento.whatsapp ? ' checked' : '') + '> ' + CONSENTIMENTO.whatsapp + '</label></p>' +
-      '<p class="dica"><label><input type="checkbox" id="consEmail"' + (R.consentimento.email ? ' checked' : '') + '> ' + CONSENTIMENTO.email + '</label></p>' +
+      '<p class="dica"><label><input type="checkbox" id="consAceite"' + (R.consentimento.aceite ? ' checked' : '') + '> ' + CONSENTIMENTO.caixa + '</label></p>' +
       '<p class="dica" id="consAviso" role="status"' + (temConsentimento() ? ' hidden' : '') + '>' + CONSENTIMENTO.aviso + '</p></div>' +
       '<div class="campo"><label for="email">E-mail</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@empresa.com.br" value="' + esc(c.email) + '"><p class="dica" id="emailDica" aria-live="polite"></p></div>' +
       '<div class="campo"><span class="rotulo-campo" id="telRot">WhatsApp</span><div class="tel">' +
@@ -1403,7 +1411,8 @@ function validarContato(){
     if (ERROS_EMAIL[dom]) emailDica.innerHTML = 'Você quis dizer <button type="button" class="sugestao" data-acao="corrigir-email" data-dominio="' + ERROS_EMAIL[dom] + '">' + esc(c.email.split('@')[0]) + '@' + ERROS_EMAIL[dom] + '</button>?';
     else emailDica.textContent = '';
   }
-  bt.disabled = !(c.nome.trim().length > 1 && okEmail && okTel && temConsentimento());
+  // O botão libera com nome, e-mail e WhatsApp válidos, com a caixa marcada ou não (copy, seção 7; 31.2)
+  bt.disabled = !(c.nome.trim().length > 1 && okEmail && okTel);
   const av = $('#consAviso'); if (av) av.hidden = temConsentimento();
 }
 
@@ -1526,7 +1535,8 @@ function telaRelatorio(t){
         (k.fracas.indexOf(0) < 0 ? ', o marketing faz a parte dele. ' + Maiusc(fracao(METAS[0])) + ' dos leads tem perfil de compra. A perda começa no agendamento e vai até o fechamento.' : ', a perda começa na entrada: menos da ' + fracao(METAS[0]) + ' dos leads tem perfil de compra.') + '</p>') +
     '<div class="rel-selos">' + (est ? '<span class="selo selo--est">estimativa · respostas por chute</span>' : '<span class="selo">confiança alta · números que você informou</span>') +
     '<span class="perfil-chip">perfil do funil <b>' + perfil.nome + '</b></span></div>' +
-    '<p class="rel-copia">Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp, nos canais que você aceitou.</p></header>';
+    // Cópia (quiz-01-copy v2, M21): com a caixa marcada, o texto do mockup; desmarcada, nada foi enviado (30.3)
+    '<p class="rel-copia">' + (temConsentimento() ? 'Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp.' : 'Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado.') + '</p></header>';
 
   const funil = '<section><p class="secao__olho">da semente ao fruto</p><h2 class="secao__titulo">Suas 4 etapas contra as metas</h2>' + haste(c, k, est) + '</section>';
   const g = ganhos(k.taxas);
@@ -1616,21 +1626,26 @@ function telaErro(){
     '<button type="button" class="botao" data-acao="tentar">Tentar de novo <span class="seta" aria-hidden="true">→</span></button></section>';
 }
 
-/* ··· Consentimento (copy, M16; pergunta 13.4) ··· */
+/* ··· Consentimento (quiz-01-copy v2, seção 7 e M16; #104, #105; texto para o Otávio conferir, pergunta 31.1) ···
+   Uma caixa só, que já vem marcada. Marcada: o contato e as respostas vão ao banco e à equipe, e a caixa preenche
+   consentimento_whatsapp e consentimento_email com o mesmo valor e o mesmo texto aceito (#104). Desmarcada: o diagnóstico
+   aparece na tela e nada é enviado, nem o fim do quiz nem o clique do fim (escolha provisória, pergunta 30.3). */
 const CONSENTIMENTO = {
-  texto:'Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele. Nada além disso. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser.',
-  whatsapp:'Aceito receber o diagnóstico e o contato da equipe por WhatsApp.',
-  email:'Aceito receber o diagnóstico e o contato da equipe por e-mail.',
-  aviso:'Marque pelo menos um jeito de receber o diagnóstico.'
+  texto:'Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado para a gente. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser.',
+  caixa:'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail.',
+  aviso:'Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado.'
 };
-const temConsentimento = () => !!(R.consentimento.whatsapp || R.consentimento.email);
-// O texto exato que a pessoa aceitou (planta, consentimento_texto): o combinado e as caixas marcadas
-const textoConsentimento = () => [CONSENTIMENTO.texto, 'Tudo explicado na política de privacidade ' + A_DEFINIR.politica + '.'].concat(R.consentimento.whatsapp ? [CONSENTIMENTO.whatsapp] : [], R.consentimento.email ? [CONSENTIMENTO.email] : []).join(' ');
+const temConsentimento = () => !!R.consentimento.aceite;
+// O texto exato que a pessoa aceitou (planta, consentimento_texto): o combinado, a frase da política e a caixa
+const textoConsentimento = () => [CONSENTIMENTO.texto, 'Tudo explicado na política de privacidade ' + A_DEFINIR.politica + '.', CONSENTIMENTO.caixa].join(' ');
 
 /* ··· Critério do fim (ver CRITERIO_DO_FIM no topo) ··· */
-const qualificadoFim = () => CRITERIO_DO_FIM === 'lead-score' ? ['a', 'b'].indexOf(calcularLeadScore().faixa) > -1 : qualificado();
-// Nota do "Tenho interesse" (M27): uma por lado do conflito-16
-const notaInteresse = () => CRITERIO_DO_FIM === 'lead-score' ? 'Anotado. Seu interesse fica registrado com o seu diagnóstico.' : 'Anotado. Alguém da nossa equipe vai chamar você no WhatsApp.';
+const qualificadoPeloLeadScore = () => ['a', 'b'].indexOf(calcularLeadScore().faixa) > -1;
+const qualificadoFim = () => CRITERIO_DO_FIM === 'lead-score' ? qualificadoPeloLeadScore()
+  : CRITERIO_DO_FIM === 'mais-restritivo' ? qualificado() && qualificadoPeloLeadScore() : qualificado();
+// Nota do "Tenho interesse" (M27): uma por lado do conflito-16. Com o corte mais restritivo, a do lado do lead score,
+// que não promete ligação a quem fica fora da fila (13.7; pergunta 31.14)
+const notaInteresse = () => CRITERIO_DO_FIM === 'junior' ? 'Anotado. Alguém da nossa equipe vai chamar você no WhatsApp.' : 'Anotado. Seu interesse fica registrado com o seu diagnóstico.';
 
 /* ··· Lead score: a conta (regra em LEAD_SCORE, no topo) ···
    Usa só o que a pessoa respondeu (R), nunca os exemplos do protótipo (EX). */
@@ -1667,10 +1682,19 @@ function calcularLeadScore(){
   return {nota:nota, faixa:faixa, versao:C.versao, partes:partes, eliminatorios:eliminatorios};
 }
 
-/* ··· Pacote do fim do quiz (dados/planta/planta.md, versao 2: gaveta pessoas e evento fim_quiz) ···
+/* ··· Pacote do fim do quiz (dados/planta/planta.md, versao 4: gaveta pessoas e evento fim_quiz) ···
    id_pessoa, id_evento, gravado_em e gravado_por quem dá é o banco e o garçom, não a página. */
-// Código da sessão: criado ao abrir a página e esquecido quando a aba fecha; nada fica guardado no navegador (planta, 6.2)
-const ID_SESSAO = 'sessao-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+// Código da sessão, no formato do banco (sessao- e até 60 letras minúsculas, números e hífen; 6.2, 18.5): o que a landing
+// mandou no endereço (id_sessao; 10.5), se vier no formato; senão, um novo, criado ao abrir a página. Esquecido quando a aba
+// fecha; nada fica guardado no navegador (planta, 6.2). O mesmo código vai no início do quiz, no fim e no clique.
+const FORMATO_SESSAO = /^sessao-[a-z0-9-]{1,60}$/;
+function novaSessao(){
+  let sorte = '';
+  try { const b = new Uint8Array(8); crypto.getRandomValues(b); b.forEach(x => { sorte += (x % 36).toString(36); }); }
+  catch (e) { sorte = Math.random().toString(36).slice(2, 10); }
+  return 'sessao-' + Date.now().toString(36) + '-' + sorte;
+}
+const ID_SESSAO = (() => { const v = new URLSearchParams(location.search).get('id_sessao') || ''; return FORMATO_SESSAO.test(v) ? v : novaSessao(); })();
 function lerUtm(){
   const p = new URLSearchParams(location.search), o = {};
   Object.keys(UTM_ACEITAS).forEach(k => { const v = (p.get(k) || '').trim().toLowerCase(); o[k] = UTM_ACEITAS[k].indexOf(v) > -1 ? v : ''; });
@@ -1697,8 +1721,9 @@ function montarPacote(){
       telefone: p.d + ' ' + formatarTel(p, c.tel),
       email: c.email.trim(),
       empresa: c.empresa.trim(),
-      consentimento_whatsapp: R.consentimento.whatsapp ? 'sim' : 'nao',
-      consentimento_email: R.consentimento.email ? 'sim' : 'nao',
+      // a caixa única preenche os dois campos com o mesmo valor (#104); só há pacote com a caixa marcada
+      consentimento_whatsapp: R.consentimento.aceite ? 'sim' : 'nao',
+      consentimento_email: R.consentimento.aceite ? 'sim' : 'nao',
       consentimento_texto: textoConsentimento(),
       consentimento_em: R.consentimento.em,
       // origem da primeira visita (planta, gaveta pessoas); o banco só grava se a pessoa for nova
@@ -1721,7 +1746,7 @@ function montarPacote(){
     }
   };
 }
-// Envio ao garçom (entregas/garcom/, v2): POST na mesma origem, em /api/fim-quiz (#101). Endereço
+// Envio ao garçom (entregas/garcom/, v4): POST na mesma origem, em /api/fim-quiz (#101). Endereço
 // relativo, nenhuma chave na página. O garçom confere o pacote e grava (destino em conflito,
 // conflito-17; o protótipo de teste segue o lado 2, #90).
 // O pacote tem dado pessoal: não vai para o console nem fica guardado no navegador.
@@ -1745,9 +1770,40 @@ function enviarPacote(pacote){
   if (!ENVIO_LIGADO || enviando) return;
   pacotePendente = pacote; enviando = true;
   fetch(ROTA_FIM_QUIZ, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pacote), credentials:'same-origin', cache:'no-store'})
-    .then(r => { if (!r.ok) throw new Error('envio'); pacotePendente = null; avisoEnvio(false); })
+    .then(r => { if (!r.ok) throw new Error('envio'); pacotePendente = null; avisoEnvio(false); fimGravado = true; soltarCliques(); })
     .catch(() => { avisoEnvio(true); })
     .then(() => { enviando = false; });
+}
+
+/* ··· Eventos sem dado de pessoa: início do quiz e clique no fim (garçom v4, POST /api/evento; planta v4) ···
+   O pacote é só {evento:{...}}, com as cinco etiquetas, a sessão e a data; o clique leva também clique_fim_quiz, da lista
+   proposta (31.15; 32.1). Sem pessoa e sem aceite. A página não espera a resposta, não avisa e não tenta de novo: se a
+   gravação falhar, o evento se perde e a pessoa segue (10.10). Aberta direto do arquivo, nada é enviado. */
+const ROTA_EVENTO = '/api/evento';
+function registrarEvento(tipo, extra){
+  if (!ENVIO_LIGADO) return;
+  const utm = lerUtm();
+  const evento = Object.assign({tipo:tipo, funil:ETIQUETAS.funil, entrega:ETIQUETAS.entrega, versao_entrega:ETIQUETAS.versao_entrega,
+    utm_source:utm.utm_source, utm_campaign:utm.utm_campaign, id_sessao:ID_SESSAO, ocorrido_em:new Date().toISOString()}, extra || {});
+  try {
+    fetch(ROTA_EVENTO, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({evento:evento}), credentials:'same-origin', cache:'no-store', keepalive:true})
+      .catch(() => {});
+  } catch (e) {}
+}
+// O clique no fim (18.4) só vai depois de o fim do quiz desta sessão ter sido gravado com sucesso (o banco recusa o clique
+// sem ele, 32.2). Antes disso, fica na memória da aba e sai quando o fim do quiz gravar (inclusive pelo "Tentar de novo").
+// Com a caixa desmarcada, nada é enviado (13.4; 30.3). Cada valor vai uma vez só por sessão.
+const CLIQUES = {marcar:'quero-conversa', whats:'chamar-whatsapp', interesse:'tenho-interesse', 'agora-nao':'agora-nao'};
+let fimGravado = false;
+const cliquesEsperando = [], cliquesFeitos = new Set();
+function registrarClique(valor){
+  if (!valor || !R.consentimento.aceite || !R.consentimento.em || cliquesFeitos.has(valor)) return;
+  cliquesFeitos.add(valor);
+  if (fimGravado) registrarEvento('interesse_pos_relatorio', {clique_fim_quiz:valor});
+  else cliquesEsperando.push(valor);
+}
+function soltarCliques(){
+  while (cliquesEsperando.length) registrarEvento('interesse_pos_relatorio', {clique_fim_quiz:cliquesEsperando.shift()});
 }
 $('#avisoEnvio').addEventListener('click', e => {
   const b = e.target.closest('#reenviar');
@@ -1987,16 +2043,17 @@ palco.addEventListener('click', e => {
   const b = e.target.closest('[data-acao]');
   if (!b) return;
   const nota = $('#ctaNota');
+  if (CLIQUES[b.dataset.acao]) registrarClique(CLIQUES[b.dataset.acao]);
   switch (b.dataset.acao) {
     case 'proximo': clearTimeout(tAuto); avancar(); break;
     case 'enviar': {
       if (b.disabled) break;
-      // Consentimento obrigatório: sem pelo menos uma caixa marcada, nada é enviado e o aviso aparece
-      if (!temConsentimento()) { const av = $('#consAviso'); if (av) av.hidden = false; break; }
-      R.consentimento.em = new Date().toISOString();
-      const pacote = montarPacote();
-      enviarPacote(pacote);
-      console.info('[quiz-01] criterios do fim (conflito-16) ' + JSON.stringify({criterio_em_uso:CRITERIO_DO_FIM, junior:qualificado() ? 'qualificado' : 'nao qualificado', lead_score:pacote.evento.lead_score_faixa}));
+      // Caixa marcada: o pacote vai ao garçom. Desmarcada: nada é enviado e o diagnóstico aparece na tela (13.4; 30.3)
+      if (temConsentimento()) {
+        R.consentimento.em = new Date().toISOString();
+        enviarPacote(montarPacote());
+      }
+      console.info('[quiz-01] criterios do fim (conflito-16) ' + JSON.stringify({criterio_em_uso:CRITERIO_DO_FIM, junior:qualificado() ? 'qualificado' : 'nao qualificado', lead_score:calcularLeadScore().faixa, enviado:temConsentimento()}));
       avancar(); break;
     }
     case 'ver-relatorio': mostrar(proximaDe('montando')); break;
@@ -2065,9 +2122,7 @@ palco.addEventListener('keydown', e => {
   const s = $('#seguir'); if (s && !s.disabled) avancar();
 });
 palco.addEventListener('change', e => {
-  if (e.target.id === 'consWhats' || e.target.id === 'consEmail') {
-    R.consentimento[e.target.id === 'consWhats' ? 'whatsapp' : 'email'] = e.target.checked; validarContato(); return;
-  }
+  if (e.target.id === 'consAceite') { R.consentimento.aceite = e.target.checked; validarContato(); return; }
   if (e.target.id !== 'pais') return;
   const c = R.contato; c.pais = e.target.value; c.tel = '';
   const p = pais(c.pais), tel = $('#tel');
@@ -2081,5 +2136,7 @@ document.title = fato('analise_nome_publico');
 $('#topo .marca').lastChild.nodeValue = fato('nome_agencia');
 const h = (location.hash || '').slice(1);
 mostrar(tela(h) ? h : 'capa');
+// Início do quiz: registrado quando o quiz abre, com o mesmo código de sessão da landing (10.6; 18.5)
+registrarEvento('inicio_quiz');
 })();
 </script>

@@ -1,6 +1,7 @@
 -- Conferência do banco do funil-01, depois de esquema.sql e da migração 001 (Postgres, no Supabase)
 -- id: banco-conferir · versao 2 · rascunho · otavio: pendente
 -- depende_de: banco-rascunho v3, banco-migracao-001 v1, planta-do-banco v4, decisoes v5
+-- desatualizado: true (banco-rascunho subiu para a versão 4, só documentação, etapa 34; banco-migracao-001 continua marcada; regra 11.1)
 --
 -- Versão 2 (etapa 32): confere o banco v3, que é o esquema v2 (esquema.sql) mais a migração
 -- dados/banco/migracoes/001-v3.sql. Tudo o que a versão 1 conferia continua, com a porta nova

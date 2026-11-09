@@ -1,6 +1,6 @@
 ---
 id: banco-rascunho
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -32,6 +32,8 @@ O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.
 
 **Versão 3 (etapa 32, 09/11/2026).** O banco com dados não é refeito: o esquema v2 (esquema.sql) fica como está e a versão 3 entra por uma **migração** (migracoes/001-v3.sql), que roda por cima, sem apagar nada, e pode rodar de novo (21.11; prompts/11-decisoes-de-09-11.md, etapa 32). Ver "O que muda na versão 3".
 
+**Versão 4 (etapa 34, 09/11/2026).** Só documentação: catalogo-prototipo.sql (v2) ganhou as linhas da landing-page-01 versão 1 e do quiz-01 versão 2, que as páginas da etapa 34 mandam (32.4). Nenhuma linha de SQL do esquema nem da migração mudou.
+
 **Destino dos contatos em conflito · bloqueado para entrega até a decisão** (conflito-17, em base/lacunas.md). O lado 1 manda os contatos do quiz para uma conta nova do Triad CRM; o lado 2 (#90) manda para este banco pelo garçom e para a planilha do SDR. Este rascunho segue o lado 2, como a planta e o funil-01, sem escolher: se o lado 1 vencer, ele vira só a especificação do que o CRM precisa guardar. O protótipo de teste não é entrega: com gente de verdade, nada vai ao ar antes da decisão.
 
 ## O que tem dentro
@@ -41,7 +43,7 @@ O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.
 | esquema.sql | O esquema v2: as tabelas, as restrições, as duas funções das portas do garçom, a visão do painel, a contagem das análises gratuitas e as fechaduras, em Postgres para o Supabase. Comentários em português. Já rodou no projeto do Safra; o SQL não muda (21.11). A versão 3 do arquivo só ganhou o aviso do topo, com a ordem dos arquivos |
 | migracoes/001-v3.sql | A migração do banco v2 para o v3, sobre os dados que já existem, sem apagar nada e numa transação só. Pode rodar de novo e dá o mesmo resultado. Ver "O que muda na versão 3" |
 | conferir.sql | Uma consulta só de leitura que confere, linha por linha, se o banco ficou como devia depois da migração: tabelas, RLS, quem pode o quê, funções, trava, índices, visões e o que a migração pôs. Cada linha diz o esperado e dá ok verdadeiro ou falso |
-| catalogo-prototipo.sql | A linha do catálogo de entregas (quiz-01, versão 1) que o protótipo precisa para o banco aceitar o fim do quiz (23.10). Rodada uma vez no protótipo, depois do conferir.sql (25.3) |
+| catalogo-prototipo.sql | As linhas do catálogo de entregas que o protótipo precisa para o banco aceitar os eventos das páginas (23.10; 32.4): quiz-01 versão 1 (a página v2, que já gravou dados de teste), quiz-01 versão 2 (a página v3) e landing-page-01 versão 1 (a visita, igual nas duas variantes; pergunta 34.4). v2: só acrescenta, com `on conflict do nothing`; não apaga nem muda linha. Rodado depois do conferir.sql (25.3) |
 | testar-migracao.mjs | O teste local da migração, num Postgres dentro do Node (PGlite, o do ensaio), sem rede. Ver "Conferido nesta máquina" |
 
 ## O que muda na versão 3
@@ -113,6 +115,7 @@ A ordem é sempre esta:
 1. **esquema.sql (v2): já rodado** no projeto do Safra. Não rodar de novo: o banco já tem dados, e rodar o esquema de novo não muda tabela que já existe (21.11). Num projeto novo e vazio, a ordem é a mesma (esquema.sql, a migração e conferir.sql) e, para o protótipo, catalogo-prototipo.sql no fim.
 2. **migracoes/001-v3.sql**, a migração.
 3. **conferir.sql (v2)**, a conferência.
+4. **catalogo-prototipo.sql (v2)**, no protótipo, antes de publicar as páginas da etapa 34: no banco que já tem a linha do quiz-01 versão 1, acrescenta só as duas linhas novas e mostra as três (conferido no PGlite: rodado duas vezes, três linhas, a data da linha antiga sem mudar).
 
 Passo a passo da migração (o roteiro da etapa 35 traz a versão para o Otávio):
 
@@ -124,7 +127,7 @@ Passo a passo da migração (o roteiro da etapa 35 traz a versão para o Otávio
 
 Se o passo 3 der erro, nada mudou (a migração roda numa transação só): não siga, copie só a mensagem de erro (ela não tem chave nem dado pessoal) e traga para o repositório. Rodar a migração de novo não quebra nada e dá o mesmo resultado. Se um dia esquema.sql for rodado de novo, rode a migração logo depois: o esquema v2 refaz a função da planilha e as permissões do jeito v2.
 
-A migração não mexe no garçom: o garçom v3, que está no ar, continua chamando registrar_fim_quiz e leads_para_planilha como antes (a função da planilha só manda um campo a mais, que o garçom repassa e a planilha v1 ignora). A visita, o início do quiz e o clique só chegam ao banco com o garçom da etapa 33 e as páginas da etapa 34. Para a visita da landing entrar, o catálogo de entregas precisa ter a linha da landing (pergunta 32.4).
+A migração não mexe no garçom: o garçom v3, que está no ar, continua chamando registrar_fim_quiz e leads_para_planilha como antes (a função da planilha só manda um campo a mais, que o garçom repassa e a planilha v1 ignora). A visita, o início do quiz e o clique só chegam ao banco com o garçom da etapa 33 e as páginas da etapa 34. Para a visita da landing e os eventos do quiz novo entrarem, o catálogo precisa das linhas da landing-page-01 versão 1 e do quiz-01 versão 2, que catalogo-prototipo.sql v2 acrescenta (32.4; etapa 34). Publicar as páginas novas antes de rodar o catálogo deixa a visita, o início do quiz e o fim do quiz novo recusados pela chave estrangeira.
 
 ## Como conferir
 
@@ -183,7 +186,7 @@ O ensaio geral (nucleo/ferramentas/ensaio/) ainda aplica só o esquema v2 e espe
 ## O que falta para ir ao ar com gente de verdade
 
 1. **Decisão do conflito-17** pelo Júnior e pelo Euclides (aprovação da #90).
-2. **Rodar a migração 001 e o conferir.sql no Supabase** (roteiro da etapa 35), com o garçom da etapa 33 e as páginas da etapa 34 para os eventos novos chegarem.
+2. **Rodar a migração 001, o conferir.sql e o catalogo-prototipo.sql v2 no Supabase** (roteiro da etapa 35), com o garçom da etapa 33 e as páginas da etapa 34 para os eventos novos chegarem.
 3. **Limpar os dados de teste** (leads com e-mail @teste.invalid e nome começando por TESTE, #102) de propósito, ou recomeçar o banco do zero, e registrar como foi feito. A trava não deixa apagar evento (log.md, Pendências).
 4. **Caminho de apagamento** (#106): o prazo de guarda está em ficha-de-fatos#prazo-de-guarda; o que se apaga, o que vira anônimo, quem faz e como fica registrado é pendência com prazo (log.md, Pendências). Até lá, nada é apagado automaticamente, e a trava dos eventos não deixa apagar nem pelo garçom (6.8; 18.10).
 5. Aprovação da planta (6.1) e deste rascunho pelo Otávio.
@@ -191,4 +194,4 @@ O ensaio geral (nucleo/ferramentas/ensaio/) ainda aplica só o esquema v2 e espe
 
 ## Perguntas
 
-prompts/07-fila-perguntas.md, 18.1 a 18.11; prompts/08-fila-perguntas.md, Etapa 21; prompts/11-fila-perguntas.md, Etapa 32.
+prompts/07-fila-perguntas.md, 18.1 a 18.11; prompts/08-fila-perguntas.md, Etapa 21; prompts/11-fila-perguntas.md, Etapas 32 e 34.

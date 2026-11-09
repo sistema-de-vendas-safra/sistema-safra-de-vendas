@@ -107,7 +107,7 @@ h4 { font-size: 17px; line-height: 1.35; font-weight: 600; }
 .hero { padding-top: 40px; padding-bottom: 56px; position: relative; overflow: hidden; }
 .qualificador { margin-bottom: 20px; }
 .hero .chamada { margin-top: 32px; }
-.hero-subtitulo { margin-top: 24px; }
+.hero-subtitulo { margin-top: 24px; max-width: 40em; }
 @media (min-width: 1024px) { .hero { padding-top: 120px; padding-bottom: 128px; } }
 
 /* Bloco de chamada */
@@ -322,10 +322,21 @@ figcaption { margin-top: 10px; font-size: 14px; color: var(--texto-2); max-width
    Tema da variante A · design system v1.0
    Só tokens de tokens.css (cópia de fontes/design-system-v1.0/safra-tokens.css).
    Regras seguidas: fundos escuros; nenhuma sombra, brilho ou gradiente; Menta só na ação
-   primária e em pontos de decisão; só a família Geist (sem arquivo local: cai na letra do sistema);
+   primária e em pontos de decisão; só a família Geist, com o arquivo servido junto com a página (10.7);
    títulos Bold, texto Regular, números e rótulos Light; rótulos em caixa alta com tracking aberto;
    raio sm nos botões, md nos cartões, lg nos blocos de destaque; foco de 2 px em Menta com 3 px de afastamento.
    ============================================================ */
+/* Geist (licença SIL OFL 1.1), do pacote @fontsource-variable/geist instalado em nucleo/ferramentas/fontes/.
+   O montador do site (entregas/prototipo-funil-01/montar-site.mjs) copia o arquivo para fontes/, ao lado
+   desta página. Nenhum pedido ao Google nem a outro terceiro (10.7). Aberta direto do repositório, sem a
+   pasta fontes/, a página cai na letra do sistema, como antes. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fontes/geist-latin-wght-normal.woff2") format("woff2");
+}
 :root {
   --fonte: var(--font-sans);
   --fundo: var(--color-noite);
