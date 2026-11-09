@@ -1,21 +1,21 @@
 ---
 id: lead-score
-versao: 2
+versao: 3
 status: pendente-aprovacao
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
   junior: pendente
   euclides: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: persona
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
-desatualizado: true
+  - id: persona
+    versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
+desatualizado: false
 ---
 
 # Lead score
@@ -42,7 +42,7 @@ Saem da fila do SDR, seja qual for o resto:
 
 **Motivo:** são os mínimos da versão mais generosa entre as cinco versões de critério que existem hoje (ficha-de-fatos#criterio-de-qualificacao), então nenhum documento anterior é atropelado.
 
-Quem cai aqui recebe o diagnóstico normalmente e vai para a nutrição.
+Quem cai aqui recebe o diagnóstico normalmente e vai para a nutrição. A nota também é calculada e guardada para quem cai num eliminatório, com a faixa "eliminatorio": ajuda a rever as faixas depois das 50 primeiras respostas (14.8; decisão do Otávio, 09/11/2026; base/decisoes.md, #114).
 
 ## Pontos (até 100)
 
@@ -54,10 +54,12 @@ Quem cai aqui recebe o diagnóstico normalmente e vai para a nutrição.
 | Volume e dados (20) | Leads por mês (primeiro número do funil) | 100 ou mais: 10 · 50 a 99: 5 · menos de 50: 0 · não lembra: 5 |
 | | CRM | "Sim, e o time atualiza todo dia": 10 · "Sim, mas pouca gente atualiza": 7 · "Usamos planilha": 5 · "Não. Fica no WhatsApp e na cabeça de cada um": 0 |
 | Quem responde (15) | Cargo | Dono(a) ou sócio(a): 15 · Diretor(a) comercial: 10 · Gestor(a) de vendas: 7 · Marketing: 3 · Outro: 3 · Vendedor(a): 2 |
-| Dor e oportunidade (25) | Dinheiro na mesa por mês (o valor que o quiz já calcula) dividido pelo custo mensal da implementação (ficha-de-fatos#preco-avancada dividido por 3) | 1 ou mais: 15 · de 0,5 a menos de 1: 8 · menos de 0,5: 3 · sem números informados: 7 |
+| Dor e oportunidade (25) | Dinheiro na mesa por mês (o valor que o quiz já calcula) dividido pelo custo mensal da implementação (o preço da implementação que vale no dia da resposta, dividido por 3; ver abaixo) | 1 ou mais: 15 · de 0,5 a menos de 1: 8 · menos de 0,5: 3 · sem números informados: 7 |
 | | Sinais de vazamento (até 10) | Tentativas: "1 ou 2" ou "Depende do vendedor": 4 · "3 a 5": 2 · "6 ou mais, com roteiro definido": 0. Sobra lead: "Sim, muitos": 4 · "Alguns": 2 · "Não": 0. Primeiro contato: "No dia seguinte ou depois" ou "Não sei": 2 · "No mesmo dia": 1 · "Em até 1 hora" ou "Em até 10 minutos": 0. Se as perguntas de causa não aparecerem no quiz: 5 |
 
-O custo mensal da implementação não é escrito aqui em reais: sai do campo ficha-de-fatos#preco-avancada, dividido por 3, como manda a regra da casa (fatos só na ficha). Qual campo de preço vale depois das vagas de ficha-de-fatos#vagas (quando passa a valer ficha-de-fatos#preco-avancada-depois) está em prompts/05-fila-perguntas.md, 4.7.
+O custo mensal da implementação não é escrito aqui em reais: sai do preço da implementação que vale no dia da resposta, dividido por 3, como manda a regra da casa (fatos só na ficha). Enquanto houver vaga no preço de lançamento (ficha-de-fatos#vagas), vale ficha-de-fatos#preco-avancada; depois, ficha-de-fatos#preco-avancada-depois (4.7; decisão do Otávio, 09/11/2026; base/decisoes.md, #114).
+
+**Os dois casos de borda do dinheiro na mesa** (14.9; decisão do Otávio, 09/11/2026; base/decisoes.md, #114): com o funil todo na meta, o dinheiro na mesa é zero e vale a linha "menos de 0,5"; número faltando, valor vazio ou resposta no modo chute contam como "sem números informados". Os dois são revistos junto com as faixas depois das 50 primeiras respostas (outros-22).
 
 ## Faixas
 
@@ -66,6 +68,8 @@ O custo mensal da implementação não é escrito aqui em reais: sai do campo fi
 | A | de 70 a 100 | Liga em até 1 hora útil e marca com o Júnior |
 | B | de 50 a 69 | Liga no mesmo dia, confirma por telefone o que o quiz deixou em dúvida (valor da venda, time, histórico) e só então marca |
 | C | abaixo de 50 | Nutrição, sem ocupar a agenda do Júnior |
+
+**Até a reunião com o Júnior e o Euclides** (14.2; decisão do Otávio, 09/11/2026; base/decisoes.md, #114): o quiz usa o mais restritivo dos dois cortes, o do Júnior (ficha-de-fatos#criterio-de-qualificacao, versão e) e o desta nota, numa versão nova da página, antes de testar com pessoas reais. É regra provisória: o conflito entre os dois continua aberto (conflito-16) e não escolhe lado.
 
 ## Fica de fora, de propósito
 
@@ -93,4 +97,4 @@ Depois das primeiras 50 respostas reais, conferir se as faixas batem com quem ag
 
 - Otávio, 08/11/2026: prompts/04-decisoes-de-08-11-e-lead-score.md (seção 1, item 7, e seção 3).
 - Quiz: fontes/acervo-2026-11-08/safra-acervo/05-paginas/quiz-diagnostico-de-vendas/index.html (as respostas citadas entre aspas conferem com as opções do quiz).
-- Decisão #98 (base/decisoes.md); ficha-de-fatos#criterio-de-qualificacao, ficha-de-fatos#preco-avancada; lacuna-12, conflito-01, outros-22.
+- Decisões #98 e #114 (4.7, 14.2, 14.8 e 14.9) (base/decisoes.md); ficha-de-fatos#criterio-de-qualificacao, ficha-de-fatos#preco-avancada, ficha-de-fatos#preco-avancada-depois, ficha-de-fatos#vagas; lacuna-12, conflito-01, conflito-16, outros-22.

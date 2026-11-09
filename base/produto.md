@@ -1,17 +1,17 @@
 ---
 id: produto
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
-desatualizado: true
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
+desatualizado: false
 ---
 
 # Produto · IASV Safra
@@ -74,7 +74,7 @@ A Ficha do Serviço online organiza o serviço (ficha-de-fatos#duracao) em quatr
 | Análise de calls | Calls de venda de cada cliente analisadas e devolvidas no grupo de suporte dele, dentro do Treinamento para Otimização da Conversão | ficha-de-fatos#analise-de-calls | #88 | CTX §3; Ficha do Serviço online |
 | Grupo de suporte | Um grupo de WhatsApp por cliente, com o time da Triad, o dono e o time dele; um CS responde e uma IA treinada nas reuniões gravadas, no Playbook da Gestão de Vendas por Safra e no método tira as dúvidas de execução ("o que o Júnior quis dizer com isso?") | ficha-de-fatos#grupo-de-suporte | #76; quem faz o CS e a IA ficou para depois (#84; lacuna-04) | Ficha do Serviço online |
 
-**A regra de #79 e a promessa de 08/11.** Pela #79, "o compromisso prometido com o Júnior são as três individuais" (ficha-de-fatos#sessoes-de-comando), e a presença dele no grupo entra como entrega a mais. A promessa de 08/11 (#85) transforma a liderança do Júnior e do Euclides durante o serviço em compromisso público, e "a regra de #79 ... cai se a promessa for aprovada" (CTX §3). Enquanto a #85 estiver pendente do Júnior e do Euclides, vale a #79 (decisoes #79, #85; lacuna-02).
+**A regra de #79 e a promessa de 08/11.** Pela #79, "o compromisso prometido com o Júnior são as três individuais" (ficha-de-fatos#sessoes-de-comando), e a presença dele no grupo entra como entrega a mais. A promessa de 08/11 (#85) transforma a liderança do Júnior e do Euclides durante o serviço em compromisso público, e "a regra de #79 ... cai se a promessa for aprovada" (CTX §3). Enquanto a #85 estiver pendente do Júnior e do Euclides, vale a #79 (decisoes #79, #85; lacuna-02). Em 09/11/2026 a promessa passou a valer por decisão do Otávio (#108), mas a #108 não diz se a regra de #79 cai, e ela mexe na agenda do Júnior e do Euclides: até a resposta, vale a #79 (prompts/11-fila-perguntas.md, 30.4).
 
 ---
 
@@ -140,4 +140,4 @@ Da Ficha do Serviço online ("Não está incluído"):
 - CTX §1, §3 ("Oferta da IASV Safra", "As 8 entregas", "Pessoas"), §6, §8, §9, §11, §13: fontes/acervo-2026-11-08/safra-acervo/02-arquivos-do-projeto/CONTEXTO-DO-PROJETO.md (v5.3).
 - Ficha do Serviço online: 03-documentos-online/Ficha do Serviço · Implementação Avançada do Sistema de Vendas Safra.md (08/11/2026). Vale sobre a cópia F11.
 - F25: 02-arquivos-do-projeto/claude/FONTE-call-decisao-07-11.md (seções 1, 3 e 6).
-- Decisões #14, #46, #52, #53, #56, #58, #68, #70 a #79, #83, #84, #85, #88 (base/decisoes.md).
+- Decisões #14, #46, #52, #53, #56, #58, #68, #70 a #79, #83, #84, #85, #88, #108 (base/decisoes.md).

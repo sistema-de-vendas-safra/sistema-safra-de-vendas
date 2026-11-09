@@ -1,22 +1,22 @@
 ---
 id: design-system
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
   junior: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: tom-de-voz
-    versao: 3
+    versao: 4
   - id: provas-e-conformidade
-    versao: 3
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Design system
@@ -69,6 +69,14 @@ Resumo para localizar a regra; o valor exato (cor, peso, medida) fica nos tokens
 - "SDR" e "closer" fora da comunicação de topo: o DS e a decisão do Otávio de 08/11/2026 coincidem (`tom-de-voz`).
 - Mockup não é prova: coerente com a regra de números ilustrativos (ver `provas-e-conformidade`).
 
+## Decidido, seja qual for o design
+
+Valem para qualquer design que for escolhido, sem depender da adoção do DS v1.0 (decisão do Otávio, 09/11/2026; base/decisoes.md, #114):
+
+- **Acessibilidade:** a meta é o nível AA da WCAG 2.2 (10.12). Coincide com a meta do DS v1.0, mas não depende dele.
+- **Fontes servidas junto com a página:** nenhuma ferramenta de terceiros que colha dado do visitante, nem as fontes do Google; as fontes vão junto com a página (10.7).
+- **Nada gira sozinho:** as telas do painel na página trocam só pelo toque (10.13).
+
 ---
 
 ## Conflitos registrados, sem resolver
@@ -82,7 +90,7 @@ Nenhum lado é escolhido aqui. Todos ficam **em conflito · bloqueado para entre
 | Cor dos botões | Botões laranja (Otávio, 03/11, landing, "Design system antigo") | O DS v1.0: a ação primária é a Menta e não há cor fora da paleta | conflito-08 |
 | Tipografia | Tipografia "cyberpunk" pedida pelo Júnior (landing; referência não encontrada) | O DS v1.0: só Geist | conflito-08 |
 | Nome da agência | ficha-de-fatos#nome-agencia, **em conflito** | O DS v1.0 escreve "Euclides Vieira e Júnior Neves formam a Triad" | lacuna-07 |
-| Proposta de valor | O DS v1.0 traz como proposta de valor o texto da #33 | Substituição proposta em #85, pendente | lacuna-02, conflito-03 |
+| Proposta de valor | O DS v1.0 traz como proposta de valor o texto da #33 | Substituição proposta em #85; base/promessa.md passou a decidido pelo Otávio em 09/11/2026 (#108), e o status da #85 e da #33 está em pergunta (prompts/11-fila-perguntas.md, 30.4) | lacuna-02, conflito-03 |
 
 ---
 
@@ -117,5 +125,5 @@ Decidir antes da etapa de design da landing (log.md).
 - Landing: 01-dossie/safra-landing.md ("Design system antigo").
 - Doc Mestre online, regra 9; F25 (call de 07/11).
 - log.md (pendência "Design").
-- Decisões #33, #45, #53, #56, #81, #85 (base/decisoes.md).
+- Decisões #33, #45, #53, #56, #81, #85, #108, #114 (base/decisoes.md).
 - Otávio, 08/11/2026: respostas 3, 4 e 5 às perguntas da etapa 3 e seção 2 de prompts/04-decisoes-de-08-11-e-lead-score.md.

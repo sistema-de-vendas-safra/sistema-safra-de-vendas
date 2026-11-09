@@ -1,17 +1,17 @@
 ---
 id: metodo
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
   otavio: 2026-11-03
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
-desatualizado: true
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
+desatualizado: false
 ---
 
 # Método · Sistema de Vendas Safra e Gestão de Leads por Safra

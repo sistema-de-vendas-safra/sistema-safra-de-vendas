@@ -1,6 +1,6 @@
 ---
 id: mecanismo
-versao: 1
+versao: 2
 status: aprovado
 aprovado_por:
   otavio: 2026-10-22
@@ -8,14 +8,14 @@ aprovado_por:
   euclides: 2026-10-27
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 4
   - id: decisoes
-    versao: 1
+    versao: 5
   - id: lacunas
-    versao: 2
+    versao: 6
   - id: metodo
-    versao: 1
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Mecanismo · Gestão Mensal de Leads, Big Idea e crença
@@ -23,6 +23,8 @@ desatualizado: true
 O problema que o Sistema de Vendas Safra resolve (a Gestão Mensal de Leads, em três camadas), a solução em cinco passos, a Big Idea aprovada, a analogia rúcula, morango e melancia e a crença que decide a compra. O sistema e as regras do método estão em `metodo`.
 
 **Status.** Aprovado: "Big Idea, mecanismo, oferta, entregáveis e bônus aprovados" pelo Júnior e pelo Euclides em 27/10/2026 (#48; CTX §11). A Big Idea foi aprovada pelo Otávio em 22/10/2026 (Big Idea final online). **Nem tudo o que está no documento online do mecanismo foi aprovado em #48:** a tabela abaixo diz, item por item, o que foi e o que não foi. O que não foi aprovado está marcado **não aprovado** onde aparece e não pode ir para entrega como aprovado.
+
+**Análise e demonstração (forma, 09/11/2026).** Com a #92, a Análise passa a ser o diagnóstico do quiz, e a conversa de venda com o Júnior é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; #107). A demonstração com os números do prospect, que o documento online chama de "versão rápida da Análise Estratégica" na call, continua nessa conversa (4.5, #114): muda só o nome do lugar onde ela acontece, e o que #48 aprovou não muda.
 
 **Como ler.** Texto aprovado entra literal, entre aspas. Fatos são citados pelo id do campo em `ficha-de-fatos`; decisões, pelo número de `decisoes` (#n); pendências, pelo id de `lacunas`.
 
@@ -48,7 +50,7 @@ Conferido nas fontes: Big Idea final online (pasta "Big Idea do Método Safra ·
 | Plano de prova e "o tamanho da promessa hoje" | **Não é objeto de aprovação:** é plano de trabalho; o tamanho da promessa ali se refere à promessa de 23/10 (#33), hoje pendente | Mecanismo único online; decisoes #33, #85 |
 | Implantação na copy (ordem de revelação) | Orientação do documento do mecanismo, **sem aprovação própria** registrada | Mecanismo único online |
 
-**Ressalva sobre a versão.** #48 é de 27/10. O Mecanismo único online é a v0.5, de 01/11/2026, posterior à aprovação, e se apresenta como "Revisão v0.5 para decisão do Júnior e do Euclides". A única mudança registrada da v0.5 é a das entregas: "01/11/2026 (v0.5): entregas renomeadas e reduzidas a 8 (a Mecanização da Safra sai da implementação e entra no GSAAS)". São os nomes e o número das entregas, decididos pelo Otávio (#56) e pelo Euclides (#52); o número está em ficha-de-fatos#numero-de-entregas, campo em conflito. O CTX trata o documento como aprovado ("Aprovado (#48); v0.5 de 01/11; frase filosófica a decidir", CTX §12). Nenhuma fonte registra a aprovação da v0.5 em si pelo Júnior e pelo Euclides.
+**Ressalva sobre a versão.** #48 é de 27/10. O Mecanismo único online é a v0.5, de 01/11/2026, posterior à aprovação, e se apresenta como "Revisão v0.5 para decisão do Júnior e do Euclides". A única mudança registrada da v0.5 é a das entregas: "01/11/2026 (v0.5): entregas renomeadas e reduzidas a 8 (a Mecanização da Safra sai da implementação e entra no GSAAS)". São os nomes e o número das entregas, decididos pelo Otávio (#56) e pelo Euclides (#52); o número está em ficha-de-fatos#numero-de-entregas, hoje decidido. O CTX trata o documento como aprovado ("Aprovado (#48); v0.5 de 01/11; frase filosófica a decidir", CTX §12). Nenhuma fonte registra a aprovação da v0.5 em si pelo Júnior e pelo Euclides.
 
 ---
 
@@ -192,7 +194,7 @@ Fonte: Mecanismo único online ("Mecanismo Único da Solução"). As regras do m
 
 Fonte: Mecanismo único online ("Crença central"), com o mesmo texto da Promessa central online ("A crença que decide a compra"). "O mecanismo é a explicação dessa crença: a Gestão Mensal de Leads é o motivo de o lead pago não ter decidido antes de o mês virar, e o Sistema de Vendas Safra é o sistema que respeita o tempo de cada lead." (Mecanismo único online). É "a Big Idea dita como convicção" e substitui a "One Belief" da v0.1 do mecanismo (Promessa central online).
 
-**Ressalva de status:** ver a tabela do início. A crença consta do documento do mecanismo dado por aprovado (#48), mas nasceu na promessa de 23/10 (#33, pendente-aprovacao), e nenhuma fonte registra uma aprovação própria dela. A promessa de 08/11 a mantém (#85, pendente).
+**Ressalva de status:** ver a tabela do início. A crença consta do documento do mecanismo dado por aprovado (#48), mas nasceu na promessa de 23/10 (#33, pendente-aprovacao), e nenhuma fonte registra uma aprovação própria dela. A promessa de 08/11 a mantém (#85; vale por decisão do Otávio, #108).
 
 ---
 
@@ -200,14 +202,14 @@ Fonte: Mecanismo único online ("Crença central"), com o mesmo texto da Promess
 
 Do Mecanismo único online ("Implantação na copy" e "Diagnóstico de estágio"). São orientações, não decisões numeradas.
 
-- **Estágio do mercado:** entre o 4 e o 5 de Schwartz (forte, F10). "Ele vai no headline, nomeado. No estágio 4, é o piso." Nomear não basta: a demonstração é a versão rápida da Análise Estratégica da última safra do prospect, na call.
+- **Estágio do mercado:** entre o 4 e o 5 de Schwartz (forte, F10). "Ele vai no headline, nomeado. No estágio 4, é o piso." Nomear não basta: a demonstração é a versão rápida da Análise Estratégica da última safra do prospect, na call (hoje a Call de Direcionamento, ficha-de-fatos#nome-call-de-venda; 4.5 e #107).
 - **Onde cada camada entra:** "O externo abre (headline e gancho: o que ele vê). O interno vira (o meio da VSL e a call: o que ele sente, com as falas dele). O filosófico fecha e vira bandeira." A frase do filosófico segue pendente (acima).
 - **Ordem de revelação (VSL e página):** o sintoma, na voz do comprador; as causas que ele já pagou para resolver; a Gestão Mensal de Leads, nomeada e mostrada no desenho; o custo, nas três camadas; o Sistema de Vendas Safra, nomeado antes de ser descrito; as etapas, com especificidade; a prova; o benefício e a medição de cada safra, sem promessa em contrato; a chamada com o mecanismo dentro.
 - **Teste do "sei, claro":** "'Você vai vender mais' não passa. 'Traga os números da sua última safra e a gente mostra onde ela quebrou' passa, porque o próprio prospect confere."
 - **Headlines para teste:** "rascunhos, não aprovados" (seis no documento). **Não aprovados.**
 
 **Cuidados de conformidade** (Mecanismo único online):
-- Na versão rápida da Análise Estratégica, pedir só números agregados por etapa, nunca a lista de leads (LGPD).
+- Na versão rápida da Análise Estratégica, feita na Call de Direcionamento, pedir só números agregados por etapa, nunca a lista de leads (LGPD).
 - "Nada de percentual de melhora em peça antes de caso comprovado (CONAR)."
 - "Nenhuma promessa em contrato (#39)": as metas por etapa são aprovadas pelo dono, nunca prometidas (ficha-de-fatos#garantia).
 
@@ -221,7 +223,7 @@ Do Mecanismo único online ("Implantação na copy" e "Diagnóstico de estágio"
 |---|---|---|---|
 | O relatório do mês mistura safras | Lógica | Existe | Nada |
 | Dá para ver em qual safra e etapa a venda quebra | Demonstração: painel do leilão, safra de julho (ficha-de-fatos#safra-de-julho) | Parcial | [PROVA REAL: print da safra de julho fechada (ficha-de-fatos#safra-de-julho), com números por etapa e autorização do Júnior] |
-| Funciona com os números do prospect | Demonstração ao vivo: a versão rápida da Análise Estratégica na call | Desenhada | Planilha e roteiro da versão rápida |
+| Funciona com os números do prospect | Demonstração ao vivo: a versão rápida da Análise Estratégica na Call de Direcionamento (4.5; #107) | Desenhada | Planilha e roteiro da versão rápida |
 | Há dinheiro parado em lead que não disse não | Demonstração: pré-qualificados de julho que não agendaram | Parcial | Confirmar com o Júnior os números de ficha-de-fatos#safra-de-julho (lacuna-24); [PROVA REAL: receita recuperada de leads dados como perdidos num cliente fundador] |
 | Funciona fora da operação do Júnior | Social: caso com nome e número | Não existe | [PROVA REAL: caso de cliente fundador ao fim de uma safra, com números por etapa e autorização] |
 | Não é invenção de guru | Autoridade externa: análise de coorte (F8) | Achado sem citação | Uma fonte publicável sobre análise de coorte |
@@ -241,7 +243,7 @@ O painel do leilão como prova pública está estacionado (#27).
 | Fonte do 95% | CTX §7; [PROVA REAL: fonte do 95%] |
 | Números finais da safra de julho (ficha-de-fatos#safra-de-julho) | lacuna-24, outros-12 |
 | Teste do nome Gestão Mensal de Leads e da frase "Perdido é quem disse não" nas entrevistas | lacuna-25 |
-| Quem conduz a versão rápida da Análise na call | ficha-de-fatos#analise-quem-conduz, **campo em conflito · bloqueado para entrega até a decisão** |
+| Quem conduz a demonstração na Call de Direcionamento | Resolvido: o condutor da Call está em ficha-de-fatos#quem-faz-a-reuniao (#107). O campo ficha-de-fatos#analise-quem-conduz, da Análise, continua em conflito (pergunta 30.6) |
 
 ---
 
@@ -252,4 +254,4 @@ O painel do leilão como prova pública está estacionado (#27).
 - Promessa central online: 03-documentos-online/Promessa central · Implementação Avançada do Sistema de Vendas Safra.md ("A crença que decide a compra").
 - One pager online: 03-documentos-online/One pager · Implementação Avançada do Sistema de Vendas Safra.md (só para a divergência da frase filosófica).
 - CTX §6, §7, §10, §11, §12 e Mapa de fontes: 02-arquivos-do-projeto/CONTEXTO-DO-PROJETO.md (v5.3).
-- Decisões #16, #22, #27, #33, #36, #39, #40, #41, #48, #52, #56, #85 (base/decisoes.md).
+- Decisões #16, #22, #27, #33, #36, #39, #40, #41, #48, #52, #56, #85, #92, #107 e #114 (4.5) (base/decisoes.md).

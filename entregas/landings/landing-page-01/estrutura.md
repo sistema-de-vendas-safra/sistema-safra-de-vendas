@@ -1,34 +1,34 @@
 ---
 id: landing-page-01-estrutura
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: landing-page-01-copy
-    versao: 3
-  - id: landing-page-01-briefing
-    versao: 3
-  - id: funil-01
-    versao: 2
-  - id: planta-do-banco
-    versao: 2
-  - id: provas-e-conformidade
-    versao: 3
-  - id: ficha-de-fatos
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: landing-page-01-briefing
+    versao: 4
+  - id: funil-01
+    versao: 3
+  - id: planta-do-banco
+    versao: 4
+  - id: provas-e-conformidade
+    versao: 4
+  - id: ficha-de-fatos
+    versao: 4
+  - id: lacunas
+    versao: 6
   - id: decisoes
-    versao: 3
+    versao: 5
   - id: regra-seguranca
-    versao: 1
+    versao: 3
   - id: design-system
-    versao: 3
+    versao: 4
   - id: persona
-    versao: 3
+    versao: 4
   - id: tom-de-voz
-    versao: 3
+    versao: 4
 desatualizado: true
 ---
 
@@ -36,29 +36,32 @@ desatualizado: true
 
 A estrutura da landing-page-01: a ordem das seções, a hierarquia de cada uma, a primeira tela do celular, os botões, o caminho até o quiz-01, os estados de carregamento e de erro e a acessibilidade. O texto é o de `landing-page-01-copy`; aqui ninguém escreve copy nova, só diz onde cada pedaço fica e o que ele faz.
 
-**Status.** Rascunho. Segue o status da copy e do briefing: a página existe por causa da #90, pendente do Júnior e do Euclides (conflito-06: a #66, das três portas, continua decidida até lá), e não vai ao ar antes do quiz-01 publicável (conflito-09) e da revisão de advogado (`provas-e-conformidade`).
+**Status.** Rascunho. Segue o status da copy e do briefing: a página existe por causa da #90, pendente do Júnior e do Euclides (conflito-06: a #66, das três portas, continua decidida até lá), e não vai ao ar antes do quiz-01, publicado e conferido. Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103).
 
-**Design bloqueado.** Nada aqui define cor, fonte, tamanho de letra, espaçamento, estilo nem componente visual do design system: tudo isso espera o conflito-08. Este documento fala só de ordem, hierarquia e comportamento.
+**Versão 4 (etapa 31, 09/11/2026).** As escolhas provisórias 10.1 a 10.16 foram aceitas pelo Otávio em 09/11/2026 (base/decisoes.md, #114; prompts/11-respostas.md), salvo a 10.4, que continua sem resposta, e a 10.14, que volta como pergunta porque a página passa a ter dois topos (#108). Entram também os dois topos (#108), a Call de Direcionamento na seção 08 (#107), o registro da visita e do início do quiz (18.5, 10.6), o nome da entrega no catálogo (10.15) e as fontes servidas junto com a página (10.7). A página (as duas variantes) muda na etapa 34.
 
-**Documentos desatualizados.** Esta estrutura se apoia em documentos que seguem marcados desatualizados por cadeia da pergunta 4.5 (landing-page-01-copy, landing-page-01-briefing, funil-01, planta-do-banco, provas-e-conformidade, design-system e tom-de-voz; regra provisória 11.1) e precisa ser revista depois da 4.5.
+**Design bloqueado.** Nada aqui define cor, fonte, tamanho de letra, espaçamento, estilo nem componente visual do design system: tudo isso espera o conflito-08. Este documento fala só de ordem, hierarquia e comportamento. Seja qual for a fonte escolhida, o arquivo dela é servido junto com a página, sem pedido ao Google nem a outro terceiro (10.7, aceita em 09/11/2026, #114).
+
+**Documentos desatualizados.** A 4.5 foi respondida (#114) e as bases da base, o funil-01 e a planta saíram da marca na etapa 31. Esta estrutura continua marcada porque se apoia em `landing-page-01-copy` e `landing-page-01-briefing`, marcados pela cadeia da `pauta-aprovacao-01`, que depende da página do quiz-01 e das variantes, que mudam nas etapas 33 e 34 (regra de versionamento v3, Cascata).
 
 **Como ler.**
 - Os nomes das seções e os rótulos (Título, Sobretítulo, Botão...) são os da copy.
 - Fatos só pelo campo da ficha (`ficha-de-fatos#campo`); `:parte` como em `landing-page-01-copy`, "Como ler" (9.13).
 - **Oculta:** existe no rascunho e não vai ao ar; não ocupa lugar na página nem na ordem de leitura.
 - **Primeira tela:** o que aparece no celular ao abrir a página, sem rolar.
-- Escolhas provisórias desta etapa: perguntas 10.1 a 10.16 (prompts/05-fila-perguntas.md).
+- Escolhas provisórias desta etapa: perguntas 10.1 a 10.16 (prompts/05-fila-perguntas.md), aceitas em 09/11/2026 salvo a 10.4 (aberta) e a 10.14 (de volta como pergunta 31.7). As da versão 4, em prompts/11-fila-perguntas.md, seção "Etapa 31".
 
 ---
 
 ## 1. Ordem das seções
 
-A ordem das seções é a da copy (10.1). Dentro das seções, três mudanças: na 09, a frase "Ficou alguma dúvida?" e o bloco de chamada vão para depois das perguntas (10.2); na 02, a nota de rodapé de Deming vai para o fim da seção, e não logo abaixo do título (10.16); no hero, no celular, o subtítulo pode ir para baixo do botão quando o botão não couber na primeira tela (10.16). As ocultas ficam marcadas no lugar onde voltariam, para não precisar refazer a ordem quando forem liberadas.
+A ordem das seções é a da copy (10.1, aceita em 09/11/2026, #114). Dentro das seções, três mudanças (10.2 e 10.16, aceitas em 09/11/2026, #114): na 09, a frase "Ficou alguma dúvida?" e o bloco de chamada vão para depois das perguntas (10.2); na 02, a nota de rodapé de Deming vai para o fim da seção, e não logo abaixo do título (10.16); no hero, no celular, o subtítulo pode ir para baixo do botão quando o botão não couber na primeira tela (10.16). As ocultas ficam marcadas no lugar onde voltariam, para não precisar refazer a ordem quando forem liberadas.
 
 | # | Seção | Vai ao ar? | Por quê, se oculta |
 |---|---|---|---|
 | 1 | Cabeçalho fixo | Sim | |
-| 2 | 01 · Hero (versão B, hero único provisório) | Sim | A versão A fica oculta: título e subtítulo bloqueados pela #85 (8.3; 9.1) |
+| 2 | 01 · Hero (versão B) | Sim | A copy tem dois topos, os do projeto anterior (#108). Enquanto não houver teste ligado (10.14, de volta como pergunta 31.7), vai ao ar só a versão B, como hoje nas variantes |
+| 2b | 01 · Hero (versão A, a promessa para o público frio) | Oculta, até a 10.14 | Escrita na copy (#108); sem marca de versão nos eventos, os dois topos se misturariam na medição (pergunta 31.7) |
 | 2a | Contador "Total gerado" (dentro do hero) | Oculta | ficha-de-fatos#total-dos-dois em conflito e sem comprovante (conflito-04, conflito-05) |
 | 3 | Faixa de bastidores | Oculta | Nomes de terceiros sem autorização nem comprovante (conflito-05; Código Civil, art. 18) |
 | 4 | 02 · Sistema de Vendas | Sim | |
@@ -87,18 +90,18 @@ Regra que vale para toda seção: o **sobretítulo** é lido antes do título e 
 | Seção | Título | Apoio, na ordem | Ação |
 |---|---|---|---|
 | Cabeçalho fixo | Nenhum | Logo, como placeholder marcado (ficha-de-fatos#nome-agencia) | Botão secundário "Responder as perguntas" (ver "Botões") |
-| 01 · Hero | Título, as duas linhas, como um título só; o destaque de "nunca disseram não" é de ênfase, não de hierarquia | Antes do título: o qualificador (placeholder marcado {{BLOQUEADO: ficha-de-fatos#criterio-de-qualificacao}}). Depois: o subtítulo (placeholder marcado), que no celular pode ir para baixo do botão (10.16) | Bloco de chamada |
+| 01 · Hero | Versão B: título, as duas linhas, como um título só; o destaque de "nunca disseram não" é de ênfase, não de hierarquia. Versão A (oculta): o título da promessa | Antes do título: o qualificador (placeholder marcado {{BLOQUEADO: ficha-de-fatos#criterio-de-qualificacao}}). Depois: o subtítulo (com o trecho {{BLOQUEADO: #16}} no B), que no celular pode ir para baixo do botão (10.16) | Bloco de chamada |
 | 02 · Sistema de Vendas | Título de Deming, com o asterisco | Sobretítulo antes. Depois: quadro do "não é" (a primeira linha introduz, as seis negações em lista); texto em duas colunas (no celular, uma coluna, na ordem da copy); imagem 1 e imagem 2, cada uma com rótulo e legenda; diagrama, com título próprio; comparação em barras, com título próprio, selo "Exemplo" e rodapé; cartões, com título próprio; nota de rodapé de Deming, no fim da seção, logo antes do bloco de chamada, ligada ao asterisco do título (10.16) | Bloco de chamada |
 | 03 · Big Idea | "Você já pagou pelas suas próximas vendas." | Sobretítulo antes; subtítulo; texto; quadro da horta (rótulo, título próprio, chave, os dois lados com o placar); a metáfora, com a foto e o selo; frase de impacto | Bloco de chamada; depois dele, a ponte para a 03b, como última linha da seção |
 | 03b · O que é | "Sete peças ligadas. Um só Sistema de Vendas." | Sobretítulo antes; texto; anel com o centro; cartão do método; uma linha por peça, em lista; a última linha, que aponta para a 05 | Bloco de chamada |
 | 05 · Como funciona | O título da seção | Sobretítulo antes; frase de impacto; mensagem da instalação; filtro de peças; linha do tempo com os três marcos, as três fases e o aviso; as entregas, agrupadas pelos quatro rótulos de fase (cada rótulo é um subtítulo, cada entrega um item); anel de volta; "Do começo ao fim", com três itens | Filtro (toque, não leva a lugar nenhum); bloco de chamada |
 | 06 · Painel de Safras | "Cada lead no seu tempo. Cada etapa na sua tela." | Sobretítulo e rótulo antes; subtítulo; quando; duas abas, cada uma com a frase de abertura e cinco itens; janela do painel, com o selo "Dados de exemplo" sempre junto | Troca de aba (toque, não leva a lugar nenhum); bloco de chamada |
 | 07 · Para quem é | "Antes de responder, veja se o sistema é para o seu momento." | Sobretítulo antes; lista "É para você se"; lista "Não é para você se"; fecho | Bloco de chamada |
-| 08 · O destino dos botões | O título da seção | Sobretítulo (placeholder marcado) e selo antes; três passos, numerados, com a foto do passo 3 (placeholder marcado [PROVA REAL]) junto do passo; cartão do que você leva (rótulo, título do cartão, selo "Exemplo", itens 1 e 2, fecho); cartão da oferta, com a linha "Sem custo na promoção de lançamento." logo abaixo do botão | Botão do cartão da oferta, o único que leva ao quiz-01, com a linha abaixo dele |
+| 08 · O destino dos botões | O título da seção | Sobretítulo (placeholder marcado) e selo antes; três passos, numerados, o terceiro com a Call de Direcionamento (nome, duração e condutor pela ficha; #107) e a foto do passo 3 (placeholder marcado [PROVA REAL]) junto do passo; cartão do que você leva (rótulo, título do cartão, selo "Exemplo", itens 1 e 2, fecho); cartão da oferta, com a linha "Sem custo na promoção de lançamento." logo abaixo do botão | Botão do cartão da oferta, o único que leva ao quiz-01, com a linha abaixo dele |
 | 09 · Perguntas frequentes | "O que todo dono pergunta antes de assinar." | Sobretítulo antes; números de destaque; as perguntas, cada uma um subtítulo com a resposta embaixo; depois delas, a frase "Ficou alguma dúvida?" (10.2) | Abrir e fechar cada pergunta; bloco de chamada, no fim |
 | Rodapé | Nenhum | Quem assina, como placeholder marcado | Nenhuma |
 
-**Bloco de chamada.** Sempre a mesma ordem: o botão, a linha "Sem custo na promoção de lançamento." logo abaixo e, só quando liberado, o contador de escassez abaixo da linha. O botão é a ação; a linha e o contador são apoio do botão. **O bloco de chamada do hero nunca tem o contador**, nem quando ele estiver liberado: o contador só pode aparecer nos blocos de chamada abaixo da primeira tela (02, 03, 03b, 05, 06, 07, 09) e no cartão da oferta da 08 (10.11).
+**Bloco de chamada.** Sempre a mesma ordem: o botão, a linha "Sem custo na promoção de lançamento." logo abaixo e, só quando liberado, o contador de escassez abaixo da linha. O botão é a ação; a linha e o contador são apoio do botão. **O bloco de chamada do hero nunca tem o contador**, nem quando ele estiver liberado: o contador só pode aparecer nos blocos de chamada abaixo da primeira tela (02, 03, 03b, 05, 06, 07, 09) e no cartão da oferta da 08 (10.11; 5.7 com 10.11, aceita em 09/11/2026, #114: o contador nunca aparece no topo da página).
 
 ---
 
@@ -106,10 +109,10 @@ Regra que vale para toda seção: o **sobretítulo** é lido antes do título e 
 
 O que aparece ao abrir a página no celular, sem rolar, de cima para baixo:
 
-1. O cabeçalho fixo, com o logo (placeholder marcado). O botão do cabeçalho **não aparece** nesta tela (10.3).
+1. O cabeçalho fixo, com o logo (placeholder marcado). O botão do cabeçalho **não aparece** nesta tela (10.3, aceita em 09/11/2026, #114).
 2. O qualificador do hero (placeholder marcado {{BLOQUEADO: ficha-de-fatos#criterio-de-qualificacao}}; enquanto bloqueado, não vai ao ar).
-3. O título do hero, as duas linhas.
-4. O subtítulo do hero (placeholder marcado; enquanto bloqueado, não vai ao ar).
+3. O título do hero B, as duas linhas.
+4. O subtítulo do hero B (#108), sem o trecho {{BLOQUEADO: #16}}, que não vai ao ar enquanto bloqueado.
 5. O botão do bloco de chamada e a linha abaixo dele, sem o contador de escassez (10.11).
 
 Regras da primeira tela:
@@ -145,24 +148,24 @@ Regras dos botões:
 
 ## 5. Caminho até o quiz
 
-**Cliques.** De qualquer bloco de chamada: dois toques (o botão leva à 08; o botão da 08 abre o quiz-01). Da própria 08: um toque. A 8.5 pediu para conferir se o caminho fica longo no celular: o salto até a 08 não obriga a rolar a página inteira, e a 08 é a seção que diz o que o quiz entrega e que nem todos recebem a conversa (8.10). Fica assim no rascunho (10.1).
+**Cliques.** De qualquer bloco de chamada: dois toques (o botão leva à 08; o botão da 08 abre o quiz-01). Da própria 08: um toque. O salto até a 08 não obriga a rolar a página inteira, e a 08 é a seção que diz o que o quiz entrega e que nem todos chegam à Call de Direcionamento (8.10). Fica assim, medindo visita e início do quiz por versão antes de mexer (8.5 com 10.1, aceita em 09/11/2026, #114).
 
 **O que a página faz, passo a passo** (`funil-01`, "Caminho do dado", passo 1; `planta-do-banco`, "Gaveta eventos"):
 
-1. **Ao abrir.** A página lê as duas etiquetas do link, utm_source e utm_campaign (`funil-01`, "Origens e links"), e cria um código de sessão. O código fica só na memória da aba: nada é guardado no navegador (nenhum cookie, nenhum armazenamento local) e ele some quando a aba fecha (6.2). Recarregar a página cria um código novo.
-2. **Registra a visita.** A página manda ao garçom o evento visita, com as cinco etiquetas obrigatórias (funil, entrega, versão da entrega, utm_source, utm_campaign) e o código de sessão. [PENDENTE: 10.15] O id e a versão da entrega que vão no evento não estão definidos: nenhum documento tem o id landing-page-01, e a planta exige que o par entrega e versão exista no catálogo (`planta-do-banco`, 6.6); sem isso, a visita não entra. Não manda nenhum dado pessoal, porque não tem nenhum. Não tem chave: quem tem a chave é o garçom (`regra-seguranca`, regras 2 e 3).
-3. **Botão da 08.** Abre o quiz-01 na mesma aba, com utm_source, utm_campaign e o código de sessão no próprio endereço do quiz (10.5). É assim que a etiqueta de origem chega ao quiz sem nada ficar guardado no navegador.
-4. **Início do quiz.** Quem registra o evento inicio_quiz é o quiz-01, quando abre, com o mesmo código de sessão; a landing não registra esse evento no clique (10.6). A ligação entre a visita, a versão da landing e o início do quiz é feita pelo código de sessão; no fim do quiz, o banco liga tudo à pessoa (6.2).
+1. **Ao abrir.** A página lê as duas etiquetas do link, utm_source e utm_campaign (`funil-01`, "Origens e links"), e cria um código de sessão no formato que o banco aceita (`planta-do-banco`; 18.5, aceita em 09/11/2026, #114). O código fica só na memória da aba: nada é guardado no navegador (nenhum cookie, nenhum armazenamento local) e ele some quando a aba fecha (6.2, aceita em 09/11/2026, #114: o erro de contar duas visitas da mesma pessoa é pequeno e não pede consentimento extra). Recarregar a página cria um código novo.
+2. **Registra a visita.** A página manda ao garçom o evento visita, com as cinco etiquetas obrigatórias (funil, entrega, versão da entrega, utm_source, utm_campaign) e o código de sessão (18.5, #114). A entrega é landing-page-01, o nome da pasta da entrega, com a versão da página publicada, que sobe a cada publicação e declara as versões da copy e da estrutura que usou (10.15 com 14.3 e 17.7, aceita em 09/11/2026, #114); o par precisa existir no catálogo de entregas (`planta-do-banco`), e a linha entra junto com as etapas 32 e 34. Não manda nenhum dado pessoal, porque não tem nenhum. Não tem chave: quem tem a chave é o garçom (`regra-seguranca`, regras 2 e 3).
+3. **Botão da 08.** Abre o quiz-01 na mesma aba, com utm_source, utm_campaign e o código de sessão no próprio endereço do quiz (10.5, aceita em 09/11/2026, #114). É assim que a etiqueta de origem chega ao quiz sem nada ficar guardado no navegador.
+4. **Início do quiz.** Quem registra o evento inicio_quiz é o quiz-01, quando abre, com o mesmo código de sessão; a landing não registra esse evento no clique (10.6, aceita em 09/11/2026, #114). A ligação entre a visita, a versão da landing e o início do quiz é feita pelo código de sessão; no fim do quiz, o banco liga tudo à pessoa (6.2).
 
-**Sem coletar dado na landing.** A página não tem formulário nem campo, não pede contato, não usa ferramenta de terceiros que colha dado do visitante (10.7) e não guarda nada no navegador. Quem pede o contato, com consentimento, é o quiz-01 (`funil-01`; `provas-e-conformidade`, "LGPD"; 8.14).
+**Sem coletar dado na landing.** A página não tem formulário nem campo, não pede contato, não usa ferramenta de terceiros que colha dado do visitante, nem as fontes do Google (10.7, aceita em 09/11/2026, #114), e não guarda nada no navegador. Quem pede o contato, com consentimento, é o quiz-01 (`funil-01`; `provas-e-conformidade`, "LGPD"; 8.14).
 
 **Se a etiqueta faltar ou vier fora da lista.**
 - A página funciona igual: o conteúdo, os botões e o caminho até o quiz não dependem da etiqueta.
 - A página não inventa origem nem põe uma origem padrão. Manda o evento com utm_source e utm_campaign vazios, e passa ao quiz o que veio (ou nada). Quem confere a lista é o garçom (`funil-01`, passo 2), e a etiqueta fora da lista entra como origem em branco (5.5; `planta-do-banco`, utm_source).
-- A planta diz também que evento sem alguma das cinco etiquetas não entra. A leitura deste rascunho é que a etiqueta vai presente e vazia, e o evento entra com a origem em branco (10.8).
+- Evento sem alguma das cinco etiquetas não entra; etiqueta presente e vazia conta como etiqueta, e a visita sem etiqueta entra com a origem vazia (10.8, aceita em 09/11/2026, #114; escrito na `planta-do-banco`).
 - Se a etiqueta vier com uma das origens da lista em maiúsculas ou com acento, a página não corrige: passa como veio, e o garçom decide (10.8).
 
-**Sem JavaScript.** O botão da 08 é um link de verdade para o endereço do quiz-01: sem o programa da página, ele ainda abre o quiz, só que sem as etiquetas e sem o código de sessão (a visita não é registrada e a origem fica em branco). Os botões que levam à 08 funcionam sem o programa, porque são links para a própria página (10.9).
+**Sem JavaScript.** O botão da 08 é um link de verdade para o endereço do quiz-01: sem o programa da página, ele ainda abre o quiz, só que sem as etiquetas e sem o código de sessão (a visita não é registrada e a origem fica em branco). Os botões que levam à 08 funcionam sem o programa, porque são links para a própria página (10.9, aceita em 09/11/2026, #114: perder a origem de poucos é melhor que perder o visitante).
 
 **Endereços.** O endereço da landing e o do quiz-01 não estão decididos (`funil-01`, "Origens e links"); no rascunho são placeholders marcados.
 
@@ -177,8 +180,8 @@ Regra geral: **o texto chega primeiro e funciona sozinho.** Nenhuma informação
 | Página | O texto e os botões aparecem antes das imagens. O lugar de cada imagem fica reservado na proporção dela, para o texto não pular quando a imagem chegar | Se o programa da página não carregar, a página continua legível e os botões continuam levando à 08 e ao quiz (ver "Sem JavaScript"). Os controles abrem no estado que mostra tudo (ver "Acessibilidade") |
 | Imagens (imagem 1 e 2 da 02, diagrama, barras, horta, foto da metáfora, janela do painel, cartão do relatório, foto do passo 3) | As imagens abaixo da primeira tela só carregam perto de entrar na tela | Fica o texto alternativo, e o rótulo, a legenda e o selo continuam à vista, porque são texto da página e não da imagem. O diagrama, as barras, a horta, o painel e o cartão do relatório existem também como texto (ver "Textos alternativos"), então nada se perde |
 | Vídeo | Não há vídeo (8.6) | Não se aplica |
-| Registro da visita no garçom | A página não espera o garçom para nada: mostra tudo e libera os botões antes da resposta | Se o garçom estiver fora do ar ou demorar: a visita se perde, sem aviso ao visitante, sem nova tentativa guardada no navegador e sem nenhuma mudança na página. A perda aparece só na contagem de visitas (10.10) |
-| Ida ao quiz | O toque no botão da 08 abre o endereço do quiz; a página não faz nada antes de abrir (não espera o garçom, não grava nada) | Se o quiz não abrir, quem mostra o erro é o quiz-01 (o estado dele é do quiz). A landing não tem como saber, por isso não vai ao ar sem o quiz-01 publicado e conferido (conflito-09). Voltar do quiz traz a landing de novo, com um código de sessão novo se a aba tiver recarregado |
+| Registro da visita no garçom | A página não espera o garçom para nada: mostra tudo e libera os botões antes da resposta | Se o garçom estiver fora do ar ou demorar: a visita se perde, sem aviso ao visitante, sem nova tentativa guardada no navegador e sem nenhuma mudança na página. A perda aparece só na diferença entre visitas e inícios do quiz, que é acompanhada (10.10, aceita em 09/11/2026, #114) |
+| Ida ao quiz | O toque no botão da 08 abre o endereço do quiz; a página não faz nada antes de abrir (não espera o garçom, não grava nada) | Se o quiz não abrir, quem mostra o erro é o quiz-01 (o estado dele é do quiz). A landing não tem como saber, por isso não vai ao ar sem o quiz-01 publicado e conferido. Voltar do quiz traz a landing de novo, com um código de sessão novo se a aba tiver recarregado |
 | Contador de escassez | Não aparece enquanto a contagem não chega | Não aparece (ver abaixo) |
 
 ### Contador de escassez
@@ -186,8 +189,8 @@ Regra geral: **o texto chega primeiro e funciona sozinho.** Nenhuma informação
 Oculto por regra. Só aparece quando **todas** estas condições valem ao mesmo tempo:
 
 1. A contagem real das análises gratuitas usadas passou do limite de ficha-de-fatos#barra-de-resgates (a parte :limite; #93).
-2. A regra do que conta como análise usada está decidida (5.7). Até lá, o contador não vai ao ar (`planta-do-banco`, "Contagem das análises gratuitas"; 6.7).
-3. A contagem chegou, do banco, pela leitura própria do contador (`planta-do-banco`: a chave que lê só esse número, nunca a do garçom e nunca direto do navegador ao banco), antes de o bloco ser mostrado.
+2. A regra do que conta como análise usada: decidida em 09/11/2026, uma por pessoa que recebeu o diagnóstico, sem recontar quem refaz (5.7 com 6.7 e 10.11, #114; `planta-do-banco`, "Contagem das análises gratuitas").
+3. A contagem chegou, do banco, pela leitura própria do contador (`planta-do-banco`: a chave que lê só esse número, nunca a do garçom e nunca direto do navegador ao banco; ela nasce com o seu papel numa versão nova do banco, 6.6, #114), antes de o bloco ser mostrado.
 4. O bloco é um dos de baixo: nunca o do hero nem nada da primeira tela (10.11).
 
 **Na dúvida, não mostrar.** Se a contagem falhar, demorar, vier vazia, vier com valor que não faz sentido (negativo, ou maior que ficha-de-fatos#analises-gratuitas) ou se qualquer condição não estiver clara, o contador não aparece naquela visita. Ele não deixa lugar vazio, não mostra "carregando" e não entra depois que a pessoa já está lendo, para nada pular na tela (10.11). Nunca há número de exemplo, porcentagem ou barra no lugar (#93), nem contagem regressiva (`landing-page-01-copy`, seção 08, Notas; `tom-de-voz`, "Outras alegações vetadas").
@@ -198,7 +201,7 @@ O contador "Total gerado" do hero é outra coisa e continua oculto em qualquer c
 
 ## 7. Acessibilidade
 
-**Meta.** WCAG 2.2, nível AA, como mínimo (10.12). Os critérios abaixo não dependem de cor nem de estilo e valem antes do design.
+**Meta.** WCAG 2.2, nível AA, como mínimo, seja qual for o design escolhido (10.12, aceita em 09/11/2026, #114). Os critérios abaixo não dependem de cor nem de estilo e valem antes do design.
 
 **Ordem de leitura.** A ordem do código é a ordem da tabela de "Ordem das seções", sem as ocultas, com as três mudanças internas ditas lá (10.2, 10.16), e é sempre a mesma em que a pessoa vê a página no celular: quando o subtítulo do hero vai para baixo do botão, ele vai também no código. Dentro de cada seção, a ordem é a da coluna "Apoio" da hierarquia. O texto em duas colunas da 02 e os dois lados da horta são lidos na ordem da copy (primeiro a ação isolada ou a Gestão Mensal, depois o sistema). O cabeçalho fixo vem primeiro no código, e um link "pular para o conteúdo" leva direto ao título do hero.
 
@@ -238,7 +241,7 @@ Imagem que só enfeita leva texto alternativo vazio, para o leitor de tela pular
 **Controles que mudam o que se vê.**
 - Quadro da horta (03): abre no lado da Gestão Mensal de Leads (sugestão do wireframe; 10.9); a chave diz em texto qual lado está à vista e é anunciada como chave de duas posições; sem o programa da página, os dois lados aparecem um depois do outro, a Gestão Mensal primeiro.
 - Filtro de peças (05): diz qual peça está escolhida e quantas entregas aparecem; "Todas" é o começo; sem o programa, todas as entregas aparecem.
-- Abas do painel (06): anunciadas como abas, trocadas só pelo toque ou pelo teclado. Não giram sozinhas (10.13); sem o programa, as duas abas aparecem uma depois da outra.
+- Abas do painel (06): anunciadas como abas, trocadas só pelo toque ou pelo teclado. Não giram sozinhas (10.13, aceita em 09/11/2026, #114); sem o programa, as duas abas aparecem uma depois da outra.
 - Perguntas frequentes (09): abrem todas fechadas, e uma aberta por vez (sugestão do wireframe; 10.9); cada pergunta diz se está aberta ou fechada; sem o programa, todas aparecem abertas.
 
 **Movimento reduzido.** Quando o aparelho pede movimento reduzido: nenhuma animação de entrada, nenhuma rolagem animada, a troca da horta e das abas é imediata, e a seção 02 fica estática (`landing-page-01-briefing`, seção 3.2, "Sugestões do wireframe"). Mesmo sem esse pedido, nada pisca e nada se mexe sozinho por mais de alguns segundos sem um jeito de parar (critério 2.2.2).
@@ -259,8 +262,8 @@ Fica registrado só para a etapa não ter de ser refeita do zero: o vídeo não 
 
 ## 9. O que esta estrutura não decide
 
-- O teste A/B do hero: a versão A está bloqueada (#85). Quando voltar, cada versão precisa de uma marca própria nos eventos; hoje a planta separa as versões pela versão da entrega (versao_entrega), e o jeito de marcar a variante do teste não está escrito (10.14).
-- A meta da landing (8.1): a página mede visita e início do quiz por versão, sem meta e sem conclusão abaixo da amostra mínima.
+- O teste entre os dois topos: com a #108, a copy tem o Hero A e o Hero B. Cada topo precisa de uma marca própria nos eventos; hoje a planta separa as versões pela versão da entrega (versao_entrega), e o jeito de marcar o topo não está escrito. A 10.14 volta como pergunta (31.7), e nenhum teste é ligado antes da resposta (#108).
+- A meta da landing: sem meta até a amostra mínima, cujo tamanho também precisa ser decidido (8.1, aceita em 09/11/2026, #114); a página mede visita e início do quiz por versão, sem conclusão abaixo da amostra mínima.
 - O endereço da landing e o do quiz-01 (`funil-01`).
 - Todo o visual (conflito-08).
 
@@ -277,3 +280,4 @@ Fica registrado só para a etapa não ter de ser refeita do zero: o vídeo não 
 - base/persona.md (v2, desatualizada): lida para saber em que aparelho o dono lê; não registra, e a prioridade do celular é escolha provisória (10.1).
 - Wireframe: fontes/acervo-2026-11-08/safra-acervo/01-dossie/safra-landing.md, Parte 2, "UX" (só leitura).
 - prompts/05-fila-perguntas.md: 5.5, 5.7, 6.2, 6.6, 6.7, 8.1, 8.3, 8.5, 8.6, 8.7, 8.9, 8.10, 8.14, 9.1, 9.11, 9.13 e 10.1 a 10.16.
+- Versão 4 (etapa 31): prompts/11-decisoes-de-09-11.md e prompts/11-respostas.md; base/decisoes.md (v5), #103, #107, #108 e #114; prompts/07-fila-perguntas.md (18.5); landing-page-01-copy (v4), landing-page-01-briefing (v4), dados/planta/planta.md (v4).

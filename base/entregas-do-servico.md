@@ -1,19 +1,19 @@
 ---
 id: entregas-do-servico
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-01
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: produto
-    versao: 3
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Entregas do serviço
@@ -40,7 +40,7 @@ As entregas da IASV Safra: o nome oficial, o que cada uma é, a descrição da h
 - **Está pronta quando:** "Foi apresentada ao dono, que aprovou as metas de cada etapa".
 - **Quem faz:** "O Júnior, com os dados do cliente".
 - **Decisões:** #56 (nome), #72 (semana e relógio a partir da primeira call).
-- **Atenção:** a entrega 1 não é a Análise da porta de entrada. A da porta, desde a #92, é o diagnóstico do quiz (ficha-de-fatos#analise-conteudo; a Ficha do Serviço online ainda a descreve como a versão da call); a completa, "com documento e painel, é a entrega 1" (Ficha do Serviço online, "Porta de entrada"). O nome público da Análise da porta está em ficha-de-fatos#analise-nome-publico, **campo em conflito · bloqueado para entrega até a decisão**. Nome antigo: Leitura das Safras (CTX §13).
+- **Atenção:** a entrega 1 não é a Análise da porta de entrada. A da porta, desde a #92, é o diagnóstico do quiz (ficha-de-fatos#analise-conteudo; a Ficha do Serviço online ainda a descreve como a versão da call); a completa, "com documento e painel, é a entrega 1" (Ficha do Serviço online, "Porta de entrada"). O nome público da Análise da porta está em ficha-de-fatos#analise-nome-publico, **campo em conflito · bloqueado para entrega até a decisão**. A entrega 1 também não é a conversa de venda: essa é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), onde fica a demonstração com os números do cliente antes da compra (4.5, #114; #107). Nome antigo: Leitura das Safras (CTX §13).
 
 ## 2. Implementação da Infraestrutura
 
@@ -151,4 +151,4 @@ Nas etapas do serviço (`produto`), as entregas se agrupam assim: a entrega 1 é
 - DS: fontes/design-system-v1.0/pagina-documentacao.html ("Implementação em 8 entregas").
 - F25: 02-arquivos-do-projeto/claude/FONTE-call-decisao-07-11.md (seções 1, 2 e 6).
 - CTX §3 ("As 8 entregas"), §6, §8, §9, §13: 02-arquivos-do-projeto/CONTEXTO-DO-PROJETO.md (v5.3).
-- Decisões #14, #26, #39, #48, #52, #53, #56, #58, #70 a #79, #83, #84, #88 (base/decisoes.md).
+- Decisões #14, #26, #39, #48, #52, #53, #56, #58, #70 a #79, #83, #84, #88, #107, #114 (base/decisoes.md).

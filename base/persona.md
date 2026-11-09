@@ -1,17 +1,17 @@
 ---
 id: persona
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
-desatualizado: true
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
+desatualizado: false
 ---
 
 # Persona · Rafa, o Dono-Closer
@@ -187,7 +187,7 @@ Da F2 ("Temas que ressoam"). "Os quatro primeiros têm voz de comprador em todos
 | 2 | Medido por venda, não por alcance | Alta | "Contratar e reportar em reunião realizada, fechamento e receita. Traduzir CAC como 'quanto custa cada venda'" | A parte de contratar por métrica foi superada por #39: o contrato traz só o escopo. Reportar fica no Relatório de Produtividade, sem meta prometida |
 | 3 | Sênior do começo ao fim | Alta | "Nome, agenda e cadência do sênior escritos no contrato" | Recomendação da pesquisa. O contrato segue #39 (lacuna-10); a presença do Júnior e do Euclides que a promessa de 08/11 anuncia está pendente (#85) |
 | 4 | Sem letra miúda | Média | "Lista de pré-requisitos antes de assinar; acessos sempre no nome do cliente; saída sem multa" | Pré-requisitos em ficha-de-fatos#insumo-do-cliente; "Sem letra miúda" como frase é gasta (F10) |
-| 5 | Decidir sem medo de outra furada | Média | "Reduzir a ansiedade em vez de aumentar a urgência: diagnóstico com os números dele, zero pressão de upsell" | A Análise antes da compra: com a #92, é o diagnóstico do quiz, com gratuidade e valor em ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analise-valor; o nome público segue em conflito (conflito-02) |
+| 5 | Decidir sem medo de outra furada | Média | "Reduzir a ansiedade em vez de aumentar a urgência: diagnóstico com os números dele, zero pressão de upsell" | A Análise antes da compra: com a #92, é o diagnóstico do quiz, com gratuidade e valor em ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analise-valor; o nome público segue em conflito (conflito-02). A demonstração com os números do cliente fica na Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; 4.5, #114; #107) |
 | 6 | Caixa previsível, sem montanha-russa | Baixa a média | "Mostrar onde o funil vaza em reais, com a conta de comparecimento e fechamento" | "Previsibilidade" é frase gasta, só com número ao lado (F10) |
 | 7 | A empresa vendendo sem ele | Baixa | "Testar em anúncio antes de pôr na headline" | O obstáculo "Eu sou o único que fecha venda." fica "não resolvido de propósito" (#20) |
 
@@ -283,4 +283,4 @@ As perguntas de cada lacuna estão na tabela "Lacunas de pesquisa" da F3. A Ofer
 - Dossiê: 01-dossie/safra-dossie.md (§2 e §7).
 - Oferta online: 03-documentos-online/Oferta · Implementação Avançada do Sistema de Vendas Safra.md ("Sem garantia em contrato"), só para o critério 3.
 - F10: 03-documentos-online/Concorrência de Júnior Neves no nicho de vendas.md ("O que já está gasto"), para os termos gastos.
-- Decisões #16, #20, #25, #26, #39, #44, #53, #85, #91 (base/decisoes.md).
+- Decisões #16, #20, #25, #26, #39, #44, #53, #85, #91, #107, #114 (base/decisoes.md).

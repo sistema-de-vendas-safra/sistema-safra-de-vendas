@@ -1,38 +1,38 @@
 ---
 id: provas-e-conformidade
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: mecanismo
-    versao: 1
+    versao: 2
   - id: promessa
-    versao: 3
+    versao: 4
   - id: oferta
-    versao: 1
+    versao: 2
   - id: persona
-    versao: 3
+    versao: 4
   - id: tom-de-voz
-    versao: 3
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Provas e conformidade
 
 O que existe de prova, o que falta provar (a lista [PROVA REAL]), as regras de CDC, CONAR, LGPD e Código Civil que valem para qualquer peça, e as regras jurídicas do funil. A landing e o quiz dependem deste documento o tempo todo (plano aprovado, prompts/02-plano-da-base-resposta.md, parte 1).
 
-**Status.** Decidido pelo Otávio (08/11/2026, pela aprovação do plano). As regras vêm do CTX §7 e §8, das Regras do funil do Doc Mestre online, das regras de conformidade da landing e da decisão #91. Decidido quer dizer que as regras valem; não quer dizer que as provas existem. Nenhuma credencial tem comprovante guardado.
+**Status.** Decidido pelo Otávio (08/11/2026, pela aprovação do plano). As regras vêm do CTX §7 e §8, das Regras do funil do Doc Mestre online, das regras de conformidade da landing e da decisão #91. Decidido quer dizer que as regras valem; não quer dizer que as provas existem. Nenhuma credencial tem comprovante guardado. Em 09/11/2026 o Otávio decidiu as exceções da seção "Exceções decididas pelo Otávio" e as regras novas de dados (LGPD), e tirou a revisão jurídica do sistema (#103 a #110, #114).
 
-**Documentos pendentes.** As regras tiradas de documentos em pendente-aprovacao (`tom-de-voz`, `promessa`, `oferta`) podem mudar quando eles forem aprovados.
+**Documentos pendentes.** As regras tiradas de documentos em pendente-aprovacao (`tom-de-voz`, `oferta`) podem mudar quando eles forem aprovados. A `promessa` vale por decisão do Otávio (#108).
 
-**Como ler.** Fatos são citados pelo id do campo em `ficha-de-fatos`; decisões, por #n; pendências, pelo id de `lacunas`. Abreviações de fonte como na ficha de fatos. "[PROVA REAL: ...]" marca o que falta provar antes de ir a público (CTX §7). Nenhuma regra aqui substitui a revisão de advogado, que a fonte pede antes da primeira peça e antes da primeira venda (CTX §8; Oferta online; lacuna-10).
+**Como ler.** Fatos são citados pelo id do campo em `ficha-de-fatos`; decisões, por #n; pendências, pelo id de `lacunas`. Abreviações de fonte como na ficha de fatos. "[PROVA REAL: ...]" marca o que falta provar antes de ir a público (CTX §7). Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). As regras de lei abaixo continuam valendo.
 
 ---
 
@@ -41,7 +41,7 @@ O que existe de prova, o que falta provar (a lista [PROVA REAL]), as regras de C
 - **Sem garantia.** "Sem garantia; contrato só com o escopo"; "nenhuma promessa em contrato, de nenhum tipo" (#39). O fato está em ficha-de-fatos#garantia.
 - **O reembolso.** "na Hotmart, serviço online de consultoria tem sempre 7 dias de reembolso, sem justificativa, independente do CDC" (#91, Otávio, 08/11/2026, a partir da Central de Ajuda da Hotmart). O prazo é o de ficha-de-fatos#arrependimento.
 - **Isso não é garantia de resultado.** "Isso não muda a #39: não existe garantia de resultado; existe o reembolso em 7 dias pela plataforma" (#91; prazo: ficha-de-fatos#arrependimento).
-- **O art. 49 do CDC numa venda para empresa.** Se o direito de arrependimento do CDC também se aplica quando a venda é para uma empresa que usa o serviço no próprio negócio, "só um advogado define" (#91). Fica em outros-18, para antes da primeira venda. A Oferta online diz que o artigo "pode não se aplicar"; o Downsell online, "a definir com advogado".
+- **O art. 49 do CDC numa venda para empresa.** Se o direito de arrependimento do CDC também se aplica quando a venda é para uma empresa que usa o serviço no próprio negócio, "só um advogado define" (#91). Fica em outros-18, para antes da primeira venda, com a empresa que vende, fora do sistema (#103). A Oferta online diz que o artigo "pode não se aplicar"; o Downsell online, "a definir com advogado".
 - **Divergência com a fonte.** O CTX §8 ("arrependimento de 7 dias no checkout e nos termos da Hotmart, já que a página tirou 'Tem garantia?'"; prazo: ficha-de-fatos#arrependimento, #91) e a landing citavam o art. 49 do CDC como base. Pela #91, a base é a regra da Hotmart, e o art. 49 fica com o advogado. Vale a #91.
 - **Em peça:** nunca chamar o reembolso de garantia. A página tirou a pergunta "Tem garantia?" (landing, "UX", 04/11).
 
@@ -60,7 +60,7 @@ Do CTX §7 ("Inventário de provas reais"), salvo onde indicado.
 | Curso gravado do Júnior | Produto | "sem resultados conhecidos" | CTX §7; ficha-de-fatos#bonus-curso |
 | Autoridade de lançamento | Autodeclarada | Sem comprovante (F9) | CTX §7 |
 | Seguidores do Júnior | Fato de pesquisa | ficha-de-fatos#seguidores-junior; a autoridade pública dele "não é de vendas (forte, F10)" | CTX §9, leitura 7 |
-| Deming, Out of the Crisis (1982) | Dado de terceiro | "forte como citação, indicativa para vendas"; o percentual: ficha-de-fatos#deming-percentual. Em peça, só com a nota "Adaptado de" e nunca como "94% do seu problema de vendas", com a exceção do título da seção 2 da landing (#94; conflito-13; ver `tom-de-voz`) | CTX §7, §6 |
+| Deming, Out of the Crisis (1982) | Dado de terceiro | "forte como citação, indicativa para vendas"; o percentual: ficha-de-fatos#deming-percentual. Em peça, só com a nota "Adaptado de" (confirmado pelo Otávio, 09/11/2026, 4.4; #114) e nunca como "94% do seu problema de vendas", com a exceção do título da seção 2 da landing (#94; conflito-13; ver `tom-de-voz`) | CTX §7, §6 |
 | HBR 2011, lead de teste em empresas dos EUA | Dado de terceiro | moderada; os números: fato fora da ficha | CTX §7 |
 | Na reserva: Ramper 2022 e HBR 2015 (receita com processo formal) | Dado de terceiro | Ramper indicativa; HBR 2015 moderada, correlação; os números: fato fora da ficha | CTX §7 |
 | A pós-graduação que escalava o criativo e trazia estudantes sem perfil, achada olhando os dados | Candidata a história de bastidor (F25) | Sem número comprovado nem autorização; o custo por lead citado: fato fora da ficha | CTX §7 |
@@ -118,14 +118,14 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 | Regra | Fonte |
 |---|---|
 | A promessa integra o contrato: pelo art. 30 do CDC, "a publicidade suficientemente precisa obriga quem a faz e passa a integrar o contrato, quando a relação for de consumo"; o CONAR "exige que toda alegação possa ser comprovada" | Oferta online ("As opções estudadas em 22/10", "Um cuidado jurídico") |
-| A promessa só vai a público "com prova do primeiro caso e revisão de advogado"; a de 08/11 (#85, pendente) torna vinculante a liderança do Júnior e do Euclides durante o serviço (CDC, art. 30; duração em ficha-de-fatos#duracao) | CTX §8; ver `promessa` |
+| A promessa só vai a público "com prova do primeiro caso e revisão de advogado"; a de 08/11 (#85, que vale por decisão do Otávio, #108) torna vinculante a liderança do Júnior e do Euclides durante o serviço (CDC, art. 30; duração em ficha-de-fatos#duracao). A revisão jurídica fica fora do sistema (#103); o título com "lucro" é exceção (ver "Exceções decididas pelo Otávio") | CTX §8; ver `promessa` |
 | Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19) e ficha-de-fatos#analise-valor (#92; a Análise precisa passar a ser cobrada de verdade depois das gratuitas) | CTX §8 |
 | Credencial anunciada precisa de comprovante (ver a lista acima) | CTX §8; Doc Mestre online, regra 2 |
 | Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR). A regra do contador de escassez está em ficha-de-fatos#barra-de-resgates (#93) | CTX §8; landing ("Regras de conformidade"); #93 |
 | A promoção precisa de um fim real, e a Análise precisa passar a ser cobrada de verdade depois. Com a #92, o fim real é o número de ficha-de-fatos#analises-gratuitas, e o valor depois está em ficha-de-fatos#analise-valor | landing ("Regras de conformidade"); #92 |
 | Escassez só a verdadeira, sem prazo nem data: ficha-de-fatos#urgencia, ficha-de-fatos#vagas, ficha-de-fatos#vendas-que-contam | Doc Mestre online, regra 3; CTX §8 |
-| "todo o dinheiro" é alegação absoluta | CTX §8 |
-| Nenhum percentual de melhora antes de caso comprovado | Mecanismo único online; Promessa central online ("Conformidade"). O quiz promete percentual (conflito-09) |
+| "todo o dinheiro" é alegação absoluta. O texto da promessa mantido pela #108 traz a expressão: conflito registrado em `promessa`, bloqueado para ir ao ar até a resposta | CTX §8 |
+| Nenhum percentual de melhora antes de caso comprovado | Mecanismo único online; Promessa central online ("Conformidade"). Exceção decidida: a promessa de percentual no fim do quiz (#110; ver "Exceções decididas pelo Otávio") |
 | "Sistema instalado" no prazo de ficha-de-fatos#sistema-instalado pode, se for cumprido; "resultado" no mesmo prazo, não | CTX §8; landing |
 | Comparação com concorrente só com base | CTX §8 |
 | Nenhum depoimento, caso ou número inventado | Doc Mestre online, regra 2 |
@@ -143,21 +143,36 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 
 - Só o escopo das entregas, com critério de pronto e portabilidade de dados (#39; CTX §8). O número de entregas está em ficha-de-fatos#numero-de-entregas; o contrato ainda tem o formato antigo (outros-06).
 - "'por 90 dias eu mando no seu comercial' e 'liderar o comercial' (#85) são metáforas: o time é do cliente, e nenhum poder de gestão vai ao contrato" (CTX §8; duração: ficha-de-fatos#duracao).
-- Contrato revisado por advogado, só com o escopo das entregas (Doc Mestre online, E.M.V.); ritos, presença do Júnior e do Euclides que a promessa anuncia, gravações e dados (lacuna-10).
+- Contrato revisado por advogado, só com o escopo das entregas (Doc Mestre online, E.M.V.); ritos, presença do Júnior e do Euclides que a promessa anuncia, gravações e dados (lacuna-10). A revisão é da empresa que assina, fora do sistema (#103).
 
 ### LGPD
 
 | Regra | Fonte |
 |---|---|
 | Consentimento no quiz, na calculadora, no formulário e nas páginas | CTX §8 |
-| "Consentimento explícito para WhatsApp e e-mail no quiz, no formulário e nas páginas, com a finalidade dita (LGPD)." | Doc Mestre online, regra 8 |
-| Na Análise, só números agregados por etapa, "nunca a lista de leads" | CTX §8; Mecanismo único online |
+| "Consentimento explícito para WhatsApp e e-mail no quiz, no formulário e nas páginas, com a finalidade dita (LGPD)." No quiz, a caixa única já marcada é exceção decidida pelo Otávio (#104; ver "Exceções decididas pelo Otávio") | Doc Mestre online, regra 8 |
+| No quiz, uma caixa de aceite só, que cobre o diagnóstico e o contato da equipe por WhatsApp (mensagem e ligação) e por e-mail, e preenche consentimento_whatsapp e consentimento_email com o mesmo valor e o mesmo texto aceito. Quem desmarca vê o diagnóstico na tela, e nada vai ao banco nem à equipe (escolha provisória, pergunta 30.3) | #104 (13.4) |
+| Quem aceitou pode ser contatado por WhatsApp, por ligação no número do WhatsApp e por e-mail | #105 (16.12, com 15.8 e 21.4) |
+| Os dados dos leads se guardam pelo prazo de ficha-de-fatos#prazo-de-guarda, dito na política de privacidade e na planta do banco. O caminho de apagamento é pendência com prazo (log.md, Pendências) | #106 (6.8, com 16.9 e 18.10) |
+| Nenhuma ferramenta de terceiros que colha dado do visitante na página e no quiz, nem as fontes do Google: as fontes vão junto com a página | #114 (10.7, com 14.1, 16.7 e 17.4) |
+| Na demonstração com os números do prospect (a versão rápida da Análise, hoje na Call de Direcionamento, ficha-de-fatos#nome-call-de-venda; 4.5), só números agregados por etapa, "nunca a lista de leads" | CTX §8; Mecanismo único online; #107 |
 | Base legal para voltar aos leads antigos do cliente, conferida no começo do serviço | CTX §8; ficha-de-fatos#insumo-do-cliente |
 | Consentimento e finalidade para as gravações das calls e os dados do cliente que alimentam a IA de consulta e o painel conectado, por escrito no contrato | CTX §8; lacuna-04, lacuna-10 |
 | No caso documentado, só números agregados, nunca a lista de leads | Oferta online ("A troca pelo caso documentado") |
-| Dado pessoal de lead nunca entra no repositório nem no Google Drive | CLAUDE.md; nucleo/regras/seguranca.md |
+| Dado pessoal de lead nunca entra no repositório nem no Google Drive, com uma exceção registrada: a planilha do SDR no Drive do Safra, com acesso só do Otávio e de quem liga | CLAUDE.md; nucleo/regras/seguranca.md, regra 4 (v3; #114, 5.4) |
 
-**Divergência registrada:** o quiz pede e-mail e WhatsApp sem texto de consentimento (conflito-09).
+**Divergência registrada:** o quiz pedia e-mail e WhatsApp sem texto de consentimento (conflito-09). A copy do quiz já traz o texto antes dos campos (`quiz-01-copy`); a posição do aceite em relação ao pedido de contato fica como está, por exceção decidida (#110).
+
+### Exceções decididas pelo Otávio
+
+Cada linha é uma exceção às regras acima, decidida pelo Otávio e registrada aqui para a regra e a peça não se contradizerem. Fora destas linhas, a regra vale inteira.
+
+| Exceção | Regra que ela excepciona | Decisão |
+|---|---|---|
+| O título da seção 2 da landing fica como está, com o asterisco | Deming nunca como "do seu problema de vendas" | #94 (conflito-13) |
+| O quiz fica como está: a posição do aceite em relação ao pedido de contato não muda, e a promessa de percentual no fim do quiz fica. As outras decisões que mexem no quiz valem (14.2, 13.4, 14.4, 14.5, 18.4, 18.5, 09.1, 10.7). O item 29 da pauta continua com o Júnior e o Euclides | Consentimento antes do pedido de contato; nenhum percentual de melhora antes de caso comprovado | Otávio, 09/11/2026, 7.5; #110 |
+| A caixa de aceite do quiz já vem marcada; quem quiser, desmarca | "Consentimento explícito" (Doc Mestre online, regra 8) | Otávio, 09/11/2026, 13.4; #104 (registrada como exceção pela recomendação da pergunta 30.9, que continua aberta) |
+| O título "Resgate o lucro que está oculto no seu negócio" vai com "lucro", sem esperar caso documentado | Benefício só com prova; "lucro" pede a margem do cliente (lacuna-09) | Otávio, 09/11/2026, 9.14; #109 |
 
 ### Nome e marca
 
@@ -182,7 +197,7 @@ O Doc Mestre online tem nove Regras do funil; "as três primeiras são jurídica
 
 Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e pode ser substituído pela #90, pendente de aprovação do Júnior e do Euclides (plano aprovado, parte 6; conflito-06, conflito-14). As regras de vocabulário e de marca (7 e 9) estão em `tom-de-voz`.
 
-**Revisão jurídica antes de ir ao ar** (Doc Mestre online, E.M.V., "Revisão jurídica"): promessa, preço, credenciais com comprovante e escassez das vagas. Todas "A fazer".
+**Revisão jurídica antes de ir ao ar** (Doc Mestre online, E.M.V., "Revisão jurídica"): promessa, preço, credenciais com comprovante e escassez das vagas. Todas "A fazer". Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103): a lista deixa de travar a ida ao ar no sistema.
 
 ---
 
@@ -192,10 +207,12 @@ Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e p
 |---|---|---|
 | Comprovantes das credenciais | O Júnior e o Euclides (#44) | lacuna-16, lacuna-24, conflito-05, outros-11 |
 | Autorizações de nome e imagem | Os terceiros, pedidas pelo Júnior e pelo Euclides | conflito-05, lacuna-21 |
-| Art. 49 do CDC numa venda para empresa | Um advogado | outros-18 |
-| Contrato com o formato novo, revisado por advogado | Não registrado | lacuna-10, outros-06 |
+| Art. 49 do CDC numa venda para empresa | Um advogado, pela empresa que vende, fora do sistema (#103) | outros-18 |
+| Contrato com o formato novo, revisado por advogado | Não registrado; a revisão fica fora do sistema (#103) | lacuna-10, outros-06 |
 | Contador "Total gerado" com contagem real (a barra de resgates já tem regra, #93; a contagem depende do funil-01) | O Júnior e o Euclides (credenciais) | conflito-04, conflito-05 |
-| Consentimento LGPD e promessa percentual no quiz | O Otávio com o Júnior | conflito-09 |
+| Consentimento LGPD e promessa percentual no quiz | Decidido pelo Otávio como exceção (#110, #104); o item 29 da pauta continua com o Júnior e o Euclides | conflito-09 |
+| Os trechos "todo o dinheiro" e "sem precisar mudar uma vírgula no seu marketing" da promessa mantida pela #108 | O Otávio | conflito registrado em `promessa` |
+| Caminho de apagamento dos dados dos leads | O Otávio | #106; log.md, Pendências |
 | Números finais da safra de julho | O Júnior | outros-12, lacuna-24 |
 | Fonte do "95%" (fato fora da ficha) | Não registrado | `mecanismo` |
 | Painel do leilão como prova pública | Estacionado (#27) | `mecanismo` |
@@ -210,4 +227,4 @@ Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e p
 - Oferta online, Promessa central online, Mecanismo único online, Big Idea final online, Sistema de Vendas Safra online, Downsell online: 03-documentos-online/.
 - PAINEL: 02-arquivos-do-projeto/claude/PAINEL-iasv-safra.md (regras 9 e 11).
 - DS: fontes/design-system-v1.0/pagina-documentacao.html ("Aplicações da marca"; "Regras e acessibilidade").
-- Decisões #19, #23, #25, #27, #39, #44, #55, #62, #85, #89, #90, #91, #92, #93, #94 (base/decisoes.md).
+- Decisões #19, #23, #25, #27, #39, #44, #55, #62, #85, #89, #90, #91, #92, #93, #94, #103, #104, #105, #106, #108, #109, #110 e #114 (4.4, 5.4, 10.7) (base/decisoes.md).

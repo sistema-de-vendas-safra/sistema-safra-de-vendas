@@ -1,40 +1,38 @@
 ---
 id: promessa
-versao: 3
-status: pendente-aprovacao
+versao: 4
+status: decidido
 aprovado_por:
-  otavio: 2026-11-08
-  junior: pendente
-  euclides: pendente
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: metodo
-    versao: 3
+    versao: 4
   - id: mecanismo
-    versao: 1
-desatualizado: true
+    versao: 2
+desatualizado: false
 ---
 
 # Promessa
 
 A promessa de 08/11 nas duas versões, com o subtítulo; os ajustes propostos, marcados como sugestão; a frase-assinatura; o que pode e o que não pode ir a público; e a promessa de 23/10 como histórico.
 
-> **Nenhuma das duas promessas pode ir para entrega antes da aprovação do Júnior e do Euclides.** Nem a de 08/11 (#85) nem a de 23/10 (#33). Decisão do Otávio de 08/11/2026, registrada em decisoes #33 e #85. Enquanto isso, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md, status pendente-aprovacao).
+> **A promessa vale por decisão do Otávio (09/11/2026, 8.3 com 9.1; base/decisoes.md, #108).** Este documento sai de pendente-aprovacao para decidido. No topo da página fica tudo o que veio do projeto anterior, inclusive as promessas; o subtítulo neutro (prompts/05-fila-perguntas.md, 9.1) não entra. Se a página tiver dois topos, a escolha de como medir os dois (10.14) volta como pergunta, sem teste ligado. O Júnior e o Euclides confirmam na pauta (item 5, "Para confirmar"). Até 08/11/2026 valia a regra anterior: nenhuma das duas promessas ia para entrega antes da aprovação dos dois (decisoes #33 e #85).
 
-**Status das duas no registro** (base/decisoes.md):
-- **#85** (08/11): pendente-aprovacao (junior: pendente; euclides: pendente); substitui #33 quando aprovada.
+**Status das duas no registro** (base/decisoes.md), sem mudança nesta versão (o que a #108 muda nelas é a pergunta 30.4, em prompts/11-fila-perguntas.md):
+- **#85** (08/11): pendente-aprovacao (junior: pendente; euclides: pendente); substitui #33 quando aprovada; "Revista por" #108.
 - **#33** (23/10): pendente-aprovacao (junior: pendente; euclides: pendente); substituição proposta em #85. A #33 não está substituída: só passa a "substituída por #85" quando a #85 for aprovada (critério do Otávio de 08/11, decisoes "Como ler").
 
 **Como ler.** Texto decidido entra literal, entre aspas. Os números dentro do texto literal (como "90 dias" e "15 dias") são parte da frase decidida; os fatos em si estão em `ficha-de-fatos` (ficha-de-fatos#duracao, ficha-de-fatos#sistema-instalado). Decisões por #n; pendências pelo id de `lacunas`.
 
 ---
 
-## A promessa de 08/11 (#85, pendente do Júnior e do Euclides)
+## A promessa de 08/11 (#85; vale por decisão do Otávio, #108)
 
 "Decidida pelo Otavio em 08/11, em duas versões, no lugar da de 23/10. Pendente de aprovação do Júnior e do Euclides, que são nomeados nela." (Promessa central online).
 
@@ -94,7 +92,7 @@ Fonte: Promessa central online ("Versões com os ajustes").
 
 - Origem: a opção C das promessas estudadas em 22/10, "Frase curta, nova no mercado, que resume a regra do sistema"; pode ir a público "como regra do sistema; não como garantia" (Oferta online, "As opções estudadas em 22/10").
 - Mantida na promessa de 08/11: "Ficam da versão anterior a frase-assinatura ('Seu lead só sai da lista quando disser não.') e a crença que decide a compra." (Promessa central online; CTX §6, "Assinatura mantida").
-- Status: vai junto com a promessa, pendente do Júnior e do Euclides.
+- Status: vai junto com a promessa, que vale por decisão do Otávio (#108).
 - "'Nenhum lead sai da lista antes de dizer não' é a regra do sistema, não uma garantia." (Promessa central online, "Conformidade").
 
 **A crença que decide a compra** também fica da versão anterior (Promessa central online). O texto e a ressalva de status estão em `mecanismo` ("A crença que decide a compra").
@@ -105,9 +103,9 @@ Fonte: Promessa central online ("Versões com os ajustes").
 
 | Linha | Texto | Status e fonte |
 |---|---|---|
-| Linha de apoio | "Como vender para os leads que você já pagou, sem comprar mais lead nem trocar o seu time." | Era o título da v1.0 e virou linha de apoio da promessa de 23/10 (Promessa central online); o One pager online a lista junto da promessa de 08/11. Vai junto com a promessa, pendente |
+| Linha de apoio | "Como vender para os leads que você já pagou, sem comprar mais lead nem trocar o seu time." | Era o título da v1.0 e virou linha de apoio da promessa de 23/10 (Promessa central online); o One pager online a lista junto da promessa de 08/11. Vai junto com a promessa (#108) |
 | Na voz do Júnior, para a call | **Divergência entre fontes:** "Me dá 3 semanas. Eu te mostro em que etapa a sua venda trava e quantos dos leads que você já pagou ainda podem comprar. Fechou?" (Promessa central online, variação 2, de 23/10) · "Me dá uma semana. Eu te mostro em que etapa a sua venda trava e quantos dos leads que você já pagou ainda podem comprar. Fechou?" (One pager online, 08/11) | Rascunho; nenhuma decisão escolhe uma das duas. A Promessa central online diz que as variações "valem só como referência" |
-| Hero B da página, em teste | Abre por "Resgate o lucro que está oculto no seu negócio" | CTX §6; em teste, sem decisão |
+| Hero B da página | Abre por "Resgate o lucro que está oculto no seu negócio" | CTX §6; texto do Otávio (04/11); fica no topo pela #108; o título vai com "lucro", sem esperar caso documentado (9.14, #109) |
 
 ---
 
@@ -115,10 +113,14 @@ Fonte: Promessa central online ("Versões com os ajustes").
 
 **Antes de qualquer peça com a promessa** (Promessa central online, "Onde cada versão entra e o que falta"; CTX §8): "a aprovação do Júnior e do Euclides (nomes, papel e agenda), a prova do primeiro caso e a revisão de advogado".
 
+**O que muda em 09/11/2026:** a aprovação que vale é a do Otávio (#108); o Júnior e o Euclides confirmam na pauta (item 5), porque são nomeados na promessa. Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). O título com "lucro" vai sem esperar caso documentado (#109). A prova do primeiro caso continua pedida onde as regras de `provas-e-conformidade` a pedem.
+
+**Conflito registrado · bloqueado para ir ao ar até a resposta (pergunta da etapa 31):** a #108 mantém o texto decidido de 08/11 como veio, e esse texto traz dois trechos que esta própria seção põe em "Não pode" ou em "Pontos frágeis": "todo o dinheiro" (alegação absoluta, CONAR) e "sem precisar mudar uma vírgula no seu marketing" (contradiz o método). Lado 1: a #108, que manda manter as promessas como vieram e não fala de exceção. Lado 2: as regras de conformidade (CTX §8; `provas-e-conformidade`), que não ganharam exceção para esses trechos, diferente da #110 no quiz. Os dois trechos seguem no rascunho da página pela #108; nada foi escolhido.
+
 **Pode, cumpridas as condições:**
 - "sistema instalado em 15 dias" pode ir a público "se for cumprido" (CTX §8; F25, divergência 6). O fato é ficha-de-fatos#sistema-instalado.
 - "Seu lead só sai da lista quando disser não", como regra do sistema, não como garantia (Oferta online; Promessa central online).
-- A demonstração pela Análise: "Traga os números da sua última safra e a gente mostra onde ela quebrou" passa no teste do "sei, claro" (Mecanismo único online).
+- A demonstração com os números do prospect, hoje na Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; 4.5, #107): "Traga os números da sua última safra e a gente mostra onde ela quebrou" passa no teste do "sei, claro" (Mecanismo único online).
 
 **Não pode:**
 - Resultado ligado ao contrato ou a prazo: "colher resultado em 15 dias" fica fora de público (CTX §6, "Nunca dizer"; CTX §8; CTX §10, item 2; F25, divergência 6).
@@ -137,7 +139,7 @@ Fonte: Promessa central online ("Versões com os ajustes").
 
 ## A promessa de 23/10 (#33) · histórico
 
-**Status:** pendente-aprovacao (junior: pendente; euclides: pendente), com substituição proposta em #85 (decisoes #33). Entra aqui como histórico. **Não está substituída** no registro e **não pode ir para entrega**.
+**Status:** pendente-aprovacao (junior: pendente; euclides: pendente), com substituição proposta em #85 (decisoes #33). Entra aqui como histórico. **Não está substituída** no registro. Se a #108 ("inclusive as promessas", no plural) a libera no topo que veio do projeto anterior é a pergunta 30.4; até a resposta, não vai para entrega fora do que a página já trazia.
 
 **Divergência entre fonte e registro.** A Promessa central online e a Oferta online chamam esta seção de "A promessa de 23/10 (substituída em 08/11)" e "A promessa decidida em 23/10 (substituída em 08/11)". Pelo registro, a substituição só acontece quando a #85 for aprovada (decisoes, "Como ler").
 
@@ -153,7 +155,7 @@ Fonte: Promessa central online ("Versões com os ajustes").
 - O Hero A da landing usa o título da #33 com o subtítulo "sem precisar mudar uma vírgula no seu marketing"; o Hero B adapta a #33; o DS v1.0 traz a #33 como "Proposta de valor" (conflito-03).
 - O Mecanismo único online fala da "promessa decidida (F16)", que é a #33.
 
-**Cuidados que já valiam para a #33** (Promessa central online, "Conformidade"; Oferta online): "Vender mais vezes para o mesmo cliente" depende de a safra de clientes entrar no método (#16; outros-10); os benefícios precisam ser comprováveis quando a peça for a público: [PROVA REAL: vendas recuperadas e custo por venda, antes e depois, num cliente fundador]; revisão de advogado antes da primeira peça.
+**Cuidados que já valiam para a #33** (Promessa central online, "Conformidade"; Oferta online): "Vender mais vezes para o mesmo cliente" depende de a safra de clientes entrar no método (#16; outros-10); os benefícios precisam ser comprováveis quando a peça for a público: [PROVA REAL: vendas recuperadas e custo por venda, antes e depois, num cliente fundador]; revisão de advogado antes da primeira peça (hoje, pela #103, fora do sistema).
 
 As variações de 23/10 e o resto da análise daquela promessa "valem só como referência" (Promessa central online) e ficam na fonte.
 
@@ -163,7 +165,8 @@ As variações de 23/10 e o resto da análise daquela promessa "valem só como r
 
 | Decisão | Quem decide | Onde |
 |---|---|---|
-| Aprovar a #85 (nomes, papel, agenda do Euclides) | O Júnior e o Euclides | lacuna-02, lacuna-20, conflito-03 |
+| Confirmar a #85 (nomes, papel, agenda do Euclides), que já vale por decisão do Otávio (#108) | O Júnior e o Euclides (pauta, item 5, "Para confirmar") | lacuna-02, lacuna-20, conflito-03; pergunta 30.4 |
+| Os trechos "todo o dinheiro" e "sem precisar mudar uma vírgula no seu marketing" contra as regras de conformidade | O Otávio | conflito registrado acima (pergunta da etapa 31) |
 | Os ajustes sugeridos | O Otávio | lacuna-02, conflito-03 |
 | Qual das duas falas do Júnior para a call ("3 semanas" ou "uma semana") | O Otávio, com o Júnior | outros-19 (bloqueada para entrega) |
 | Quem assina: a Triad ou o Júnior em primeira pessoa | Decisão do cliente (Promessa central online, item 2) | lacuna-07, conflito-07 |
@@ -179,4 +182,4 @@ As variações de 23/10 e o resto da análise daquela promessa "valem só como r
 - Mecanismo único online: 03-documentos-online/Mecanismo único do Sistema de Vendas Safra.md (teste do "sei, claro").
 - CTX §3, §6, §8, §9 (leituras 6, 10 e 23), §10 (item 2): 02-arquivos-do-projeto/CONTEXTO-DO-PROJETO.md (v5.3).
 - F25: 02-arquivos-do-projeto/claude/FONTE-call-decisao-07-11.md (divergência 6).
-- Decisões #16, #33, #39, #69, #79, #85 (base/decisoes.md).
+- Decisões #16, #33, #39, #69, #79, #85, #103, #107, #108 e #109 (base/decisoes.md).

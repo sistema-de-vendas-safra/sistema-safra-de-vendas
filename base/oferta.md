@@ -1,27 +1,27 @@
 ---
 id: oferta
-versao: 1
+versao: 2
 status: pendente-aprovacao
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
   junior: pendente
   euclides: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 2
+    versao: 4
   - id: decisoes
-    versao: 1
+    versao: 5
   - id: lacunas
-    versao: 2
+    versao: 6
   - id: produto
-    versao: 1
+    versao: 4
   - id: entregas-do-servico
-    versao: 1
+    versao: 4
   - id: mecanismo
-    versao: 1
+    versao: 2
   - id: promessa
-    versao: 1
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Oferta · Implementação Avançada do Sistema de Vendas Safra
@@ -30,7 +30,9 @@ A oferta montada: a oferta em uma página, a equação de valor, os obstáculos 
 
 **Status.** Pendente de aprovação. O núcleo foi aprovado pelo Júnior e pelo Euclides em 27/10 ("Big Idea, mecanismo, oferta, entregáveis e bônus aprovados", #48). Depois disso vieram as revisões #52 a #65, #70 a #79 e #83 a #88; as do Otávio "valem como direção de trabalho" (CTX §11), e a Ficha do Serviço online registra que a ficha "no formato de 07/11, ainda precisa da leitura do Júnior e do Euclides". Enquanto o Júnior e o Euclides estiverem pendentes, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md).
 
-**O que vem de onde.** Formato do serviço: `produto`. Cada entrega: `entregas-do-servico`. Problema, Big Idea e crença: `mecanismo`. Promessa: `promessa` (pendente; nada dela vai para entrega antes da aprovação dos sócios). Decisões por #n; pendências pelo id de `lacunas`.
+**O que vem de onde.** Formato do serviço: `produto`. Cada entrega: `entregas-do-servico`. Problema, Big Idea e crença: `mecanismo`. Promessa: `promessa` (decidida pelo Otávio em 09/11/2026, #108). Decisões por #n; pendências pelo id de `lacunas`.
+
+**Análise e Call de Direcionamento (09/11/2026).** Com a #92, a Análise é o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), e a conversa de venda com o Júnior é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; duração em ficha-de-fatos#duracao-call-de-venda; condutor em ficha-de-fatos#quem-faz-a-reuniao; #107). A demonstração com os números do prospect, que a Oferta online chama de "versão rápida da Análise" ou "Análise na call", continua nessa conversa (4.5, #114). Onde o texto da fonte abaixo fala da Análise antes da compra, leia essa demonstração na Call de Direcionamento; as citações literais ficam como estão.
 
 **Diagnóstico honesto** (Oferta online): "A oferta é forte em mecanismo e fraca em probabilidade percebida: não há caso de cliente, não há garantia e a autoridade pública do Júnior não é de vendas. O que segura a oferta é a Análise Estratégica das Safras: o comprador vê o mecanismo funcionar com os números dele antes de pagar."
 
@@ -40,14 +42,14 @@ A oferta montada: a oferta em uma página, a equação de valor, os obstáculos 
 
 | Peça | O que vale | Status e fonte |
 |---|---|---|
-| Em uma frase | **Não usar o texto da fonte.** A Oferta online e o One pager online ainda abrem com o título da promessa de 23/10 (#33). As duas promessas estão pendentes do Júnior e do Euclides e não podem ir para entrega (ver `promessa`) | decisoes #33, #85; Oferta online; One pager online |
+| Em uma frase | **Não usar o texto da fonte.** A Oferta online e o One pager online ainda abrem com o título da promessa de 23/10 (#33). A promessa que vale é a de `promessa`, decidida pelo Otávio (#108); o status da #85 e da #33 no registro é a pergunta 30.4 | decisoes #33, #85, #108; Oferta online; One pager online |
 | Núcleo | A Implementação Avançada do Sistema de Vendas Safra: o formato de `produto` e as entregas de `entregas-do-servico`, no CRM que o cliente já usa, com as Sessões de Comando, as calls em grupo com análise de calls e o grupo de suporte | Aprovado em #48; revisto em #52, #56, #70 a #79, #83, #88; Oferta online ("Núcleo") |
 | Bônus | Curso gravado do Júnior para o time (ficha-de-fatos#bonus-curso); Análise Estratégica da base de clientes (ficha-de-fatos#bonus-analise-base) | Aprovados em #48 |
 | Bônus pela troca | Sessão extra com o Júnior para quem autoriza virar caso documentado (ficha-de-fatos#bonus-caso) | Aprovado em #48 |
 | Preço | ficha-de-fatos#preco-avancada; depois, ficha-de-fatos#preco-avancada-depois, cobrado de verdade | #57; #19 |
 | Pagamento | ficha-de-fatos#meio-de-pagamento. Parcelamento: ficha-de-fatos#parcelamento, **campo em conflito · bloqueado para entrega até a decisão**. Taxa: ficha-de-fatos#taxa-hotmart (em aberto) | #54; conflito-15, lacuna-19 |
 | Vagas | ficha-de-fatos#vagas; só vendas da Avançada contam (ficha-de-fatos#vendas-que-contam); início de cada cliente em aberto (ficha-de-fatos#inicio-de-cada-cliente) | #63, #64, #65 |
-| Porta de entrada | A Análise na versão da call (ficha-de-fatos#analise-conteudo). Nome, valor, gratuidade, duração e quem conduz estão em ficha-de-fatos#analise-nome-publico, ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz, **todos em conflito · bloqueados para entrega até a decisão**. Abatimento: ficha-de-fatos#analise-abatimento (proposta) | #49, #59, #61, #62, #66; lacuna-11, conflito-02 |
+| Porta de entrada | A Análise, o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), gratuita até ficha-de-fatos#analises-gratuitas e depois cobrada por ficha-de-fatos#analise-valor (ficha-de-fatos#analise-gratuidade); a cobrança fica para a segunda versão do funil (5.9). O nome público está em ficha-de-fatos#analise-nome-publico, **em conflito · bloqueado para entrega até a decisão**. Depois dela, a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), sem custo para o lead (15.14), com a demonstração. Abatimento: ficha-de-fatos#analise-abatimento (proposta) | #49, #59, #61, #62, #66, #92, #93, #107, #114; lacuna-11, conflito-02 |
 | Garantia | ficha-de-fatos#garantia. Reembolso pela Hotmart: ficha-de-fatos#arrependimento | #39; #91; outros-18 |
 | Continuidade | O GSAAS, opcional, oferecido no Relatório de Produtividade: ficha-de-fatos#gsaas (para depois) | #38, #58, #84; lacuna-06 |
 | Downsell | A Implementação Essencial, só depois do não à Avançada: ficha-de-fatos#downsell-nome, ficha-de-fatos#downsell-preco (**em conflito · bloqueado para entrega até a decisão**) e ficha-de-fatos#downsell-desenho (em revisão) | #37, #42, #60; lacuna-03 |
@@ -86,7 +88,7 @@ Tirados da persona (F2), do mapa de empatia (F3) e da Ficha do Serviço (Oferta 
 | 9 | "Meu CRM é uma bagunça ou uma planilha." | Implementação da Infraestrutura (entrega 2) |
 | 10 | "Trocar de CRM dá trabalho." | Resolvido: a implementação funciona no CRM que ele já usa, sem troca (#70) |
 | 11 | "Não tenho tempo para gerir o comercial." | O Júnior e o Euclides conduzem a call semanal em grupo; o cliente dá o setup (ficha-de-fatos#execucao-do-time) e uma call por semana depois |
-| 12 | Que o preço (ficha-de-fatos#preco-avancada) "sem saber se funciona é muito." | Análise antes da compra (condições em conflito, ver a porta de entrada); parcelamento pela Hotmart (ficha-de-fatos#parcelamento, em conflito) |
+| 12 | Que o preço (ficha-de-fatos#preco-avancada) "sem saber se funciona é muito." | A demonstração com os números dele na Call de Direcionamento, antes da compra (ver a porta de entrada); parcelamento pela Hotmart (ficha-de-fatos#parcelamento, em conflito) |
 | 13 | "Já paguei caro por mentoria que não entregou." | "Não é mentoria nem curso, é implementação": as entregas com critério de pronto e o Júnior nas Sessões de Comando (#53) |
 | 14 | "Vou ficar sozinho depois de assinar." | O grupo de WhatsApp da empresa, com CS e IA; a call semanal em grupo com o Júnior e o Euclides; a sessão extra com o Júnior |
 | 15 | "Vocês usam o que vendem?" | O sistema roda no leilão do Júnior; painel mostrado na call (a decidir) |
@@ -106,7 +108,7 @@ Tirados da persona (F2), do mapa de empatia (F3) e da Ficha do Serviço (Oferta 
 |---|---|---|---|
 | Núcleo | O serviço de `produto` e as entregas de `entregas-do-servico` | 1 a 5, 7 a 9, 11, 13, 16 | O preço depois das primeiras vagas: ficha-de-fatos#preco-avancada-depois |
 | Bônus 1: curso gravado do Júnior, liberado para o time | "As aulas de etapas e métricas que ele já tem, como apoio para vendedores novos" | 6, 19 | Preço real a confirmar; "Se nunca foi [vendido avulso], não atribuir valor" (ficha-de-fatos#bonus-curso; lacuna-22) |
-| Bônus 2: Análise Estratégica da base de clientes | "A Análise Estratégica feita sobre quem já comprou, para achar quem pode comprar de novo" | 17 | ficha-de-fatos#bonus-analise-base, que se apoia no valor da Análise (ficha-de-fatos#analise-valor, **em conflito**) |
+| Bônus 2: Análise Estratégica da base de clientes | "A Análise Estratégica feita sobre quem já comprou, para achar quem pode comprar de novo" | 17 | ficha-de-fatos#bonus-analise-base (o valor de referência do bônus deixou de coincidir com ficha-de-fatos#analise-valor depois da #92; revisão com o Otávio, pergunta 4.3) |
 | Bônus pela troca: sessão extra com o Júnior | "Uma sessão individual de estratégia comercial", além das Sessões de Comando (ficha-de-fatos#sessoes-de-comando) | 14 | Valor de uma sessão avulsa a confirmar (ficha-de-fatos#bonus-caso; lacuna-22) |
 
 Fonte: Oferta online ("O pacote"). Os bônus foram aprovados em #48.
@@ -148,7 +150,7 @@ Fonte: Oferta online ("As âncoras honestas").
 **O que ela custa:** "A métrica em contrato era um dos dois territórios livres no mercado (F10), e o comprador pergunta por ela." **O que a sustenta:** "ninguém pede garantia de forma espontânea (F2), e nenhum concorrente direto oferece garantia de verdade." (Oferta online).
 
 **O que entra no lugar (nada disso é garantia)** (Oferta online):
-1. **Prova antes da compra:** a Análise na call, com os números do prospect (condições em conflito; ver a porta de entrada, abaixo).
+1. **Prova antes da compra:** a demonstração com os números do prospect, na Call de Direcionamento (4.5; ver a porta de entrada, abaixo).
 2. **Um bloco "O que a Triad não promete"** na página, na VSL e na call.
 3. **Escopo escrito:** o contrato descreve só as entregas, com data e critério de pronto (lacuna-10).
 4. **Medição à vista:** o Relatório de Produtividade compara as safras antigas com o número de antes, sem meta prometida.
@@ -161,7 +163,7 @@ Fonte: Oferta online ("As âncoras honestas").
 
 O rascunho fecha com o prazo do serviço (ficha-de-fatos#duracao) e "com data marcada para cada entrega".
 
-**Cuidado jurídico:** o reembolso pela Hotmart está em ficha-de-fatos#arrependimento (#91); se o art. 49 do CDC também se aplica numa venda para empresa, só um advogado define (outros-18). O contrato pede revisão de advogado (CDC, arts. 30 e 49), incluindo a promessa de 08/11 (Oferta online, "Decisões do cliente", item 7; lacuna-10).
+**Cuidado jurídico:** o reembolso pela Hotmart está em ficha-de-fatos#arrependimento (#91); se o art. 49 do CDC também se aplica numa venda para empresa, só um advogado define (outros-18). O contrato pede revisão de advogado (CDC, arts. 30 e 49), incluindo a promessa de 08/11 (Oferta online, "Decisões do cliente", item 7; lacuna-10). Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103).
 
 ---
 
@@ -189,11 +191,11 @@ O risco: se a entrega não couber, a escassez é verdadeira, mas os primeiros cl
 
 ## Como apresentar a oferta
 
-"A ordem que funciona: valor antes do preço, bônus da troca depois do preço, urgência por último. Numa venda por aplicação e call, a demonstração vem primeiro." (Oferta online). A duração da call de venda está em ficha-de-fatos#duracao-call-de-venda.
+"A ordem que funciona: valor antes do preço, bônus da troca depois do preço, urgência por último. Numa venda por aplicação e call, a demonstração vem primeiro." (Oferta online). A call de venda é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda); a duração está em ficha-de-fatos#duracao-call-de-venda e quem conduz, em ficha-de-fatos#quem-faz-a-reuniao (#107).
 
-### Na call
+### Na Call de Direcionamento
 
-1. **Versão rápida da Análise da última safra dele:** onde travou e quantos leads nunca disseram não. As condições da Análise (nome, valor, gratuidade, duração, quem conduz) estão **em conflito** na ficha (conflito-02).
+1. **Versão rápida da Análise da última safra dele:** onde travou e quantos leads nunca disseram não. É a demonstração com os números do prospect, que fica nesta conversa (4.5, #114); não é a Análise do quiz (#92).
 2. **A conta do que está parado,** com a fórmula acima. Se der menos que o múltiplo da regra de venda, a call termina numa recomendação honesta de não comprar agora.
 3. **O mecanismo:** a Gestão Mensal de Leads; a rúcula, o morango e a melancia, e o agricultor que só colhe a rúcula. "O 95% só entra como número quando tiver fonte." (ver `mecanismo`).
 4. **As quatro etapas e as entregas, com o sistema instalado** (ficha-de-fatos#sistema-instalado), uma de cada vez, sempre ligadas ao que apareceu na Análise dele.
@@ -211,11 +213,11 @@ O risco: se a entrega não couber, a escassez é verdadeira, mas os primeiros cl
 
 1. Abertura com a Big Idea: "Você já pagou pelas suas próximas vendas." (aprovada; ver `mecanismo`).
 2. O mecanismo: o sintoma primeiro, depois o nome do problema (Gestão Mensal de Leads), e a rúcula, o morango e a melancia.
-3. A promessa: **pendente do Júnior e do Euclides; não pode ir para entrega** (ver `promessa`).
+3. A promessa: vale por decisão do Otávio (#108); o Júnior e o Euclides confirmam na pauta (ver `promessa`).
 4. As quatro etapas e o que ele recebe.
 5. É para você / não é para você: o corte está em ficha-de-fatos#criterio-de-qualificacao, **em conflito · bloqueado para entrega até a decisão**.
 6. O que a Triad não promete.
-7. A chamada para a Análise, feita na call (condições em conflito). "O preço da implementação fica para a call."
+7. A chamada para a Análise, que hoje é o diagnóstico do quiz (#92). Na página, a gratuidade é dita como "sem custo na promoção de lançamento", sem o número, até o contador aparecer (9.3, #114); o valor da Análise só aparece na página quando a cobrança existir (5.9, #114). "O preço da implementação fica para a call."
 
 Fonte: Oferta online ("Como apresentar a oferta na call e na página"). "A voz final de todas as peças passa pela skill junior-neves-voice." Na primeira etapa do funil não se fala de GSAAS, de gerente nem da entrega (#68), com a exceção de "gerente comercial" na página (#86).
 
@@ -223,18 +225,17 @@ Fonte: Oferta online ("Como apresentar a oferta na call e na página"). "A voz f
 
 ## A porta de entrada: a Análise
 
-O que está decidido sem conflito: a Análise da porta é a versão da call, "sobre a última safra, a mesma para todos os públicos" (ficha-de-fatos#analise-conteudo; #59, #61). A Análise completa, com documento e painel, é a entrega 1 (`entregas-do-servico`). Quem agenda é o SDR (ficha-de-fatos#quem-agenda; #67).
+O que está decidido: a Análise da porta é o diagnóstico do quiz, a mesma para todos os públicos (ficha-de-fatos#analise-conteudo; #92, que revê a #59 e a #61). É gratuita até ficha-de-fatos#analises-gratuitas e depois cobrada por ficha-de-fatos#analise-valor (ficha-de-fatos#analise-gratuidade; #92, #93); a cobrança fica para a segunda versão do funil, e o valor só aparece na página quando ela existir (5.9, #114). A Análise completa, com documento e painel, é a entrega 1 (`entregas-do-servico`). Quem agenda a conversa de venda é o SDR (ficha-de-fatos#quem-agenda; #67).
 
-**Em conflito · bloqueados para entrega até a decisão** (ficha de fatos; conflito-02, lacuna-11):
-- O nome público: ficha-de-fatos#analise-nome-publico.
-- O valor apresentado e o valor cobrado depois: ficha-de-fatos#analise-valor.
-- Até quando é gratuita: ficha-de-fatos#analise-gratuidade.
-- A duração: ficha-de-fatos#analise-duracao.
-- Quem conduz: ficha-de-fatos#analise-quem-conduz.
+**A conversa de venda** é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração de ficha-de-fatos#duracao-call-de-venda e o condutor de ficha-de-fatos#quem-faz-a-reuniao (#107). Não tem custo para o lead: quem liga pode dizer "a conversa não tem custo" (15.14, #114). É nela que fica a demonstração com os números do prospect (4.5, #114).
+
+**Em conflito · bloqueado para entrega até a decisão** (ficha de fatos; conflito-02, lacuna-11):
+- O nome público da Análise: ficha-de-fatos#analise-nome-publico (continua a definir, #107; pergunta 30.1).
+- ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha; com a #92, a pergunta deles passou a ser a da conversa de venda, que a #107 decidiu nos campos da Call (pergunta 30.6).
 
 Por que o valor apresentado só vale se for cobrado depois: CTX §8 (CDC e CONAR) e ficha-de-fatos#analise-valor. Proposta em aberto: ficha-de-fatos#analise-abatimento. O plano de ação de 90 dias (PDV-90) como saída da Análise está sem decisão (lacuna-22, conflito-10).
 
-**Hipótese a validar** (Oferta online): "A Análise Estratégica antes da compra compensa a falta de garantia (indicativa)."
+**Hipótese a validar** (Oferta online): "A Análise Estratégica antes da compra compensa a falta de garantia (indicativa)." Hoje, a demonstração na Call de Direcionamento (4.5).
 
 ---
 
@@ -256,13 +257,13 @@ Da Oferta online ("Decisões do cliente"), com o que já foi decidido depois mar
 
 | # na fonte | Decisão | Situação | Onde |
 |---|---|---|---|
-| 1 | Regra de vocabulário depois da promessa decidida: continua para colheita, plantio e relógio em títulos e chamadas? | Aberta | Tom-de-voz (lote 3) |
+| 1 | Regra de vocabulário depois da promessa decidida: continua para colheita, plantio e relógio em títulos e chamadas? | Resolvida: continua (Otávio, 08/11/2026, resposta 3 às perguntas da etapa 3) | `tom-de-voz` |
 | 2 | Pagamento e parcelas | Aberta | ficha-de-fatos#parcelamento; conflito-15 |
 | 3 | Bônus pela troca | Aprovado com os bônus (#48) | ficha-de-fatos#bonus-caso |
-| 4 | A Análise da call e o seu valor | Em conflito (conflito-02); o registro diz #59, #61 e #62, e a página diverge | conflito-02 |
+| 4 | A Análise da call e o seu valor | Resolvida pela #92 e pela #93 (a Análise é o diagnóstico do quiz; valor e gratuidade decididos) e pela #107 (a conversa de venda é a Call de Direcionamento); continua aberto só o nome público da Análise | ficha-de-fatos#analise-nome-publico; conflito-02 |
 | 5 | Data de início de cada cliente | Aberta | ficha-de-fatos#inicio-de-cada-cliente |
 | 6 | Capacidade das vagas | Vagas não diminuem (#64); capacidade a preparar | lacuna-01, lacuna-04 |
-| 7 | Contrato só com o escopo, revisão de advogado, incluindo a promessa de 08/11 | Aberta | lacuna-10, outros-18 |
+| 7 | Contrato só com o escopo, revisão de advogado, incluindo a promessa de 08/11 | Aberta, como questão da empresa; a revisão jurídica fica fora do sistema (#103) | lacuna-10, outros-18 |
 | 8 | Preço real do curso gravado e de uma sessão do Júnior | Aberta | lacuna-22 |
 | 9 | Preço do GSAAS travado por um período para os clientes das primeiras vagas (proposta; ficha-de-fatos#gsaas-preco-travado) | Aberta | lacuna-06 |
 | 10 | Mostrar o painel do leilão numa call privada | Aberta (o painel como prova pública está estacionado, #27) | Obstáculo 15 |
@@ -276,7 +277,7 @@ Da Oferta online ("Decisões do cliente"), com o que já foi decidido depois mar
 ## Divergências registradas na fonte
 
 - **Data da Oferta online.** O cabeçalho diz 2026-11-05, mas o texto traz as decisões de 07/11 e 08/11; o CTX a chama de "v1.7 com as mudanças de 07/11 e 08/11 no documento online" (CTX §12).
-- **"Em uma frase"** da Oferta online e do One pager online ainda usa a promessa de 23/10 (#33), que está pendente, assim como a de 08/11 (ver `promessa`). A Oferta online chama a #33 de "substituída em 08/11"; pelo registro, ela só será substituída quando a #85 for aprovada.
+- **"Em uma frase"** da Oferta online e do One pager online ainda usa a promessa de 23/10 (#33), que está pendente no registro; a de 08/11 vale por decisão do Otávio (#108; ver `promessa`). A Oferta online chama a #33 de "substituída em 08/11"; pelo registro, ela só será substituída quando a #85 for aprovada.
 - **Histórico superado dentro da fonte.** As "Decisões já tomadas pelo Otavio (22/10)" falam em Análise "paga a R$ ..., abatida", e as decisões de 01/11 (terceira rodada) põem a entrega 1 "na semana 3". As duas foram revistas depois (#59, #61, #62; #72). Vale o registro.
 - **Obstáculos resolvidos:** "dezoito" no texto, "17" no checklist (ver acima).
 
@@ -289,4 +290,4 @@ Da Oferta online ("Decisões do cliente"), com o que já foi decidido depois mar
 - Downsell online: 03-documentos-online/Downsell · Implementação Essencial do Sistema de Vendas Safra.md (v0.7, 08/11/2026). Vale sobre a cópia F17.
 - Ficha do Serviço online: 03-documentos-online/Ficha do Serviço · Implementação Avançada do Sistema de Vendas Safra.md (leitura pendente do Júnior e do Euclides).
 - CTX §3, §8, §9, §11, §12: 02-arquivos-do-projeto/CONTEXTO-DO-PROJETO.md (v5.3).
-- Decisões #16, #19, #20, #26, #27, #33, #37 a #39, #42, #48, #49, #52 a #54, #56 a #68, #70 a #79, #83 a #86, #88 (base/decisoes.md).
+- Decisões #16, #19, #20, #26, #27, #33, #37 a #39, #42, #48, #49, #52 a #54, #56 a #68, #70 a #79, #83 a #86, #88, #92, #93, #107, #108 e #114 (4.5, 5.9, 9.3, 15.14) (base/decisoes.md).

@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-ligar
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -26,13 +26,13 @@ depende_de:
   - id: landing-page-01-variante-b
     versao: 2
   - id: lead-score
-    versao: 2
+    versao: 3
   - id: decisoes
-    versao: 4
-  - id: regra-seguranca
-    versao: 2
-  - id: lacunas
     versao: 5
+  - id: regra-seguranca
+    versao: 3
+  - id: lacunas
+    versao: 6
 desatualizado: true
 ---
 
@@ -40,15 +40,15 @@ desatualizado: true
 
 O passo a passo para o Otávio ligar amanhã o site de teste do funil-01: o banco no Supabase, o site e o garçom na Cloudflare e a planilha do SDR no Google. **Tempo total estimado: cerca de 58 minutos** (partes 1 a 5), menos de uma hora. As partes 6 e 7 só entram se algo der errado ou na hora de desligar.
 
-**Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (garcom, banco-rascunho, quiz-01-pagina, as variantes da landing, planilha-sdr-funil-01, ensaio, lead-score e lacunas; regra provisória 11.1).
+**Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (prototipo-funil-01, garcom, banco-rascunho, banco-conferir, banco-catalogo-prototipo, quiz-01-pagina, as variantes da landing, planilha-sdr-funil-01 e ensaio), que as etapas 32 a 34 atualizam (regra de versionamento v3, 11.1).
 
-**Ligado e testado em 09/11/2026** pelo Otávio, com este roteiro (v2). A v3 forma o roteiro com o que aconteceu: o porteiro nos passos 3.8 e 3.9, o Erro 4 (`banco-401`), o cuidado entre 4.6 e 4.7 e o campo Seu nome na parte 5 (log.md, pedido 10).
+**Ligado e testado em 09/11/2026** pelo Otávio, com este roteiro (v2). A v3 forma o roteiro com o que aconteceu: o porteiro nos passos 3.8 e 3.9, o Erro 4 (`banco-401`), o cuidado entre 4.6 e 4.7 e o campo Seu nome na parte 5 (log.md, pedido 10). A v4 (etapa 31) só acompanha as decisões de 09/11/2026: a planilha do SDR no Drive como exceção registrada à regra 4 de segurança (5.4) e a revisão jurídica fora das travas de ida ao ar (16.4); nenhum passo mudou.
 
 > **Leia antes de começar**
 >
 > - **Protótipo de teste não é entrega.** Serve só para conferir o caminho do dado de ponta a ponta. Ir ao ar com gente de verdade continua travado: o destino dos contatos está em conflito (conflito-17, em base/lacunas.md), as páginas e o garçom são rascunhos pendentes de aprovação (do Otávio e, nas páginas, do Júnior e do Euclides) e falta a proteção contra robô (log.md, Pendências).
 > - **Só leads de mentira** (decisão #102): nome começando por **TESTE** e e-mail terminado em **@teste.invalid**. Nada de gente de verdade, nem o seu nome, nem o seu telefone. Não mande o endereço do protótipo para ninguém.
-> - **A planilha no Drive é só para o teste** (pergunta 24.1): dado pessoal não entra no Drive (nucleo/regras/seguranca.md, regra 4) enquanto não se decide onde a planilha mora (5.4).
+> - **A planilha no Drive é só para o teste** (pergunta 24.1): a planilha do SDR no Drive do Safra é exceção registrada à regra 4 de segurança, com acesso só do Otávio e de quem liga (nucleo/regras/seguranca.md, v3; decisão do Otávio, 09/11/2026, 5.4; base/decisoes.md, #114), mas este teste usa só leads de mentira, e a planilha de teste é apagada antes de ir ao ar (#102).
 > - **Nunca cole uma chave no chat com o Claude, em arquivo, em e-mail, em mensagem ou numa célula da planilha.** A chave vai direto do painel do serviço para o cofre, pelos comandos deste roteiro. Se precisar de ajuda, copie só a mensagem de erro e cole numa conversa com o Claude no Claude Code: as mensagens de erro do Terminal, do Supabase e do Google não têm chave.
 > - **Não grave nem compartilhe a tela das partes 2 a 4** (nem print, nem foto, nem chamada de vídeo): o painel do Supabase e as propriedades do script mostram chave.
 
@@ -810,7 +810,9 @@ Este roteiro liga só o teste. Antes do primeiro lead de verdade, continuam aber
 - **Aprovações:** das páginas (Otávio, Júnior e Euclides), do garçom, do banco e da planilha (Otávio).
 - **Conflito-17:** o destino dos contatos (Júnior e Euclides, aprovação da #90).
 
-Também seguem em aberto onde a planilha mora (5.4) e a volta do status da planilha para o banco (log.md, Pendências).
+Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103).
+
+Também segue em aberto a volta do status da planilha para o banco (log.md, Pendências). Onde a planilha mora está decidido: no Drive do Safra, como exceção registrada à regra 4 de segurança (5.4).
 
 **Depois de ligar e depois de desligar:** conte ao Claude, no Claude Code, só a data em que as chaves foram criadas ou apagadas, para ele registrar a "Última troca" em conexoes.md (linhas do Supabase, da Cloudflare e da planilha do SDR). Só a data, nunca o valor de uma chave.
 

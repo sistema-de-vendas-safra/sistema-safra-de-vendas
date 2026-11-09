@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,27 +8,27 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-briefing
-    versao: 1
+    versao: 2
   - id: lead-score
-    versao: 2
+    versao: 3
   - id: ficha-de-fatos
-    versao: 3
+    versao: 4
   - id: lacunas
-    versao: 5
+    versao: 6
   - id: decisoes
-    versao: 3
+    versao: 5
   - id: tom-de-voz
-    versao: 3
+    versao: 4
   - id: provas-e-conformidade
-    versao: 3
+    versao: 4
   - id: persona
-    versao: 3
+    versao: 4
   - id: glossario
-    versao: 3
+    versao: 4
   - id: funil-01
-    versao: 2
+    versao: 3
   - id: planta-do-banco
-    versao: 2
+    versao: 4
 desatualizado: true
 ---
 
@@ -36,9 +36,11 @@ desatualizado: true
 
 O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro do briefing (`quiz-01-briefing`, seção 4). Parte do texto do Júnior na cópia nova do quiz (fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html) e muda só onde a base manda. Cada mudança está na seção "Mudanças no texto do Júnior", no fim, e vai para o Júnior aprovar (pauta, item 29).
 
-**Status.** Rascunho, avisando que pode mudar. O quiz é do Júnior, e o caminho do fim depende do critério de qualificação e do funil-01, os dois pendentes do Júnior e do Euclides (#90, #98): por isso os três estão em aprovado_por. Nada aqui vai ao ar antes da decisão dos conflitos 16 a 19, da política de privacidade (etapa 16) e da revisão de advogado (`provas-e-conformidade`).
+**Status.** Rascunho, avisando que pode mudar. O quiz é do Júnior, e o caminho do fim depende do critério de qualificação e do funil-01, os dois pendentes do Júnior e do Euclides (#90, #98): por isso os três estão em aprovado_por. Nada aqui vai ao ar antes da decisão dos conflitos 16 a 18, da aprovação das mudanças pelo Júnior (pauta, item 29) e da política de privacidade (etapa 16). Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103).
 
-**Documentos desatualizados.** Esta copy se apoia nos mesmos documentos marcados do briefing (pergunta 13.10). Não usa `mecanismo` nem `oferta`.
+**Exceção às regras de prova e conformidade (#110).** O quiz fica como está: a posição do aceite em relação ao pedido de contato não muda, e a promessa de percentual no fim do quiz não sai (M19 desfeita). É exceção às regras de `provas-e-conformidade`, decidida pelo Otávio (decisão do Otávio, 09/11/2026, 7.5; base/decisoes.md, #110). Mudou só a caixa de aceite (13.4, #104).
+
+**Documentos desatualizados.** Na versão 2, todas as bases apontam para as versões em vigor. Esta copy continua marcada porque se apoia no briefing do quiz, que se apoia na pauta, marcada até a página do quiz ser atualizada (etapas 33 e 34; nucleo/regras/versionamento.md v3, 11.1). Não usa `mecanismo` nem `oferta`.
 
 **Como ler.**
 - `{{ficha-de-fatos#campo}}`: o fato entra pelo campo da ficha, nunca copiado. `{{ficha-de-fatos#metas-por-etapa:etapa}}` é só a meta daquela etapa (pre-qualificacao, agendamento, comparecimento, fechamento) e `:geral` é a conversão de lead em venda que o campo registra.
@@ -125,7 +127,7 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
 
 ### 4.5 Valor médio da venda · pontua
 - **Pergunta:** "Qual o valor médio de uma venda?" (fica)
-- **Campo:** "R$", exemplo "15.000"; dica "Pode ser um valor aproximado." (fica)
+- **Campo:** "R$", exemplo "15.000"; dica "Pode ser um valor aproximado." (fica). O campo começa vazio e é obrigatório: o "Continuar" só liga com um valor escrito (14.4, 14.5; #114). O exemplo é só a dica dentro do campo e nunca entra na nota.
 - O lead score lê o número: de R$ 5 mil a menos de R$ 10 mil, ou R$ 10 mil ou mais; abaixo de R$ 5 mil é eliminatório só no lado do lead score (conflito-16).
 
 ### 4.6 Origem dos leads
@@ -170,7 +172,7 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
   4. Conversas realizadas · a conversa de venda aconteceu (muda, M12)
   5. Vendas fechadas · viraram cliente (fica)
 - **Contas ao vivo:** "base de todas as contas" · "≈ [n] [etapa]" · "= [n]% de [etapa anterior]" (fica)
-- **Campo vazio:** marca de número ainda não escrito (muda, M30)
+- **Campo vazio:** marca de número ainda não escrito (muda, M30). Os cinco campos começam vazios, sem número de exemplo (14.4; #114).
 - **Resposta no histórico:** "[n] leads · [n] com perfil · [n] agendados · [n] conversas · [n] vendas" (muda, M29)
 - **Avisos:** "Acima de 100%. Confere esse número?" · "Maior que a etapa anterior. Confere esse número?" (fica)
 
@@ -231,16 +233,15 @@ No mockup, as três perguntas são as do agendamento. As das outras etapas estã
 
 **Texto de consentimento** (novo, M16), no cartão, **antes** dos campos de e-mail e WhatsApp:
 
-> Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele. Nada além disso. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser. Tudo explicado na [política de privacidade]({{a definir: link da politica de privacidade}}).
+> Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado para a gente. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser. Tudo explicado na [política de privacidade]({{a definir: link da politica de privacidade}}).
 
-- **Caixa 1 (desmarcada):** "Aceito receber o diagnóstico e o contato da equipe por WhatsApp."
-- **Caixa 2 (desmarcada):** "Aceito receber o diagnóstico e o contato da equipe por e-mail."
+- **Caixa única (já marcada):** "Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail." (muda, M16; #104)
 - **Campos:** "Seu nome" (já preenchido com o nome da conversa; exemplo "Como podemos chamar você") · "E-mail" (exemplo "voce@empresa.com.br") · "WhatsApp" com o país (exemplo "(11) 98765-4321") · "Nome da empresa (opcional)" (exemplo "Empresa Ltda.") (fica)
 - **Dicas:** "Formato: [modelo]" · "Número completo" · "Faltam números" · "Você quis dizer [e-mail corrigido]?" (fica)
-- **Botão:** "Ver meu diagnóstico →" (fica). Só libera com nome, e-mail e WhatsApp válidos e com pelo menos uma das duas caixas marcadas [PENDENTE: 13.4]. O canal não aceito não é usado.
-- **Aviso, se nenhuma caixa marcada:** "Marque pelo menos um jeito de receber o diagnóstico." (novo, M16)
+- **Botão:** "Ver meu diagnóstico →" (fica). Libera com nome, e-mail e WhatsApp válidos, como hoje. Com a caixa marcada, o contato e as respostas vão ao banco e à equipe; com a caixa desmarcada, o diagnóstico aparece na tela e nada vai ao banco nem à equipe [PENDENTE: 30.3].
+- **Aviso, se a caixa for desmarcada:** "Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado." (novo, M16) [PENDENTE: 30.3]
 
-**Notas.** Consentimento explícito para WhatsApp e e-mail, com a finalidade dita (`provas-e-conformidade`, "LGPD"; Doc Mestre online, regra 8; conflito-09). As duas caixas correspondem a consentimento_whatsapp e consentimento_email da planta; o texto aceito e a data vão para consentimento_texto e consentimento_em (`planta-do-banco`). O prazo de guarda fica fora do texto até a decisão (outros-23). Quem é a empresa responsável pelos dados fica na política (etapa 16), porque o nome da agência está em conflito (conflito-07). A política ainda não existe: o link fica a definir.
+**Notas.** Uma caixa só, já marcada, que cobre o diagnóstico e o contato da equipe por WhatsApp (mensagem e ligação) e por e-mail (decisão do Otávio, 09/11/2026, 13.4 e 16.12; base/decisoes.md, #104 e #105). A posição do texto e da caixa, antes dos campos de e-mail e WhatsApp, fica como está (#110). A caixa preenche consentimento_whatsapp e consentimento_email da planta com o mesmo valor; o texto aceito e a data vão para consentimento_texto e consentimento_em (`planta-do-banco`), sem mudar a tabela do banco agora (#104). O que acontece quando a pessoa desmarca é escolha provisória (pergunta 30.3). A caixa já marcada diante da regra de consentimento explícito de `provas-e-conformidade` ("LGPD") é a pergunta 30.9. O prazo de guarda (ficha-de-fatos#prazo-de-guarda; #106) fica na política, fora do texto da caixa. Quem é a empresa responsável pelos dados fica na política (etapa 16), porque o nome da agência está em conflito (conflito-07). O link da política fica a definir. Com a caixa desmarcada, as frases que prometem cópia ou contato (a ajuda desta tela, "Vai para o seu e-mail e WhatsApp." do painel, a nota de "Agora não" e os botões de contato do relatório) não valem; como ficam é pergunta desta etapa (a página muda na etapa 34).
 
 ---
 
@@ -271,7 +272,7 @@ No mockup, as três perguntas são as do agendamento. As das outras etapas estã
 
 ## 10. Finais
 
-O caminho de cada lead depende do critério de qualificação: **{{BLOQUEADO: conflito-16}}**. Os dois lados estão escritos, sem escolha (briefing, seção 4, "Finais"):
+O caminho de cada lead depende do critério de qualificação: **{{BLOQUEADO: conflito-16}}**. Os dois lados estão escritos, sem escolha (briefing, seção 4, "Finais"). Até a reunião, a página usa o mais restritivo dos dois (14.2, #114): é qualificado só quem passa nos dois cortes; o conflito-16 continua aberto:
 
 | Final | Lado do Júnior (CLAUDE.md do quiz) | Lado do lead score (#98) |
 |---|---|---|
@@ -283,10 +284,10 @@ A faixa nunca aparece para o lead. Nenhum texto promete prazo de ligação (perg
 
 ### 10.1 Qualificado · oferta do plano de 90 dias (na conversa)
 
-[PENDENTE: conflito-10; conflito-19; 13.3]
+[PENDENTE: conflito-10; 13.3]
 
 - **Fala 1:** "Olha só, [nome]: [pela sua estimativa / pelos números que você informou], se as etapas fracas chegassem na meta, a conta daria **[cerca de] [n] vendas a mais por mês, uns [R$] mil**. É conta, não promessa: é dinheiro que hoje fica na mesa." (muda, M18)
-- **Fala 2:** "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial." (muda, M19)
+- **Fala 2:** "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." (fica, por exceção decidida pelo Otávio, #110; a M19 foi desfeita). O [X] é o do quiz do Júnior: 70% do dinheiro na mesa por mês dividido pelo que o funil fatura hoje, arredondado para baixo (conflito-19, lado 1).
 - **Fala 3:** "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." (muda, M20)
 - **Pergunta:** "Quer receber o seu plano de ação de 90 dias?" (fica)
 - **Opções:** "Sim, eu quero" · "Quero ver como é" (fica)
@@ -304,7 +305,7 @@ A faixa nunca aparece para o lead. Nenhum texto promete prazo de ligação (perg
 - **Fala:** "Depois, é só mandar esta mensagem no nosso WhatsApp que o seu plano chega por lá."
 - **Rótulo:** "Mensagem pronta" · **Mensagem:** "Envie o meu plano de ação." · **Botão:** "Mandar no WhatsApp". Número: {{a definir: numero do WhatsApp}}.
 
-**Notas.** O percentual "em até X%" saiu (conflito-19): nenhum percentual de melhora em peça antes de caso comprovado (#39; `provas-e-conformidade`; `tom-de-voz`). "Resgatar parte desse dinheiro" também saiu, porque promete resultado; "instalar um sistema" pode ("sistema instalado" pode, "resultado" não; `tom-de-voz`). A fala 3 do mockup dizia o valor e a gratuidade copiados; agora vêm da ficha. A ficha registra esse valor como o da Análise, e o próprio campo anota que o quiz já o dizia do plano (ficha-de-fatos#analise-valor, "Histórico"); se o plano é a Análise não está decidido (conflito-10; pergunta 13.3). "Em breve" saiu: a cobrança começa depois das análises de ficha-de-fatos#analises-gratuitas, não numa data (`tom-de-voz`, prazo ou data só se real). O vídeo é de "alguém do time", não uma pessoa nomeada.
+**Notas.** A fala 2 fica como o Júnior escreveu, com o percentual "em até X%" e o "resgatar parte desse dinheiro": o Otávio decidiu manter o quiz como está, como exceção às regras de prova e conformidade (decisão do Otávio, 09/11/2026, 7.5; base/decisoes.md, #110). A regra geral continua valendo para as outras peças (#39; `provas-e-conformidade`; `tom-de-voz`). A página de hoje (`quiz-01-pagina` v2) ainda está sem o percentual; a volta dele é pergunta desta etapa (etapa 34). A fala 3 do mockup dizia o valor e a gratuidade copiados; agora vêm da ficha. A ficha registra esse valor como o da Análise, e o próprio campo anota que o quiz já o dizia do plano (ficha-de-fatos#analise-valor, "Histórico"); se o plano é a Análise não está decidido (conflito-10; pergunta 13.3). "Em breve" saiu: a cobrança começa depois das análises de ficha-de-fatos#analises-gratuitas, não numa data (`tom-de-voz`, prazo ou data só se real). O vídeo é de "alguém do time", não uma pessoa nomeada.
 
 ### 10.2 e 10.3 · Relatório
 
@@ -319,7 +320,8 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **Título, funil saudável:** "[nome], seu funil bate a meta nas 4 etapas." (fica)
 - **Apoio, funil saudável:** "Pelos números que você informou, todas as etapas estão na meta ou acima. O processo comercial funciona. O limite agora é quantas sementes entram." (fica)
 - **Selo de confiança:** "confiança alta · números que você informou" ou "estimativa · respostas por chute" (fica)
-- **Cópia:** "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp, nos canais que você aceitou." (muda, M21)
+- **Cópia, com a caixa marcada:** "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." (fica, M21)
+- **Cópia, com a caixa desmarcada:** "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." (muda, M21) [PENDENTE: 30.3]
 
 **Funil**
 - **Olho e título:** "da semente ao fruto" · "Suas 4 etapas contra as metas" (fica)
@@ -377,7 +379,7 @@ O mesmo bloco serve ao qualificado com etapa fraca, se ele vir o relatório (per
 - "Compartilhar" · "Baixar PDF" (fica; na versão final, link para sócio ou gestor e PDF)
 - **Rodapé:** {{BLOQUEADO: ficha-de-fatos#nome-agencia}} · "Metas usadas: {{ficha-de-fatos#metas-por-etapa}}. Cada etapa é medida contra a anterior." (muda, M28)
 
-**Notas.** Os números de meta nas frases ("pelo menos 5", "1 a cada 4", "1 a cada 5", "Metade dos leads") vêm de ficha-de-fatos#metas-por-etapa e mudam com o campo. A escolha de dia e horário no relatório faz o próprio lead marcar a conversa; o registro diz que quem agenda é o SDR (#67; ficha-de-fatos#quem-agenda; `funil-01`, passo 3): por isso fica oculta (pergunta 13.5). Do lado do lead score, o não qualificado vai para a nutrição, fora da fila do SDR, e a nota do Júnior promete uma ligação: os dois estão escritos e o final está bloqueado.
+**Notas.** Com a 18.4 (#114), o clique da pessoa no fim do quiz fica registrado para quem liga saber (banco, garçom e página nas etapas 32 a 34); por isso ficam o "Seu interesse fica registrado" da nota do lado do lead score e o "Horário reservado" da escolha de dia e horário, que continua oculta (13.5). Os números de meta nas frases ("pelo menos 5", "1 a cada 4", "1 a cada 5", "Metade dos leads") vêm de ficha-de-fatos#metas-por-etapa e mudam com o campo. A escolha de dia e horário no relatório faz o próprio lead marcar a conversa; o registro diz que quem agenda é o SDR (#67; ficha-de-fatos#quem-agenda; `funil-01`, passo 3): por isso fica oculta (pergunta 13.5). Do lado do lead score, o não qualificado vai para a nutrição, fora da fila do SDR, e a nota do Júnior promete uma ligação: os dois estão escritos e o final está bloqueado.
 
 ---
 
@@ -393,8 +395,8 @@ O mesmo bloco serve ao qualificado com etapa fraca, se ele vir o relatório (per
 ## Conferência da copy
 
 - **Lead score:** as perguntas que pontuam (faturamento, valor médio, vendedores, leads por mês, CRM, cargo, tentativas, sobra de lead, primeiro contato) ficam, e as opções são as mesmas que `lead-score` pontua, letra por letra. Só o enunciado de "vendedores" mudou (M9); as opções não. O dinheiro na mesa é o que o quiz já calcula.
-- **Fatos:** gratuidade e valor por ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analise-valor; metas por ficha-de-fatos#metas-por-etapa. Campos citados, todos na ficha v3: analise-gratuidade, analise-nome-publico, analise-valor, analises-gratuitas, criterio-de-qualificacao, metas-por-etapa, nome-agencia, quem-agenda. Os números do exemplo (Marina, 400 leads, R$ 15 mil) são ilustrativos e não viram prova.
-- **Conformidade:** sem "até X%" nem outro percentual de melhora; dinheiro na mesa sempre como conta; consentimento antes do e-mail e do WhatsApp, com finalidade e link da política; sem depoimento, logo ou número de cliente (LEIA PRIMEIRO, regra 8); sem prazo de ligação prometido; sem data para a cobrança.
+- **Fatos:** gratuidade e valor por ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analise-valor; metas por ficha-de-fatos#metas-por-etapa. Campos citados, todos na ficha v4: analise-gratuidade, analise-nome-publico, analise-valor, analises-gratuitas, criterio-de-qualificacao, metas-por-etapa, nome-agencia, quem-agenda. Os números do exemplo (Marina, 400 leads, R$ 15 mil) são ilustrativos e não viram prova.
+- **Conformidade:** sem percentual de melhora, salvo a exceção do plano de 90 dias (fala 2 do 10.1; #110); dinheiro na mesa sempre como conta; texto de aceite e caixa única já marcada antes do e-mail e do WhatsApp, com finalidade, canais e link da política (#104, #105); sem depoimento, logo ou número de cliente (LEIA PRIMEIRO, regra 8); sem prazo de ligação prometido; sem data para a cobrança.
 - **Vocabulário:** sem "reunião" em texto público; sem "SDR" e "closer"; sem "diagnóstico gratuito"; sem "Safra" nem colheita em título e chamada; "Junior Neves" em público.
 - **Separador:** ponto médio; nenhum travessão (o olho do mockup, a marca de vazio e a faixa de faturamento da folha de exemplo tinham, e saíram: M4 e M30).
 
@@ -421,12 +423,12 @@ Toda alteração feita no texto do mockup (fontes/quiz-01-repositorio-2026-11-08
 | M13 | Modo chute | "Se fosse chutar, quantos dos leads com perfil marcam reunião?" · "Se fosse chutar, quantos dos agendados vêm para a reunião?" · "De cada 100 reuniões marcadas, quantas acontecem de verdade." | "... marcam a conversa de venda?" · "... vêm para a conversa de venda?" · "De cada 100 conversas marcadas, quantas acontecem de verdade." | "Reunião" queimada (13.1); "X" das opções pela meta da ficha |
 | M14 | Falas depois do primeiro contato e das tentativas | "... quem responde primeiro costuma ficar com a reunião." · "... separa lead perdido de reunião marcada." | "... costuma ficar com a conversa." · "... separa lead perdido de conversa marcada." | "Reunião" queimada (13.1) |
 | M15 | Descrição dos selos | "Tem gente só para marcar reunião." · "3 de cada 4 reuniões acontecem." · "1 venda a cada 5 reuniões, ou melhor." | "Tem gente só para marcar a conversa de venda." · "3 de cada 4 conversas marcadas acontecem." · "1 venda a cada 5 conversas, ou melhor." | "Reunião" queimada (13.1) |
-| M16 | Contato | Sem texto de consentimento; botão libera só com nome, e-mail e WhatsApp | Texto de consentimento antes dos campos, duas caixas (WhatsApp e e-mail), link da política e o aviso "Marque pelo menos um jeito de receber o diagnóstico." | LGPD: consentimento explícito com finalidade (conflito-09; `provas-e-conformidade`; `planta-do-banco`) (13.4) |
+| M16 | Contato | Sem texto de consentimento; botão libera só com nome, e-mail e WhatsApp | Texto de aceite antes dos campos, uma caixa só, já marcada ("Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail."), link da política e o aviso "Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado." | Caixa única já marcada (decisão do Otávio, 09/11/2026, 13.4 e 16.12; #104, #105); a posição fica (#110); o que acontece ao desmarcar é provisório (30.3) |
 | M17 | Perfis do funil | "Lead com perfil demora a virar reunião." · "Agenda furada · Reunião marcada não vira reunião feita." · "Reunião sem fechamento · O cliente vem para a reunião e sai sem comprar." | "... demora a virar conversa de venda." · "Agenda furada · Conversa marcada não vira conversa feita." · "Conversa sem fechamento · O cliente vem para a conversa e sai sem comprar." | "Reunião" queimada (13.1) |
 | M18 | Oferta do plano, fala 1 | "... uns R$ [n] mil. É dinheiro que hoje fica na mesa." | "... uns [R$] mil. É conta, não promessa: é dinheiro que hoje fica na mesa." | O manual dele manda dizer o dinheiro na mesa como conta, nunca como promessa (MANUAL, seção 5); a tela não tinha a ressalva que o relatório tem |
-| M19 | Oferta do plano, fala 2 | "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." | "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial." | Percentual de melhora proibido antes de caso comprovado (#39; CONAR; CDC, art. 30; conflito-19); "resgatar" promete resultado |
+| M19 | Oferta do plano, fala 2 | "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." | Desfeita: fica o texto do mockup. (Na v1 da copy: "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial.") | O Otávio mantém o quiz como está, com a promessa de percentual, como exceção às regras de prova e conformidade (#110). Na v1, o motivo da troca era o percentual proibido antes de caso comprovado (#39; CONAR; CDC, art. 30; conflito-19) |
 | M20 | Oferta do plano, fala 3 | "Agora ele é gratuito. Em breve, vai custar [o valor que hoje está em ficha-de-fatos#analise-valor]." | "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." | Valor e gratuidade só pela ficha; "em breve" sugere data que não existe (a cobrança começa depois de ficha-de-fatos#analises-gratuitas); plano e Análise a confirmar (conflito-10; 13.3) |
-| M21 | Relatório, cópia | "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." | "... vai para o seu e-mail e WhatsApp, nos canais que você aceitou." | O consentimento é por canal (M16) |
+| M21 | Relatório, cópia | "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." | Com a caixa marcada, fica o texto do mockup; com a caixa desmarcada, "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." [PENDENTE: 30.3] | A caixa é única (#104): não há mais canal aceito e canal recusado; quem desmarca não recebe cópia (30.3) |
 | M22 | Relatório, etapas do funil | "marcaram reunião" · "vieram para a reunião" · base "reuniões" | "marcaram a conversa de venda" · "vieram para a conversa de venda" · base "conversas" | "Reunião" queimada (13.1) |
 | M23 | Relatório, conversão geral | "A meta geral é cerca de 4%." | "Somando as quatro metas, dá {{ficha-de-fatos#metas-por-etapa:geral}}." | Fato pela ficha, que registra o valor exato; os 4% não podem soar como métrica de mercado (`tom-de-voz`) (13.11) |
 | M24 | Relatório, leitura de agendamento, comparecimento e fechamento | Frases e causas com "reunião" ("marcam reunião", "reuniões marcadas", "a reunião perde prioridade", "o que a pessoa leva da reunião", "reuniões", "reunião que termina sem próximo passo", "Toda reunião termina...", "roteiro único de reunião") | As mesmas frases com "conversa de venda" ou "conversa" | "Reunião" queimada (13.1) |
@@ -440,8 +442,8 @@ Toda alteração feita no texto do mockup (fontes/quiz-01-repositorio-2026-11-08
 ## Fontes
 
 - fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html (texto e roteiro), CLAUDE.md, LEIA PRIMEIRO.md, MANUAL DO DIAGNÓSTICO (RASCUNHO).md, REA - FULL STACK MARKETING.md (só leitura).
-- entregas/quizzes/quiz-01/briefing.md (v1).
-- base/lead-score.md (v2), base/ficha-de-fatos.md (v3), base/lacunas.md (v5), base/decisoes.md (v3), base/tom-de-voz.md (v3), base/provas-e-conformidade.md (v3), base/persona.md (v3), GLOSSARY.md (v3), funis/funil-01/funil.md (v2), dados/planta/planta.md (v2).
+- entregas/quizzes/quiz-01/briefing.md (v2).
+- base/lead-score.md (v3), base/ficha-de-fatos.md (v4), base/lacunas.md (v6), base/decisoes.md (v5; #103 a #114), base/tom-de-voz.md (v4), base/provas-e-conformidade.md (v4), base/persona.md (v4), GLOSSARY.md (v4), funis/funil-01/funil.md (v3), dados/planta/planta.md (v4).
 - Formato: entregas/landings/landing-page-01/copy.md (v3).
 - Skill: junior-neves-voice. Onde chocou com a base, valeu a base (9.4).
-- Perguntas: prompts/05-fila-perguntas.md (9.3, 9.4, 9.6) e prompts/07-fila-perguntas.md (13.1 a 13.12).
+- Perguntas: prompts/05-fila-perguntas.md (9.3, 9.4, 9.6) e prompts/07-fila-perguntas.md (13.1 a 13.12); respostas do Otávio de 09/11/2026 (prompts/11-decisoes-de-09-11.md; prompts/11-respostas.md); prompts/11-fila-perguntas.md (30.3, 30.9 e as da etapa 31).

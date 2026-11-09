@@ -1,42 +1,42 @@
 ---
 id: glossario
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: produto
-    versao: 3
+    versao: 4
   - id: metodo
-    versao: 3
+    versao: 4
   - id: mecanismo
-    versao: 1
-  - id: oferta
-    versao: 1
-  - id: promessa
-    versao: 3
-  - id: entregas-do-servico
-    versao: 3
-  - id: persona
-    versao: 3
-  - id: tom-de-voz
-    versao: 3
-  - id: lead-score
     versao: 2
-desatualizado: true
+  - id: oferta
+    versao: 2
+  - id: promessa
+    versao: 4
+  - id: entregas-do-servico
+    versao: 4
+  - id: persona
+    versao: 4
+  - id: tom-de-voz
+    versao: 4
+  - id: lead-score
+    versao: 3
+desatualizado: false
 ---
 
 # Glossário do Sistema de Vendas Safra
 
 A língua do projeto: o que cada termo quer dizer aqui e os sinônimos que não se usam. Fatos (preço, prazos, quantidades) ficam em `ficha-de-fatos`.
 
-Nota: as frases e alegações proibidas não são termos e ficam em `tom-de-voz` ("Frases e alegações que não entram em peça"). Os termos tirados de documentos em pendente-aprovacao (`tom-de-voz`, `promessa`, `oferta`) podem mudar quando eles forem aprovados.
+Nota: as frases e alegações proibidas não são termos e ficam em `tom-de-voz` ("Frases e alegações que não entram em peça"). Os termos tirados de documentos em pendente-aprovacao (`tom-de-voz`, `oferta`) podem mudar quando eles forem aprovados. A `promessa` vale por decisão do Otávio (#108).
 
 ## Language
 
@@ -123,7 +123,7 @@ _Avoid_: metas assinadas
 _Fonte_: F12; PAINEL, regra 4
 
 **Etapas**:
-As passagens do funil que recebem meta. Em público, com os nomes do método: pré-qualificação, agendamento, comparecimento e fechamento (Otávio, 08/11/2026; conflito-12, resolvido). Em títulos e chamadas de topo vale também a regra de 22/10 (ver `tom-de-voz`).
+As passagens do funil que recebem meta. Em público, com os nomes do método: pré-qualificação, agendamento, comparecimento e fechamento (Otávio, 08/11/2026; conflito-12, resolvido). Em títulos e chamadas de topo vale também a regra de 22/10: os nomes de etapa entram no corpo da página e do quiz, nunca no topo (Otávio, 09/11/2026, 4.6; #114; ver `tom-de-voz`).
 _Avoid_: lead qualificado, reunião marcada, reunião realizada (forma do DS v1.0; "reunião" é palavra queimada para a persona); "SDR" e "closer" na comunicação de topo
 _Fonte_: Ficha do Serviço online; DS; conflito-12; ficha-de-fatos#metas-por-etapa
 
@@ -181,8 +181,14 @@ _Avoid_: turma
 _Fonte_: #65; ficha-de-fatos#vagas
 
 **Análise Estratégica do seu Comercial**:
-A porta de entrada: desde a #92, é o diagnóstico do quiz, gratuito nas análises de ficha-de-fatos#analises-gratuitas e cobrado depois (ficha-de-fatos#analise-valor). A reunião com o Júnior é a conversa de venda, sem preço. O nome público está em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico).
-_Fonte_: #66; #92; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
+A porta de entrada: desde a #92, é o diagnóstico do quiz, gratuito nas análises de ficha-de-fatos#analises-gratuitas e cobrado depois (ficha-de-fatos#analise-valor). A conversa de venda que vem depois é a Call de Direcionamento (ver abaixo). O nome público da Análise continua a definir, em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico; #107).
+_Avoid_: "Análise" para a conversa de venda
+_Fonte_: #66; #92; #107; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
+
+**Call de Direcionamento**:
+A conversa de venda com o Júnior, depois do diagnóstico do quiz, sem custo para o lead. É nela que fica a demonstração com os números do cliente. Nome em ficha-de-fatos#nome-call-de-venda; duração em ficha-de-fatos#duracao-call-de-venda; quem conduz em ficha-de-fatos#quem-faz-a-reuniao.
+_Avoid_: reunião com o Júnior, reunião de venda ("reunião" é palavra queimada para a persona); "versão rápida da Análise" ou "Análise na call" para a conversa
+_Fonte_: #92; #107; #114 (4.5, 15.14); ficha-de-fatos#nome-call-de-venda
 
 **Calculadora**:
 A Calculadora do Valor Potencial de Recuperação de Leads, a outra porta do quiz.
@@ -261,6 +267,7 @@ _Fonte_: #83; CTX §6
 
 **Calls em grupo**:
 As calls com todos os clientes (frequência em ficha-de-fatos#calls-em-grupo), conduzidas pelo Júnior e pelo Euclides, onde acontece o Treinamento para Otimização da Conversão. A quantidade está em ficha-de-fatos#calls-em-grupo, em conflito, ver lacunas.
+_Avoid_: "reunião de safra" ou "reunião semanal de safra" (Otávio, 09/11/2026, 8.12; #114)
 _Fonte_: #78; #79; ficha-de-fatos#calls-em-grupo
 
 **Análise de calls**:
@@ -270,6 +277,16 @@ _Fonte_: CTX §13; ficha-de-fatos#analise-de-calls
 **Grupo de suporte**:
 O WhatsApp de cada cliente, com CS e IA de consulta.
 _Fonte_: #76; ficha-de-fatos#grupo-de-suporte
+
+**Prioridade da semana**:
+O nome da tela do painel mostrada na página que antes se chamava "Reunião de safra"; o conteúdo da tela não mudou.
+_Avoid_: Reunião de safra
+_Fonte_: 8.12 com 9.6 (Otávio, 09/11/2026; #114); landing
+
+**Ponto de partida** e **Encerramento**:
+Os rótulos da primeira e da última fase da linha do tempo do serviço na página.
+_Avoid_: "Análise" (confunde com o diagnóstico do quiz, #92) e "Fechamento" (nome de etapa do funil, ficha-de-fatos#metas-por-etapa) como rótulos de fase
+_Fonte_: 9.15 (Otávio, 09/11/2026; #114); landing
 
 **Fases de cor**:
 Vermelho, amarelo e verde da linha do tempo do serviço na página. A parte de cada fase é fato fora da ficha.
@@ -302,16 +319,16 @@ Estrutura mínima viável do funil.
 _Fonte_: CTX §13; Doc Mestre online
 
 **Funil-01**:
-O desenho de funil proposto para substituir o das três portas. Pendente de aprovação do Júnior e do Euclides.
-_Fonte_: #90; conflito-06; conflito-14
+O desenho de funil proposto para substituir o das três portas. Aprovado pelo Otávio em 09/11/2026 (#111); pendente de aprovação do Júnior e do Euclides (#90).
+_Fonte_: #90; #111; conflito-06; conflito-14
 
 **Página das três portas**:
 O desenho de entrada do funil decidido em 03/11: "três portas com e sem VSL, campanhas da Análise e da Calculadora". Pode ser substituído pelo Funil-01.
 _Fonte_: #66; #90
 
 **Quiz**:
-A peça que qualifica o lead e abre as portas da Análise e da Calculadora; desde a #92, o diagnóstico do quiz é a própria Análise. A proposta de qualificação por nota está em `lead-score` (#98, pendente). Nome público em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico). A falta de consentimento LGPD e a promessa percentual do quiz estão em conflito-09.
-_Fonte_: #66; #92; #98; quiz; conflito-02
+A peça que qualifica o lead e abre as portas da Análise e da Calculadora; desde a #92, o diagnóstico do quiz é a própria Análise. A proposta de qualificação por nota está em `lead-score` (#98, pendente). Nome público em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico). A posição do aceite e a promessa de percentual no fim do quiz ficam como estão, por exceção decidida pelo Otávio (#110); a caixa de aceite é uma só, já marcada (#104). Ver `provas-e-conformidade` ("Exceções decididas pelo Otávio") e conflito-09.
+_Fonte_: #66; #92; #98; #104; #110; quiz; conflito-02
 
 **Temperatura**:
 A escala de frio, morno e quente do público do funil; mede só se a pessoa já conhece o Júnior, não se ela está pronta para comprar.

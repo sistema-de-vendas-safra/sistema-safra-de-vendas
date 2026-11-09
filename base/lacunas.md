@@ -1,15 +1,15 @@
 ---
 id: lacunas
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
+    versao: 4
   - id: decisoes
-    versao: 3
-desatualizado: true
+    versao: 5
+desatualizado: false
 ---
 
 # Lacunas
@@ -44,6 +44,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #85, #33; CTX §6, §10; Promessa central online; dossiê §3.
 - **Quem decide:** o Júnior e o Euclides aprovam a #85; o Otávio decide os ajustes (plano aprovado, parte 5, conflito 3).
 - **O que destrava:** o título e o subtítulo do hero da landing-page-01, a promessa no quiz-01 e o compromisso de agenda dos dois nas calls em grupo (ficha-de-fatos#calls-em-grupo).
+- **Resolvido em parte (#108, 09/11/2026):** a promessa passa a valer por decisão do Otávio: base/promessa.md sai de pendente-aprovacao para decidido, e o topo da landing-page-01 mantém tudo o que veio do projeto anterior, inclusive as promessas, sem subtítulo neutro. Continuam em aberto: o que isso muda no status da #85 e da #33 e no compromisso de agenda do Júnior e do Euclides que a promessa anuncia (prompts/11-fila-perguntas.md, 30.4); os ajustes de 08/11, que a #108 não confirma; e o item 5 da pauta, que vira "Para confirmar" com os dois.
 - **Ver também:** conflito-03.
 
 ### lacuna-03
@@ -101,6 +102,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #85; CTX §10; Promessa central online.
 - **Quem decide:** não registrado. O dado vem do cliente no onboarding (CTX §10).
 - **O que destrava:** a medição do que a promessa diz no Relatório de Produtividade.
+- **Situação em 09/11/2026:** o título da landing-page-01 vai com a palavra "lucro", sem esperar caso documentado, e sai a marca de bloqueio desse título (#109). A medição do lucro por lead continua em aberto: a #109 não trata da margem do cliente.
 - **Ver também:** outros-09.
 
 ### lacuna-10
@@ -108,6 +110,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **O que é:** escopo das entregas (ficha-de-fatos#numero-de-entregas), ritos, presença do Júnior e do Euclides que a promessa anuncia, gravações e dados, sem nenhum poder de gestão sobre o time do cliente. O contrato atual tem outro número de entregas.
 - **Valores e fontes:** ficha-de-fatos#numero-de-entregas, ficha-de-fatos#garantia, ficha-de-fatos#arrependimento; #39, #85; CTX §8, §10, §12; Doc Mestre online (E.M.V.: contrato revisado por advogado, só com o escopo das entregas; o número está em ficha-de-fatos#numero-de-entregas).
 - **Quem decide:** não registrado; a fonte pede revisão de advogado (CTX §8; Oferta online; Doc Mestre online).
+- **Situação em 09/11/2026:** a revisão jurídica não é responsabilidade do sistema (#103). Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). O contrato continua em aberto, como questão da empresa que vende; a lacuna fica para não se perder, sem trava de ida ao ar das peças do sistema.
 - **O que destrava:** a primeira venda.
 - **Ver também:** outros-06.
 
@@ -118,6 +121,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** ver conflito-02.
 - **O que destrava:** a seção da Análise da landing-page-01 e a fala final do quiz-01.
 - **Resolvido em parte (#92, 08/11/2026):** valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas). Continuam em aberto o nome público, a duração e quem conduz a reunião com o Júnior (conflito-02).
+- **Resolvido em parte (#107, 09/11/2026):** a reunião com o Júnior é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração de ficha-de-fatos#duracao-call-de-venda e o condutor de ficha-de-fatos#quem-faz-a-reuniao; é nela que fica a demonstração com os números do cliente (4.5, #114). Continua em aberto só o nome público da Análise (ficha-de-fatos#analise-nome-publico; prompts/11-fila-perguntas.md, 30.1).
 - **Ver também:** conflito-02.
 
 ### lacuna-12
@@ -194,6 +198,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #16, #26, #29, #44, #85, #89, #92, #98; CTX §10, §11.
 - **Quem decide:** o Júnior e o Euclides.
 - **O que destrava:** as peças que usam cada um desses itens; enquanto pendentes, só como rascunho.
+- **Situação em 09/11/2026:** a promessa passa a valer por decisão do Otávio (#108); o que isso muda na aprovação da #85 pelos dois está em pergunta (prompts/11-fila-perguntas.md, 30.4), e o item 5 da pauta vira "Para confirmar". Entram para informar aos dois o nome, a duração e o condutor da Call de Direcionamento (#107; pauta, item 7, "Para informar"). O funil-01 tem a aprovação do Otávio (#111) e continua pendente dos dois, junto com a #90.
 
 ### lacuna-21
 **Página antes de ir ao ar.**
@@ -202,6 +207,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** não registrado.
 - **O que destrava:** a publicação da landing-page-01.
 - **Resolvido em parte em 08/11/2026:** o Deming está em ficha-de-fatos#deming-percentual, com a nota "Adaptado de" (resposta 2 do Otávio), e o título da seção 2 fica como está (#94). Os demais pontos continuam.
+- **Situação em 09/11/2026:** a nota do Deming na landing volta a dizer "Adaptado de", como a ficha pede (4.4, #114).
 - **Ver também:** conflito-05, conflito-13.
 
 ### lacuna-22
@@ -255,6 +261,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **O que destrava:** a seção da Análise, o cartão da oferta e o passo 3 da landing-page-01; a fala final e o nome do quiz-01.
 - **Resolvido em parte (#92, 08/11/2026):** a Análise passa a ser o diagnóstico do quiz (ficha-de-fatos#analise-conteudo); valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas); a reunião com o Júnior é a conversa de venda, sem preço. O Júnior e o Euclides devem ser informados na pauta de aprovação.
 - **Continua em aberto:** o nome público (ficha-de-fatos#analise-nome-publico) e o que a #92 não define sobre a reunião com o Júnior: a duração (ficha-de-fatos#analise-duracao) e quem conduz (ficha-de-fatos#analise-quem-conduz).
+- **Resolvido em parte (#107, 09/11/2026):** a conversa de venda com o Júnior passa a ser a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração em ficha-de-fatos#duracao-call-de-venda e o condutor em ficha-de-fatos#quem-faz-a-reuniao; nela fica a demonstração com os números do cliente (4.5, #114). Os campos ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha, com observação que aponta para a #107 (prompts/11-fila-perguntas.md, 30.6). Continua em aberto o nome público da Análise (ficha-de-fatos#analise-nome-publico; 30.1).
 - **Ver também:** lacuna-11, conflito-04.
 
 ### conflito-03
@@ -263,6 +270,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #33, #85; CTX §6, §9 (leitura 23); Promessa central online; landing (Hero A, Hero B); DS (pagina-documentacao.html, "Proposta de valor").
 - **Quem decide:** o Júnior e o Euclides aprovam a #85; o Otávio decide os ajustes.
 - **O que destrava:** o título e o subtítulo da landing-page-01 e qualquer promessa no quiz-01.
+- **Resolvido em parte (#108, 09/11/2026):** a landing-page-01 mantém tudo o que veio do projeto anterior no topo, inclusive as promessas; o subtítulo neutro não entra. Se a página tiver dois topos, a 10.14 volta como pergunta, sem teste ligado. Continua em aberto o que o DS v1.0 traz como proposta de valor (a #33) e o status da #85 e da #33 (30.4; lacuna-02).
 - **Ver também:** lacuna-02.
 
 ### conflito-04
@@ -272,6 +280,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio (copy da barra, já resolvida pela #93); o contador "Total gerado", o Júnior e o Euclides (conflito-05); o número real depende do funil-01 (#90).
 - **O que destrava:** a barra embaixo dos botões e o contador do hero da landing-page-01.
 - **Resolvido em parte (#93, 08/11/2026):** o contador de escassez segue a regra de ficha-de-fatos#barra-de-resgates (contagem real, a partir do banco de dados, visível só acima do limite da regra). O contador "Total gerado" continua no conflito de credenciais, com o Júnior e o Euclides (conflito-05).
+- **Situação em 09/11/2026 (#114):** conta uma análise gratuita por pessoa que recebeu o diagnóstico, sem recontar quem refaz, e o contador nunca aparece no topo da página (5.7); a página diz "sem custo na promoção de lançamento", sem o número, até o contador aparecer (9.3); a cobrança da Análise depois das gratuitas fica para a segunda versão do funil, e o valor só aparece na página quando a cobrança existir (5.9).
 - **Ver também:** conflito-02, conflito-14.
 
 ### conflito-05
@@ -312,6 +321,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** #39; CTX §8; Promessa central online; Doc Mestre online (regra 8); quiz.
 - **Quem decide:** o Otávio com o Júnior (o quiz é o artefato do Júnior; CTX §3).
 - **O que destrava:** a publicação do quiz-01.
+- **Situação em 09/11/2026:** do lado do Otávio, o quiz fica como está: não muda a posição do aceite em relação ao pedido de contato e não sai a promessa de percentual do fim, como exceção às regras de prova e conformidade, decidida por ele (#110; `provas-e-conformidade`). O aceite passa a ser uma caixa só, que já vem marcada, cobrindo o diagnóstico e o contato da equipe por WhatsApp (mensagem e ligação) e por e-mail (#104, #105); quem desmarca vê o diagnóstico na tela e nada é enviado (escolha provisória, prompts/11-fila-perguntas.md, 30.3). A caixa já marcada diante da regra de consentimento explícito está em pergunta (30.9). O lado do Júnior continua no item 29 da pauta (#110).
 - **Ver também:** conflito-19 (a promessa "até X%" na cópia nova do quiz-01, fontes/quiz-01-repositorio-2026-11-08/).
 
 ### conflito-10
@@ -354,6 +364,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** ficha-de-fatos#inicio-do-funil; #50, #90; log.md (Pendências: "Prazo").
 - **Quem decide:** o Júnior e o Euclides (#90); o Otávio (data).
 - **O que destrava:** a integração do quiz-01 e da landing-page-01 com o banco e a agenda do SDR.
+- **Situação em 09/11/2026:** o Otávio aprova o documento do funil-01 e mantém a data de ficha-de-fatos#inicio-do-funil, aceitando alguns dias de atraso se precisar (#111). A #90 continua pendente do Júnior e do Euclides (pauta, item 1).
 - **Ver também:** conflito-06.
 
 ### conflito-15
@@ -372,6 +383,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio com o Júnior e o Euclides (#98; a regra atual do quiz é do Júnior).
 - **O que destrava:** o caminho do fim do quiz-01 (oferta do plano, relatório com "Tenho interesse" ou nutrição) e a fila do SDR.
 - **Bloqueado para entrega até a decisão.** A copy do quiz-01 traz os dois lados escritos, sem escolher.
+- **Regra provisória (14.2, #114, 09/11/2026):** até a reunião, o quiz usa o mais restritivo dos dois cortes (o do Júnior e o da nota), numa versão nova da página, antes de testar com pessoas reais. Não escolhe lado: o conflito continua para o Júnior e o Euclides.
 - **Ver também:** conflito-01, lacuna-12.
 
 ### conflito-17
@@ -401,6 +413,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Lado 2 · a conformidade:** "Sem garantia" e "nenhuma promessa em contrato, de nenhum tipo" (#39); nada de percentual de melhora em peça antes de caso comprovado (Promessa central online; Mecanismo único online; CONAR; CDC, art. 30); o próprio manual do quiz manda escrever o dinheiro na mesa "como conta, nunca como promessa" e, numa sugestão ainda sem aprovação do Júnior, proíbe "vai dobrar" (MANUAL DO DIAGNÓSTICO, seções 5 e 6). Fonte: #39; CTX §8; base/provas-e-conformidade.md; base/tom-de-voz.md ("Promessa percentual de melhora").
 - **Quem decide:** o Otávio com o Júnior (o quiz é do Júnior; CTX §3).
 - **O que destrava:** a tela da oferta do plano no quiz-01. A copy do quiz-01 sai sem o percentual, como a etapa 13 manda, e a troca vai para o Júnior aprovar (pauta, item 29).
+- **Situação em 09/11/2026:** o Otávio decidiu manter a promessa de percentual no fim do quiz, como exceção registrada às regras de prova e conformidade (#110). O item 29 da pauta continua com o Júnior e o Euclides; até a resposta deles, o conflito fica registrado com os dois lados.
 - **Bloqueado para entrega até a decisão.**
 - **Ver também:** conflito-09, conflito-10.
 
@@ -546,6 +559,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **O que é:** se o direito de arrependimento do CDC (art. 49) também se aplica quando a venda é para uma empresa que usa o serviço no próprio negócio. O reembolso de 7 dias pela Hotmart já vale de qualquer forma (ficha-de-fatos#arrependimento).
 - **Valores e fontes:** ficha-de-fatos#arrependimento; Oferta online ("Cuidado jurídico"); Downsell online; CTX §8.
 - **Quem decide:** um advogado (Otávio, 08/11/2026).
+- **Situação em 09/11/2026:** revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). A questão continua da empresa que vende, sem trava de ida ao ar das peças do sistema; o reembolso pela Hotmart vale de qualquer forma.
 - **O que destrava:** a cláusula do contrato, antes da primeira venda.
 - **Ver também:** lacuna-10.
 
@@ -584,4 +598,5 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Valores e fontes:** nenhum valor registrado. dados/planta/planta.md ("Prazo de guarda"); `provas-e-conformidade`, "LGPD"; prompts/05-fila-de-trabalho.md, "Etapa 6 · Planta do banco".
 - **Quem decide:** não registrado; a fonte pede revisão de advogado antes da primeira peça (CTX §8; lacuna-10).
 - **O que destrava:** a regra de guarda e de apagamento da planta do banco. Até a decisão, nada é apagado automaticamente (prompts/05-fila-perguntas.md, 6.8).
+- **Resolvido em parte (#106, 09/11/2026):** o prazo de guarda está em ficha-de-fatos#prazo-de-guarda, contado do último evento da pessoa, e entra na política de privacidade e na planta do banco. A revisão jurídica fica com a empresa que assina a política, fora do sistema (#103). Continua em aberto o caminho de apagamento (o que se apaga, o que vira anônimo, quem faz e como fica registrado), pendência com prazo em log.md: escrito e testado antes de o primeiro dado real completar o prazo. Até lá, nada é apagado automaticamente. Quem retira o consentimento depois de entrar na planilha do SDR tem a linha apagada à mão pelo Otávio, até o caminho automático, que entra com a volta do status (21.10, #114).
 - **Ver também:** conflito-09 (o texto de consentimento do quiz-01, que diz a finalidade), lacuna-10.

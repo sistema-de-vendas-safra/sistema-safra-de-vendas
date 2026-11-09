@@ -1,22 +1,22 @@
 ---
 id: tom-de-voz
-versao: 3
+versao: 4
 status: pendente-aprovacao
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
   junior: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 3
-  - id: decisoes
-    versao: 3
-  - id: lacunas
     versao: 4
+  - id: decisoes
+    versao: 5
+  - id: lacunas
+    versao: 6
   - id: persona
-    versao: 3
+    versao: 4
   - id: promessa
-    versao: 3
-desatualizado: true
+    versao: 4
+desatualizado: false
 ---
 
 # Tom de voz
@@ -25,7 +25,7 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 
 **Manual de tom de voz do Safra:** não encontrado (dossiê §7: "não encontrado neste projeto").
 
-**Status.** Pendente de aprovação do Júnior. O que é do Otávio está decidido; dependem da confirmação do Júnior a postura do "vendedor chato" (#26), publicar sobre gestão comercial (#29) e a tese do closer (#87) (CTX §10, lacuna 20; CTX §11). Enquanto o Júnior estiver pendente, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md). Em 08/11/2026 o Otávio resolveu os pontos que eram dele: a regra de vocabulário para colheita, plantio e relógio, o nome das etapas e o jargão em inglês, e a exceção do Deming (#94).
+**Status.** Pendente de aprovação do Júnior. O que é do Otávio está decidido; dependem da confirmação do Júnior a postura do "vendedor chato" (#26), publicar sobre gestão comercial (#29) e a tese do closer (#87) (CTX §10, lacuna 20; CTX §11). Enquanto o Júnior estiver pendente, este documento só serve de base para rascunho, avisando que pode mudar (nucleo/regras/versionamento.md). Em 08/11/2026 o Otávio resolveu os pontos que eram dele: a regra de vocabulário para colheita, plantio e relógio, o nome das etapas e o jargão em inglês, e a exceção do Deming (#94). Em 09/11/2026, também dele: as falas de quem liga fora da skill do Júnior (15.13), o nome da conversa de venda (#107), a troca da "reunião de safra" (8.12) e os nomes de etapa fora do topo (4.6) (#114).
 
 **Como ler.** Fatos são citados pelo id do campo em `ficha-de-fatos`; decisões, por #n; pendências, pelo id de `lacunas`. Abreviações de fonte como na ficha de fatos. Texto entre aspas é literal da fonte.
 
@@ -37,6 +37,7 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 |---|---|---|
 | A voz final de todas as peças passa pela skill junior-neves-voice. A skill fica na conta, fora dos arquivos do projeto | CTX §6; Oferta online ("A voz final de todas as peças passa pela skill junior-neves-voice"); Big Idea final online; dossiê §7 | regra registrada |
 | "Voz do Júnior nas peças dele" | Doc Mestre online, regra 9 | regra registrada |
+| As falas de quem liga para os leads seguem o tom da casa (vocabulário público, sem promessa, sem "reunião", "vendedor chato" com data), sem passar pela skill junior-neves-voice; a skill vale para o que sai em nome do Júnior | prompts/07-fila-perguntas.md, 15.13 | decidido (Otávio, 09/11/2026, 15.13; base/decisoes.md, #114) |
 | Quem assina as peças (a Triad ou o Júnior em primeira pessoa) | ficha-de-fatos#nome-agencia, **campo em conflito · bloqueado para entrega até a decisão**; Promessa central online ("Decisões do cliente", item 2) | em aberto (lacuna-07, lacuna-19, conflito-07) |
 | Português do Brasil; falas literais com a grafia original | PAINEL, regra 8 | regra do Otávio |
 | Nenhum travessão nem traço médio; separador é o ponto médio (·) | CLAUDE.md, regra 5; PAINEL, regra 8 | regra da casa |
@@ -57,6 +58,8 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 | Aprovação que falta | "pendente de aprovação do Júnior e do Euclides", nunca "pendente dos sócios" | PAINEL, regra 13 (Otávio, 23/10/2026) |
 | Metas | "metas aprovadas pelo dono", nunca "metas assinadas" | PAINEL, regra 4 |
 | Os nomes das entregas | Como em ficha-de-fatos#nomes-das-entregas, "exatamente assim"; a horta fica na descrição, nunca no nome | #56; DS (seção das entregas); PAINEL, regra 16 |
+| A conversa de venda com o Júnior | Como em ficha-de-fatos#nome-call-de-venda; em público, nunca "reunião com o Júnior". A Análise é o diagnóstico do quiz, com nome público a definir (ficha-de-fatos#analise-nome-publico) | #92; #107 |
+| O rito semanal em grupo | Pelo nome de ficha-de-fatos#calls-em-grupo e da análise de calls (ficha-de-fatos#analise-de-calls), nunca "reunião de safra"; a tela do painel com as prioridades se chama "Prioridade da semana" | 8.12 com 9.6 (Otávio, 09/11/2026; #114) |
 
 ---
 
@@ -70,7 +73,7 @@ Fonte: Oferta online ("Regra de vocabulário (22/10)"). Status: decidido (Otávi
 
 **Vocabulário público** (Otávio, 08/11/2026; conflito-12): na comunicação de topo, só as palavras que o comprador já usa. Os termos do método e os nomes de etapa do DS ficam para dentro.
 
-**Nomes das etapas em público** (Otávio, 08/11/2026, resposta 5): os do método, pré-qualificação, agendamento, comparecimento e fechamento (ficha-de-fatos#metas-por-etapa). A forma do DS ("lead qualificado, reunião marcada, reunião realizada, venda") perde nesse ponto, porque "reunião" é palavra queimada para a persona (ver `persona`). Em títulos e chamadas de topo vale também a regra de 22/10 (prompts/05-fila-perguntas.md, 4.6).
+**Nomes das etapas em público** (Otávio, 08/11/2026, resposta 5): os do método, pré-qualificação, agendamento, comparecimento e fechamento (ficha-de-fatos#metas-por-etapa). A forma do DS ("lead qualificado, reunião marcada, reunião realizada, venda") perde nesse ponto, porque "reunião" é palavra queimada para a persona (ver `persona`). Em títulos e chamadas de topo vale também a regra de 22/10: os nomes de etapa entram no corpo da página e do quiz, nunca no topo (decisão do Otávio, 09/11/2026, 4.6; base/decisoes.md, #114).
 
 **Vocabulário próprio a proteger:** "safra, relógio, maturação, solo, adubo, plantio, cultivo, colheita, 'o lead é a semente' e 'perdido é quem falou não'. Esse vocabulário é da narrativa do método e das descrições das entregas" (Sistema de Vendas Safra online, "Limites e cuidados"; F12).
 
@@ -107,7 +110,7 @@ Fonte: #26; CTX §6 (Postura). **Depende de confirmação do Júnior** (CTX §10
 - **Fases de cor e a mensagem da instalação** (#80, decisão do Júnior em 07/11): a linha do tempo em três fases de cor (vermelho, amarelo e verde) e a mensagem de "todo o nosso arsenal de conhecimento" entregue no prazo de ficha-de-fatos#sistema-instalado, com o sistema instalado (CTX §6); a parte de cada fase na linha do tempo é **fato fora da ficha** (está em F25, "Linha do tempo da página", e no CTX §6). A fala de origem: "Escreve de um jeito até que chama atenção nós vamos entregar toda toda a nossa arsenal de conhecimento." (Júnior, F25).
 - **"Sistema instalado" pode; "resultado" não.** "'sistema instalado em 15 dias' pode ir a público se for cumprido, 'resultado em 15 dias' não" (CTX §8; prazo: ficha-de-fatos#sistema-instalado).
 - **Referência interna de narrativa** (#81): The Profit (no Brasil, O Sócio), de Marcus Lemonis, com "por 90 dias eu mando no seu comercial" (duração: ficha-de-fatos#duracao); "o nome dele e o da série ficam fora das peças" (CTX §6). É metáfora: "o time é do cliente, e nenhum poder de gestão vai ao contrato" (CTX §8).
-- **"Liderar o comercial" e "assumir a liderança"** na promessa de 08/11 (#85, pendente) também são metáforas (CTX §8; ver `promessa`).
+- **"Liderar o comercial" e "assumir a liderança"** na promessa de 08/11 (#85; vale por decisão do Otávio, #108) também são metáforas (CTX §8; ver `promessa`).
 
 ---
 
@@ -151,8 +154,8 @@ Esta é a lista de frases e alegações proibidas que o plano aprovado tira do g
 | Frase ou alegação | Por quê ou o que usar no lugar | Fonte |
 |---|---|---|
 | "de [preço depois] por [preço das vagas]" | Um "de" nunca praticado é propaganda enganosa; os valores e a regra estão em ficha-de-fatos#preco-avancada-depois | Doc Mestre online, regra 1; F11; PAINEL |
-| "todo o dinheiro" | "alegação absoluta (CONAR)" | CTX §8; ajuste sugerido em `promessa` |
-| Promessa percentual de melhora | "Nada de percentual de melhora em peça antes de caso comprovado (CONAR)"; a promessa percentual "continua guardada até haver casos com base de comparação". O quiz diverge (conflito-09) | Mecanismo único online; Promessa central online ("Conformidade") |
+| "todo o dinheiro" | "alegação absoluta (CONAR)". O texto da promessa mantido pela #108 traz a expressão: conflito registrado em `promessa`, bloqueado para ir ao ar até a resposta | CTX §8; ajuste sugerido em `promessa` |
+| Promessa percentual de melhora | "Nada de percentual de melhora em peça antes de caso comprovado (CONAR)"; a promessa percentual "continua guardada até haver casos com base de comparação". O quiz fica como está, com a promessa de percentual no fim, por exceção decidida pelo Otávio (#110; `provas-e-conformidade`) | Mecanismo único online; Promessa central online ("Conformidade") |
 | O "95%" da analogia, sem fonte (fato fora da ficha) | "A analogia diz 'quase todo negócio' até o 95% ter fonte" | Doc Mestre online, regra 7; Big Idea final online |
 | "Nada de 'última chance' que não seja a última"; contador regressivo | "Contador regressivo fica de fora: o mercado já desgastou o recurso e ele é risco no CONAR (F10)." A landing tem, como sugestão não confirmada, uma contagem regressiva até a virada do mês | Oferta online ("Urgência real"); landing ("UX", sugestões) |
 | Apresentar a leitura por safra como invenção inédita | "Novo para o mercado, não para o mundo": análise por coorte é prática conhecida (F8) | Sistema de Vendas Safra online ("Limites e cuidados"); DS ("Linguagem") |
@@ -211,5 +214,5 @@ Resolvidos em 08/11/2026 pelo Otávio: a regra de vocabulário para colheita, pl
 - PAINEL: 02-arquivos-do-projeto/claude/PAINEL-iasv-safra.md (regras 4, 8, 13, 16; "Onde o painel difere das fontes").
 - Dossiê: 01-dossie/safra-dossie.md (§7, §11). Landing: 01-dossie/safra-landing.md ("Parte 2").
 - DS: fontes/design-system-v1.0/pagina-documentacao.html ("Nome em texto corrido", "Linguagem"); adoção sem decisão (conflito-08).
-- Decisões #25, #26, #29, #38, #39, #44, #53, #56, #65, #68, #80, #81, #83, #85, #86, #87, #94 (base/decisoes.md).
+- Decisões #25, #26, #29, #38, #39, #44, #53, #56, #65, #68, #80, #81, #83, #85, #86, #87, #92, #94, #107, #108, #110 e #114 (4.6, 8.12, 15.13) (base/decisoes.md).
 - Otávio, 08/11/2026: respostas 3 e 5 às perguntas da etapa 3 (prompts/04-decisoes-de-08-11-e-lead-score.md, seção 5a) e seção 2 do mesmo prompt.

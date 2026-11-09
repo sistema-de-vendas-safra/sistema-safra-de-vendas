@@ -1,6 +1,6 @@
 ---
 id: politica-de-privacidade
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,41 +8,43 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: planta-do-banco
-    versao: 2
+    versao: 4
   - id: quiz-01-copy
-    versao: 1
-  - id: quiz-01-pagina
-    versao: 1
-  - id: landing-page-01-copy
-    versao: 3
-  - id: funil-01
     versao: 2
+  - id: quiz-01-pagina
+    versao: 2
+  - id: landing-page-01-copy
+    versao: 4
+  - id: funil-01
+    versao: 3
   - id: funil-01-planilha-sdr
-    versao: 1
+    versao: 2
   - id: funil-01-roteiros-sdr
-    versao: 1
+    versao: 2
   - id: regra-seguranca
-    versao: 1
+    versao: 3
   - id: lacunas
-    versao: 5
+    versao: 6
   - id: provas-e-conformidade
-    versao: 3
+    versao: 4
   - id: ficha-de-fatos
-    versao: 3
+    versao: 4
   - id: decisoes
-    versao: 3
+    versao: 5
 desatualizado: true
 ---
-
-> **Precisa de revisão de advogado antes de ir ao ar.**
 
 # Política de privacidade · rascunho
 
 ## Para a equipe (sai antes de publicar)
 
-**Status.** Rascunho. Serve ao funil-01, pendente do Júnior e do Euclides (#90), e ao quiz-01, que é do Júnior: por isso os três estão em aprovado_por. Nada aqui vai ao ar antes da revisão de advogado (`provas-e-conformidade`, "LGPD"; outros-23; lacuna-10).
+**Status.** Rascunho. Serve ao funil-01, pendente do Júnior e do Euclides (#90), e ao quiz-01, que é do Júnior: por isso os três estão em aprovado_por.
 
-**Desatualizado desde o nascimento.** Apoia-se em `planta-do-banco`, `quiz-01-copy`, `quiz-01-pagina`, `landing-page-01-copy`, `funil-01`, `funil-01-planilha-sdr`, `funil-01-roteiros-sdr` e `provas-e-conformidade`, todos marcados; segue a regra provisória 11.1 (prompts/07-fila-perguntas.md, 11.1 e 16.11).
+Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). Os pontos levantados na 16.4 (o aceite e a ordem da fila, a nutrição, a revisão da nota, a transferência para fora do Brasil e o aviso de incidente) continuam no texto como estavam.
+
+**Desatualizado.** Na versão 2 (etapa 31), todas as bases apontam para as versões em vigor. Continua marcada porque se apoia em `quiz-01-pagina`, que só muda nas etapas 33 e 34, e em documentos marcados por cadeia dela (`quiz-01-copy`, `landing-page-01-copy`, `funil-01-planilha-sdr`, `funil-01-roteiros-sdr`) (nucleo/regras/versionamento.md v3, 11.1). O texto já descreve a página do quiz como ela fica na etapa 34 (caixa única e fontes servidas junto com a página); a página de hoje ainda tem as duas caixas e carrega as fontes de fora.
+
+**O que muda na operação, fora do texto para o lead.** Quem retira o aceite depois de entrar na planilha do SDR: o Otávio apaga a linha à mão, até existir o caminho automático, que entra com a volta do status (21.10, #114). A planilha do SDR fica no Drive do Safra, como exceção registrada à regra 4 de segurança, com acesso só do Otávio e de quem liga (nucleo/regras/seguranca.md v3, regra 4; 5.4, #114). O caminho de apagamento no fim do prazo de guarda é pendência com prazo (#106; log.md, Pendências).
 
 **Destino dos dados em conflito · bloqueado para entrega até a decisão** (conflito-17). O lado 1 manda os contatos para uma conta nova do Triad CRM; o lado 2 (#90) manda para o banco de dados pelo garçom e para a planilha do SDR. O texto para o lead foi escrito para valer nos dois lados ("sistema de gestão de contatos"); a lista de serviços que guardam os dados está bloqueada (ver "Com quem os dados são compartilhados").
 
@@ -81,7 +83,7 @@ No fim, para receber o diagnóstico, você informa:
 - WhatsApp, com o código do país;
 - nome da empresa, se quiser (é opcional).
 
-**O seu aceite.** Guardamos se você aceitou contato por WhatsApp, por e-mail ou pelos dois, o texto exato que você aceitou e a data e a hora do aceite. Se um dia você retirar o aceite, guardamos a data em que retirou.
+**O seu aceite.** Guardamos que você aceitou receber o diagnóstico e o contato da equipe por WhatsApp (mensagem e ligação) e por e-mail, o texto exato que você aceitou e a data e a hora do aceite. Se um dia você retirar o aceite, guardamos a data em que retirou.
 
 **O que a gente calcula.** Com as suas respostas, o sistema calcula uma nota e uma faixa, que servem para organizar a ordem em que a nossa equipe entra em contato (ver item 4).
 
@@ -91,8 +93,8 @@ No fim, para receber o diagnóstico, você informa:
 
 Só para isto:
 
-1. **Montar o seu diagnóstico e mandar uma cópia para você**, nos canais que você aceitou.
-2. **Alguém da nossa equipe falar com você sobre o diagnóstico**, também só nos canais que você aceitou. Canal que você não aceitou não é usado. Se você aceitou o WhatsApp, a equipe pode mandar mensagem ou ligar para esse número.
+1. **Montar o seu diagnóstico e mandar uma cópia para você**, por WhatsApp e por e-mail, se você deixou o aceite marcado.
+2. **Alguém da nossa equipe falar com você sobre o diagnóstico**, por mensagem ou ligação no seu WhatsApp e por e-mail, se você deixou o aceite marcado.
 3. **Organizar a ordem dos contatos** pela nota calculada com as suas respostas.
 4. **Fazer contas com números somados**, sem identificar ninguém (por exemplo, quantas pessoas terminaram o diagnóstico num mês, ou de que origem vieram), para saber o que funciona na nossa página. Esses números não têm nome, telefone, e-mail nem respostas de ninguém.
 
@@ -100,7 +102,7 @@ A gente não vende os seus dados e não usa os seus dados para outra coisa sem p
 
 ### 4. Com base em quê a gente trata os seus dados
 
-Com o seu consentimento (LGPD, art. 7º, inciso I). Você aceita separadamente o contato por WhatsApp e por e-mail, marcando as caixas antes de enviar o contato; as caixas vêm desmarcadas. Sem pelo menos um aceite, o contato não é enviado.
+Com o seu consentimento (LGPD, art. 7º, inciso I). Antes de enviar o contato, você vê uma caixa de aceite só, que cobre o diagnóstico e o contato da equipe por WhatsApp (mensagem e ligação) e por e-mail. A caixa já vem marcada; se você desmarcar, o diagnóstico aparece na tela e nada é enviado: nem o seu contato, nem as suas respostas ficam com a gente, e a equipe não fala com você.
 
 Você pode retirar o aceite quando quiser, de graça, pelo canal do item 9. A retirada vale dali para a frente.
 
@@ -108,7 +110,7 @@ Você pode retirar o aceite quando quiser, de graça, pelo canal do item 9. A re
 
 ### 5. Onde os seus dados ficam guardados e quem tem acesso
 
-Os seus dados ficam guardados num sistema de gestão de contatos contratado por nós ({{a definir: provedor}}), com acesso protegido. Quem faz o contato com você trabalha numa planilha que recebe só parte deles (ver abaixo). Fora desses dois lugares, eles não ficam em arquivos de trabalho, em pastas compartilhadas nem no material interno da empresa.
+Os seus dados ficam guardados num sistema de gestão de contatos contratado por nós ({{a definir: provedor}}), com acesso protegido. Quem faz o contato com você trabalha numa planilha que recebe só parte deles (ver abaixo); ela fica numa conta da empresa, aberta só para quem cuida do sistema e para quem faz o contato, sem outro compartilhamento. Fora desses dois lugares, eles não ficam em arquivos de trabalho, em pastas compartilhadas nem no material interno da empresa.
 
 Têm acesso só as pessoas da nossa equipe que precisam dos dados para fazer o que está no item 3:
 
@@ -130,7 +132,6 @@ A gente não compartilha os seus dados com outras empresas para que elas os usem
 | Sistema de gestão de contatos (banco de dados ou CRM) | {{a definir}} |
 | Planilha de trabalho de quem faz o contato com você | {{a definir}} |
 | Envio da cópia do diagnóstico por e-mail e por WhatsApp | {{a definir}} |
-| Fontes de letra da página (recebem só o endereço técnico da conexão, o IP, para carregar as letras) | {{a definir}} |
 
 **Transferência para fora do Brasil:** {{a definir: se algum desses serviços guarda ou processa dados fora do Brasil e com que garantia}}.
 
@@ -142,13 +143,13 @@ A gente também pode informar dados quando uma lei ou uma ordem de autoridade ex
 
 Hoje as nossas páginas não guardam nada no seu navegador para medir você. A medição é feita assim: o link pelo qual você chegou leva uma etiqueta de origem e de campanha, e a página cria um código de visita que é esquecido quando você fecha a aba. Esse código só passa a ser ligado a você se você terminar o diagnóstico e enviar o contato.
 
-As páginas não usam pixel ou cookie de anúncio. Se isso mudar, esta política muda antes.
+As páginas não usam pixel ou cookie de anúncio, nem ferramenta de outra empresa que colha dados de quem visita. As letras da página vêm junto com ela, sem pedido a outro serviço. Se isso mudar, esta política muda antes.
 
 ### 8. Por quanto tempo os dados ficam guardados
 
-{{a definir: prazo de guarda e o que acontece no fim do prazo (outros-23)}}
+Os seus dados ficam guardados por {{ficha-de-fatos#prazo-de-guarda}}. No fim do prazo, os dados que identificam você deixam de ser guardados: {{a definir: o que se apaga, o que vira anônimo e como fica registrado (#106)}}.
 
-Enquanto o prazo não é definido, o sistema guarda só os dados listados no item 2. A qualquer momento, você pode pedir para apagar os seus dados (item 9).
+O sistema guarda só os dados listados no item 2. A qualquer momento, você pode pedir para apagar os seus dados antes do fim do prazo (item 9).
 
 ### 9. Os seus direitos e como pedir
 
@@ -161,19 +162,19 @@ Pela LGPD (art. 18), você pode pedir, a qualquer momento:
 5. a portabilidade dos seus dados para outro fornecedor;
 6. que os dados tratados com o seu consentimento sejam apagados;
 7. a informação de com quem a gente compartilhou os seus dados;
-8. a informação sobre a possibilidade de não dar o consentimento e o que acontece se não der: sem pelo menos um aceite, o contato não é enviado, o diagnóstico não é montado e a equipe não fala com você;
+8. a informação sobre a possibilidade de não dar o consentimento e o que acontece se não der: se você desmarcar a caixa de aceite, o diagnóstico aparece na tela, mas nada é enviado, a gente não guarda o seu contato nem as suas respostas, não manda cópia e a equipe não fala com você;
 9. a retirada do consentimento.
 
 **Como pedir:** pelo canal {{a definir: e-mail ou canal de contato}}, falando com o encarregado {{a definir: nome do encarregado}}. Para proteger você, a gente pode pedir uma confirmação de que o pedido é seu. A resposta sai nos prazos da LGPD, em {{a definir: prazo de resposta}}.
 
-**Para apagar os seus dados ou retirar o aceite:** peça pelo mesmo canal. A partir do pedido, você sai da lista de contatos da equipe e ninguém mais fala com você pelos canais que retirou. Como e em quanto tempo os dados são apagados do sistema: {{a definir: procedimento de apagamento (outros-23)}}.
+**Para apagar os seus dados ou retirar o aceite:** peça pelo mesmo canal. A partir do pedido, você sai da lista de contatos da equipe e ninguém mais fala com você pelos canais que retirou. Como e em quanto tempo os dados são apagados do sistema: {{a definir: procedimento de apagamento (#106)}}.
 
 Se achar que o seu pedido não foi atendido, você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).
 
 ### 10. Como a gente protege os seus dados
 
 - O sistema é dividido em partes, e cada parte tem uma chave de acesso que abre só o que ela precisa. A página que você usa não tem nenhuma chave e não fala direto com o sistema de gestão de contatos.
-- Os seus dados pessoais ficam só no sistema de gestão de contatos e na planilha de quem faz o contato. Nunca em arquivos de trabalho nem em pastas compartilhadas.
+- Os seus dados pessoais ficam só no sistema de gestão de contatos e na planilha de quem faz o contato, que só quem cuida do sistema e quem faz o contato abrem. Nunca em arquivos de trabalho nem em pastas compartilhadas.
 - Painéis e estudos internos usam só números somados, sem identificar ninguém.
 - As contas dos serviços ficam no nome da empresa, não de uma pessoa, e cada chave de acesso pode ser trocada se houver suspeita de problema.
 
@@ -187,13 +188,13 @@ Se esta política mudar, a versão nova fica publicada neste mesmo endereço, co
 
 ## Fontes
 
-- dados/planta/planta.md (`planta-do-banco` v2): campos das gavetas pessoas e eventos, quem grava e quem lê, o que sai do banco, prazo de guarda, código de sessão (6.2).
-- entregas/quizzes/quiz-01/copy.md (`quiz-01-copy` v1): perguntas, campos de contato, texto de consentimento e caixas (M16), letra miúda (M7), botões do fim.
-- entregas/quizzes/quiz-01/pagina/index.html (`quiz-01-pagina` v1): consentimento obrigatório (sem aceite, o botão de enviar o contato fica desligado e o diagnóstico não aparece), nada guardado no navegador, fontes de letra carregadas de serviço externo, "Compartilhar" e "Baixar PDF".
-- entregas/landings/landing-page-01/copy.md (`landing-page-01-copy` v3): sem formulário; o contato é pedido pelo quiz-01.
-- funis/funil-01/funil.md (`funil-01` v2): "Caminho do dado", "Origens e links", acesso no MVP (#95).
-- funis/funil-01/planilha-sdr.md (`funil-01-planilha-sdr` v1): o que a planilha mostra; quem retirou o consentimento sai da planilha; conflito-17.
-- funis/funil-01/roteiros-sdr.md (`funil-01-roteiros-sdr` v1), "Antes de qualquer contato": ligação só com consentimento_whatsapp = sim (16.12).
-- nucleo/regras/seguranca.md (`regra-seguranca` v1); conexoes.md.
-- base/lacunas.md (`lacunas` v5): outros-23, conflito-09, conflito-17, lacuna-10. base/provas-e-conformidade.md (`provas-e-conformidade` v3), "LGPD". base/ficha-de-fatos.md (`ficha-de-fatos` v3): nome-agencia em conflito (por isso a empresa fica a definir). base/decisoes.md (`decisoes` v3): #90, #95.
+- dados/planta/planta.md (`planta-do-banco` v4): campos das gavetas pessoas e eventos, quem grava e quem lê, o que sai do banco, prazo de guarda, código de sessão (6.2).
+- entregas/quizzes/quiz-01/copy.md (`quiz-01-copy` v2): perguntas, campos de contato, texto de aceite e caixa única já marcada (M16; #104), letra miúda (M7), botões do fim.
+- entregas/quizzes/quiz-01/pagina/index.html (`quiz-01-pagina` v2): nada guardado no navegador, "Compartilhar" e "Baixar PDF". A caixa única e as fontes servidas junto com a página entram na etapa 34 (13.4, 10.7).
+- entregas/landings/landing-page-01/copy.md (`landing-page-01-copy` v4): sem formulário; o contato é pedido pelo quiz-01.
+- funis/funil-01/funil.md (`funil-01` v3): "Caminho do dado", "Origens e links", acesso no MVP (#95).
+- funis/funil-01/planilha-sdr.md (`funil-01-planilha-sdr` v2): o que a planilha mostra; quem retirou o consentimento sai da planilha; conflito-17.
+- funis/funil-01/roteiros-sdr.md (`funil-01-roteiros-sdr` v2), "Antes de qualquer contato": quem deixou o aceite marcado pode ser contatado por WhatsApp, ligação e e-mail (#105).
+- nucleo/regras/seguranca.md (`regra-seguranca` v3), regra 4 com a exceção da planilha do SDR (5.4); conexoes.md.
+- base/lacunas.md (`lacunas` v6): conflito-09, conflito-17, lacuna-10. base/provas-e-conformidade.md (`provas-e-conformidade` v4), "LGPD". base/ficha-de-fatos.md (`ficha-de-fatos` v4): prazo-de-guarda; nome-agencia em conflito (por isso a empresa fica a definir). base/decisoes.md (`decisoes` v5): #90, #95, #103 a #106, #114.
 - Lei 13.709/2018 (LGPD), em termos gerais: art. 7º, I; art. 18; art. 20.
