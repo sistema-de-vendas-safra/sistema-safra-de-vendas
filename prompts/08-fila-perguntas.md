@@ -478,3 +478,17 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* aviso para não gravar nem compartilhar a tela nas partes 2 a 4; passo 3.0 para pausar o histórico da área de transferência e o Handoff (Área de Transferência Universal); o olho da chave secreta escondido de novo; nome com sublinhado se o painel recusar o hífen; botões pelo nome da página ("Quero responder as perguntas do meu funil", "Ver meu diagnóstico", campo WhatsApp); não usar o "protótipo · preencher exemplo" nem pular telas pelo botão Telas; registro só pelo wrangler tail filtrado; "Editar propriedades do script"; conferência do acento depois de colar o código; passo 7.9 para as chaves que sobrarem; a data da "Última troca" contada ao Claude para conexoes.md.
    - *Recomendação:* manter.
    - *Se decidir diferente:* cada ajuste é um trecho do LIGAR.md; nenhum outro arquivo depende deles.
+
+## Etapa 27
+
+27.1. **A pergunta 6.3 saiu como respondida pela #100.**
+   - *Dúvida:* a 6.3 (prompts/06-para-o-otavio.md) pergunta se quem refaz o quiz é reconhecido pelo telefone ou e-mail. A #100 manda índice único no telefone e no e-mail, e a gravação junta os envios da mesma pessoa: na prática, é "telefone ou e-mail". A 18.6 (prompts/07-para-o-otavio.md) propõe reconhecer só pelo telefone.
+   - *O que foi feito:* a 6.3 saiu da página de decisões como respondida pela #100. A 18.6 continua aberta, agora dizendo que reconhecer só pelo telefone pede mudar a #100 (tirar o índice único do e-mail).
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* se a 6.3 tiver de continuar aberta, ela volta para a tabela 3 da página de decisões, com a recomendação "sim"; nada muda no banco.
+
+27.2. **Itens já aplicados por uma etapa seguinte contam como forma.**
+   - *Dúvida:* na triagem, cinco perguntas já tinham a recomendação aplicada por uma etapa seguinte (21.15, 22.9, 23.10, 25.5, 26.8) e cinco pediam só uma correção de forma na próxima versão de um documento (20.4, 22.8, 23.4, 25.3, 26.10). Nenhuma delas pede decisão.
+   - *O que foi feito:* as dez ficaram no grupo A. As cinco primeiras só ganharam uma linha no log.md; as cinco outras viraram um item das Pendências do log.md ("Correções de forma para a próxima versão de cada documento"), sem subir nenhum documento agora, como a própria recomendação de cada uma manda.
+   - *Recomendação:* aceitar; subir sete ou oito documentos de versão agora, só por forma, marcaria em cascata documentos que já estão desatualizados por outros motivos.
+   - *Se decidir diferente:* se as correções tiverem de entrar já, são correções de forma, cada uma com versão nova e linha no log.md; 20.4 sozinha são sete documentos.

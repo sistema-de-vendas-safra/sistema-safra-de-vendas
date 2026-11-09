@@ -10,7 +10,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - conexoes.md · contas e serviços, onde cada chave mora, quem lê e como revogar (sem valores): projeto do Supabase (#99), Worker do protótipo (#101), planilha do SDR
 - GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido; desatualizado)
 - .githooks/pre-commit · gancho de pré-commit versionado que roda o detector de chaves (nucleo/ferramentas/detector-de-chaves/); num clone novo, ligar com `git config core.hooksPath .githooks`
-- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta)
+- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta; 06-triagem-das-perguntas.md, a resposta 06-triagem-resposta.md e a lista 06-para-o-otavio.md; 07-fila-da-noite.md, as perguntas 07-fila-perguntas.md, a lista 07-para-o-otavio.md e a resposta 07-fila-da-noite-resposta.md; 08-fila-da-madrugada.md, as perguntas 08-fila-perguntas.md, a triagem 08-triagem.md, a página para o Otávio 08-decisoes-em-uma-pagina.md e a resposta 08-fila-da-madrugada-resposta.md)
 
 ## nucleo/
 
@@ -73,7 +73,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - documentos/politica-de-privacidade.md · política de privacidade do funil-01: o que a landing e o quiz coletam, finalidades, consentimento, quem acessa, operadores (lista bloqueada, conflito-17), cookies e medição, prazo de guarda a definir (outros-23), direitos do art. 18 e como pedir; precisa de revisão de advogado (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
-- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v5, acréscimos da triagem da etapa 19; item 6a para escolher a variante da página; rascunho; desatualizado)
+- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v6, acréscimos das triagens das etapas 19 e 27; item 6a para escolher a variante da página; rascunho; desatualizado)
 
 ## dados/
 
