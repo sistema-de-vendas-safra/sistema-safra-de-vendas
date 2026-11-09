@@ -63,6 +63,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - quizzes/quiz-01/pagina/ · página do quiz-01 (index.html, poster-junior.jpg, README.md): mockup do Júnior com o texto da copy, lead score num lugar só, pacote no formato da planta, envio desligado (só console), consentimento obrigatório; visual sem mudança (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - quizzes/quiz-01/prints/ · prints da página do quiz-01 em 375 e 1440 pixels (capa, pergunta, contato com e sem consentimento, resultado A, resultado eliminatório)
 - documentos/README.md · o que mora na pasta de documentos
+- garcom/ · garçom do funil-01, Cloudflare Worker sem dependências (garcom.mjs, wrangler.toml.exemplo só com nomes de variáveis, README.md): confere método, tamanho, formato, etiquetas e consentimento, grava vazia a utm fora da lista fechada (5.5) e grava pela função registrar_fim_quiz; teste/testar-garcom.mjs com fetch falso, 30 de 30; destino em conflito (conflito-17); nunca publicado (v1, rascunho; otavio: pendente; desatualizado)
 - documentos/politica-de-privacidade.md · política de privacidade do funil-01: o que a landing e o quiz coletam, finalidades, consentimento, quem acessa, operadores (lista bloqueada, conflito-17), cookies e medição, prazo de guarda a definir (outros-23), direitos do art. 18 e como pedir; precisa de revisão de advogado (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
@@ -71,6 +72,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 ## dados/
 
 - planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê (v2, rascunho; desatualizado)
+- banco/ · rascunho do banco no Supabase (esquema.sql e README.md): as quatro gavetas da planta (investimento fora do MVP), listas fechadas como CHECK, etiquetas NOT NULL, eventos sem apagar nem reescrever, função registrar_fim_quiz, visão do painel só agregada, contagem das análises gratuitas, RLS ligada sem política para quem vem de fora; nunca executado; destino em conflito (conflito-17) (v1, rascunho; otavio: pendente; desatualizado)
 - paineis/ · vazio
 
 ## aprendizados/

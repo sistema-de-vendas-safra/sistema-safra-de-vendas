@@ -431,3 +431,71 @@
    - *O que foi feito:* desatualizado: true (regra provisória 11.1); aprovado_por com otavio, junior e euclides pendentes, porque o design é decisão dos três (conflito-08) e a página depende da #90.
    - *Recomendação:* a mesma da 11.1.
    - *Se decidir diferente:* passa a desatualizado: false numa correção de forma.
+
+## Etapa 18
+
+18.1. **Quem aprova o banco e o garçom.**
+   - *Dúvida:* o pedido manda os dois com otavio pendente; o destino dos contatos que eles servem está no conflito-17, que é do Júnior e do Euclides (#90).
+   - *O que foi feito:* aprovado_por só com otavio: pendente, como o pedido manda; status rascunho; desatualizado: true (regra provisória 11.1); o conflito-17 marcado no topo dos dois READMEs e do esquema, bloqueado para entrega.
+   - *Recomendação:* manter só o Otávio: banco e garçom são técnica; o que é do Júnior e do Euclides é o destino, que já trava pelo conflito-17.
+   - *Se decidir diferente:* junior e euclides entram em aprovado_por numa correção de forma.
+
+18.2. **O garçom usa o papel de serviço, que abre tudo.**
+   - *Dúvida:* o pedido manda gravar com a chave do papel de serviço; a regra 2 de segurança, o funil-01 (passo 2) e a planta (6.6) dizem que a chave do garçom só grava pessoas e eventos e não lê o banco inteiro. No Supabase, o papel de serviço passa por cima de toda fechadura.
+   - *O que foi feito:* segue o pedido, e o alcance foi reduzido pelo desenho: o garçom só chama a função registrar_fim_quiz, que é o único execute dado ao papel de serviço; nenhuma tabela é lida pelo garçom. Mesmo assim, quem tiver a chave pode ler tudo.
+   - *Recomendação:* quando a conta existir, criar um papel só do garçom (permissão de executar só essa função) com chave própria, e tirar dele o papel de serviço.
+   - *Se decidir diferente:* fica o papel de serviço; vazar a chave do garçom passa a ser vazar o banco inteiro, e conexoes.md precisa dizer isso.
+
+18.3. **As chaves de leitura (planilha, painel, contador) e da volta do status não existem.**
+   - *Dúvida:* a planta prevê uma chave por uso; o esquema não pode criar papéis sem conta nem chave.
+   - *O que foi feito:* nenhum papel criado; as visões painel_numeros e contagem_analises_gratuitas ficam sem leitor além do Otávio; a volta do status do SDR não tem caminho no banco ainda (só as restrições que a recebem).
+   - *Recomendação:* criar cada papel junto com a chave dele, depois do detector de chaves, numa versão 2 do esquema, e registrar em conexoes.md.
+   - *Se decidir diferente:* se a planilha usar a mesma chave do garçom, a regra 2 de segurança e o passo 5 do funil-01 precisam mudar antes.
+
+18.4. **O evento do clique em "Tenho interesse" ficou só preparado.**
+   - *Dúvida:* 14.15 e 16.13 recomendam o evento interesse_pos_relatorio; não há decisão.
+   - *O que foi feito:* não foi criado. No esquema, um bloco comentado com a mudança exata da lista de tipos; no garçom, a constante TIPOS_PROPOSTOS, fora da lista aceita. O teste confere que esse tipo é recusado hoje.
+   - *Recomendação:* decidir junto com 14.15 e 16.13; se sim, sobe a planta, o esquema e o garçom de versão, e a página do quiz passa a enviar o clique.
+   - *Se decidir diferente:* o bloco comentado e a constante saem numa correção de forma, e as frases "fica registrado" da página saem (16.13).
+
+18.5. **Visita, início do quiz e primeira_visita_em ficam vazios.**
+   - *Dúvida:* a planta tem os eventos visita e inicio_quiz e o campo primeira_visita_em; a página do quiz só envia o fim do quiz, sem a hora da primeira visita.
+   - *O que foi feito:* o garçom só aceita fim_quiz; a função do banco preenche primeira_visita_em com a visita da mesma sessão, se houver, e deixa vazio se não houver (hoje, sempre vazio). O painel não terá visitas até isso mudar.
+   - *Recomendação:* a landing e o quiz enviarem visita e inicio_quiz pelo garçom, com a mesma sessão, numa versão nova das páginas e do garçom.
+   - *Se decidir diferente:* se as visitas não forem gravadas, primeira_visita_em e os tipos visita e inicio_quiz saem da planta, e o painel conta só a partir do fim do quiz.
+
+18.6. **Pessoa que refaz o quiz: a linha dela não muda, nem o consentimento.**
+   - *Dúvida:* a planta diz que a pessoa repetida é reconhecida pelo telefone ou pelo e-mail e que os campos de primeira visita não mudam; não diz o que fazer com o consentimento novo (por exemplo, de quem tinha retirado e aceitou de novo), nem com nome ou e-mail diferentes.
+   - *O que foi feito:* o caminho mais restritivo: nada da linha muda; só o evento novo é ligado a ela. Quem retirou o consentimento continua retirado. O reconhecimento usa telefone (só os dígitos) ou e-mail (sem diferença de maiúscula), o que pode juntar duas pessoas que dividem um e-mail.
+   - *Recomendação:* guardar o consentimento como histórico (um evento por aceite e por retirada), para valer sempre o mais novo, e reconhecer a pessoa só pelo telefone.
+   - *Se decidir diferente:* com a atualização dos campos, o texto aceito antes se perde; com o histórico, a planta ganha um tipo de evento.
+
+18.7. **Utm fora da lista: o garçom grava vazia, não recusa.**
+   - *Dúvida:* a planta (gavetas pessoas e eventos, campos utm_source e primeira_utm_source; 5.5: "o lead entra com a origem em branco") manda gravar vazia a etiqueta que veio fora da lista; o pedido desta etapa citava utm fora da lista entre os casos inválidos. A primeira versão do garçom recusava o pacote inteiro, e o lead se perdia.
+   - *O que foi feito:* a base vence. Na revisão, o garçom passou a aceitar o pacote, esvaziar a utm que veio fora da lista (as quatro: utm_source e utm_campaign do evento, primeira_utm_source e primeira_utm_campaign da pessoa) e anotar no registro da Cloudflare só o nome do campo esvaziado, nunca o valor nem dado pessoal. Utm ausente continua recusando (etiqueta obrigatória), e utm que não é texto também. O banco continua aceitando só a lista ou vazio. O teste confere os três casos (tiktok, meta-ads, campanha fora da lista): gravados, com a utm vazia e a anotação no registro.
+   - *Recomendação:* manter assim: a página e o garçom esvaziam, e o banco é a última trava.
+   - *Se decidir diferente:* para recusar o pacote com utm fora da lista, a planta (5.5) muda primeiro numa versão nova; no garçom, utmOk volta a conferir a lista e esvaziarUtmForaDaLista sai. O lead que chegar por um link mal etiquetado deixa de ser gravado.
+
+18.8. **O catálogo de entregas é conferido pelo banco, não pelo garçom.**
+   - *Dúvida:* a planta (6.6) diz que o garçom lê a gaveta entregas para conferir o par entrega e versão.
+   - *O que foi feito:* o banco confere com uma chave estrangeira; o garçom confere só o formato e não lê nenhuma tabela. Se o par não existir, o banco recusa e o garçom responde "pacote recusado". Menos permissão para o garçom, mesmo resultado.
+   - *Recomendação:* aceitar e ajustar a planta (6.6) numa versão nova.
+   - *Se decidir diferente:* o garçom ganha leitura da gaveta entregas e uma consulta antes de gravar.
+
+18.9. **Formato da chave do Supabase.**
+   - *Dúvida:* o Supabase tem a chave antiga do papel de serviço (um JWT) e a chave secreta nova, que não é JWT e vai num cabeçalho só.
+   - *O que foi feito:* o garçom aceita as duas: manda a chave no cabeçalho apikey e, só se ela tiver o formato de JWT, também no Authorization. Não foi conferido contra o Supabase de verdade.
+   - *Recomendação:* usar a chave secreta nova quando a conta for criada (dá para revogar uma sem trocar as outras) e conferir no primeiro teste num projeto de teste.
+   - *Se decidir diferente:* com a antiga, nada muda no código.
+
+18.10. **Prazo de guarda e pedido de apagamento contra a trava dos eventos.**
+   - *Dúvida:* o prazo de guarda e o atendimento a quem pede para apagar os dados não estão decididos (outros-23); a planta diz que evento nunca é apagado.
+   - *O que foi feito:* nada é apagado automaticamente; a trava do esquema recusa apagar ou reescrever evento, para todo mundo. Atender um pedido de apagamento hoje exige o Otávio desligar a trava de propósito, pelo painel do Supabase.
+   - *Recomendação:* decidir outros-23 com o advogado e, junto, escrever o caminho de apagamento (o que se apaga, o que vira anônimo, quem faz e como fica registrado), numa versão 2 da planta e do esquema.
+   - *Se decidir diferente:* se o pedido de apagamento tiver de ser automático, o esquema ganha uma função própria de apagamento, fora do alcance do garçom.
+
+18.11. **Observações do revisor sobre o banco e o garçom (decidir antes de criar as contas).**
+   - *Dúvida:* cinco pontos de desenho que o rascunho não resolve: (1) as visões do painel usam security_invoker, então um papel futuro só do painel precisaria ler a tabela de eventos inteira, com dado pessoal (liga com 18.3); (2) para o garçom ter um papel próprio que só executa a função de gravação (18.2), a função precisa virar SECURITY DEFINER com search_path fixo; (3) não há índice único em telefone nem e-mail, e dois fins de quiz simultâneos da mesma pessoa podem criar duas linhas; (4) o garçom não tem proteção contra robô nem limite de pedidos, e a origem pode ser falsificada fora do navegador; (5) o esquema só roda no Supabase (cita os papéis anon e authenticated).
+   - *O que foi feito:* nada; tudo segue como rascunho, nada foi executado.
+   - *Recomendação:* antes de ligar: visões do painel com os direitos do dono e SELECT só na visão; papel próprio do garçom com a função SECURITY DEFINER; índice único parcial em e-mail e em telefone; limite de pedidos e proteção contra robô na Cloudflare (Turnstile, quando houver conta).
+   - *Se decidir diferente:* ficar com o papel de serviço em tudo é mais simples, mas qualquer vazamento da chave do garçom abre o banco inteiro.

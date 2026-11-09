@@ -1,0 +1,13 @@
+# Exemplo de configuração do garçom para a Cloudflare (wrangler). RASCUNHO, nunca publicado.
+# Só nomes: nenhum valor, nenhum endereço, nenhum identificador de conta.
+# Para usar, copiar para wrangler.toml quando a conta da Cloudflare do Safra estiver pronta
+# (conexoes.md) e o detector de chaves estiver ligado (nucleo/regras/seguranca.md).
+
+name = "garcom-funil-01"
+main = "garcom.mjs"
+compatibility_date = "2026-11-01"
+
+# Os três valores entram como variáveis secretas, lidas do cofre, nunca neste arquivo:
+#   wrangler secret put SUPABASE_URL
+#   wrangler secret put SUPABASE_SERVICE_KEY
+#   wrangler secret put ORIGEM_PERMITIDA
