@@ -1,6 +1,6 @@
 ---
 id: decisoes
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
   otavio: 2026-11-08
@@ -12,7 +12,7 @@ desatualizado: false
 
 # Decisões
 
-O registro das decisões do Safra, de #1 a #98, uma linha por número, sem pular nenhum. O documento é decidido como registro fiel; cada decisão tem o seu status na própria linha.
+O registro das decisões do Safra, de #1 a #102, uma linha por número, sem pular nenhum. O documento é decidido como registro fiel; cada decisão tem o seu status na própria linha.
 
 ## Nota do CONTEXTO (CTX §11)
 
@@ -25,7 +25,7 @@ O registro das decisões do Safra, de #1 a #98, uma linha por número, sem pular
 - **Texto da decisão.** Frase curta com as palavras da fonte, entre aspas quando é literal. Quando o valor é o próprio texto da decisão, ele aparece com a remissão ao campo da ficha de fatos, que é onde o fato vale. Número sem texto em nenhuma fonte do acervo fica com "texto não encontrado".
 - **Status.** decidido · aprovado · pendente-aprovacao (com quem falta) · depende de confirmação do Júnior · estacionada · substituída por #N · texto não encontrado. Uma decisão só vira "substituída por #N" quando a substituta for aprovada; até lá leva a nota "substituição proposta em #N" (critério do Otávio, 08/11/2026). Depois do status, separado por ponto e vírgula, pode vir uma nota (ex.: "decidido; formato superado na call de 07/11"); a nota informa, não muda o status.
 - **Nada se apaga.** Uma decisão substituída fica na tabela com "substituída por #N"; quem substitui leva "substitui #N".
-- **Decisões novas** entram a partir da #99 (a #91 foi a primeira, em 08/11/2026; as #92 a #98 vieram em 08/11/2026, prompts/04-decisoes-de-08-11-e-lead-score.md), sempre com a palavra do Otávio. Cada uma sobe a versão deste documento, ganha linha no log.md, e a cascata marca os dependentes (nucleo/regras/versionamento.md).
+- **Decisões novas** entram a partir da #103 (a #91 foi a primeira, em 08/11/2026; as #92 a #98 vieram em 08/11/2026, prompts/04-decisoes-de-08-11-e-lead-score.md; as #99 a #102, também em 08/11/2026, prompts/08-fila-da-madrugada.md), sempre com a palavra do Otávio. Cada uma sobe a versão deste documento, ganha linha no log.md, e a cascata marca os dependentes (nucleo/regras/versionamento.md).
 
 ## Registro
 
@@ -129,6 +129,10 @@ O registro das decisões do Safra, de #1 a #98, uma linha por número, sem pular
 | 96 | 2026-11-08 | O projeto "Estrategista de Negócio" no Claude vira arquivo histórico a partir de 08/11/2026; mudança no Safra entra só pelo repositório | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 5); CLAUDE.md |
 | 97 | 2026-11-08 | O site sv-safra.soulstory.com.br fica aberto, sem porteiro, no MVP. Risco aceito | Otávio | decidido | | Otávio, 08/11/2026 (prompts/04, seção 1, item 6); log.md (Pendências) |
 | 98 | 2026-11-08 | Lead score como critério de qualificação: a proposta de base/lead-score.md (eliminatórios, pontos de 0 a 100 e faixas A, B e C para a fila do SDR) | Otávio | pendente-aprovacao (junior: pendente; euclides: pendente), porque a regra atual do quiz é do Júnior. Não pode ir para entrega antes da aprovação | | Otávio, 08/11/2026 (prompts/04, seção 1, item 7, e seção 3); `lead-score` |
+| 99 | 2026-11-08 | Projeto do Supabase criado: organização "Sistema de Vendas Safra", plano grátis; projeto sistema-de-vendas-safra; região São Paulo (sa-east-1); endereço https://bvrvdlhpralmzizobsvu.supabase.co (não é segredo). Criado com Data API ligada, "Automatically expose new tables" desligado e RLS automático ligado. Consequência: o esquema não conta com nenhuma permissão padrão; toda permissão é revogada e concedida de forma explícita, inclusive EXECUTE de função (o Postgres dá EXECUTE a PUBLIC por padrão) | Otávio | decidido | | prompts/08-fila-da-madrugada.md, "Decisões técnicas aprovadas", item 1; conexoes.md; dados/banco/esquema.sql |
+| 100 | 2026-11-08 | Duas chaves do Supabase no garçom, uma para cada porta. Porta pública (fim do quiz): chave publicável, papel anon, que só executa registrar_fim_quiz (nenhuma tabela, visão ou outra função). Porta privada (planilha do SDR): chave secreta nova, papel service_role, usada só nessa porta e só para a função que entrega os leads à planilha. As duas funções SECURITY DEFINER, com search_path vazio e nomes qualificados; visões do painel sem security_invoker, com SELECT revogado de todo mundo até existir o papel do painel (18.3 continua para depois); índice único parcial no telefone normalizado e no e-mail em minúsculas, e gravação que aguenta dois envios simultâneos da mesma pessoa sem duas linhas e sem perder o evento. Responde 18.2, 18.9 e os itens 1 a 3 de 18.11 (prompts/07-fila-perguntas.md) | Otávio | decidido | | prompts/08-fila-da-madrugada.md, "Decisões técnicas aprovadas", item 2; dados/banco/esquema.sql |
+| 101 | 2026-11-08 | Um endereço só para o protótipo: o Worker da Cloudflare safra-prototipo-funil-01, no subdomínio workers.dev da conta do Safra (https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev), serve a variante A da landing em /, a variante B em /b/, o quiz em /quiz/ e o garçom em /api/. Mesma origem, sem CORS aberto; tudo com noindex (meta e cabeçalho X-Robots-Tag). O repositório pessoal do quiz e o Worker dele não são tocados | Otávio | decidido | | prompts/08-fila-da-madrugada.md, "Decisões técnicas aprovadas", item 3 |
+| 102 | 2026-11-08 | Leads de teste marcados: no protótipo, todo lead de teste usa e-mail terminado em @teste.invalid e nome começando por TESTE. Como a trava do esquema não deixa apagar evento, antes de ir ao ar com gente de verdade os dados de teste são limpos de propósito (ou o banco recomeça do zero), e isso é registrado (log.md, Pendências) | Otávio | decidido | | prompts/08-fila-da-madrugada.md, "Decisões técnicas aprovadas", item 4; log.md |
 
 ## Enquanto a #90 estiver pendente
 

@@ -1,6 +1,6 @@
 ---
 id: planta-do-banco
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -12,13 +12,13 @@ depende_de:
   - id: ficha-de-fatos
     versao: 3
   - id: decisoes
-    versao: 3
+    versao: 4
   - id: metodo
     versao: 3
   - id: provas-e-conformidade
     versao: 3
   - id: regra-seguranca
-    versao: 1
+    versao: 2
   - id: lacunas
     versao: 4
 desatualizado: true
@@ -28,7 +28,7 @@ desatualizado: true
 
 O desenho do banco de dados dos leads do funil-01: o que se guarda, em que gaveta, com que nome, quem grava e quem lê. Só a descrição. Nada aqui é implementação, nenhum dado é real e nenhuma chave aparece neste documento: onde cada chave mora está em conexoes.md, e as regras, em nucleo/regras/seguranca.md.
 
-**Status.** Rascunho, pendente do Otávio (prompts/05-fila-perguntas.md, 6.1). A planta serve ao funil-01, que está pendente do Júnior e do Euclides (#90), e usa o lead score, também pendente (#98). Desde a versão 4 de `lacunas`, `funil-01`, `lead-score`, `metodo` e `provas-e-conformidade` estão marcados como desatualizados só por causa da versão de `lacunas` no depende_de deles (6.9); o conteúdo que esta planta usa não mudou.
+**Status.** Rascunho, pendente do Otávio (prompts/05-fila-perguntas.md, 6.1). A planta serve ao funil-01, que está pendente do Júnior e do Euclides (#90), e usa o lead score, também pendente (#98). Desde a versão 4 de `lacunas`, `funil-01`, `lead-score`, `metodo` e `provas-e-conformidade` estão marcados como desatualizados só por causa da versão de `lacunas` no depende_de deles (6.9); o conteúdo que esta planta usa não mudou. A versão 3 segue as decisões #99 e #100 (projeto do Supabase criado e duas chaves no garçom, uma por porta) e o esquema v2 (dados/banco/esquema.sql): muda quem lê o catálogo de entregas, a chave do garçom e da leitura da planilha, e a pessoa passa a ser única por telefone e por e-mail (prompts/08-fila-perguntas.md, Etapa 21).
 
 **Como ler.** Fatos pelo id do campo em `ficha-de-fatos`; decisões por #n; pendências pelo id de `lacunas`. Tudo marcado **proposta** é escolha provisória desta etapa e está em prompts/05-fila-perguntas.md (6.1 a 6.9). Os exemplos são fictícios de propósito: nomes como "Maria Exemplo", telefones só com zeros, e-mails no domínio exemplo.com.
 
@@ -55,14 +55,14 @@ Cada uso tem a sua chave, com a menor permissão que resolve (nucleo/regras/segu
 
 | Quem | Grava | Lê | Chave |
 |---|---|---|---|
-| **Garçom** (função na Cloudflare entre a página e o banco; funil-01, "Caminho do dado") | pessoas e eventos vindos da landing e do quiz | Só a gaveta entregas, para conferir a etiqueta (proposta, 6.6). Não lê pessoas nem eventos | A do garçom: grava pessoas e eventos e lê só o catálogo de entregas (proposta, 6.6) |
-| **Planilha do SDR · leitura** | Nada | Só os leads da fila (faixas A e B de `lead-score`) e só os campos da lista "O que vai para a planilha", abaixo | Outra chave, só de leitura da fila (proposta, 6.6) |
+| **Garçom · porta pública** (função na Cloudflare entre a página e o banco; funil-01, "Caminho do dado") | pessoas e eventos vindos da landing e do quiz, só pela função registrar_fim_quiz | Nada. O catálogo de entregas é conferido pelo próprio banco (18.8) | A chave publicável do Supabase (papel anon), que só executa registrar_fim_quiz: nenhuma tabela, nenhuma visão, nenhuma outra função (#100) |
+| **Planilha do SDR · leitura** | Nada | Só os leads da fila (faixas A e B de `lead-score`) e só os campos da lista "O que sai do banco", abaixo, pela função leads_para_planilha | A planilha não guarda chave do Supabase: guarda a CHAVE_PLANILHA, que só abre a porta privada do garçom. Lá, o garçom chama leads_para_planilha com a chave secreta do Supabase (papel service_role), que só executa essa função (#100) |
 | **Planilha do SDR · volta do status** | Só eventos dos tipos do SDR (contato_sdr, mudanca_status, reuniao_marcada, reuniao_realizada, venda, perda), com valores da lista fechada; valor fora da lista não entra | Nada | Outra chave, só de gravação desses eventos (proposta, 6.6) |
 | **Painel** | Nada | Só números agregados, sem identificar ninguém (nucleo/regras/seguranca.md, regra 4) | A do painel, que só lê (nucleo/regras/seguranca.md, regra 2) |
 | **Contador de escassez** | Nada | Só a contagem de análises gratuitas usadas (ver "Contagem das análises gratuitas") | Outra chave, que só lê essa contagem (proposta, 6.6) |
 | **Otávio** | Tudo, pelo painel do Supabase, incluindo o catálogo de entregas | Tudo | A dele, no Supabase (#95) |
 
-Nenhuma chave vai para a página nem para o navegador (funil-01, "Caminho do dado"). A chave da planilha não é a do garçom (funil-01, passo 5). Onde a planilha mora e como o SDR a acessa seguem em aberto (prompts/05-fila-perguntas.md, 5.4).
+Nenhuma chave vai para a página nem para o navegador (funil-01, "Caminho do dado"). A chave da planilha não é a do garçom (funil-01, passo 5): a porta pública usa a chave publicável e a porta privada, a secreta, e a planilha só tem a CHAVE_PLANILHA (#100). No banco, todas as permissões padrão são retiradas e só essas duas são dadas (#99); a conferência está em dados/banco/conferir.sql. Onde a planilha mora e como o SDR a acessa seguem em aberto (prompts/05-fila-perguntas.md, 5.4).
 
 **Dado pessoal.** Só no banco e na planilha do SDR; nunca no repositório nem no Google Drive (nucleo/regras/seguranca.md, regra 4). Aprendizados e painéis no repositório só com números agregados.
 
@@ -70,7 +70,7 @@ Nenhuma chave vai para a página nem para o navegador (funil-01, "Caminho do dad
 
 ## Gaveta pessoas
 
-Uma linha por lead. O lead nasce quando o quiz termina e envia o contato com o consentimento (funil-01, "Caminho do lead", passo 2). Quem já está no banco e refaz o quiz não vira outra pessoa: o próprio banco reconhece o telefone ou o e-mail já gravado e liga os eventos novos à mesma linha, sem o garçom precisar ler nada (proposta, 6.3).
+Uma linha por lead. O lead nasce quando o quiz termina e envia o contato com o consentimento (funil-01, "Caminho do lead", passo 2). Quem já está no banco e refaz o quiz não vira outra pessoa: o próprio banco reconhece o telefone ou o e-mail já gravado e liga os eventos novos à mesma linha, sem o garçom precisar ler nada (proposta, 6.3). O banco não aceita duas pessoas com o mesmo telefone (contado só pelos dígitos) nem com o mesmo e-mail (sem diferença de maiúscula), nem quando dois envios chegam no mesmo instante (#100). Se o telefone for de uma pessoa e o e-mail de outra, o banco recusa o envio, sem juntar nem escolher (proposta, 21.2).
 
 | Campo | O que guarda | Exemplo fictício | Dado pessoal? |
 |---|---|---|---|
@@ -131,7 +131,7 @@ Todo evento leva as cinco etiquetas. Evento sem alguma delas não entra.
 | utm_source | A origem, da tabela de origens do funil-01 (stories, bio, reels, email, whatsapp; meta-ads reservada, fora do MVP); vazio se a etiqueta veio fora da lista (5.5) | bio | Não sozinho; ligado à pessoa, sim |
 | utm_campaign | A campanha, da mesma tabela | funil-01 | Não sozinho; ligado à pessoa, sim |
 
-O garçom confere se o par entrega e versão existe no catálogo; se não existe, o evento não entra (proposta, 6.6).
+O banco confere, por chave estrangeira, se o par entrega e versão existe no catálogo; se não existe, o evento não entra. O garçom confere só o formato e não lê nenhuma tabela (18.8).
 
 Os eventos que não acontecem numa página (os do SDR, da reunião e da venda) levam o funil, a entrega e a versão do quiz que a pessoa respondeu e a origem da primeira visita dela. Assim, toda venda pode ser lida de volta até a peça e o link que a trouxeram (proposta, 6.4).
 
@@ -163,7 +163,7 @@ O evento perda não guarda motivo: um texto livre do SDR pode trazer dado pessoa
 
 ## Gaveta entregas
 
-O catálogo das entregas publicadas, espelho do repositório: cada linha corresponde a uma entrega em entregas/ com o mesmo id e a mesma versão do cabeçalho dela. O Otávio grava uma linha nova a cada versão publicada; o garçom só lê (proposta, 6.6). Uma versão nunca é apagada do catálogo, para que os eventos antigos continuem apontando para ela.
+O catálogo das entregas publicadas, espelho do repositório: cada linha corresponde a uma entrega em entregas/ com o mesmo id e a mesma versão do cabeçalho dela. O Otávio grava uma linha nova a cada versão publicada; o garçom não lê o catálogo, quem confere o par entrega e versão é o próprio banco (18.8). Uma versão nunca é apagada do catálogo, para que os eventos antigos continuem apontando para ela.
 
 | Campo | O que guarda | Exemplo fictício | Dado pessoal? |
 |---|---|---|---|
@@ -213,6 +213,8 @@ O número de análises gratuitas está em ficha-de-fatos#analises-gratuitas, e a
 
 **Para a planilha do SDR** (proposta, 6.6): só os leads das faixas A e B, com id_pessoa, nome, telefone, email, empresa, consentimento_whatsapp, consentimento_email, lead_score_nota, lead_score_faixa, as respostas que o SDR precisa confirmar na faixa B (`lead-score`, "Faixas": valor da venda, time, histórico), o estágio e o estado atuais e a data_volta. Lead que retirou o consentimento não vai para a planilha.
 
+Quem entrega é a função leads_para_planilha (dados/banco/esquema.sql), no máximo 200 leads por pedido, em ordem, a partir de um cursor (#100). Escolhas provisórias da etapa 21 (prompts/08-fila-perguntas.md): só entra quem aceitou WhatsApp (21.4); cada pessoa entra uma vez, pelo primeiro fim de quiz dela em faixa A ou B, e quem refaz o quiz não volta (21.5); das respostas, só valor da venda e vendedores, e só na faixa B, porque o histórico não está escrito (15.4; 21.8); além desta lista, a função devolve entrou_em e tentativas_feitas, as duas colunas propostas em funis/funil-01/planilha-sdr.md (15.3; 21.7).
+
 **Para o painel:** só números agregados, por safra, por etapa, por faixa, por origem e por entrega e versão. Por exemplo: quantos captados, pré-qualificados, agendados, realizados e vendas no mês; quantos vieram de cada origem; quantos de cada versão da landing terminaram o quiz. Nenhum nome, telefone, e-mail, resposta nem id_pessoa. As metas por etapa que o painel compara estão em ficha-de-fatos#metas-por-etapa (funil-01, "Metas por etapa").
 
 **Para aprendizados/:** só números agregados, com prova e status, e nada concluído abaixo da amostra mínima (aprendizados/README.md; CLAUDE.md).
@@ -247,6 +249,7 @@ O número de análises gratuitas está em ficha-de-fatos#analises-gratuitas, e a
 
 - funis/funil-01/funil.md (v1): caminho do dado, status do SDR, origens e links, contador de escassez.
 - base/lead-score.md (v1); base/ficha-de-fatos.md (v3): analises-gratuitas, barra-de-resgates, vendas-que-contam, metas-por-etapa; base/decisoes.md (v3): #90, #92, #93, #95, #98; base/metodo.md (v2); base/provas-e-conformidade.md (v2), "LGPD"; base/lacunas.md (v4).
-- nucleo/regras/seguranca.md (v1); conexoes.md; dados/planta/README.md; dados/paineis/README.md; aprendizados/README.md.
+- base/decisoes.md (v4): #99, #100; dados/banco/esquema.sql (v2); prompts/08-fila-perguntas.md, Etapa 21.
+- nucleo/regras/seguranca.md (v2); conexoes.md; dados/planta/README.md; dados/paineis/README.md; aprendizados/README.md.
 - Campos de contato do quiz atual: fontes/acervo-2026-11-08/safra-acervo/05-paginas/quiz-diagnostico-de-vendas/index.html (nome, e-mail, telefone, empresa).
 - prompts/05-fila-de-trabalho.md, "Etapa 6 · Planta do banco"; prompts/05-fila-perguntas.md, 5.3 a 5.9.

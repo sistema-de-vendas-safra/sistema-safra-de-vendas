@@ -7,7 +7,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - CLAUDE.md · regras da casa
 - index.md · este mapa
 - log.md · histórico de alterações e pendências
-- conexoes.md · contas e serviços (sem chaves)
+- conexoes.md · contas e serviços, onde cada chave mora, quem lê e como revogar (sem valores): projeto do Supabase (#99), Worker do protótipo (#101), planilha do SDR
 - GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido; desatualizado)
 - .githooks/pre-commit · gancho de pré-commit versionado que roda o detector de chaves (nucleo/ferramentas/detector-de-chaves/); num clone novo, ligar com `git config core.hooksPath .githooks`
 - prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta)
@@ -21,6 +21,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - ferramentas/README.md · o que mora na pasta de ferramentas
 - ferramentas/prints/ · print.js (prints em 375 e 1440 pixels) e testar-quiz-01.js (teste da página do quiz-01: exemplo 96 faixa a, eliminatório, consentimento)
 - ferramentas/detector-de-chaves/ · detector de chaves em Node puro (detector.mjs, testar-detector.mjs, README.md): recusa o commit com chave, senha, token ou arquivo de segredos no que está preparado, sem repetir o valor; modos --rastreados e --historico; testes 87 de 87 (v1, rascunho; otavio: pendente)
+- ferramentas/ensaio/ · só package.json com o PGlite (Postgres dentro do Node) como dependência de desenvolvimento, usado na etapa 21 para conferir dados/banco/esquema.sql; o ensaio geral é a etapa 25
 
 ## fontes/ (somente leitura)
 
@@ -32,8 +33,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 ## base/
 
 - ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, bônus, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v3, decidido)
-- decisoes.md · registro das decisões #1 a #98, cada uma com o seu status (v3, decidido)
-- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v5, rascunho)
+- decisoes.md · registro das decisões #1 a #102, cada uma com o seu status (v4, decidido)
+- lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v5, rascunho; desatualizado: aponta para decisoes 3)
 - produto.md · o que é a IASV Safra: formato, ritos, quem faz o quê, o que não está incluído (v3, decidido; desatualizado)
 - metodo.md · o Sistema de Vendas Safra e a Gestão de Leads por Safra, com as regras do método (v3, decidido; desatualizado)
 - mecanismo.md · problema, solução, Big Idea, analogia e crença (v1, aprovado; frase filosófica pendente; desatualizado: o papel da Análise muda pela #92)
@@ -73,8 +74,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## dados/
 
-- planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê (v2, rascunho; desatualizado)
-- banco/ · rascunho do banco no Supabase (esquema.sql e README.md): as quatro gavetas da planta (investimento fora do MVP), listas fechadas como CHECK, etiquetas NOT NULL, eventos sem apagar nem reescrever, função registrar_fim_quiz, visão do painel só agregada, contagem das análises gratuitas, RLS ligada sem política para quem vem de fora; nunca executado; destino em conflito (conflito-17) (v1, rascunho; otavio: pendente; desatualizado)
+- planta/planta.md · planta do banco: gavetas pessoas, eventos, entregas e investimento (fora do MVP), etiquetas obrigatórias, contagem das análises gratuitas, quem grava e quem lê, com as duas chaves do garçom, uma por porta (#100) (v3, rascunho; desatualizado)
+- banco/ · banco no Supabase, projeto sistema-de-vendas-safra (esquema.sql, conferir.sql e README.md): as quatro gavetas da planta (investimento fora do MVP), listas fechadas como CHECK, etiquetas NOT NULL, eventos sem apagar nem reescrever, telefone e e-mail únicos, nenhuma permissão padrão (#99), anon só executa registrar_fim_quiz e service_role só executa leads_para_planilha (#100), funções SECURITY DEFINER com search_path vazio, visões do painel sem leitor; conferir.sql confere tudo só lendo o catálogo; conferido numa cópia local (PGlite), ainda não executado no Supabase; destino em conflito (conflito-17) (v2, rascunho; otavio: pendente; desatualizado)
 - paineis/ · vazio
 
 ## aprendizados/

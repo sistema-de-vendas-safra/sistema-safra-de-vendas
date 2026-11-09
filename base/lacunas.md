@@ -9,7 +9,7 @@ depende_de:
     versao: 3
   - id: decisoes
     versao: 3
-desatualizado: false
+desatualizado: true
 ---
 
 # Lacunas
