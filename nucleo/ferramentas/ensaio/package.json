@@ -2,6 +2,10 @@
   "name": "ensaio",
   "private": true,
   "type": "module",
+  "scripts": {
+    "ensaio": "node ensaio.mjs",
+    "ensaio:sem-wrangler": "node ensaio.mjs --sem-wrangler"
+  },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.15"
   }

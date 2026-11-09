@@ -360,3 +360,47 @@ Dúvidas das etapas 20 a 27 (prompts/08-fila-da-madrugada.md), no formato de sem
    - *O que foi feito:* conferido aqui só o que depende do código. Fica para o teste de amanhã: a autorização com só três permissões (24.2); o getActiveSpreadsheet() no gatilho; o apóstrofo guardando texto e não aparecendo nas colunas com formato de texto simples (@), e o formato @ mantendo "00123", "TRUE" e "1/2" como texto (24.12); a lista suspensa com acento; o horário de Brasília; o gatilho de 5 minutos rodando sozinho; o aviso de falha por e-mail (24.6).
    - *Recomendação:* o roteiro da etapa 26 confere cada um desses no passo da planilha.
    - *Se decidir diferente:* nada muda no código.
+
+## Etapa 25
+
+25.1. **A margem de 1 minuto no ensaio: atrasar o relógio em vez de esperar.**
+   - *Dúvida:* leads_para_planilha só devolve fins de quiz gravados há mais de 1 minuto (21.6). O pedido deixa escolher entre esperar 61 segundos e um contorno, sem mexer no esquema.
+   - *O que foi feito:* o ensaio confere primeiro que a busca logo depois do quiz vem vazia (a margem funciona) e depois, como o superusuário do PGlite, numa sessão só, liga session_replication_role = replica, atrasa em 2 minutos o gravado_em dos fins de quiz de teste e volta para origin. A trava não é desligada na tabela, e o ensaio confere em seguida que apagar evento continua recusado. O README do ensaio diz o que o contorno pula: a espera de verdade, a margem no lado "já passou" com o relógio de verdade e a ordem entre clock_timestamp e now() em conexões diferentes.
+   - *Recomendação:* manter; o ensaio fica em 25 segundos. No teste de amanhã, a espera de verdade acontece sozinha (o lead aparece de 1 a 6 minutos depois).
+   - *Se decidir diferente:* para esperar de verdade, trocar o bloco do contorno em ensaio.mjs por uma espera de 61 segundos; o ensaio passa a levar perto de 90 segundos.
+
+25.2. **A linha do catálogo diz "publicada" para um protótipo de teste.**
+   - *Dúvida:* a gaveta entregas é o catálogo das entregas publicadas, e o protótipo de teste não é entrega. Sem a linha ('quiz-01', 1), nenhum envio grava (23.10).
+   - *O que foi feito:* dados/banco/catalogo-prototipo.sql (v1, rascunho) grava só essa linha, com tipo quiz, funil-01, o caminho entregas/quizzes/quiz-01/pagina/ e publicada_em na hora em que roda; retirada_em fica vazia. Roda de novo sem duplicar e sem mudar a data. O ensaio aplica o mesmo arquivo, duas vezes. O cabeçalho do arquivo diz que a linha existe para o teste.
+   - *Recomendação:* aceitar para o teste. Antes de ir ao ar com gente de verdade, junto com a limpeza dos dados de teste (#102), decidir se a linha fica (com publicada_em trocada pela data de ir ao ar) ou se o banco recomeça do zero.
+   - *Se decidir diferente:* se o protótipo tiver de usar uma versão própria (por exemplo, quiz-01 versão 0, só de teste), mudar juntos ETIQUETAS na página, este arquivo e o CHECK de versao (que hoje exige 1 ou mais).
+
+25.3. **catalogo-prototipo.sql ainda não aparece no README do banco.**
+   - *Dúvida:* dados/banco/README.md lista os arquivos da pasta. Ele tem o id banco-rascunho, o mesmo de esquema.sql (versão 2). Subir só o README para a versão 3 desencontraria o README e o esquema, que não mudou.
+   - *O que foi feito:* o README do banco não foi mexido. O arquivo novo está no index.md, no log.md, no README do ensaio e no próprio cabeçalho, e o roteiro da etapa 26 vai apontar para ele.
+   - *Recomendação:* na próxima versão do banco, o README ganha a linha do catalogo-prototipo.sql na tabela "O que tem dentro" e no "Como aplicar amanhã" (forma).
+   - *Se decidir diferente:* subir agora o README (e o cabeçalho de esquema.sql junto, como forma) para a versão 3, só com essa linha.
+
+25.4. **A sessão da landing não chega ao quiz.**
+   - *Dúvida:* o botão da landing manda ao quiz um id_sessao (um UUID), mas o quiz ignora esse valor e cria o próprio código (sessao-...), que é o formato que o banco aceita. O UUID da landing nem passaria na restrição do banco (precisa começar por "sessao-").
+   - *O que foi feito:* nada mudou; hoje não tem efeito, porque o registro de visita está desligado (18.5) e o banco só recebe o fim do quiz. O ensaio confere que o id_sessao vai no endereço e que o banco grava a sessão do quiz.
+   - *Recomendação:* quando 18.5 ligar a visita, a landing passa a gerar o código no formato sessao-... e o quiz passa a usar o que veio no endereço, se vier nesse formato; sem isso, a visita e o fim do quiz não se ligam (6.2).
+   - *Se decidir diferente:* se a visita nunca for gravada, tirar o id_sessao do botão da landing numa versão nova das duas variantes.
+
+25.5. **Envios simultâneos continuam sem conferência de verdade (21.15).**
+   - *Dúvida:* o pedido manda conferir a mesma pessoa enviando duas vezes ao mesmo tempo.
+   - *O que foi feito:* dois POST ao mesmo tempo ao garçom de verdade (no wrangler dev), que chegam juntos ao Supabase de mentira; os dois gravam, fica uma pessoa e dois eventos. Mas o PGlite tem uma conexão só e o Supabase de mentira põe os pedidos numa fila: no banco, um roda depois do outro. O caminho do índice único com espera não roda aqui.
+   - *Recomendação:* no teste de amanhã, mandar o mesmo lead de mentira duas vezes quase juntas (dois celulares ou duas abas) e conferir no Supabase uma pessoa e dois eventos; a etapa 26 deve ter esse passo.
+   - *Se decidir diferente:* uma conferência com duas conexões de verdade precisaria de um Postgres local de verdade (fora desta fila: instalação nova fora de nucleo/ferramentas/).
+
+25.6. **O ensaio usa o playwright-core da ferramenta de prints e o wrangler da pasta do protótipo.**
+   - *Dúvida:* o ensaio precisa do navegador sem tela e do wrangler, que já estão instalados em nucleo/ferramentas/prints/ e nucleo/ferramentas/prototipo/.
+   - *O que foi feito:* o ensaio carrega os dois de onde já estão (createRequire para o playwright-core e o acharChromium de print.js; o binário do wrangler de ../prototipo/), sem instalar de novo. package.json do ensaio continua só com o PGlite e ganhou os scripts ensaio e ensaio:sem-wrangler. O README diz que são três instalações.
+   - *Recomendação:* manter; uma versão só de cada ferramenta.
+   - *Se decidir diferente:* pôr playwright-core e wrangler no package.json do ensaio e trocar os dois caminhos em ensaio.mjs.
+
+25.7. **Se o wrangler não subir, o ensaio passa para o contorno, mas continua falhando.**
+   - *Dúvida:* o pedido manda contornar com o garçom num servidor Node se o wrangler dev não funcionar.
+   - *O que foi feito:* o contorno existe (`npm run ensaio:sem-wrangler`, ou sozinho depois de cerca de 1 minuto sem resposta do wrangler), roda o resto do ensaio e diz o modo na saída. Quando o contorno entra sozinho, a conferência "wrangler dev no ar" fica FALHOU e o ensaio termina com código 1, para ninguém achar que o Worker foi conferido. Nesta máquina o wrangler dev subiu sem login, e o contorno só foi usado de propósito (86 de 86).
+   - *Recomendação:* manter.
+   - *Se decidir diferente:* para o contorno automático contar como sucesso, trocar essa conferência por um aviso.

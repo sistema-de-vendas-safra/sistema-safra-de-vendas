@@ -13,7 +13,7 @@ Recusa o commit quando encontra, no que está preparado, algo parecido com chave
 
 ## ensaio/
 
-Por enquanto, só o package.json com o PGlite (um Postgres que roda dentro do Node) como dependência de desenvolvimento; node_modules fica fora do Git. Usado na etapa 21 para conferir que dados/banco/esquema.sql roda duas vezes e que dados/banco/conferir.sql dá tudo certo, com os papéis anon, authenticated e service_role criados de mentira. Para instalar de novo: `npm install` dentro de nucleo/ferramentas/ensaio/. O ensaio geral, com script e resultado, é a etapa 25.
+O ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25): `npm run ensaio` dentro de nucleo/ferramentas/ensaio/ (ou `node nucleo/ferramentas/ensaio/ensaio.mjs` da raiz). Liga um Postgres dentro do Node (PGlite) com os papéis do Supabase de mentira, aplica dados/banco/esquema.sql duas vezes, roda conferir.sql, confere as permissões trocando de papel, sobe um Supabase de mentira em 127.0.0.1, monta o site, roda o garçom no `wrangler dev --local` (com a configuração copiada para uma pasta temporária fora do repositório e segredos de mentira), aplica dados/banco/catalogo-prototipo.sql, percorre o quiz num navegador sem tela entrando pela landing, roda a planilha do SDR com o Google de mentira e confere os casos de erro. Cada conferência sai com OK ou FALHOU; termina com código 1 se algo falhar. Usa o PGlite desta pasta, o wrangler de prototipo/ e o playwright-core de prints/ (`npm install` em cada uma; node_modules fica fora do Git). Contorno sem wrangler: `npm run ensaio:sem-wrangler`. Resultado e limitações no README.md da pasta.
 
 ## prototipo/
 
