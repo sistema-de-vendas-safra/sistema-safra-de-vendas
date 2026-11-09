@@ -55,6 +55,9 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - landings/landing-page-01/briefing.md · briefing da landing-page-01: básico, estrutura de partida pelo wireframe corrigido, direcionamentos de copy, UX e design, bloqueios (v3, rascunho; desatualizado)
 - landings/landing-page-01/copy.md · copy da landing-page-01, seção por seção, com fatos por {{ficha-de-fatos#campo}} e bloqueios marcados (v3, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - landings/landing-page-01/estrutura.md · estrutura UX da landing-page-01: ordem, hierarquia, primeira tela no celular, botões, caminho até o quiz, carregamento e erro, acessibilidade; sem estilo, design bloqueado (v3, rascunho; desatualizado)
+- landings/landing-page-01/variante-a-design-system-v1/ · landing-page-01 com o visual do design system v1.0 (index.html, estilo.css, tokens.css copiado das fontes, README.md); mesmo texto e mesma marcação da variante B, para a escolha na reunião (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- landings/landing-page-01/variante-b-branco-e-verde/ · landing-page-01 com a paleta branco e verde (#81) e os botões laranja de 03/11 (index.html, estilo.css, README.md); mesmo texto e mesma marcação da variante A (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- landings/landing-page-01/prints/ · prints das duas variantes em 375 e 1440 pixels (variante-a-375.png, variante-a-1440.png, variante-b-375.png, variante-b-1440.png)
 - quizzes/quiz-01/briefing.md · briefing do quiz-01: básico, o que da cópia nova do quiz vale como fonte, conflitos, roteiro de telas, finais pelos dois critérios, bloqueios (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - quizzes/quiz-01/copy.md · copy do quiz-01 tela por tela, com as perguntas do lead score, o consentimento e a tabela das mudanças no texto do Júnior (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - quizzes/quiz-01/pagina/ · página do quiz-01 (index.html, poster-junior.jpg, README.md): mockup do Júnior com o texto da copy, lead score num lugar só, pacote no formato da planta, envio desligado (só console), consentimento obrigatório; visual sem mudança (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
@@ -63,7 +66,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - documentos/politica-de-privacidade.md · política de privacidade do funil-01: o que a landing e o quiz coletam, finalidades, consentimento, quem acessa, operadores (lista bloqueada, conflito-17), cookies e medição, prazo de guarda a definir (outros-23), direitos do art. 18 e como pedir; precisa de revisão de advogado (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
-- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v3, rascunho; desatualizado)
+- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v4, item 6a para escolher a variante da página; rascunho; desatualizado)
 
 ## dados/
 

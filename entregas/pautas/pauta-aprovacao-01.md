@@ -1,6 +1,6 @@
 ---
 id: pauta-aprovacao-01
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -27,12 +27,16 @@ depende_de:
     versao: 3
   - id: quiz-01-copy
     versao: 1
+  - id: landing-page-01-variante-a
+    versao: 1
+  - id: landing-page-01-variante-b
+    versao: 1
 desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides
 
-**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13).
+**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13). O item 6a entrou na versão 4, com as duas variantes de design da página (etapa 17); ganhou letra, e não número, para não mudar a numeração que outros documentos citam (pergunta 17.6).
 
 **Como ler.** Cada item traz o que é, as opções registradas, a posição do Otávio e o que a decisão destrava. Quando só existe uma proposta, as opções são aprovar, ajustar ou recusar. Onde a posição do Otávio não está escrita, o item diz "o Otávio decide antes da reunião". A linha "Referência", no fim de cada item, serve só para rastrear de onde veio cada ponto.
 
@@ -90,6 +94,15 @@ desatualizado: true
 - **Posição do Otávio:** o Otávio decide antes da reunião. Em 08/11 ele mandou o assunto para esta pauta e deixou tudo como está.
 - **O que destrava:** a etapa de design da página e do quiz.
 - **Referência:** lacuna: conflito-08 (levar ao Júnior; resposta 4 de 08/11). Decisões: #45, #81. Documento: design-system. log.md, pendência "Design".
+
+### 6a. A página nas duas variantes: escolher uma
+
+- **O que é:** para a escolha do item 6 ficar rápida, a página foi montada duas vezes, com o mesmo texto, a mesma ordem e as mesmas imagens de marcação; só o visual muda. A variante A veste o design system 1.0 (fundo escuro, verde menta no botão, fonte Geist; nos prints aparece a letra do computador, porque os arquivos da Geist ainda não estão no projeto). A variante B veste a paleta branco e verde de 07/11, com os botões laranja de 03/11. Os tons exatos de verde da B não estavam registrados e foram escolhidos para o rascunho. As duas mostram como "a definir" tudo o que ainda espera decisão (nome da agência, nome da Análise, critério de qualificação, promessa).
+- **Onde ver:** os prints de celular e de computador de cada uma: entregas/landings/landing-page-01/prints/variante-a-375.png, variante-a-1440.png, variante-b-375.png e variante-b-1440.png. As páginas abrem no navegador, nas pastas variante-a-design-system-v1/ e variante-b-branco-e-verde/.
+- **Opções:** a variante A; a variante B; ou uma mistura, dita ponto a ponto (por exemplo, a paleta de uma com o botão da outra). À parte: a cor do botão (laranja ou menta) e a fonte (Geist, a do sistema ou a pedida pelo Júnior), se não vierem junto com a variante.
+- **Posição do Otávio:** o Otávio decide antes da reunião.
+- **O que destrava:** o visual da página, que hoje trava o funil novo; a variante escolhida vira a base da versão seguinte da página, e a outra pasta vira arquivo. O quiz tem um conflito visual próprio (conflito-18; item 29): a mesma escolha pode valer para ele, se os dois disserem.
+- **Referência:** documentos: landing-page-01-variante-a, landing-page-01-variante-b. Lacunas: conflito-08, conflito-18. Decisões: #45, #81. Perguntas 17.1 a 17.8.
 
 ### 7. A Análise: nome público, e a reunião com o Júnior: duração e quem conduz
 

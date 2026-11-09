@@ -1,0 +1,722 @@
+<!--
+---
+id: landing-page-01-variante-a
+versao: 1
+status: rascunho
+aprovado_por:
+  otavio: pendente
+  junior: pendente
+  euclides: pendente
+depende_de:
+  - id: landing-page-01-copy
+    versao: 3
+  - id: landing-page-01-estrutura
+    versao: 3
+  - id: landing-page-01-briefing
+    versao: 3
+  - id: ficha-de-fatos
+    versao: 3
+  - id: design-system
+    versao: 3
+  - id: lacunas
+    versao: 5
+  - id: decisoes
+    versao: 3
+desatualizado: true
+---
+Landing-page-01 · variante A · design system v1.0 (rascunho para a reuniao; nada vai ao ar).
+Tokens em tokens.css (copia de fontes/design-system-v1.0/safra-tokens.css). Detalhes no README.md desta pasta.
+O <body> e igual nas duas variantes; so o <head> e o CSS mudam.
+-->
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sistema de Vendas Safra · landing-page-01 (rascunho)</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<a class="pular" href="#titulo-hero">Pular para o conteúdo</a>
+<p class="faixa-rascunho" role="note">Rascunho para a reunião. Nada desta página vai ao ar. As etiquetas tracejadas marcam o que está a definir.</p>
+
+<header class="cabecalho">
+  <div class="cabecalho-dentro">
+    <span class="logo"><span class="ad">a definir: logo e nome de quem assina (ficha-de-fatos#nome-agencia)</span></span>
+    <a class="botao botao-secundario" href="#destino" data-vai-ao-destino>Responder as perguntas</a>
+  </div>
+</header>
+
+<main id="conteudo">
+
+<!-- Seção oculta: 01 · Hero, versão A (título e subtítulo bloqueados pela #85). -->
+<!-- Seção oculta: contador "Total gerado" (ficha-de-fatos#total-dos-dois; conflito-04, conflito-05). -->
+
+<section class="secao hero" aria-labelledby="titulo-hero">
+  <div class="secao-dentro">
+    <p class="qualificador"><span class="ad">a definir: qualificador (ficha-de-fatos#criterio-de-qualificacao)</span></p>
+    <h1 id="titulo-hero" tabindex="-1"><span class="hero-linha-1">Resgate o lucro que está oculto no seu negócio.</span> <span class="hero-linha-2">Ele está nos leads que <em>nunca disseram não</em> e foram ignorados quando os novos leads chegaram.</span></h1>
+    <p class="marcas"><span class="ad">a definir: pergunta 8.3</span> <span class="ad">a definir: prova real de vendas colhidas de leads que nunca disseram não, num cliente fundador</span></p>
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+    <p class="hero-subtitulo"><span class="ad">a definir: subtítulo (#85)</span></p>
+  </div>
+</section>
+
+<!-- Seção oculta: faixa de bastidores (autorização de nome e imagem; ficha-de-fatos#credenciais-44). -->
+
+<section class="secao secao-02" aria-labelledby="t02">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Por que a venda fica cara</p>
+    <h2 id="t02"><span class="fato" data-campo="deming-percentual:percentual">94%</span>* dos problemas de vendas são problemas de Sistema de Vendas.</h2>
+
+    <div class="nao-e">
+      <p class="nao-e-abre">Quando a venda trava, quase nunca é o que parece.</p>
+      <ul class="nao-e-lista">
+        <li>Não é o seu vendedor.</li>
+        <li>Não é falta de poder de persuasão.</li>
+        <li>Não é o script de vendas.</li>
+        <li>Não é contratar um vendedor melhor.</li>
+        <li>Não é falta de técnica para quebrar objeção.</li>
+        <li>Não é comprar mais lead.</li>
+      </ul>
+    </div>
+
+    <div class="duas-colunas">
+      <p class="coluna-isolada">Quando querem vender mais, as empresas fazem ações isoladas: mais anúncio, script novo, outro vendedor. É o jeito mais caro de vender, porque uma ação não conversa com a outra.</p>
+      <p class="coluna-sistema">Num Sistema de Vendas, cada etapa alimenta a próxima, e nenhum lead é largado só porque o mês virou. Por isso as etapas não se somam: uma muda a conta da outra.</p>
+    </div>
+
+    <div class="par-imagens">
+      <figure class="figura figura-isolada">
+        <p class="figura-rotulo">Como funciona na sua empresa</p>
+        <div class="imagem" role="img" aria-label="Imagem 1, a definir: o dono de olhos vendados arremessa leads como argolas de feira; a maioria cai fora."><span class="imagem-descricao">Imagem 1 (a definir). Ilustração das argolas, ideia do Júnior: jogo de argola de feira, o dono de olhos vendados arremessa lead atrás de lead, a maioria cai fora.</span></div>
+        <figcaption>De olhos vendados, sem um sistema, o dono arremessa lead atrás de lead. A maioria cai fora. De vez em quando, um acerta.</figcaption>
+      </figure>
+      <figure class="figura figura-sistema">
+        <p class="figura-rotulo">Como funciona no Sistema de Vendas Safra</p>
+        <div class="imagem" role="img" aria-label="Imagem 2, a definir: o dono põe cada lead numa esteira que passa pelas etapas até quem fecha."><span class="imagem-descricao">Imagem 2 (a definir). O mesmo dono põe cada lead numa esteira que passa pelas etapas e acompanha tudo numa tela; só duas pessoas na cena; a planta do sistema na parede.</span></div>
+        <figcaption>O dono põe cada lead na esteira e acompanha cada etapa na tela. O sistema leva o lead, etapa por etapa, até quem fecha.</figcaption>
+      </figure>
+    </div>
+
+    <div class="bloco diagrama">
+      <h3>Ações isoladas somam peças soltas. Sistema de Vendas liga as etapas.</h3>
+      <div class="diagrama-lados">
+        <div class="diagrama-lado lado-isolado">
+          <p class="lado-nome">Ações isoladas</p>
+          <p class="lado-tese">Uma ação não conversa com a outra.</p>
+          <p class="lado-rotulo">Peças soltas</p>
+          <ul class="pecas-soltas">
+            <li>Anúncio <span>(mede leads)</span></li>
+            <li>Quem agenda <span>(mede agendamentos)</span></li>
+            <li>Quem fecha <span>(mede as vendas do mês)</span></li>
+            <li>Pós-venda <span>(sem dono)</span></li>
+          </ul>
+          <p class="lado-rotulo">O que cai entre elas</p>
+          <ul class="cai-entre">
+            <li>Lead sem resposta</li>
+            <li>Conversa marcada que não aconteceu</li>
+            <li>Cliente que ninguém procurou</li>
+          </ul>
+          <p class="lado-rotulo">Resultado</p>
+          <ul class="resultado">
+            <li>vendas mais caras</li>
+            <li>ticket médio menor</li>
+            <li><span class="ad">a definir: #16</span> cliente que compra uma vez só</li>
+          </ul>
+        </div>
+        <div class="diagrama-lado lado-sistema">
+          <p class="lado-nome">Sistema de Vendas</p>
+          <p class="lado-tese">Cada etapa alimenta a próxima.</p>
+          <p class="lado-rotulo">Ciclo</p>
+          <ol class="ciclo">
+            <li>Anúncio</li>
+            <li>Pré-qualificação</li>
+            <li>Agendamento</li>
+            <li>Comparecimento</li>
+            <li>Fechamento</li>
+            <li><span class="ad">a definir: #16</span> Recompra</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloco barras">
+      <div class="bloco-topo">
+        <h3>Mais anúncio multiplica o custo. Sistema de Vendas muda a conta.</h3>
+        <p class="selo">Exemplo</p>
+      </div>
+      <ul class="barras-lista">
+        <li class="barra-item">
+          <p class="barra-nome">Hoje</p>
+          <p class="barra-dados">20 vendas · R$ 50 mil de anúncio · <strong>R$ 2.500 por venda</strong></p>
+          <span class="barra" style="--tamanho: 75%" aria-hidden="true"></span>
+        </li>
+        <li class="barra-item barra-pior">
+          <p class="barra-nome">Dobrar o anúncio</p>
+          <p class="barra-dados">30 vendas · R$ 100 mil de anúncio · <strong>R$ 3.333 por venda</strong></p>
+          <span class="barra" style="--tamanho: 100%" aria-hidden="true"></span>
+        </li>
+        <li class="barra-item barra-melhor">
+          <p class="barra-nome">Pensar como sistema</p>
+          <p class="barra-dados">40 vendas · R$ 50 mil de anúncio · <strong>R$ 1.250 por venda</strong></p>
+          <span class="barra" style="--tamanho: 37.5%" aria-hidden="true"></span>
+        </li>
+      </ul>
+      <p class="rodape-exemplo">Números redondos para mostrar a conta. Não é resultado de cliente nem previsão.</p>
+    </div>
+
+    <div class="bloco cartoes">
+      <h3>Ação isolada piora os números do seu caixa.</h3>
+      <dl class="cartoes-lista">
+        <div class="cartao">
+          <dt>Quanto custa cada venda</dt>
+          <dd>Na ação isolada, sobe a cada lead que fica sem resposta.</dd>
+        </div>
+        <div class="cartao">
+          <dt>Quanto entra em cada venda</dt>
+          <dd>Na ação isolada, cai quando ninguém trabalha o lead até o fim.</dd>
+        </div>
+        <div class="cartao">
+          <dt>Quanto cada cliente compra no tempo</dt>
+          <dd><span class="ad">a definir: #16</span> Na ação isolada, quase ninguém volta a procurar quem já comprou.</dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="nota-rodape"><span class="ad">a definir: pergunta 4.4</span> * Adaptado de W. Edwards Deming, o pai da qualidade, no livro Out of the Crisis.</p>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="secao secao-03" aria-labelledby="t03">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Sistema de Vendas Safra</p>
+    <h2 id="t03">Você já pagou pelas suas próximas vendas.</h2>
+    <p class="subtitulo">Uma parte delas está parada nos leads que ninguém voltou a procurar.</p>
+    <div class="texto-corrido">
+      <p>Todo mês, o seu time corre atrás do lead novo. No dia 30, quem ainda não comprou fica para trás, e quase ninguém volta a falar com ele.</p>
+      <p>Ele disse não? Não. Só parou de ser trabalhado.</p>
+      <p>Isso tem nome: Gestão Mensal de Leads. Ela costuma deixar dinheiro na mesa, em leads que você já pagou para ter.</p>
+      <p>A saída é a Gestão de Leads por Safra: cada lead trabalhado no tempo dele, e não no tempo do mês.</p>
+    </div>
+
+    <div class="bloco horta" data-horta>
+      <p class="rotulo">Os leads de um mesmo mês, do dia 0 ao dia <span class="fato" data-campo="tempos-da-analogia:melancia">90</span></p>
+      <h3>Cada lead é uma planta. Cada planta tem o seu tempo.</h3>
+      <div class="horta-chave">
+        <p class="horta-chave-texto">Vire a chave e compare</p>
+        <button type="button" class="chave" role="switch" aria-checked="false" data-chave hidden>
+          <span class="chave-opcao chave-mensal">Gestão Mensal de Leads</span>
+          <span class="chave-opcao chave-safra">Gestão de Leads por Safra</span>
+        </button>
+        <p class="horta-avista" aria-live="polite" data-avista hidden>À vista: Gestão Mensal de Leads</p>
+      </div>
+      <div class="horta-lados">
+        <div class="horta-lado lado-mensal" data-lado="mensal">
+          <h4>Gestão Mensal de Leads · O mês fecha no dia 30.</h4>
+          <ol class="plantas">
+            <li class="planta planta-colhida"><span class="planta-dias" aria-hidden="true">30</span><strong>Lead 1 · Rúcula</strong> pronta em uns <span class="fato" data-campo="tempos-da-analogia:rucula">30</span> dias · Colhido (vendido) no dia 30.</li>
+            <li class="planta planta-morta"><span class="planta-dias" aria-hidden="true">60</span><strong>Lead 2 · Morango</strong> pronto em uns <span class="fato" data-campo="tempos-da-analogia:morango">60</span> dias · Parou de ser cultivado e morreu.</li>
+            <li class="planta planta-morta"><span class="planta-dias" aria-hidden="true">90</span><strong>Lead 3 · Melancia</strong> pronta em uns <span class="fato" data-campo="tempos-da-analogia:melancia">90</span> dias · Parou de ser cultivado e morreu.</li>
+          </ol>
+          <p class="placar"><strong>Colhido 1 de 3.</strong> Dois de três ficaram na mesa. Você pagou pelos três leads e vendeu para um.</p>
+        </div>
+        <div class="horta-lado lado-safra" data-lado="safra">
+          <h4>Gestão de Leads por Safra · Cada lead no tempo dele.</h4>
+          <ol class="plantas">
+            <li class="planta planta-trabalhada"><span class="planta-dias" aria-hidden="true">30</span><strong>Lead 1</strong> trabalhado até o dia <span class="fato" data-campo="tempos-da-analogia:rucula">30</span>.</li>
+            <li class="planta planta-trabalhada"><span class="planta-dias" aria-hidden="true">60</span><strong>Lead 2</strong> trabalhado até o dia <span class="fato" data-campo="tempos-da-analogia:morango">60</span>.</li>
+            <li class="planta planta-trabalhada"><span class="planta-dias" aria-hidden="true">90</span><strong>Lead 3</strong> trabalhado até o dia <span class="fato" data-campo="tempos-da-analogia:melancia">90</span>.</li>
+          </ol>
+          <p class="placar"><strong>3 de 3</strong> trabalhados no tempo de cada um.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="metafora">
+      <p class="metafora-frase">Venda de alto valor é melancia. E você trata os seus leads como rúcula.</p>
+      <figure class="figura">
+        <div class="imagem imagem-larga" role="img" aria-label="Foto a definir: uma melancia tratada como rúcula, com o selo Tratada como rúcula."><span class="imagem-descricao">Foto da metáfora (a definir): uma melancia tratada como rúcula.</span><span class="selo selo-foto">Tratada como rúcula</span></div>
+      </figure>
+      <p class="metafora-fecho">No Sistema de Vendas Safra, cada lead é trabalhado no tempo dele. O sistema diz quem chamar e quando.</p>
+    </div>
+
+    <p class="frase-impacto">Perdido é só quem disse não.</p>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+
+    <p class="ponte">A Gestão de Leads por Safra é só uma das peças do Sistema de Vendas Safra.</p>
+  </div>
+</section>
+
+<section class="secao secao-03b" aria-labelledby="t03b">
+  <div class="secao-dentro">
+    <p class="sobretitulo">O que é o Sistema de Vendas Safra</p>
+    <h2 id="t03b">Sete peças ligadas. Um só Sistema de Vendas.</h2>
+    <p class="subtitulo">Ação isolada mexe numa peça de cada vez. O Sistema de Vendas Safra liga as sete: o que uma aprende, a outra usa. Até o <span class="fato" data-campo="sistema-instalado:dia">dia 15</span>, a gente instala todas no seu comercial; depois, acompanha até o fim de <span class="fato" data-campo="duracao">90 dias (13 semanas)</span>.</p>
+
+    <div class="anel-e-metodo">
+      <figure class="anel" aria-label="As sete peças em volta do Sistema de Vendas Safra; a lista das peças vem logo abaixo.">
+        <p class="anel-centro">Sistema de Vendas Safra</p>
+        <ul class="anel-pecas" aria-hidden="true">
+          <li>Mentalidade de Vendas</li>
+          <li>Inteligência Humana</li>
+          <li>Inteligência de Mercado</li>
+          <li>Inteligência Artificial</li>
+          <li>Processos</li>
+          <li>Dados</li>
+          <li>Tecnologia</li>
+        </ul>
+      </figure>
+      <div class="cartao-metodo">
+        <p class="rotulo">O método proprietário</p>
+        <h3>Gestão de Leads por Safra</h3>
+        <p>Cada mês de captação vira uma safra, com relógio contado do dia em que cada lead entra e meta para cada etapa. É o que mostra de qual safra vem cada venda e onde ela quebra.</p>
+      </div>
+    </div>
+
+    <dl class="pecas">
+      <div class="peca"><dt>Mentalidade de Vendas</dt><dd><span class="ad">a definir: #26</span> O time não larga o lead antes do não nem antes do fim do relógio dele, e cada contato tem data marcada.</dd></div>
+      <div class="peca"><dt>Inteligência Humana</dt><dd><span class="ad">a definir: pergunta 8.12</span> Quem vende, preparado com as calls de venda do próprio time analisadas (<span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>).</dd></div>
+      <div class="peca"><dt>Inteligência de Mercado</dt><dd>O que o seu cliente pergunta e objeta vira roteiro e argumento.</dd></div>
+      <div class="peca"><dt>Inteligência Artificial</dt><dd><span class="ad">a definir: lacuna-21</span> Apoio para o time ler os números e preparar os roteiros.</dd></div>
+      <div class="peca"><dt>Processos</dt><dd>A régua de contato, as regras do CRM e o rito da semana, tudo por escrito no <span class="fato" data-campo="nomes-das-entregas:7">Playbook da Gestão de Vendas por Safra</span>.</dd></div>
+      <div class="peca"><dt>Dados</dt><dd>Cada número com a safra de onde veio, contra a meta de etapa que você aprovou.</dd></div>
+      <div class="peca"><dt>Tecnologia</dt><dd>O CRM montado por safra e o painel ligado às suas ferramentas.</dd></div>
+    </dl>
+    <p class="ultima-linha">Em "Como funciona", logo abaixo, você toca em cada peça e vê as entregas que a instalam.</p>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- Seção oculta, inteira: 04 · Credenciais (nenhum comprovante nem autorização; conflito-05). -->
+
+<section class="secao secao-05" aria-labelledby="t05">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Como funciona</p>
+    <h2 id="t05">O sistema instalado até o <span class="fato" data-campo="sistema-instalado:dia">dia 15</span>. Depois, acompanhamento até o fim do serviço.</h2>
+    <p class="frase-impacto frase-impacto-menor">Não é mentoria. É o sistema instalado dentro da sua operação, entrega por entrega. <span class="ad">a definir: a segunda metade da frase (#85)</span></p>
+    <p class="subtitulo">Até o <span class="fato" data-campo="sistema-instalado:dia">dia 15</span>, a gente entrega todo o nosso arsenal de conhecimento, e o sistema fica instalado.</p>
+
+    <div class="filtro">
+      <p class="filtro-texto">As peças que cada entrega instala · toque para filtrar</p>
+      <div class="filtro-botoes">
+        <button type="button" class="filtro-botao" aria-pressed="true">Todas</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Mentalidade de Vendas</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Inteligência Humana</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Inteligência de Mercado</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Inteligência Artificial</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Processos</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Dados</button>
+        <button type="button" class="filtro-botao" aria-pressed="false">Tecnologia</button>
+      </div>
+      <p class="filtro-marca"><span class="ad">a definir: quais peças cada entrega instala (não está na copy); o filtro ainda não filtra</span></p>
+    </div>
+
+    <div class="linha-do-tempo">
+      <p class="marcas"><span class="ad">a definir: lacuna-01</span></p>
+      <p class="linha-do-tempo-abre">Três marcos, do começo ao fim de <span class="fato" data-campo="duracao">90 dias (13 semanas)</span>:</p>
+      <ol class="marcos">
+        <li><strong><span class="fato" data-campo="nomes-das-entregas:1">Análise Estratégica das Safras</span></strong> <span class="fato" data-campo="quando-entrega-1">semana 1, na primeira Sessão de Comando</span></li>
+        <li><strong>Sistema instalado</strong> <span class="fato" data-campo="sistema-instalado:dia">dia 15</span></li>
+        <li><strong><span class="fato" data-campo="nomes-das-entregas:8">Relatório de Produtividade</span></strong> <span class="fato" data-campo="quando-entrega-8">semana 13, na terceira Sessão de Comando</span></li>
+      </ol>
+      <p class="marcas"><span class="ad">a definir: pergunta 8.11 (fases de cor)</span></p>
+      <ol class="fases">
+        <li class="fase fase-1"><strong>Primeira fase</strong> Logo depois da instalação, o time ainda estranha o jeito novo.</li>
+        <li class="fase fase-2"><strong>Segunda fase</strong> Os primeiros números por safra aparecem no painel, e o time começa a acreditar.</li>
+        <li class="fase fase-3"><strong>Terceira fase</strong> O sistema rodando, pronto para crescer.</li>
+      </ol>
+      <p class="aviso-datas">Datas de referência, que podem mudar antes do seu início.</p>
+    </div>
+
+    <div class="entregas">
+      <div class="entregas-grupo">
+        <h3>Ponto de partida</h3>
+        <ul>
+          <li class="entrega"><p class="entrega-numero">01</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:1">Análise Estratégica das Safras</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-1">semana 1, na primeira Sessão de Comando</span></p><p class="entrega-texto">A gente lê os seus últimos meses de leads e acha a etapa onde a venda quebra.</p></li>
+        </ul>
+      </div>
+      <div class="entregas-grupo">
+        <h3>Preparo do solo</h3>
+        <ul>
+          <li class="entrega"><p class="entrega-numero">02</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:2">Implementação da Infraestrutura</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-2">semanas 1 e 2</span></p><p class="entrega-texto">O CRM que você já usa, montado por safra, com as regras do sistema. O seu time executa as mudanças em <span class="fato" data-campo="execucao-do-time:prazo">uma semana</span>, a partir da tarefa passada pelo Junior Neves.</p></li>
+          <li class="entrega"><p class="entrega-numero">03</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:3">Playbook de Comunicação Persuasiva</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-3">até o dia 15</span></p><p class="entrega-texto">A régua de contato e os roteiros que o seu time usa em cada tentativa.</p></li>
+          <li class="entrega"><p class="entrega-numero">05</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:5">Painel de Safras</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-5">até o dia 15</span></p><p class="entrega-texto">Cada safra e cada etapa na sua tela, ligado aos seus dados.</p></li>
+          <li class="entrega"><p class="entrega-numero">07</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:7">Playbook da Gestão de Vendas por Safra</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-7">semanas 1 e 2 (no preparo do solo)</span></p><p class="entrega-texto">O sistema por escrito, para o seu time rodar sem a gente.</p></li>
+        </ul>
+      </div>
+      <div class="entregas-grupo">
+        <h3>Colheita e plantio</h3>
+        <ul>
+          <li class="entrega"><p class="entrega-numero">04</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:4">Recuperação de Ativos</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-4">semanas 3 a 13</span></p><p class="entrega-texto">O seu time volta aos leads que você já pagou e que nunca disseram não.</p></li>
+          <li class="entrega"><p class="entrega-numero">06</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:6">Treinamento para Otimização da Conversão</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-6">a parte teórica até o dia 15; a call semanal em grupo das semanas 3 a 13</span></p><p class="entrega-texto"><span class="ad">a definir: pergunta 8.12</span> A parte teórica primeiro. Depois, <span class="fato" data-campo="analise-de-calls:volume">2 calls de venda por cliente por semana</span>, analisadas e devolvidas.</p></li>
+        </ul>
+      </div>
+      <div class="entregas-grupo">
+        <h3>Encerramento</h3>
+        <ul>
+          <li class="entrega"><p class="entrega-numero">08</p><p class="entrega-nome"><span class="fato" data-campo="nomes-das-entregas:8">Relatório de Produtividade</span></p><p class="entrega-quando"><span class="fato" data-campo="quando-entrega-8">semana 13, na terceira Sessão de Comando</span></p><p class="entrega-texto">Os números de cada safra, etapa por etapa.</p></li>
+        </ul>
+      </div>
+    </div>
+    <p class="anel-de-volta">Do relatório, a próxima safra já começa lida.</p>
+
+    <div class="bloco comeco-ao-fim">
+      <h3>Do começo ao fim</h3>
+      <dl class="comeco-lista">
+        <div><dt>Sessões de Comando com o Junior Neves</dt><dd><span class="fato" data-campo="sessoes-de-comando:quantidade">3</span>, com você e o seu head comercial: <span class="fato" data-campo="sessoes-de-comando:quando">a primeira na semana 1, a segunda na semana 1 ou 2 e a terceira na semana 13</span>.</dd></div>
+        <div><dt>Calls em grupo</dt><dd><span class="ad">a definir: pergunta 9.10</span> <span class="fato" data-campo="calls-em-grupo:formato">semanais, das semanas 3 a 13, com todos os clientes, conduzidas pelo Júnior e pelo Euclides</span>. Quantidade: <span class="ad">a definir: quantidade (ficha-de-fatos#calls-em-grupo)</span></dd></div>
+        <div><dt>Grupo de suporte</dt><dd>Entre uma conversa e outra, o seu time tem onde perguntar: <span class="fato" data-campo="grupo-de-suporte:canal">um grupo por cliente, com atendimento</span>.</dd></div>
+      </dl>
+    </div>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="secao secao-06" aria-labelledby="t06">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Com o Sistema de Vendas Safra, você vê cada etapa enquanto ela acontece</p>
+    <p class="rotulo"><span class="fato" data-campo="nomes-das-entregas:5">Painel de Safras</span></p>
+    <h2 id="t06">Cada lead no seu tempo. Cada etapa na sua tela.</h2>
+    <p class="subtitulo">Um painel ligado às suas ferramentas, com duas visões e só os números que você precisa ver. O dono enxerga o time inteiro. O vendedor enxerga o dia dele.</p>
+    <p class="quando">Quando: <span class="fato" data-campo="quando-entrega-5">até o dia 15</span>.</p>
+
+    <div class="abas" data-abas>
+      <div class="abas-lista" role="tablist" aria-label="Visões do painel" hidden>
+        <button type="button" role="tab" id="aba-dono" aria-controls="painel-dono" aria-selected="true">Para quem gere o time</button>
+        <button type="button" role="tab" id="aba-vendedor" aria-controls="painel-vendedor" aria-selected="false" tabindex="-1">Para o vendedor</button>
+      </div>
+      <div class="aba-painel" id="painel-dono" role="tabpanel" aria-labelledby="aba-dono">
+        <h3>Para quem gere o time</h3>
+        <p class="aba-abre">Abrir uma tela de manhã e saber qual safra está perto do fim, onde a venda está travando e qual vendedor precisa de ajuda. Tudo numa tela só.</p>
+        <dl class="telas">
+          <div><dt>Painel de Safras</dt><dd>Cada safra, cada etapa e cada vendedor, com o relógio à vista.</dd></div>
+          <div><dt>Onde a safra trava</dt><dd>Cada etapa contra a meta que você aprovou. Você sabe onde mexer antes de a safra fechar.</dd></div>
+          <div><dt>Leads que nunca disseram não</dt><dd>Os leads que você já pagou e que ainda estão no campo.</dd></div>
+          <div><dt>Prioridade da semana</dt><dd><span class="ad">a definir: pergunta 8.12</span> O esforço do time vai para a safra perto do fim e abaixo da meta.</dd></div>
+          <div><dt>Avaliação de calls</dt><dd>Objeções e próximos passos das calls do seu time.</dd></div>
+        </dl>
+      </div>
+      <div class="aba-painel" id="painel-vendedor" role="tabpanel" aria-labelledby="aba-vendedor">
+        <h3>Para o vendedor</h3>
+        <p class="aba-abre">Abrir o dia e saber com quem falar, quando e o que dizer. Sem depender da memória.</p>
+        <dl class="telas">
+          <div><dt>Contatos de hoje</dt><dd>Quem tem contato marcado para hoje, safra por safra.</dd></div>
+          <div><dt>Relógio do lead</dt><dd>Quantos dias cada lead ainda tem antes do fim do relógio.</dd></div>
+          <div><dt>Roteiro de cada tentativa</dt><dd>A mensagem certa para cada contato da régua.</dd></div>
+          <div><dt>Histórico do lead</dt><dd>Tudo o que o lead já disse, num lugar só.</dd></div>
+          <div><dt>Retorno das calls</dt><dd>O que ajustar na próxima conversa.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <figure class="figura janela-painel">
+      <div class="imagem imagem-larga" role="img" aria-label="Janela do painel a definir: dados de exemplo, com nomes e números fictícios."><span class="imagem-descricao">Janela do painel (a definir): tela de exemplo com safras, etapas e vendedores. Nomes e números fictícios; a tabela de etapas usa as metas de <span class="fato" data-campo="metas-por-etapa">50% pré-qualificam, 50% agendam, 75% comparecem, 20% fecham (3,75% de lead em venda)</span>.</span><span class="selo selo-foto">Dados de exemplo</span></div>
+    </figure>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="secao secao-07" aria-labelledby="t07">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Para quem é</p>
+    <h2 id="t07">Antes de responder, veja se o sistema é para o seu momento.</h2>
+    <div class="para-quem">
+      <div class="para-quem-lado para-quem-sim">
+        <h3>É para você se:</h3>
+        <ul>
+          <li>Você é dono ou sócio e decide sobre o comercial.</li>
+          <li><span class="ad">a definir: critério de qualificação (valor da venda)</span></li>
+          <li><span class="ad">a definir: critério de qualificação (faturamento)</span></li>
+          <li><span class="ad">a definir: critério de qualificação (leads todo mês)</span></li>
+          <li><span class="ad">a definir: critério de qualificação (gente vendendo além do dono)</span></li>
+          <li>Quer o sistema instalado dentro da sua operação, e não mais um curso ou mentoria.</li>
+          <li>Topa abrir os números do seu comercial.</li>
+        </ul>
+      </div>
+      <div class="para-quem-lado para-quem-nao">
+        <h3>Não é para você se:</h3>
+        <ul>
+          <li><span class="ad">a definir: critério de qualificação (ainda não tem leads chegando)</span></li>
+          <li>Quer aula, curso ou conteúdo para assistir.</li>
+          <li>Quer que alguém venda no seu lugar.</li>
+          <li><span class="ad">a definir: critério de qualificação (venda sem conversa, no balcão ou no e-commerce)</span></li>
+          <li>Não topa abrir os números do seu comercial.</li>
+          <li>Procura fórmula pronta ou promessa de resultado garantido.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fecho">Se você se reconheceu do lado de cá, o próximo passo é responder as perguntas.</p>
+
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="secao secao-08" id="destino" aria-labelledby="titulo-destino">
+  <div class="secao-dentro">
+    <p class="sobretitulo"><span class="ad">a definir: nome público da Análise (ficha-de-fatos#analise-nome-publico)</span></p>
+    <p class="selo selo-destino">Sem custo na promoção de lançamento</p>
+    <h2 id="titulo-destino" tabindex="-1">Traga os números do seu último mês. A gente mostra onde a sua venda quebra.</h2>
+    <p class="marcas"><span class="ad">a definir: pergunta 8.15</span></p>
+
+    <ol class="passos">
+      <li class="passo">
+        <p class="passo-numero">1</p>
+        <h3>Responda as perguntas.</h3>
+        <p><span class="ad">a definir: pergunta 8.15</span> Com os números do seu funil: leads, agendamentos, comparecimentos e vendas.</p>
+      </li>
+      <li class="passo">
+        <p class="passo-numero">2</p>
+        <h3>Receba a leitura dos seus números.</h3>
+        <p><span class="ad">a definir: pergunta 8.15 e quiz-01</span> A etapa onde a sua venda quebra e quanto ficou pelo caminho.</p>
+      </li>
+      <li class="passo">
+        <p class="passo-numero">3</p>
+        <h3>Se o seu perfil encaixa, a gente liga para marcar uma conversa.</h3>
+        <p>Com <span class="ad">a definir: quem conduz (ficha-de-fatos#analise-quem-conduz)</span>.</p>
+        <div class="imagem imagem-retrato" role="img" aria-label="Foto a definir: foto real ou nova do Júnior."><span class="imagem-descricao">Foto do passo 3 (a definir): prova real, foto real ou nova do Júnior; retrato por IA só sinalizado.</span></div>
+      </li>
+    </ol>
+
+    <div class="cartoes-destino">
+      <div class="cartao-relatorio">
+        <div class="bloco-topo">
+          <div>
+            <p class="rotulo">O que você leva</p>
+            <h3>Relatório da sua última safra</h3>
+          </div>
+          <p class="selo">Exemplo</p>
+        </div>
+        <div class="relatorio-item">
+          <p class="relatorio-item-titulo">1 · Onde a sua venda quebra <span class="relatorio-sub">Leads que ficaram pelo caminho</span></p>
+          <p class="marcas"><span class="ad">a definir: pergunta 8.15 e quiz-01</span></p>
+          <table class="funil">
+            <caption class="visualmente-oculto">Funil de exemplo, com a meta de cada etapa ao lado</caption>
+            <thead><tr><th scope="col">Etapa</th><th scope="col">Seguem</th><th scope="col">Ficaram</th><th scope="col">Meta</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Leads do mês</th><td>1.000</td><td></td><td></td></tr>
+              <tr><th scope="row">Pré-qualificação</th><td>500</td><td>menos 500</td><td><span class="fato" data-campo="metas-por-etapa">50%</span></td></tr>
+              <tr class="funil-maior"><th scope="row">Agendamento</th><td>125</td><td>menos 375</td><td><span class="fato" data-campo="metas-por-etapa">50%</span></td></tr>
+              <tr><th scope="row">Comparecimento</th><td>94</td><td>menos 31</td><td><span class="fato" data-campo="metas-por-etapa">75%</span></td></tr>
+              <tr><th scope="row">Fechamento</th><td>19 vendas</td><td>menos 75</td><td><span class="fato" data-campo="metas-por-etapa">20%</span></td></tr>
+            </tbody>
+          </table>
+          <p class="funil-meta">Ao lado de cada etapa, a meta para comparar: <span class="fato" data-campo="metas-por-etapa">50% pré-qualificam, 50% agendam, 75% comparecem, 20% fecham (3,75% de lead em venda)</span>.</p>
+          <p class="funil-total"><strong>981 de cada 1.000 leads</strong> ficam pelo caminho.</p>
+          <p>Entre os leads pré-qualificados, a maior perda está no agendamento: 375 leads que você pagou e que ninguém levou até a conversa.</p>
+        </div>
+        <div class="relatorio-item">
+          <p class="relatorio-item-titulo">2 · Potencial de dinheiro a sacar (sem comprar mais leads)</p>
+          <p class="marcas"><span class="ad">a definir: pergunta 8.15 e quiz-01</span></p>
+          <p class="valor-sacar"><strong>R$ 300 mil</strong> em leads que você já pagou e que nunca disseram não.</p>
+        </div>
+        <!-- Seção oculta: 3 · PDV-90 (conflito-10; lacuna-22). -->
+        <p class="relatorio-fecho">O relatório é seu, comprando ou não.</p>
+      </div>
+
+      <div class="cartao-oferta">
+        <!-- Seção oculta: preço riscado e rodapé "passa a custar" (ficha-de-fatos#analise-valor; 8.9). -->
+        <!-- Seção oculta: barra de resgates (ficha-de-fatos#barra-de-resgates). -->
+        <a class="botao botao-principal botao-quiz" href="../../../quizzes/quiz-01/pagina/index.html" data-quiz>Quero responder as perguntas do meu funil</a>
+        <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+        <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao secao-09" aria-labelledby="t09">
+  <div class="secao-dentro">
+    <p class="sobretitulo">Perguntas frequentes</p>
+    <h2 id="t09">O que todo dono pergunta antes de assinar.</h2>
+    <ul class="destaques">
+      <li><span class="fato" data-campo="duracao">90 dias (13 semanas)</span></li>
+      <li><span class="fato" data-campo="numero-de-entregas">8 entregas</span></li>
+    </ul>
+
+    <div class="perguntas" data-perguntas>
+      <details class="pergunta" open>
+        <summary><h3>É mais uma mentoria?</h3></summary>
+        <p>Não. São <span class="fato" data-campo="numero-de-entregas">8 entregas</span>, instaladas dentro da sua operação: o CRM montado por safra, o <span class="fato" data-campo="nomes-das-entregas:5">Painel de Safras</span>, a régua de contato e o sistema por escrito. As Sessões de Comando com o Junior Neves são o rito que conduz a instalação, não uma entrega a mais.</p>
+      </details>
+      <details class="pergunta" open>
+        <summary><h3>Quem me atende depois que eu assinar?</h3></summary>
+        <p>O Junior Neves, nas Sessões de Comando com você e o seu head comercial: <span class="fato" data-campo="sessoes-de-comando:quando">a primeira na semana 1, a segunda na semana 1 ou 2 e a terceira na semana 13</span>. Nas calls em grupo: <span class="ad">a definir: pergunta 9.10</span> <span class="fato" data-campo="calls-em-grupo:formato">semanais, das semanas 3 a 13, com todos os clientes, conduzidas pelo Júnior e pelo Euclides</span>; quantidade <span class="ad">a definir: quantidade (ficha-de-fatos#calls-em-grupo)</span>. E, entre uma conversa e outra, o seu time tem o grupo de suporte: <span class="fato" data-campo="grupo-de-suporte:canal">um grupo por cliente, com atendimento</span>.</p>
+      </details>
+      <details class="pergunta" open>
+        <summary><h3>Quem faz as vendas: vocês ou o meu time?</h3></summary>
+        <p>O seu time. A gente instala o sistema e prepara quem vende para operar. A colheita é sua.</p>
+      </details>
+      <details class="pergunta" open>
+        <summary><h3>Funciona no meu negócio?</h3></summary>
+        <p>É o que as perguntas do início respondem, com os seus números. <span class="ad">a definir: critério de qualificação (ficha-de-fatos#criterio-de-qualificacao)</span></p>
+      </details>
+      <details class="pergunta" open>
+        <summary><h3>O meu caso vai aparecer para outros empresários?</h3></summary>
+        <p>Só se você quiser. Documentar o caso é opcional. Se você topar, entram os números somados por etapa, antes e depois, com o nome da empresa ou só o setor, à sua escolha, e um depoimento em vídeo sobre o que aconteceu, seja qual for o resultado. A lista de leads nunca é publicada.</p>
+      </details>
+      <details class="pergunta" open>
+        <summary><h3>E quando o serviço acaba?</h3></summary>
+        <p>O <span class="fato" data-campo="nomes-das-entregas:3">Playbook de Comunicação Persuasiva</span>, o <span class="fato" data-campo="nomes-das-entregas:7">Playbook da Gestão de Vendas por Safra</span> e o que o seu time praticou no <span class="fato" data-campo="nomes-das-entregas:6">Treinamento para Otimização da Conversão</span> ficam com você e o seu time. Os seus dados também.</p>
+      </details>
+      <!-- Seção oculta: "Posso parcelar?" (ficha-de-fatos#parcelamento; conflito-15). -->
+    </div>
+
+    <p class="fecho">Ficou alguma dúvida? Comece pelos seus números: as perguntas mostram primeiro onde a sua venda quebra.</p>
+    <div class="chamada">
+      <a class="botao botao-principal" href="#destino" data-vai-ao-destino>Quero responder as perguntas do meu funil</a>
+      <p class="chamada-linha">Sem custo na promoção de lançamento.</p>
+      <p class="chamada-marca"><span class="ad">a definir: texto final do botão (ficha-de-fatos#analise-nome-publico)</span></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="rodape">
+  <div class="secao-dentro">
+    <p><span class="ad">a definir: quem assina a página (ficha-de-fatos#nome-agencia)</span></p>
+  </div>
+</footer>
+
+<script>
+/* Comportamento da página: igual nas duas variantes. Nada é guardado no navegador e nada é enviado. */
+(function () {
+  var d = document;
+  d.documentElement.classList.add('js');
+  var reduzMovimento = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Botões que levam à seção 08: rolam até ela e põem o foco no título. */
+  var destino = d.getElementById('destino');
+  var tituloDestino = d.getElementById('titulo-destino');
+  d.querySelectorAll('[data-vai-ao-destino]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      destino.scrollIntoView({ behavior: reduzMovimento ? 'auto' : 'smooth', block: 'start' });
+      tituloDestino.focus({ preventScroll: true });
+    });
+  });
+
+  /* Botão do cabeçalho: só aparece depois que o botão do hero sai da tela. */
+  var botaoCabecalho = d.querySelector('.cabecalho .botao');
+  var botaoHero = d.querySelector('.hero .botao-principal');
+  if ('IntersectionObserver' in window && botaoCabecalho && botaoHero) {
+    botaoCabecalho.classList.add('escondido');
+    new IntersectionObserver(function (itens) {
+      botaoCabecalho.classList.toggle('escondido', itens[0].isIntersecting || itens[0].boundingClientRect.top > 0);
+    }).observe(botaoHero);
+  }
+
+  /* Quadro da horta: abre na Gestão Mensal; a chave troca o lado. */
+  d.querySelectorAll('[data-horta]').forEach(function (horta) {
+    var chave = horta.querySelector('[data-chave]');
+    var avista = horta.querySelector('[data-avista]');
+    var mensal = horta.querySelector('[data-lado="mensal"]');
+    var safra = horta.querySelector('[data-lado="safra"]');
+    chave.hidden = false; avista.hidden = false;
+    function mostrar(porSafra) {
+      chave.setAttribute('aria-checked', porSafra ? 'true' : 'false');
+      mensal.hidden = porSafra; safra.hidden = !porSafra;
+      avista.textContent = 'À vista: ' + (porSafra ? 'Gestão de Leads por Safra' : 'Gestão Mensal de Leads');
+    }
+    chave.addEventListener('click', function () { mostrar(chave.getAttribute('aria-checked') !== 'true'); });
+    mostrar(false);
+  });
+
+  /* Filtro da seção 05: marca a peça escolhida; filtrar fica para quando a copy disser as peças de cada entrega. */
+  d.querySelectorAll('.filtro-botao').forEach(function (b, _, todos) {
+    b.addEventListener('click', function () {
+      todos.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+
+  /* Abas da seção 06: trocadas pelo toque ou pelas setas; não giram sozinhas. */
+  d.querySelectorAll('[data-abas]').forEach(function (caixa) {
+    var lista = caixa.querySelector('[role="tablist"]');
+    var abas = Array.prototype.slice.call(caixa.querySelectorAll('[role="tab"]'));
+    lista.hidden = false;
+    caixa.classList.add('abas-ligadas');
+    function escolher(aba) {
+      abas.forEach(function (a) {
+        var sim = a === aba;
+        a.setAttribute('aria-selected', sim ? 'true' : 'false');
+        a.tabIndex = sim ? 0 : -1;
+        d.getElementById(a.getAttribute('aria-controls')).hidden = !sim;
+      });
+    }
+    abas.forEach(function (a, i) {
+      a.addEventListener('click', function () { escolher(a); });
+      a.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          var prox = abas[(i + (e.key === 'ArrowRight' ? 1 : abas.length - 1)) % abas.length];
+          escolher(prox); prox.focus();
+        }
+      });
+    });
+    escolher(abas[0]);
+  });
+
+  /* Perguntas frequentes: abrem fechadas, uma aberta por vez. Sem o programa, todas aparecem abertas. */
+  d.querySelectorAll('[data-perguntas]').forEach(function (caixa) {
+    var itens = caixa.querySelectorAll('details');
+    itens.forEach(function (p) { p.open = false; });
+    itens.forEach(function (p) {
+      p.addEventListener('toggle', function () {
+        if (p.open) itens.forEach(function (o) { if (o !== p) o.open = false; });
+      });
+    });
+  });
+
+  /* Botão da 08: leva ao quiz-01 com as etiquetas do endereço e um código de sessão, só na memória da aba. */
+  var botaoQuiz = d.querySelector('[data-quiz]');
+  if (botaoQuiz) {
+    var params = new URLSearchParams(window.location.search);
+    var sessao = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+    var ida = new URLSearchParams();
+    ida.set('utm_source', params.get('utm_source') || '');
+    ida.set('utm_campaign', params.get('utm_campaign') || '');
+    ida.set('id_sessao', sessao);
+    botaoQuiz.href = botaoQuiz.getAttribute('href') + '?' + ida.toString();
+    /* Envio da visita desligado: no lugar do garçom, só o console. */
+    console.log('visita (envio desligado)', { funil: 'funil-01', entrega: 'a definir (10.15)', utm_source: ida.get('utm_source'), utm_campaign: ida.get('utm_campaign'), id_sessao: sessao });
+  }
+})();
+</script>
+</body>
+</html>

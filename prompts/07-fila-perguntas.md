@@ -381,3 +381,53 @@
    - *O que foi feito:* nada na página, que já foi commitada como v1; a política descreve só o que o sistema grava hoje.
    - *Recomendação:* numa v2 da página, pôr a ressalva da M21 na ajuda e gravar essas escolhas como eventos (planta e garçom), e então citá-las na política.
    - *Se decidir diferente:* se as escolhas não forem gravadas, as frases "fica registrado" e "Horário reservado" saem da página, porque prometem algo que não acontece.
+
+## Etapa 17
+
+17.1. **Campos bloqueados aparecem na página, contra a estrutura.**
+   - *Dúvida:* a estrutura (`landing-page-01-estrutura`, "A primeira tela no celular" e "Idioma e leitura") diz que placeholder bloqueado não vai ao ar e não ocupa lugar; a etapa 17 manda mostrar campo bloqueado como aviso visível "a definir".
+   - *O que foi feito:* para a reunião, valeu o prompt: cada campo bloqueado, cada [PENDENTE] e cada [PROVA REAL] da copy virou etiqueta tracejada "a definir", com o campo ou a pergunta. As seções inteiras ocultas (hero A, "Total gerado", bastidores, credenciais, PDV-90, preço riscado, barra de resgates, "Posso parcelar?") não aparecem; ficam só como comentário no HTML. Uma faixa no topo avisa que é rascunho.
+   - *Recomendação:* manter assim nos rascunhos de reunião; na versão que for ao ar, as etiquetas somem junto com a decisão de cada campo.
+   - *Se decidir diferente:* se as ocultas também devem aparecer como "a definir", entra um bloco por seção oculta, nas duas variantes ao mesmo tempo.
+
+17.2. **Cópia dos tokens para a pasta da variante A.**
+   - *Dúvida:* base/design-system/design-system.md diz para não copiar os tokens para peças sem a decisão de adoção; a etapa 17 manda copiar para dentro da pasta.
+   - *O que foi feito:* valeu o prompt: tokens.css é cópia de safra-tokens.css, com uma só mudança, o travessão do comentário trocado por ponto médio (regra 5). O safra-tokens.json não foi copiado (o nome do pacote tem travessão). fontes/ não foi alterado.
+   - *Recomendação:* manter a cópia só nesta pasta de rascunho; se a A for escolhida, a cópia vira a fonte dos tokens das peças e o design-system.md registra isso.
+   - *Se decidir diferente:* a variante A passa a ler os tokens direto de fontes/, o que a etapa proibiu, ou os valores entram à mão no estilo.css.
+
+17.3. **Os tons da paleta branco e verde.**
+   - *Dúvida:* safra-landing.md registra o laranja #FF8400, o texto preto e o verde #00FF87 dos botões em tríade, mas não os tons do "branco e verde" da #81. O #00FF87 não passa no contraste sobre branco.
+   - *O que foi feito:* escolhidos para o rascunho: verde de texto #0B6E3A, verde escuro #0E2318, verdes claros #EAF7EF e #D3E6D9, marrom do relevo do botão #A85400; o #00FF87 só como marca-texto sob letra escura e em fios. Vermelho só no que se perde (barra "Dobrar o anúncio", leads que morreram, perdas do funil), como o registro antigo pedia.
+   - *Recomendação:* pedir ao Júnior a imagem do visual que ele aprovou em 07/11 e acertar os tons por ela, se a B for a escolhida.
+   - *Se decidir diferente:* muda só o bloco de variáveis no fim do estilo.css da B.
+
+17.4. **Fontes de letra.**
+   - *Dúvida:* o design system pede só a Geist, e fontes/design-system-v1.0/ não tem os arquivos dela; carregar do Google mandaria o IP de quem visita para um serviço de fora (ligada à 16.7).
+   - *O que foi feito:* nenhuma fonte de fora nas duas variantes. A A declara a Geist pelos tokens e cai na letra do sistema; a B usa a letra do sistema. Os prints saíram com a letra do Mac.
+   - *Recomendação:* se a A for escolhida, baixar a Geist (licença SIL) e servir os arquivos junto com a página, no mesmo endereço; a política de privacidade não precisa da linha de fontes.
+   - *Se decidir diferente:* se a fonte vier do Google, entra um link no `<head>` e a política ganha a linha da 16.7.
+
+17.5. **O filtro da seção 05 não filtra.**
+   - *Dúvida:* a copy põe o filtro das sete peças, mas não diz quais peças cada entrega instala (o wireframe dizia, sem decisão).
+   - *O que foi feito:* os botões aparecem e marcam a peça escolhida, mas todas as entregas continuam à vista, com a etiqueta "a definir: quais peças cada entrega instala". Nada foi inventado.
+   - *Recomendação:* acrescentar à copy, na próxima versão, a lista de peças por entrega, e ligar o filtro.
+   - *Se decidir diferente:* se o filtro sair, saem os botões e a frase "toque para filtrar", nas duas variantes; a última linha da 03b, que fala em tocar nas peças, também muda.
+
+17.6. **O item novo da pauta ganhou letra, não número.**
+   - *Dúvida:* o lugar certo é logo depois do item 6 (design), mas renumerar mudaria os números que outros documentos citam (briefing da landing, lacunas, copy do quiz).
+   - *O que foi feito:* item 6a, logo depois do 6, na Parte 1 (trava o funil novo).
+   - *Recomendação:* manter; renumerar só numa pauta nova.
+   - *Se decidir diferente:* renumerar a pauta inteira e corrigir as citações (forma).
+
+17.7. **Caminho do botão até o quiz e registro da visita.**
+   - *Dúvida:* o pedido do coordenador ao escritor sugeria ../../quizzes/quiz-01/pagina/index.html (o prompt 07 não traz caminho), mas a página está um nível mais fundo; a estrutura manda registrar a visita no garçom, que não existe, e o id da entrega no evento está em aberto (10.15).
+   - *O que foi feito:* o botão da 08 usa ../../../quizzes/quiz-01/pagina/index.html (o caminho que funciona a partir da pasta da variante), com utm_source, utm_campaign e o código de sessão no endereço; o registro da visita só aparece no console, com a entrega "a definir (10.15)". Nada é guardado no navegador e nada é enviado.
+   - *Recomendação:* trocar pelo endereço público do quiz quando houver, e ligar o registro junto com o garçom (etapa 18).
+   - *Se decidir diferente:* só muda o href do botão da 08 e a função do console.
+
+17.8. **As variantes nascem desatualizadas.**
+   - *Dúvida:* elas se apoiam em documentos marcados (copy, estrutura, briefing e design-system).
+   - *O que foi feito:* desatualizado: true (regra provisória 11.1); aprovado_por com otavio, junior e euclides pendentes, porque o design é decisão dos três (conflito-08) e a página depende da #90.
+   - *Recomendação:* a mesma da 11.1.
+   - *Se decidir diferente:* passa a desatualizado: false numa correção de forma.

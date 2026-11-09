@@ -2,6 +2,17 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 17 · landing-page-01 variantes de design
+
+- entregas/landings/landing-page-01/variante-a-design-system-v1/ v1 (id landing-page-01-variante-a), rascunho (otavio, junior e euclides: pendente). Novo. index.html com o texto de landing-page-01-copy v3 na ordem de landing-page-01-estrutura v3, fatos como estão na ficha v3 (cada um marcado com o campo), campos bloqueados, [PENDENTE] e [PROVA REAL] como etiqueta tracejada "a definir", seções ocultas só como comentário, imagens como bloco cinza com descrição; botões para #destino e, na 08, para a página do quiz-01 por link relativo, com etiquetas e código de sessão sem guardar nada no navegador. Visual pelos tokens do design system v1.0: tokens.css é cópia de fontes/design-system-v1.0/safra-tokens.css com o travessão do comentário trocado por ponto médio (fontes/ não foi alterado). README.md com o mesmo cabeçalho do comentário do index.html. Nasce desatualizado (regra provisória 11.1).
+- entregas/landings/landing-page-01/variante-b-branco-e-verde/ v1 (id landing-page-01-variante-b), rascunho (otavio, junior e euclides: pendente). Novo. O mesmo `<body>` da variante A (conferido com diff: idêntico); só o `<head>` e o CSS mudam. Paleta branco e verde (#81) e botões laranja #FF8400 de 03/11, com o que safra-landing.md registra; os tons de verde não registrados foram escolhidos (17.3). Nasce desatualizado (11.1).
+- Nenhuma fonte de letra de fora nas duas: a Geist não está em fontes/design-system-v1.0/, e as páginas caem na letra do sistema (17.4).
+- entregas/landings/landing-page-01/prints/: variante-a-375.png, variante-a-1440.png, variante-b-375.png, variante-b-1440.png (nucleo/ferramentas/prints/print.js). Corrigido depois do primeiro print: a tabela do funil de exemplo passava da largura de 375 na variante A.
+- entregas/pautas/pauta-aprovacao-01.md v3 para v4, rascunho (otavio: pendente). Motivo: item 6a novo, logo depois do item 6 (design), para escolher a variante, apontando para os prints; depende_de ganha as duas variantes; nota para o Otávio. Sentido. Continua desatualizado (4.5). Dependentes da pauta (briefing da landing-page-01 e briefing do quiz-01) já estavam marcados.
+- index.md: as duas variantes, os prints e a pauta v4.
+- Revisão da etapa 17: o grafismo do hero da variante B passou a aparecer só a partir de 1200 px, com largura limitada e sem corte na borda (em 1024 px ficava por baixo do título); prints da B refeitos. Pauta v4, item 6a: avisa que os prints da A mostram a letra do computador, não a Geist.
+- Perguntas 17.1 a 17.8 em prompts/07-fila-perguntas.md.
+
 ## 2026-11-08 · etapa 16 · politica de privacidade
 
 - entregas/documentos/politica-de-privacidade.md v1 (id politica-de-privacidade), rascunho (otavio, junior e euclides: pendente). Novo. No topo: "Precisa de revisão de advogado antes de ir ao ar." O que a landing e o quiz coletam (campos da planta), finalidades, consentimento por canal como base legal, nota automática (art. 20), onde fica e quem acessa, operadores por categoria com a lista bloqueada (conflito-17), cookies e medição, segurança, direitos do art. 18 e como pedir. Empresa, CNPJ, encarregado, contato, nomes dos serviços e prazo de guarda (outros-23) ficam {{a definir}}. Nasce desatualizado (16.11).
