@@ -2,6 +2,22 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-09 · etapa 36 · fechamento
+
+Pedido: prompts/11-decisoes-de-09-11.md, etapa 36. Nenhum documento da base, funil ou entrega mudou; nada publicado, nada rodou no Supabase.
+
+- prompts/11-triagem.md (novo): triagem das 79 perguntas da fila (30.1 a 35.9): A 11, B 6, C 62, D 0. Nenhuma pergunta antiga saiu por já respondida; continuam abertas 18.6, 8.8, 10.4, 22.3, 24.5 e a 10.1 do pedido 10.
+- Grupo A (forma): já aplicadas por uma etapa da fila, só registro: 31.21 (etapa 34), 32.7 (etapa 35), 32.9 (etapa 32), 32.12 (etapa 35, com a ressalva da 35.9), 34.15 (etapa 34), 34.17 (etapa 35, 35.5). Para a próxima versão de cada documento, nas Pendências: 30.10, 32.11, 34.16, 35.6, 35.8.
+- Grupo B (já decidido): 30.8 (pedido, item 11; #113), 31.11 (4.5; #114), 33.4 (pedido, etapa 35: migração antes de publicar), 34.7 (4.7; #114; lead-score v3) e 35.3 (21.6; #114) já aplicadas; nada a mudar. 31.9 (9.8; #114) para a próxima versão da ficha de fatos, nas Pendências.
+- Grupo D: nenhuma; as que tocam assuntos dos sócios já estão em itens da pauta (36.1). entregas/pautas/pauta-aprovacao-01.md sem mudança (v7).
+- prompts/11-decisoes-restantes.md (novo): página de decisões com as abertas e as 62 do grupo C, em três tabelas (o APLICAR-11, ir ao ar, pode esperar), e o destaque do que ler antes do APLICAR-11: as que contrariam texto escrito (35.4, 31.3, 33.5) e as que mudam o que o roteiro prova (31.1, 34.4, 35.7).
+- prompts/11-fila-resposta.md (novo): uma linha por etapa (30 a 36) com commit, o ensaio e o que o Otávio faz primeiro.
+- prompts/11-respostas.md: coluna "Onde foi aplicada" completada em 6.1, 6.4, 10.15 e 21.12 (etapas 32, 33 e 35) e nas cinco abertas (etapa 36); não sobrou "a aplicar na etapa NN" sem a etapa registrada.
+- prompts/11-fila-perguntas.md: perguntas 36.1 e 36.2.
+- index.md: os prompts/11 novos na linha de prompts/.
+- Pendências: item novo, "Correções para a próxima versão de cada documento (triagem da etapa 36)".
+
+
 ## 2026-11-09 · etapa 35 · ensaio, montagem e roteiro
 
 Pedido: prompts/11-decisoes-de-09-11.md, etapa 35. Nada publicado, nada rodou no Supabase, ninguém fez login, nenhuma chave real; tudo em 127.0.0.1. As respostas do Otávio de 09/11/2026 valem como aprovação (decisão do Otávio, 09/11/2026).
@@ -110,7 +126,7 @@ Pedido: prompts/11-decisoes-de-09-11.md, etapa 31. Aplica as respostas próprias
 - prompts/11-respostas.md (novo): tabela número · resposta · onde foi aplicada, com as 134 linhas do pedido.
 - prompts/11-fila-perguntas.md (novo): perguntas 30.1 a 30.10.
 - index.md: versões da ficha, das decisões e das duas regras; prompts/11 na linha de prompts/.
-- Pendências: nova, o caminho de apagamento com prazo (#106), que a ficha-de-fatos#prazo-de-guarda já citava.
+- Pendências: nova, o caminho de apagamento com prazo (#106), que a ficha-de-fatos#prazo-de-guarda já citava (correção do revisor independente da etapa 30).
 
 ## 2026-11-09 · pedido 10 · protótipo ligado e testado
 
@@ -459,3 +475,5 @@ Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08
 - [ ] **Relatório do eliminatório com números que não batem (observação, 14.7):** no teste de 09/11/2026, o relatório de quem não se qualifica (TESTE Bruno Roteiro) mostrou números que não batem com as respostas. Confirma a 14.7: o relatório usa um exemplo fixo. Corrigir numa versão nova da página do quiz antes de ir ao ar (pedido 10).
 - [ ] **Link da política de privacidade:** quando a política de privacidade tiver endereço, trocar {{a definir: link da politica de privacidade}} em quiz-01-copy (M7, M16) e no objeto A_DEFINIR da página do quiz, numa correção de forma (16.1).
 - [ ] **Correções de forma para a próxima versão de cada documento (triagem da etapa 27):** cada uma entra quando o documento subir de versão por outro motivo, como forma, sem mudar sentido. 20.4: os sete dependentes de regra-seguranca 1 (funil-01, planilha-sdr, planta-do-banco, banco-rascunho, landing-page-01-estrutura, politica-de-privacidade, garcom) passam a citar a versão 2. 22.8: apagar entregas/garcom/wrangler.toml.exemplo (a configuração de verdade mora em entregas/prototipo-funil-01/). 23.4: tirar do teste do garçom a troca para "TESTE" e @teste.invalid, que o exemplo do quiz já traz. 25.3: dados/banco/README.md ganha a linha do catalogo-prototipo.sql em "O que tem dentro" e em "Como aplicar amanhã". 26.10: nome de botão de painel diferente do LIGAR.md, anotado no teste, corrigido numa v2 do LIGAR.md. 26.8: o ensaio e o catalogo-prototipo.sql passam a citar prototipo-funil-01 2. **Aplicadas no pedido 09 (09/11/2026):** 22.8 e 23.4 (garçom v3; a 20.4 já estava feita no garçom); 26.8 na parte do ensaio (agora cita prototipo-funil-01 3; o catalogo-prototipo.sql continua com a marca); 26.10 só no nome da chave secreta (garcom_planilha_prototipo), os outros nomes de botão seguem sem conferência. **Aplicada na etapa 31 (09/11/2026):** 20.4 em funil-01 v3, funil-01-planilha-sdr v2, planta-do-banco v4, landing-page-01-estrutura v4 e politica-de-privacidade v2, que passam a citar regra-seguranca 3; falta só banco-rascunho (etapa 32). A 25.3 fica para a etapa 32. **Aplicadas na etapa 32 (09/11/2026):** 20.4 em banco-rascunho v3 (README do banco) e 25.3 (catalogo-prototipo.sql no README do banco).
+
+- [ ] **Correções para a próxima versão de cada documento (triagem da etapa 36):** cada uma entra quando o documento subir de versão por outro motivo, como forma, sem mudar sentido. 30.10: nucleo/regras/versionamento.md, "(numa fila, pela Regra de pausas do CLAUDE.md)" ao fim da frase "Na dúvida se é forma ou sentido, o Claude pergunta antes de alterar". 31.9 (B, pela 9.8; #114): base/ficha-de-fatos.md ganha os subcampos de nome fixo duracao:dias, nome-call-de-venda:nome, duracao-call-de-venda:duracao e quem-faz-a-reuniao:condutor, que a copy da landing v4 já usa. 32.11: entregas/planilha-sdr-funil-01/ (Codigo.gs e README) passa a citar garcom 4, regra-seguranca 3 e decisoes 5, depois de conferir que nada muda no código. 34.16: a política de privacidade tira a frase sobre a página do quiz de antes (duas caixas, fontes de fora) e declara quiz-01-pagina 3. 35.6: dados/banco/README.md, "Como aplicar", com o catálogo antes do conferir.sql, como o APLICAR-11.md. 35.8: dados/banco/README.md, "Conferido nesta máquina", com o ensaio v3; README do protótipo com o dry-run de 09/11 (19 arquivos, 18,10 KiB).

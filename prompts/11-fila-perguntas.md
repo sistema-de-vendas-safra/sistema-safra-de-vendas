@@ -487,3 +487,17 @@ Dúvidas das etapas 30 a 36 (prompts/11-decisoes-de-09-11.md), no formato de sem
    - *O que foi feito:* a linha do Supabase ganhou a ressalva (a chave publicável passa a executar também registrar_evento, depois da migração); o resto da linha não mudou. O APLICAR-11.md (parte 7) pede ao Otávio que avise o Claude, que então tira a ressalva e registra a chave "default" apagada e a publicação nova.
    - *Recomendação:* aceitar.
    - *Se decidir diferente:* tirar a ressalva e esperar o aviso do Otávio, como a 32.12 recomendava.
+
+## Etapa 36
+
+36.1. **Nenhuma pergunta desta fila foi para a pauta.**
+   - *Dúvida:* pela regra da triagem, na dúvida entre C e D vale D. Várias perguntas tocam assuntos do Júnior e do Euclides: 30.4, 31.5 e 31.6 (a promessa e a #79), 31.3 e 34.1 (o percentual), 31.14 e 34.5 (conflito-16), 31.7 e 34.4 (as variantes), 34.9 (a viewport do quiz), 34.11 (a #16) e 34.12 (conflito-08).
+   - *O que foi feito:* todas ficaram no grupo C, porque o assunto dos sócios de cada uma já está num item da pauta (itens 2, 3, 4, 5, 6, 6a, 18 e 29) e o que falta é a sua decisão antes da reunião (a leitura de uma resposta sua, ou o que fica no rascunho até lá). A pauta não mudou (continua v7); a lista está em prompts/11-triagem.md, "O que foi aplicado".
+   - *Recomendação:* aceitar; quando você responder a página de decisões, a próxima versão da pauta leva a sua posição nos itens tocados.
+   - *Se decidir diferente:* as que você quiser levar aos sócios como pergunta própria entram na pauta v8, cada uma no item do assunto, sem mudar a numeração.
+
+36.2. **A B 31.9 e as A que esperam a próxima versão ficaram nas Pendências.**
+   - *Dúvida:* a 31.9 (subcampos de nome fixo na ficha de fatos) está decidida pela 9.8 (#114), mas a etapa 36 é de fechamento e não mexe na base. As A 30.10, 32.11, 34.16, 35.6 e 35.8 pedem a próxima versão de cada documento.
+   - *O que foi feito:* nenhuma aplicada agora; todas num item novo do log.md, Pendências, "Correções para a próxima versão de cada documento (triagem da etapa 36)", como a triagem da etapa 27 fez com as dela.
+   - *Recomendação:* aceitar; cada uma entra quando o documento subir de versão por outro motivo.
+   - *Se decidir diferente:* aplicar já numa etapa curta: ficha de fatos v5 (31.9), regra de versionamento v4 (30.10), planilha v3 só no cabeçalho (32.11), política v3 (34.16), README do banco v5 (35.6, 35.8) e README do protótipo v6 (35.8), todas como forma.
