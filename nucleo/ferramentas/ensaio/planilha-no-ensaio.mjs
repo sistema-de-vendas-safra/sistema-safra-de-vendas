@@ -1,6 +1,6 @@
 // A planilha do SDR no ensaio geral (etapa 25): roda entregas/planilha-sdr-funil-01/Codigo.gs com o
 // Google de mentira (teste/falsos.mjs) contra o garçom que está rodando em 127.0.0.1.
-// Parte de nucleo/ferramentas/ensaio/ (id ensaio-prototipo-funil-01, v1, rascunho; ver README.md).
+// Parte de nucleo/ferramentas/ensaio/ (id ensaio-prototipo-funil-01, v3, rascunho; ver README.md).
 //
 // Roda em outro processo, chamado por ensaio.mjs: o UrlFetchApp do Google é síncrono, e o de
 // mentira também (a linha principal deste processo fica parada esperando a resposta). Assim o
@@ -38,9 +38,9 @@ function estado() {
   const aba = falsos.estado.abas.find(a => a.getName() === 'fila');
   const ultima = aba ? aba.getLastRow() : 0;
   const linhas = [];
-  for (let n = 2; n <= ultima; n++) linhas.push(aba.linha(n, 19));
+  for (let n = 2; n <= ultima; n++) linhas.push(aba.linha(n, 20));
   return {
-    cabecalho: aba ? aba.linha(1, 19) : null,
+    cabecalho: aba ? aba.linha(1, 20) : null,
     linhas,
     registros: falsos.estado.registros.slice(),
     gatilhos: falsos.estado.gatilhos.map(g => ({ funcao: g.funcao, minutos: g.minutos })),

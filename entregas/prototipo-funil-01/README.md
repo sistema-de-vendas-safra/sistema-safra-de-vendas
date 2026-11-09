@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -26,9 +26,11 @@ desatualizado: true
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): as duas variantes da landing-page-01, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
+
+**Para aplicar as mudanças de 09/11 no protótipo que já está no ar:** APLICAR-11.md, nesta pasta (push, migração, catálogo, conferência, planilha com 20 colunas, publicar, apagar a chave secreta "default" e um teste rápido com pessoas de mentira novas).
 
 **Protótipo de teste não é entrega.** Serve só para o Otávio testar o caminho do dado com leads de mentira (#102: nome começando por TESTE, e-mail @teste.invalid). Ir ao ar com gente de verdade continua travado: o destino dos contatos está em conflito (conflito-17, em base/lacunas.md; o garçom segue o lado 2, #90, sem escolher), as páginas e o garçom são rascunhos pendentes de aprovação (do Otávio e, nas páginas, do Júnior e do Euclides) e, antes de tráfego real, falta a proteção contra robô e o limite de pedidos (log.md, Pendências).
 
@@ -39,6 +41,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | Arquivo | O que é |
 |---|---|
 | LIGAR.md | O roteiro para ligar o protótipo, para iniciante, passo a passo, com o tempo de cada passo e como saber que deu certo (id prototipo-funil-01-ligar) |
+| APLICAR-11.md | O roteiro para aplicar no protótipo que está no ar as mudanças das etapas 32 a 34, no mesmo padrão (id prototipo-funil-01-aplicar-11) |
 | wrangler.toml | A configuração do Worker: nome, main apontando para ../garcom/garcom.mjs, arquivos pelo binding ASSETS com run_worker_first, preview_urls = false (um endereço só, #101), as duas variáveis comuns e, só em comentário, o nome dos três segredos. Sem id de conta e sem segredo |
 | montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro) |
 | prints/ | Prints das três páginas montadas em 375 e 1440 pixels |
@@ -144,7 +147,7 @@ Em 1440, as landings saíram com a mesma altura dos prints das entregas (entrega
 
 ## Antes do teste
 
-O banco confere o par (entrega, versão) do pacote no catálogo (public.entregas), que o esquema não preenche. As páginas da etapa 34 mandam ('quiz-01', 2) e ('landing-page-01', 1): sem essas linhas, o fim do quiz volta 422 e o visitante vê o aviso de falha, e a visita e o início do quiz se perdem sem aviso (pergunta 23.10; 32.4). As linhas são gravadas por dados/banco/catalogo-prototipo.sql (v2, que acrescenta as duas novas sem mexer na ('quiz-01', 1)); o passo a passo novo é o roteiro da etapa 35 (LIGAR.md ainda descreve a v1).
+O banco confere o par (entrega, versão) do pacote no catálogo (public.entregas), que o esquema não preenche. As páginas da etapa 34 mandam ('quiz-01', 2) e ('landing-page-01', 1): sem essas linhas, o fim do quiz volta 422 e o visitante vê o aviso de falha, e a visita e o início do quiz se perdem sem aviso (pergunta 23.10; 32.4). As linhas são gravadas por dados/banco/catalogo-prototipo.sql (v2, que acrescenta as duas novas sem mexer na ('quiz-01', 1)); o passo a passo novo é o APLICAR-11.md, parte 2, antes de publicar (LIGAR.md ainda descreve a v1).
 
 ## O que não fazer
 

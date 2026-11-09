@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-ligar
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -43,6 +43,8 @@ O passo a passo para o Otávio ligar amanhã o site de teste do funil-01: o banc
 **Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (prototipo-funil-01, garcom, banco-rascunho, banco-conferir, banco-catalogo-prototipo, quiz-01-pagina, as variantes da landing, planilha-sdr-funil-01 e ensaio), que as etapas 32 a 34 atualizam (regra de versionamento v3, 11.1).
 
 **Ligado e testado em 09/11/2026** pelo Otávio, com este roteiro (v2). A v3 forma o roteiro com o que aconteceu: o porteiro nos passos 3.8 e 3.9, o Erro 4 (`banco-401`), o cuidado entre 4.6 e 4.7 e o campo Seu nome na parte 5 (log.md, pedido 10). A v4 (etapa 31) só acompanha as decisões de 09/11/2026: a planilha do SDR no Drive como exceção registrada à regra 4 de segurança (5.4) e a revisão jurídica fora das travas de ida ao ar (16.4); nenhum passo mudou.
+
+**Para aplicar as mudanças de 09/11 no protótipo que já está no ar** (migração do banco, catálogo novo, planilha com 20 colunas, garçom e páginas novas, a chave secreta "default"): **APLICAR-11.md**, nesta pasta. Este roteiro continua sendo o de ligar do zero e ainda descreve o banco v2, o catálogo v1, a planilha v1 e as páginas de antes; as partes 6 (se algo der errado) e 7 (desligar) continuam valendo, e o APLICAR-11.md aponta para elas. A v5 (etapa 35) só acrescenta este aviso; nenhum passo mudou.
 
 > **Leia antes de começar**
 >

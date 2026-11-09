@@ -431,3 +431,59 @@ Dúvidas das etapas 30 a 36 (prompts/11-decisoes-de-09-11.md), no formato de sem
    - *O que foi feito:* fica assim: com a caixa desmarcada, não saem o fim do quiz nem o clique do fim; o início e a visita, que vieram antes e não têm pessoa, ficam no banco só com a sessão.
    - *Recomendação:* aceitar: sem eles, a diferença entre visitas, inícios e fins do quiz (10.10) não fecha, e a sessão sozinha não identifica ninguém.
    - *Se decidir diferente:* o início do quiz passa a sair só junto com o fim (perde a 10.6), ou a política de privacidade passa a dizer que a visita e o início são contados mesmo sem o aceite.
+
+## Etapa 35
+
+35.1. **"Eliminatório pelo corte novo" lido como o relatório de quem não se qualifica.**
+   - *Dúvida:* o pedido manda testar "um lead que antes passava e agora cai no eliminatório" pelo corte mais restritivo (14.2). Pelo corte novo, quem passa no corte do Júnior e fica na faixa c vai para o relatório de quem não se qualifica, mas o banco grava a faixa **c**, não **eliminatorio** (essa faixa continua só para o faturamento abaixo de R$ 50 mil, sem vendedor ou valor médio baixo, base/lead-score.md).
+   - *O que foi feito:* o ensaio (TESTE Carla Ensaio) e o APLICAR-11.md (teste 3, TESTE Caio Aplicar) usam a faixa c que passa no corte do Júnior (nota 24, as respostas FAIXA_C de testar-quiz-01.js): até a página v2 ia para o plano, agora vai para o relatório de não qualificado, com o "Tenho interesse"; no banco, faixa c; fora da planilha. Nenhuma regra mudou.
+   - *Recomendação:* aceitar a leitura.
+   - *Se decidir diferente:* se "eliminatório" for a faixa eliminatorio, o teste vira o do 09/11 (faturamento "Menos de R$ 50 mil"), que o ensaio já faz com a TESTE Paulo Ensaio; o corte novo fica sem teste próprio no roteiro.
+
+35.2. **O Chromium e o wrangler falavam com a internet por conta própria no ensaio.**
+   - *Dúvida:* o pedido manda conferir que o navegador do ensaio não pede nada fora de 127.0.0.1 e rodar o wrangler sem rede para fora. As páginas não pediam nada, mas um vigia externo (lsof, na primeira rodada desta etapa) viu o processo do Chromium do ensaio conectado a endereços do Google (atualização, conta e mensagens do próprio navegador) e o wrangler conectado a workers.cloudflare.com (o miniflare buscando o cf.json). O ensaio v2 não conferia isso; o README dele dizia que não conferia.
+   - *O que foi feito:* o Chromium abre com todo nome fora de 127.0.0.1 como "não encontrado" e com um proxy inexistente em 127.0.0.1:9, e o registro de rede dele (netlog) é conferido no fim: nenhuma conexão TCP fora de 127.0.0.1. O wrangler sobe com CLOUDFLARE_CF_FETCH_ENABLED=false, WRANGLER_HIDE_BANNER=true, WRANGLER_SEND_METRICS=false e DO_NOT_TRACK=1 e com a trava nucleo/ferramentas/ensaio/rede-so-local.cjs (NODE_OPTIONS=--require), que recusa e anota todo pedido para fora; conferido: sem os avisos, a trava pegou workers.cloudflare.com. Nas duas rodadas finais, o vigia não viu nada fora de 127.0.0.1. Fica de fora: o "UDP" do teste de IPv6 do Chromium ([2001:4860:4860::8888]:443), que só abre o soquete para descobrir o endereço local, sem mandar dado (linha INFO).
+   - *Recomendação:* aceitar. O dry-run do README do protótipo (`wrangler deploy --dry-run`) também procura versão nova no registro do npm (a saída de hoje mostrou "update available 4.159.0"): acrescentar WRANGLER_HIDE_BANNER=true ao comando na próxima versão do README do protótipo.
+   - *Se decidir diferente:* sem as travas, o ensaio continua passando, mas a conferência de rede volta a valer só para as páginas.
+
+35.3. **A planilha com 0 leads na revisão da etapa 34 era a margem de 1 minuto.**
+   - *Dúvida:* o revisor da etapa 34 viu a busca da planilha voltar 0 leads logo depois de gravar um lead de faixa A; o pedido manda confirmar se é a margem (21.6) e corrigir se for defeito.
+   - *O que foi feito:* opção nova do ensaio, `--esperar-margem`, que espera a margem de verdade, sem mexer no banco: a primeira busca, logo depois do quiz, não traz os leads novos; a busca seguinte, 48 segundos depois na rodada, traz o lead A e a faixa b. 144 de 144. Nada foi corrigido, porque nada estava errado. O APLICAR-11.md (6.6) avisa da margem.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* tirar ou encurtar a margem é migração nova (leads_para_planilha), com a 21.6 de volta; a margem protege a ordem do cursor da planilha.
+
+35.4. **Na tela do plano, nenhum botão manda o clique do fim do quiz.**
+   - *Dúvida:* a 18.4 manda registrar o que a pessoa clicou no fim do quiz, e a lista proposta (31.15) tem um valor por botão: quero-conversa, chamar-whatsapp, tenho-interesse e agora-nao. Esses botões estão nos relatórios ("Quero marcar uma conversa", "Chamar no WhatsApp", "Tenho interesse", "Agora não"). O caminho da maior parte dos qualificados, porém, é a conversa do plano de 90 dias ("Sim, eu quero", "Quero ver como é" e "Mandar no WhatsApp"), que não manda clique nenhum. Achado ao montar o teste do APLICAR-11.md.
+   - *O que foi feito:* nada na página. Na revisão da etapa 35: é lacuna da etapa 34, que já tinha deixado o "Mandar no WhatsApp" do plano sem clique (34.6), e a 18.4 fica aplicada só em parte; a correção não é pequena nem clara, porque pede escolher o valor de cada botão do plano (os quatro da 31.15 são dos relatórios) e, com valor novo, uma migração 002, o garçom e a página. Fica como bloqueio até a decisão, pelo caminho conservador (nenhum valor inventado). O ensaio e o roteiro testam o clique pelo relatório do funil saudável (faixa b, "Quero marcar uma conversa") e pelo relatório de não qualificado ("Tenho interesse"); o lead A do ensaio, no plano, fica com clique_fim_quiz vazio na planilha, e o ensaio confere isso.
+   - *Recomendação:* decidir junto com a 31.15 se os botões do plano entram na lista (por exemplo, "Sim, eu quero" e "Mandar no WhatsApp" como quero-conversa e chamar-whatsapp, ou valores novos), e então mudar a página (e, se entrarem valores novos, uma migração 002 da restrição eventos_clique_lista).
+   - *Se decidir diferente:* se o plano ficar sem clique, a coluna clique_fim_quiz da planilha só diz algo de quem passou pelos relatórios, e o SDR deve ler a coluna vazia como "não sabemos", não como "não clicou".
+
+35.5. **O teste da landing que estava fora do repositório (34.17) entrou no ensaio só em parte.**
+   - *Dúvida:* o teste de 44 conferências da etapa 34 ficou na pasta temporária daquela sessão e não existe mais; o pedido manda levá-lo ao ensaio "se fizer sentido".
+   - *O que foi feito:* o ensaio confere, no site montado, com o garçom v4 e o banco: a visita gravada nas duas variantes, o modo padrão e o UTF-8, a Geist da variante A carregada do site, o botão com utm e id_sessao no formato do banco, a linha da visita no banco (landing-page-01, versão 1, utm, sessão, ligada à pessoa pelo fim do quiz), o botão funcionando com /api/evento fora do ar, nada mandado pelo file://, nenhum pedido a outro endereço e o console sem dado de pessoa. Não foi refeito um testar-landing-01.js à parte, nem a conferência pixel a pixel dos prints.
+   - *Recomendação:* aceitar; os prints das landings continuam com a ferramenta de prints.
+   - *Se decidir diferente:* um nucleo/ferramentas/prints/testar-landing-01.js próprio, no padrão do testar-quiz-01.js, com o garçom respondido no navegador.
+
+35.6. **A ordem do APLICAR-11: catálogo antes da conferência.**
+   - *Dúvida:* o pedido põe o catálogo entre a migração e o conferir.sql; o README do banco ("Como aplicar") põe o conferir.sql antes do catálogo.
+   - *O que foi feito:* segui o pedido: migração (2.4), catálogo (2.6), conferir.sql (2.8). O conferir.sql não olha o catálogo, então a ordem dos dois não muda nenhum resultado; os dois vêm antes de publicar.
+   - *Recomendação:* aceitar; acertar o README do banco na próxima versão dele.
+   - *Se decidir diferente:* trocar os passos 2.5 e 2.6 com os 2.7 e 2.8; nada mais muda.
+
+35.7. **A aba nova da planilha recebe de novo a linha real do Otávio.**
+   - *Dúvida:* renomear a aba antiga e rodar instalar() de novo (README da planilha, "Atualizar da versão 1") faz a aba nova receber todos os leads desde o início, inclusive a linha real do Otávio de 09/11, 08h56. A linha passa a existir duas vezes na planilha de teste (aba fila antiga e aba fila).
+   - *O que foi feito:* o APLICAR-11.md (3.5) avisa e diz que as duas abas saem juntas na limpeza antes de ir ao ar (#102). Nada foi apagado: apagar a aba antiga ou a linha é do Otávio, e não se desfaz pelo Git. Na revisão da etapa 35, a pendência da limpeza (log.md, Pendências, dados de teste do protótipo) passou a citar as duas abas, e o aviso de não gravar a tela do APLICAR-11.md passou a incluir a parte 6, que mostra a planilha com essa linha.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* apagar a aba fila antiga depois do passo 3.5 deixa uma cópia só; o histórico de 09/11 da aba antiga se perde.
+
+35.8. **Documentos que ainda dizem que o ensaio é o de antes.**
+   - *Dúvida:* dados/banco/README.md ("Conferido nesta máquina") diz que o ensaio aplica só o esquema v2 e espera "13 de 13" até a etapa 35; o README do protótipo ainda mostra o dry-run de 08/11 (15,91 KiB, 9 arquivos). O pedido limita a mudança no README do protótipo ao que aponta para o APLICAR-11.md e não fala do README do banco.
+   - *O que foi feito:* nada nos dois trechos. O dry-run de hoje está no log.md: wrangler 4.158.0, 19 arquivos do site, 18,10 KiB (5,27 KiB comprimido), as mesmas ligações (ASSETS, SUPABASE_URL, ORIGEM_PERMITIDA), sem publicar.
+   - *Recomendação:* corrigir os dois como forma na próxima versão de cada documento.
+   - *Se decidir diferente:* corrigir já: banco-rascunho v5 e prototipo-funil-01 v6, forma.
+
+35.9. **conexoes.md com a ressalva "a valer depois do APLICAR-11".**
+   - *Dúvida:* a 32.12 recomendou atualizar a linha do Supabase só depois de o Otávio rodar a migração; o pedido manda registrar já, como "a valer depois do APLICAR-11".
+   - *O que foi feito:* a linha do Supabase ganhou a ressalva (a chave publicável passa a executar também registrar_evento, depois da migração); o resto da linha não mudou. O APLICAR-11.md (parte 7) pede ao Otávio que avise o Claude, que então tira a ressalva e registra a chave "default" apagada e a publicação nova.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* tirar a ressalva e esperar o aviso do Otávio, como a 32.12 recomendava.
