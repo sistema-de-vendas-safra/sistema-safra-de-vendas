@@ -1,9 +1,11 @@
-// Teste local do garçom v3 · não toca nenhum serviço real
+// Teste local do garçom v4 · não toca nenhum serviço real
 // Rodar da raiz do repositório:  node entregas/garcom/teste/testar-garcom.mjs
 //
-// Importa o handler de entregas/garcom/garcom.mjs e o chama nas três partes do Worker:
+// Importa o handler de entregas/garcom/garcom.mjs e o chama nas quatro partes do Worker:
 //   · porta pública POST /api/fim-quiz, com o pacote do exemplo do README do quiz-01
 //     (entregas/quizzes/quiz-01/pagina/README.md, "pacote do exemplo") e casos inválidos;
+//   · porta pública POST /api/evento (v4), com a visita, o início do quiz e o clique no fim do
+//     quiz no formato da planta (dados/planta/planta.md v4) e casos inválidos;
 //   · porta privada GET /api/planilha/leads-novos, com chave, cursor e limite;
 //   · arquivos do protótipo, com um ASSETS falso.
 // O fetch é falso: só registra o que seria chamado e nunca sai da máquina.
@@ -98,6 +100,7 @@ function pedidoPlanilha({ chave = CHAVE_PLANILHA, busca = '', metodo = 'GET' } =
 const resultados = [];
 const marcar = (ok, texto) => resultados.push({ ok, linha: (ok ? 'OK    ' : 'FALHOU') + ' · ' + texto });
 const semNoindex = [];
+const comCors = [];
 const VAZAMENTO = /supabase|exemplo\.invalid|23503|detalhe interno|de-mentira|teste\.invalid|TESTE/i;
 
 // Chama o Worker e confere status, número de chamadas ao banco, noindex e que a resposta não vaza nada.
@@ -108,6 +111,8 @@ async function caso(nome, req, esperado, chamadasEsperadas, { env = ENV, podeTer
   const texto = await r.text();
   const noindex = r.headers.get('X-Robots-Tag') === 'noindex';
   if (!noindex) semNoindex.push(nome);
+  // v4: nenhuma resposta do garçom leva cabeçalho de CORS (22.2)
+  if ([...r.headers.keys()].some(k => k.toLowerCase().startsWith('access-control-'))) comCors.push(nome);
   // resposta com leads pode ter dado de teste; nunca segredo nem detalhe interno do banco
   const vazou = podeTerLeads
     ? /de-mentira|23503|detalhe interno|banco\.exemplo/.test(texto)
@@ -141,8 +146,11 @@ const gravacaoExemplo = g[0];
   await caso('utm_source que não é texto', pedido({ corpo: p }), 422, 0); }
 { const p = copia(); p.evento.funil = 'funil-99';
   await caso('funil fora da lista', pedido({ corpo: p }), 422, 0); }
+// v4: o clique no fim do quiz foi ligado, mas só pela porta /api/evento; aqui continua recusado
 { const p = copia(); p.evento.tipo = 'interesse_pos_relatorio';
-  await caso('tipo proposto, ainda não ligado (interesse_pos_relatorio)', pedido({ corpo: p }), 422, 0); }
+  await caso('clique no fim do quiz pela porta do fim do quiz (interesse_pos_relatorio; vai por /api/evento)', pedido({ corpo: p }), 422, 0); }
+{ const p = copia(); p.evento.tipo = 'visita';
+  await caso('visita pela porta do fim do quiz (vai por /api/evento)', pedido({ corpo: p }), 422, 0); }
 { const p = copia(); p.evento.lead_score_faixa = 'z';
   await caso('faixa fora da lista', pedido({ corpo: p }), 422, 0); }
 { const p = copia(); p.pessoa.cpf = '000';
@@ -174,9 +182,12 @@ await utmVazia('primeira_utm_campaign fora da lista', p => { p.pessoa.primeira_u
 await caso('método GET', pedido({ metodo: 'GET', tipo: null }), 405, 0);
 await caso('outra origem', pedido({ origem: 'https://outro.exemplo.invalid', corpo: copia() }), 403, 0);
 await caso('sem origem', pedido({ origem: null, corpo: copia() }), 403, 0);
-{ const { r } = await caso('pré-voo do navegador (OPTIONS)', pedido({ metodo: 'OPTIONS', tipo: null }), 204, 0);
-  const acao = r.headers.get('Access-Control-Allow-Origin');
-  marcar(acao === ORIGEM, 'pré-voo libera só a própria origem, nunca "*" (Access-Control-Allow-Origin = ORIGEM_PERMITIDA)'); }
+// v4 (22.2): o pré-voo saiu. Até a v3, OPTIONS da própria origem dava 204 com
+// Access-Control-Allow-Origin; agora cai na conferência de método, como qualquer outro, e dá 405.
+{ const { r } = await caso('pré-voo do navegador (OPTIONS): não é mais atendido', pedido({ metodo: 'OPTIONS', tipo: null }), 405, 0);
+  marcar(r.headers.get('Allow') === 'POST' && r.headers.get('Access-Control-Allow-Origin') === null && r.headers.get('Access-Control-Allow-Methods') === null,
+    'OPTIONS: 405 com Allow: POST e sem nenhum cabeçalho de CORS'); }
+await caso('pré-voo de outra origem (OPTIONS)', pedido({ metodo: 'OPTIONS', tipo: null, origem: 'https://outro.exemplo.invalid' }), 403, 0);
 await caso('corpo que não é JSON declarado', pedido({ corpo: 'a=1', tipo: 'text/plain' }), 415, 0);
 await caso('JSON quebrado', pedido({ corpo: '{"pessoa":' }), 400, 0);
 { const p = copia(); p.evento.respostas.extra = 'x'.repeat(20000);
@@ -218,6 +229,159 @@ await caso('sem ORIGEM_PERMITIDA', pedido({ corpo: copia() }), 503, 0, { env: { 
   await garcom.fetch(pedido({ corpo: copia() }), { ...ENV, SUPABASE_CHAVE_PUBLICAVEL: jwtDeMentira });
   const h = chamadas[0] && chamadas[0].cabecalhos;
   marcar(!!h && h.apikey === jwtDeMentira && h.Authorization === 'Bearer ' + jwtDeMentira, 'chave antiga em formato JWT (mentira) vai também no Authorization, como na v1'); }
+
+// ════════ Porta pública: POST /api/evento (v4) ════════
+// Visita, início do quiz e clique no fim do quiz, no formato da planta v4 e de registrar_evento
+// (dados/banco/migracoes/001-v3.sql). Sem pessoa e sem aceite. Sessão de teste fictícia.
+
+const EVENTOS = {
+  visita: { evento: { tipo: 'visita', funil: 'funil-01', entrega: 'landing-page-01', versao_entrega: 1,
+    utm_source: 'bio', utm_campaign: 'funil-01', id_sessao: 'sessao-teste-0001', ocorrido_em: '2026-11-09T12:00:00Z' } },
+  inicio_quiz: { evento: { tipo: 'inicio_quiz', funil: 'funil-01', entrega: 'quiz-01', versao_entrega: 1,
+    utm_source: 'bio', utm_campaign: 'funil-01', id_sessao: 'sessao-teste-0001', ocorrido_em: '2026-11-09T12:01:00.123Z' } },
+  interesse_pos_relatorio: { evento: { tipo: 'interesse_pos_relatorio', funil: 'funil-01', entrega: 'quiz-01', versao_entrega: 1,
+    utm_source: 'bio', utm_campaign: 'funil-01', id_sessao: 'sessao-teste-0001', ocorrido_em: '2026-11-09T12:09:00-03:00',
+    clique_fim_quiz: 'quero-conversa' } }
+};
+const evento = tipo => structuredClone(EVENTOS[tipo]);
+const pedidoEvento = (o = {}) => pedido({ caminho: '/api/evento', ...o });
+let gravacaoEvento = null;
+
+for (const tipo of Object.keys(EVENTOS)) {
+  // 12. Aceito: uma chamada a registrar_evento, com a chave publicável e o pacote como veio
+  { const { chamadas: c } = await caso(tipo + ': aceito, sem pessoa e sem aceite', pedidoEvento({ corpo: evento(tipo) }), 201, 1);
+    const ch = c[0];
+    marcar(!!ch && ch.funcao === 'registrar_evento' && ch.metodo === 'POST' && ch.cabecalhos.apikey === PUBLICAVEL && !('Authorization' in ch.cabecalhos)
+      && JSON.stringify(ch.corpo) === JSON.stringify({ pacote: EVENTOS[tipo] }),
+      tipo + ': chama registrar_evento com a chave publicável, só no apikey, e o pacote exatamente como veio');
+    if (tipo === 'visita') gravacaoEvento = ch; }
+
+  // 13. Portaria: origem, método, tamanho, formato
+  await caso(tipo + ': outra origem', pedidoEvento({ origem: 'https://outro.exemplo.invalid', corpo: evento(tipo) }), 403, 0);
+  await caso(tipo + ': sem origem', pedidoEvento({ origem: null, corpo: evento(tipo) }), 403, 0);
+  await caso(tipo + ': método GET', pedidoEvento({ metodo: 'GET', tipo: null }), 405, 0);
+  await caso(tipo + ': método PUT com o pacote', pedidoEvento({ metodo: 'PUT', corpo: evento(tipo) }), 405, 0);
+  { const p = evento(tipo); p.evento.id_sessao = 'sessao-' + 'x'.repeat(3000);
+    await caso(tipo + ': pacote grande demais (mais de 2 KB)', pedidoEvento({ corpo: p }), 413, 0); }
+  await caso(tipo + ': corpo que não é JSON declarado', pedidoEvento({ corpo: JSON.stringify(evento(tipo)), tipo: 'text/plain' }), 415, 0);
+  await caso(tipo + ': JSON quebrado', pedidoEvento({ corpo: '{"evento":' }), 400, 0);
+  await caso(tipo + ': pacote que é lista', pedidoEvento({ corpo: [evento(tipo)] }), 422, 0);
+  { const p = evento(tipo); p.outra = 1;
+    await caso(tipo + ': pacote com outra chave além de evento', pedidoEvento({ corpo: p }), 422, 0); }
+  { const p = evento(tipo); p.evento.extra = 'x';
+    await caso(tipo + ': campo que a planta não tem (extra)', pedidoEvento({ corpo: p }), 422, 0); }
+
+  // 14. Dado de pessoa no pacote: recusado, nada gravado, e o registro diz por quê (sem o dado)
+  const antesPessoa = registros.length;
+  { const p = evento(tipo); p.pessoa = { nome: 'TESTE Ana', email: 'ana@teste.invalid', telefone: '+55 (00) 90000-0001' };
+    await caso(tipo + ': pacote com pessoa', pedidoEvento({ corpo: p }), 422, 0); }
+  { const p = evento(tipo); p.evento.email = 'ana@teste.invalid';
+    await caso(tipo + ': e-mail dentro do evento', pedidoEvento({ corpo: p }), 422, 0); }
+  { const p = evento(tipo); p.evento.respostas = { faturamento: 'x' };
+    await caso(tipo + ': respostas do quiz dentro do evento', pedidoEvento({ corpo: p }), 422, 0); }
+  marcar(registros.slice(antesPessoa).filter(r => r === '[garcom] evento: recusado: dado-de-pessoa').length === 3,
+    tipo + ': os três pacotes com dado de pessoa recusados pelo motivo dado-de-pessoa');
+
+
+  // 15. Etiqueta ausente: cada uma das cinco, recusado
+  const antesEtiqueta = registros.length;
+  for (const etiqueta of ['funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign']) {
+    const p = evento(tipo); delete p.evento[etiqueta];
+    await caso(tipo + ': etiqueta ausente (' + etiqueta + ')', pedidoEvento({ corpo: p }), 422, 0);
+  }
+  marcar(registros.slice(antesEtiqueta).filter(r => r === '[garcom] evento: recusado: etiqueta-faltando').length === 5,
+    tipo + ': as cinco etiquetas ausentes recusadas pelo motivo etiqueta-faltando (a chave tem de vir, mesmo vazia; 10.8)');
+
+  // 16. Etiqueta presente e vazia conta como etiqueta (10.8): entra, com a origem vazia
+  { const p = evento(tipo); p.evento.utm_source = ''; p.evento.utm_campaign = '';
+    const { chamadas: c } = await caso(tipo + ': etiquetas utm presentes e vazias', pedidoEvento({ corpo: p }), 201, 1);
+    const e = c[0] && c[0].corpo.pacote.evento;
+    marcar(!!e && e.utm_source === '' && e.utm_campaign === '', tipo + ': utm vazias gravadas vazias (10.8)'); }
+
+  // 17. Utm fora da lista: grava vazia e anota só o nome do campo (5.5)
+  { const p = evento(tipo); p.evento.utm_source = 'tiktok';
+    const antes = registros.length;
+    const { chamadas: c } = await caso(tipo + ': utm_source fora da lista (tiktok)', pedidoEvento({ corpo: p }), 201, 1);
+    const anotado = registros.slice(antes).some(r => r.includes('evento: utm-fora-da-lista') && r.includes('utm_source'));
+    marcar(!!c[0] && c[0].corpo.pacote.evento.utm_source === '' && anotado, tipo + ': utm_source fora da lista gravada vazia e anotada no registro'); }
+}
+
+// 18. Tipo fora da lista desta porta
+for (const t of ['fim_quiz', 'contato_sdr', 'venda', 'qualquer', '']) {
+  const p = evento('visita'); p.evento.tipo = t;
+  await caso('evento com tipo fora desta porta (' + (t || 'vazio') + ')', pedidoEvento({ corpo: p }), 422, 0);
+}
+{ const p = evento('visita'); delete p.evento.tipo;
+  await caso('evento sem tipo', pedidoEvento({ corpo: p }), 422, 0); }
+// o pacote inteiro do fim do quiz, mandado para /api/evento: recusado (tem pessoa)
+await caso('pacote do fim do quiz mandado para /api/evento', pedidoEvento({ corpo: copia() }), 422, 0);
+
+// 19. Sessão, data e etiquetas fora do formato
+{ const p = evento('visita'); delete p.evento.id_sessao;
+  await caso('evento sem sessão', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.id_sessao = 'abc';
+  await caso('evento com sessão fora do formato', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.ocorrido_em = 'ontem';
+  await caso('evento com data inválida', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); delete p.evento.ocorrido_em;
+  await caso('evento sem data', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.funil = 'funil-99';
+  await caso('evento com funil fora da lista', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.versao_entrega = '1';
+  await caso('evento com versao_entrega em texto', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.utm_source = null;
+  await caso('evento com utm_source nula (não é texto)', pedidoEvento({ corpo: p }), 422, 0); }
+
+// 20. O clique no fim do quiz: valor da lista proposta (31.15), só no tipo dele
+for (const v of ['quero-conversa', 'chamar-whatsapp', 'tenho-interesse', 'agora-nao']) {
+  const p = evento('interesse_pos_relatorio'); p.evento.clique_fim_quiz = v;
+  await caso('clique no fim do quiz com o valor ' + v, pedidoEvento({ corpo: p }), 201, 1);
+}
+{ const p = evento('interesse_pos_relatorio'); delete p.evento.clique_fim_quiz;
+  await caso('clique no fim do quiz sem dizer o que foi clicado', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('interesse_pos_relatorio'); p.evento.clique_fim_quiz = 'outro-botao';
+  await caso('clique no fim do quiz com valor fora da lista', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('visita'); p.evento.clique_fim_quiz = 'quero-conversa';
+  await caso('visita com clique_fim_quiz', pedidoEvento({ corpo: p }), 422, 0); }
+{ const p = evento('inicio_quiz'); p.evento.clique_fim_quiz = 'quero-conversa';
+  await caso('início do quiz com clique_fim_quiz', pedidoEvento({ corpo: p }), 422, 0); }
+
+// 21. Mais portaria: tamanho sem Content-Length, OPTIONS, rota com barra
+{ let partesLidas = 0;
+  const parte = new TextEncoder().encode('x'.repeat(1024));
+  const fluxo = new ReadableStream({ pull(c) { partesLidas++; if (partesLidas > 100) c.close(); else c.enqueue(parte); } });
+  const req = new Request(ORIGEM + '/api/evento', { method: 'POST', headers: { Origin: ORIGEM, 'Content-Type': 'application/json' }, body: fluxo, duplex: 'half' });
+  await caso('evento: corpo grande sem Content-Length (em partes)', req, 413, 0);
+  marcar(partesLidas <= 4, 'evento: a leitura parou logo depois de 2 KB (' + partesLidas + ' partes de 1 KB lidas, de 100)'); }
+{ const p = evento('visita'); p.evento.id_sessao = 'sessao-' + 'a'.repeat(60);
+  const tamanho = new TextEncoder().encode(JSON.stringify(p)).length;
+  await caso('evento de ' + tamanho + ' bytes, abaixo de 2 KB, com sessão no tamanho máximo', pedidoEvento({ corpo: p }), 201, 1); }
+{ const { r } = await caso('evento: pré-voo (OPTIONS) não é atendido', pedidoEvento({ metodo: 'OPTIONS', tipo: null }), 405, 0);
+  marcar(r.headers.get('Allow') === 'POST', 'evento: OPTIONS dá 405 com Allow: POST'); }
+await caso('rota /api/evento/ com barra no fim', pedidoEvento({ corpo: evento('visita'), caminho: '/api/evento/' }), 404, 0);
+
+// 22. Banco: recusa e falha não vazam detalhe
+respostaDoBanco = { status: 400, corpo: { code: '22023', message: 'clique sem fim do quiz de uma pessoa nesta sessao' } };
+await caso('clique recusado pelo banco (sessão sem fim do quiz, simulado; 32.2)', pedidoEvento({ corpo: evento('interesse_pos_relatorio') }), 422, 1);
+respostaDoBanco = { status: 409 };
+await caso('visita recusada pelo banco (entrega fora do catálogo, simulado; 32.4)', pedidoEvento({ corpo: evento('visita') }), 422, 1);
+respostaDoBanco = { status: 401 };
+await caso('evento: banco recusa a chave (simulado)', pedidoEvento({ corpo: evento('visita') }), 502, 1);
+respostaDoBanco = { status: 404 };
+await caso('evento: função registrar_evento ainda não existe no banco (migração não rodou, simulado)', pedidoEvento({ corpo: evento('visita') }), 502, 1);
+respostaDoBanco = { falha: true };
+await caso('evento: banco fora do ar (simulado)', pedidoEvento({ corpo: evento('visita') }), 502, 1);
+respostaDoBanco = { status: 204 };
+await caso('evento: cofre sem a publicável e com a secreta: não usa a secreta', pedidoEvento({ corpo: evento('visita') }), 503, 0, { env: { ...ENV, SUPABASE_CHAVE_PUBLICAVEL: '' } });
+await caso('evento: sem ORIGEM_PERMITIDA', pedidoEvento({ corpo: evento('visita') }), 503, 0, { env: { ...ENV, ORIGEM_PERMITIDA: '' } });
+await caso('evento: sem SUPABASE_URL', pedidoEvento({ corpo: evento('visita') }), 503, 0, { env: { ...ENV, SUPABASE_URL: '' } });
+
+// 23. As duas portas públicas só chamam a sua função, e só com a publicável
+{ const eventos = todasAsChamadas.filter(c => c.funcao === 'registrar_evento');
+  const fins = todasAsChamadas.filter(c => c.funcao === 'registrar_fim_quiz');
+  marcar(eventos.length > 0 && eventos.every(c => 'pacote' in c.corpo && !('pessoa' in c.corpo.pacote) && c.corpo.pacote.evento.tipo !== 'fim_quiz'),
+    '/api/evento só chamou registrar_evento, nunca com pessoa nem com fim_quiz (' + eventos.length + ' gravações)');
+  marcar(fins.every(c => c.corpo.pacote.evento.tipo === 'fim_quiz'), '/api/fim-quiz só chamou registrar_fim_quiz com fim_quiz (' + fins.length + ' gravações)'); }
 
 // ════════ Porta privada: GET /api/planilha/leads-novos ════════
 
@@ -389,6 +553,11 @@ await caso('ASSETS com falha: 502 simples', new Request(ORIGEM + '/quiz/'), 502,
 // ════════ Conferências gerais ════════
 
 marcar(semNoindex.length === 0, 'X-Robots-Tag: noindex em toda resposta' + (semNoindex.length ? ' (faltou em: ' + semNoindex.join('; ') + ')' : ''));
+marcar(comCors.length === 0, 'nenhuma resposta com cabeçalho de CORS (v4; 22.2)' + (comCors.length ? ' (veio em: ' + comCors.join('; ') + ')' : ''));
+{ const publicas = todasAsChamadas.filter(c => c.funcao === 'registrar_fim_quiz' || c.funcao === 'registrar_evento');
+  const usouSecreta = publicas.some(c => Object.values(c.cabecalhos).some(v => String(v).includes(SECRETA)));
+  const soAsTres = todasAsChamadas.every(c => ['registrar_fim_quiz', 'registrar_evento', 'leads_para_planilha'].includes(c.funcao));
+  marcar(publicas.length > 0 && !usouSecreta && soAsTres, 'as duas portas públicas nunca usaram a chave secreta, e o garçom só chamou as três funções (' + todasAsChamadas.length + ' chamadas)'); }
 
 // O registro do garçom não leva dado pessoal, cursor nem segredo
 const pessoais = [PACOTE_EXEMPLO.pessoa.nome, PACOTE_EXEMPLO.pessoa.email, PACOTE_EXEMPLO.pessoa.telefone, 'TESTE', 'teste.invalid'];
@@ -408,6 +577,10 @@ console.log('  pessoa: ' + Object.keys(gravacaoExemplo.corpo.pacote.pessoa).join
 console.log('  evento: ' + Object.keys(gravacaoExemplo.corpo.pacote.evento).join(', '));
 const e = gravacaoExemplo.corpo.pacote.evento;
 console.log('  etiquetas: ' + [e.funil, e.entrega, 'v' + e.versao_entrega, e.utm_source, e.utm_campaign].join(', ') + ' · lead score ' + e.lead_score_nota + ', faixa ' + e.lead_score_faixa);
+console.log('O que seria gravado na visita (fetch falso):');
+console.log('  endereço: ' + gravacaoEvento.endereco.replace(ENV.SUPABASE_URL, '{SUPABASE_URL}'));
+console.log('  método: ' + gravacaoEvento.metodo + ' · cabeçalhos: ' + Object.keys(gravacaoEvento.cabecalhos).join(', '));
+console.log('  pacote: ' + Object.keys(gravacaoEvento.corpo.pacote).join(', ') + ' · evento: ' + Object.keys(gravacaoEvento.corpo.pacote.evento).join(', '));
 const leitura = todasAsChamadas.find(c => c.funcao === 'leads_para_planilha');
 console.log('O que seria pedido pela porta privada (fetch falso):');
 console.log('  endereço: ' + leitura.endereco.replace(ENV.SUPABASE_URL, '{SUPABASE_URL}'));

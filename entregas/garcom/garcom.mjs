@@ -1,6 +1,8 @@
 // Garçom do funil-01 · Cloudflare Worker, sem dependências externas
-// id: garcom · versao 3 · rascunho · otavio: pendente
-// Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com leads de teste.
+// id: garcom · versao 4 · rascunho · otavio: pendente
+// Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com
+// leads de teste; a v3 e a v4 ainda não.
+// O formato dos pacotes é o da planta do banco (dados/planta/planta.md v4; 23.11).
 //
 // Um Worker só para o protótipo (decisão #101): safra-prototipo-funil-01 serve as páginas e o
 // garçom no mesmo endereço. As rotas /api/ são atendidas antes dos arquivos.
@@ -9,12 +11,18 @@
 //                                    método, origem, tamanho, formato, etiquetas e consentimento,
 //                                    e grava pela função registrar_fim_quiz (dados/banco/esquema.sql)
 //                                    com a chave publicável (papel anon; #100)
+//   POST /api/evento                 porta pública, v4: a visita, o início do quiz e o clique no
+//                                    fim do quiz, sem dado de pessoa e por isso sem aceite; as
+//                                    mesmas travas, e grava pela função registrar_evento
+//                                    (dados/banco/migracoes/001-v3.sql) com a chave publicável
+//                                    (18.4, 18.5, 10.6, 10.8)
 //   GET  /api/planilha/leads-novos   porta privada: só com o cabeçalho X-Chave-Planilha certo;
 //                                    devolve os leads novos da planilha do SDR pela função
 //                                    leads_para_planilha, com a chave secreta (papel service_role; #100)
 //   todo o resto                     arquivos do protótipo, pelo binding de assets (env.ASSETS)
 //
-// Toda resposta leva X-Robots-Tag: noindex (#101).
+// Toda resposta leva X-Robots-Tag: noindex (#101). Nenhuma leva cabeçalho de CORS, e o pré-voo
+// (OPTIONS) não é atendido: na mesma origem o navegador não precisa dele (v4; 22.2).
 // Todo arquivo HTML, CSS ou JavaScript que chega sem charset sai com "; charset=utf-8" (v3, pedido 09).
 //
 // Segredos: só os nomes. Os valores ficam nas variáveis secretas da Cloudflare (o cofre):
@@ -36,20 +44,24 @@ const UTM_ACEITAS = {
 };
 const FAIXAS = ['a', 'b', 'c', 'eliminatorio'];
 const SIM_NAO = ['sim', 'nao'];
-// Tipos que o garçom grava hoje. A página só envia o fim do quiz.
-const TIPOS_ACEITOS = ['fim_quiz'];
-// PROPOSTA, não ligada (14.15; 16.13; 18.4): o clique em "Tenho interesse".
-// Só passa para TIPOS_ACEITOS com decisão do Otávio e uma versão nova da planta e do esquema.
-const TIPOS_PROPOSTOS = ['interesse_pos_relatorio'];
+// Tipos de cada porta pública (planta v4, "Tipos de evento"). O fim do quiz só entra por
+// /api/fim-quiz; a visita, o início do quiz e o clique no fim do quiz, só por /api/evento.
+const TIPOS_FIM_QUIZ = ['fim_quiz'];
+const TIPOS_EVENTO = ['visita', 'inicio_quiz', 'interesse_pos_relatorio'];
+// O que a pessoa clicou no fim do quiz: a mesma lista da restrição eventos_clique_lista do banco.
+// PROPOSTA (31.15; 32.1): se a lista mudar, muda aqui e numa migração nova, juntos.
+const CLIQUES_FIM_QUIZ = ['quero-conversa', 'chamar-whatsapp', 'tenho-interesse', 'agora-nao'];
 
 // ··· Limites ···
 const TAMANHO_MAXIMO = 16 * 1024;  // bytes; o pacote do exemplo tem perto de 2 KB
+const TAMANHO_MAXIMO_EVENTO = 2 * 1024;  // bytes; o pacote de um evento tem perto de 300 (33.2)
 const ESPERA_DO_BANCO_MS = 8000;
 const LIMITE_PLANILHA = 200;       // o mesmo teto de leads_para_planilha
 const CHAVE_PLANILHA_MINIMO = 32;  // segredo mais curto que isto no cofre não abre a porta (22.4)
 
 // ··· Rotas ···
 const ROTA_FIM_QUIZ = '/api/fim-quiz';
+const ROTA_EVENTO = '/api/evento';   // a planta não dá o nome da rota (33.1)
 const ROTA_PLANILHA = '/api/planilha/leads-novos';
 
 // ··· Campos aceitos: nada além disto entra ···
@@ -62,22 +74,25 @@ const CAMPOS_EVENTO = [
   'tipo', 'funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign',
   'id_sessao', 'ocorrido_em', 'respostas', 'lead_score_nota', 'lead_score_faixa', 'lead_score_versao'
 ];
+// Campos do evento sem pessoa (/api/evento): os mesmos que registrar_evento aceita, e nada mais
+const CAMPOS_EVENTO_SEM_PESSOA = [
+  'tipo', 'funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign',
+  'id_sessao', 'ocorrido_em', 'clique_fim_quiz'
+];
+// Campos que levam dado de pessoa: nunca entram por /api/evento
+const CAMPOS_COM_DADO_DE_PESSOA = [...CAMPOS_PESSOA, 'respostas', 'lead_score_nota', 'lead_score_faixa'];
 // Parâmetros aceitos na porta privada: nada além disto
 const PARAMETROS_PLANILHA = ['depois_de_gravado_em', 'depois_de_id_pessoa', 'limite'];
 
-// ··· Respostas: curtas, sem detalhe interno, sempre com noindex ···
-function responder(status, corpo, origem) {
+// ··· Respostas: curtas, sem detalhe interno, sempre com noindex, sem CORS (v4; 22.2) ···
+function responder(status, corpo) {
   const cabecalhos = {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store',
     'X-Content-Type-Options': 'nosniff',
     'X-Robots-Tag': 'noindex'
   };
-  if (origem) {
-    cabecalhos['Access-Control-Allow-Origin'] = origem;
-    cabecalhos['Vary'] = 'Origin';
-  }
-  return new Response(corpo === null ? null : JSON.stringify(corpo), { status, headers: cabecalhos });
+  return new Response(JSON.stringify(corpo), { status, headers: cabecalhos });
 }
 const RECUSADO = { ok: false, erro: 'pacote recusado' };
 const PEDIDO_RECUSADO = { ok: false, erro: 'pedido recusado' };
@@ -96,15 +111,18 @@ const digitos = v => v.replace(/[^0-9]/g, '');
 // utm: presente e texto. Valor fora da lista fechada não recusa o pacote: é gravado vazio,
 // como a planta manda (dados/planta/planta.md, utm_source e primeira_utm_source; 5.5; 18.7).
 const utmOk = v => ehTexto(v);
+const UTM_DO_EVENTO = [
+  ['evento', 'utm_source', 'utm_source'], ['evento', 'utm_campaign', 'utm_campaign']
+];
 const UTM_DO_PACOTE = [
-  ['evento', 'utm_source', 'utm_source'], ['evento', 'utm_campaign', 'utm_campaign'],
+  ...UTM_DO_EVENTO,
   ['pessoa', 'primeira_utm_source', 'utm_source'], ['pessoa', 'primeira_utm_campaign', 'utm_campaign']
 ];
 // Esvazia a utm que veio fora da lista e devolve os nomes dos campos esvaziados (nunca o valor).
-// Chamar só depois de conferirPacote.
-export function esvaziarUtmForaDaLista(pacote) {
+// Chamar só depois de conferirPacote (fim do quiz) ou de conferirEvento (com UTM_DO_EVENTO).
+export function esvaziarUtmForaDaLista(pacote, campos = UTM_DO_PACOTE) {
   const esvaziados = [];
-  for (const [parte, campo, lista] of UTM_DO_PACOTE) {
+  for (const [parte, campo, lista] of campos) {
     const v = pacote[parte][campo];
     if (v !== '' && !UTM_ACEITAS[lista].includes(v)) {
       pacote[parte][campo] = '';
@@ -114,23 +132,62 @@ export function esvaziarUtmForaDaLista(pacote) {
   return esvaziados;
 }
 
-// Devolve o motivo da recusa (só para o registro interno, nunca para quem enviou) ou null.
-export function conferirPacote(pacote) {
-  if (!ehObjeto(pacote) || !soCampos(pacote, ['pessoa', 'evento'])) return 'formato';
-  const p = pacote.pessoa, e = pacote.evento;
-  if (!ehObjeto(p) || !ehObjeto(e)) return 'formato';
-  if (!soCampos(p, CAMPOS_PESSOA) || !soCampos(e, CAMPOS_EVENTO)) return 'campo-desconhecido';
-
-  // etiquetas obrigatórias: funil, entrega, versão e as duas utm
+// Etiquetas obrigatórias em todo evento (planta v4, "Etiquetas obrigatórias em todo evento"):
+// funil, entrega, versão e as duas utm, com a chave presente. Utm presente e vazia conta como
+// etiqueta (10.8). Devolve o motivo ou null.
+function conferirEtiquetas(e) {
   if (!temCampos(e, ['funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign'])) return 'etiqueta-faltando';
   if (!FUNIS.includes(e.funil)) return 'etiqueta-funil';
   if (!ehTexto(e.entrega) || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.entrega) || e.entrega.length > 60) return 'etiqueta-entrega';
   if (!ehInteiro(e.versao_entrega, 1, 9999)) return 'etiqueta-versao';
   if (!utmOk(e.utm_source) || !utmOk(e.utm_campaign)) return 'utm-formato';
   // o par entrega e versão é conferido no catálogo pelo próprio banco (chave estrangeira; 18.8)
+  return null;
+}
+
+// Pacote de /api/evento: { "evento": { ... } }, sem pessoa e sem aceite (planta v4; 18.5).
+// Devolve o motivo da recusa (só para o registro interno) ou null.
+export function conferirEvento(pacote) {
+  if (!ehObjeto(pacote)) return 'formato';
+  if (Object.prototype.hasOwnProperty.call(pacote, 'pessoa')) return 'dado-de-pessoa';
+  if (!soCampos(pacote, ['evento'])) return 'formato';
+  const e = pacote.evento;
+  if (!ehObjeto(e)) return 'formato';
+  if (Object.keys(e).some(k => CAMPOS_COM_DADO_DE_PESSOA.includes(k))) return 'dado-de-pessoa';
+  if (!soCampos(e, CAMPOS_EVENTO_SEM_PESSOA)) return 'campo-desconhecido';
+
+  const etiquetas = conferirEtiquetas(e);
+  if (etiquetas) return etiquetas;
+
+  if (!TIPOS_EVENTO.includes(e.tipo)) return 'tipo';
+  // a sessão é obrigatória: é ela que liga o evento ao fim do quiz (6.2; 18.5)
+  if (!ehTexto(e.id_sessao) || !/^sessao-[a-z0-9-]{1,60}$/.test(e.id_sessao)) return 'sessao';
+  if (!ehData(e.ocorrido_em)) return 'data-evento';
+
+  // o clique leva o que foi clicado, da lista; os outros tipos não levam clique
+  if (e.tipo === 'interesse_pos_relatorio') {
+    if (!CLIQUES_FIM_QUIZ.includes(e.clique_fim_quiz)) return 'clique';
+  } else if (Object.prototype.hasOwnProperty.call(e, 'clique_fim_quiz')) {
+    return 'clique-fora-do-tipo';
+  }
+  // Se a sessão tem o fim do quiz de uma pessoa só, quem confere é o banco: o garçom não lê
+  // tabela nenhuma. Sem isso, o clique volta recusado (registrar_evento; 32.2).
+  return null;
+}
+
+// Pacote de /api/fim-quiz. Devolve o motivo da recusa (só para o registro interno, nunca para
+// quem enviou) ou null.
+export function conferirPacote(pacote) {
+  if (!ehObjeto(pacote) || !soCampos(pacote, ['pessoa', 'evento'])) return 'formato';
+  const p = pacote.pessoa, e = pacote.evento;
+  if (!ehObjeto(p) || !ehObjeto(e)) return 'formato';
+  if (!soCampos(p, CAMPOS_PESSOA) || !soCampos(e, CAMPOS_EVENTO)) return 'campo-desconhecido';
+
+  const etiquetas = conferirEtiquetas(e);
+  if (etiquetas) return etiquetas;
 
   // evento
-  if (!TIPOS_ACEITOS.includes(e.tipo)) return 'tipo';
+  if (!TIPOS_FIM_QUIZ.includes(e.tipo)) return 'tipo';
   if (!ehTexto(e.id_sessao) || !/^sessao-[a-z0-9-]{1,60}$/.test(e.id_sessao)) return 'sessao';
   if (!ehData(e.ocorrido_em)) return 'data-evento';
   if (!ehObjeto(e.respostas) || JSON.stringify(e.respostas).length > 8000) return 'respostas';
@@ -236,7 +293,7 @@ function chamarFuncao(nome, corpo, chave, env) {
 
 // Lê o corpo em partes, somando os bytes. Devolve os bytes, 'tamanho' (passou do máximo; a
 // leitura para ali) ou 'leitura' (falhou).
-async function lerCorpoLimitado(request) {
+async function lerCorpoLimitado(request, maximo) {
   if (!request.body) return new Uint8Array(0);
   const leitor = request.body.getReader();
   const partes = [];
@@ -246,7 +303,7 @@ async function lerCorpoLimitado(request) {
       const { done, value } = await leitor.read();
       if (done) break;
       total += value.byteLength;
-      if (total > TAMANHO_MAXIMO) {
+      if (total > maximo) {
         leitor.cancel().catch(() => {});
         return 'tamanho';
       }
@@ -261,102 +318,110 @@ async function lerCorpoLimitado(request) {
   return bytes;
 }
 
-// ··· Porta pública: POST /api/fim-quiz ···
-async function portaFimQuiz(request, env) {
+// ··· As duas portas públicas: as mesmas travas, cada uma com o seu pacote e a sua função ···
+//   nome      prefixo do registro ('fim-quiz' ou 'evento')
+//   maximo    tamanho máximo do corpo, em bytes
+//   conferir  conferência do pacote (devolve o motivo ou null)
+//   utm       campos de utm que, fora da lista, são gravados vazios (5.5)
+//   funcao    a função do banco que grava
+const PORTA_FIM_QUIZ = {
+  nome: 'fim-quiz', maximo: TAMANHO_MAXIMO, conferir: p => conferirPacote(p),
+  utm: UTM_DO_PACOTE, funcao: 'registrar_fim_quiz'
+};
+const PORTA_EVENTO = {
+  nome: 'evento', maximo: TAMANHO_MAXIMO_EVENTO, conferir: p => conferirEvento(p),
+  utm: UTM_DO_EVENTO, funcao: 'registrar_evento'
+};
+
+async function portaPublica(request, env, porta) {
+  const nome = porta.nome;
   // o navegador manda o Origin sem barra no fim; uma barra no fim do valor da variável é ignorada
   const origemPermitida = (env.ORIGEM_PERMITIDA || '').replace(/\/+$/, '');
   // Só a chave publicável. Sem ela, nada é gravado; a secreta nunca é usada aqui.
   if (!origemPermitida || !env.SUPABASE_URL || !env.SUPABASE_CHAVE_PUBLICAVEL) {
-    registrar('fim-quiz: configuracao-incompleta');
-    return responder(503, INDISPONIVEL, null);
+    registrar(nome + ': configuracao-incompleta');
+    return responder(503, INDISPONIVEL);
   }
 
   // Mesma origem: o protótipo é servido por este Worker, e o navegador manda Origin no POST.
-  // Só a origem do próprio protótipo passa; nada de CORS aberto. Isto NÃO protege contra robô:
+  // Só a origem do próprio protótipo passa; nada de CORS. Isto NÃO protege contra robô:
   // um robô fora do navegador forja o cabeçalho Origin sem esforço. A conferência de origem só
   // barra páginas de outros sites abertas no navegador (log.md, Pendências).
   const origem = request.headers.get('Origin');
   if (origem !== origemPermitida) {
-    registrar('fim-quiz: origem');
-    return responder(403, RECUSADO, null);
-  }
-  // Pré-voo: na mesma origem o navegador não manda; fica só para a própria origem, como na v1 (22.2).
-  if (request.method === 'OPTIONS') {
-    const r = responder(204, null, origemPermitida);
-    r.headers.set('Access-Control-Allow-Methods', 'POST');
-    r.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-    r.headers.set('Access-Control-Max-Age', '600');
-    return r;
+    registrar(nome + ': origem');
+    return responder(403, RECUSADO);
   }
 
-  // método
+  // método: só POST. O pré-voo (OPTIONS) saiu na v4 e cai aqui, como qualquer outro (22.2).
   if (request.method !== 'POST') {
-    registrar('fim-quiz: metodo');
-    const r = responder(405, RECUSADO, origemPermitida);
-    r.headers.set('Allow', 'POST, OPTIONS');
+    registrar(nome + ': metodo');
+    const r = responder(405, RECUSADO);
+    r.headers.set('Allow', 'POST');
     return r;
   }
 
   // formato do corpo
   const tipoCorpo = (request.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase();
   if (tipoCorpo !== 'application/json') {
-    registrar('fim-quiz: tipo-do-corpo');
-    return responder(415, RECUSADO, origemPermitida);
+    registrar(nome + ': tipo-do-corpo');
+    return responder(415, RECUSADO);
   }
 
   // tamanho: pelo cabeçalho e, de novo, pelo corpo lido em partes, parando assim que passar
   // do máximo (sem Content-Length, o corpo nunca é lido inteiro na memória)
   const declarado = Number(request.headers.get('Content-Length') || '0');
-  if (declarado > TAMANHO_MAXIMO) {
-    registrar('fim-quiz: tamanho');
-    return responder(413, RECUSADO, origemPermitida);
+  if (declarado > porta.maximo) {
+    registrar(nome + ': tamanho');
+    return responder(413, RECUSADO);
   }
-  const lido = await lerCorpoLimitado(request);
+  const lido = await lerCorpoLimitado(request, porta.maximo);
   if (lido === 'tamanho') {
-    registrar('fim-quiz: tamanho');
-    return responder(413, RECUSADO, origemPermitida);
+    registrar(nome + ': tamanho');
+    return responder(413, RECUSADO);
   }
   if (lido === 'leitura') {
-    registrar('fim-quiz: leitura');
-    return responder(400, RECUSADO, origemPermitida);
+    registrar(nome + ': leitura');
+    return responder(400, RECUSADO);
   }
 
   let pacote;
   try {
     pacote = JSON.parse(new TextDecoder().decode(lido));
   } catch {
-    registrar('fim-quiz: json');
-    return responder(400, RECUSADO, origemPermitida);
+    registrar(nome + ': json');
+    return responder(400, RECUSADO);
   }
 
-  const motivo = conferirPacote(pacote);
+  const motivo = porta.conferir(pacote);
   if (motivo) {
-    registrar('fim-quiz: recusado: ' + motivo);
-    return responder(422, RECUSADO, origemPermitida);
+    registrar(nome + ': recusado: ' + motivo);
+    return responder(422, RECUSADO);
   }
 
   // utm fora da lista: grava vazia e registra só os nomes dos campos (5.5; 18.7)
-  const esvaziados = esvaziarUtmForaDaLista(pacote);
-  if (esvaziados.length) registrar('fim-quiz: utm-fora-da-lista, gravada vazia: ' + esvaziados.join(', '));
+  const esvaziados = esvaziarUtmForaDaLista(pacote, porta.utm);
+  if (esvaziados.length) registrar(nome + ': utm-fora-da-lista, gravada vazia: ' + esvaziados.join(', '));
 
-  // gravação, só pela função registrar_fim_quiz e só com a chave publicável
+  // gravação, só pela função da porta e só com a chave publicável
   let resposta;
   try {
-    resposta = await chamarFuncao('registrar_fim_quiz', { pacote }, env.SUPABASE_CHAVE_PUBLICAVEL, env);
+    resposta = await chamarFuncao(porta.funcao, { pacote }, env.SUPABASE_CHAVE_PUBLICAVEL, env);
   } catch {
-    registrar('fim-quiz: banco-sem-resposta');
-    return responder(502, INDISPONIVEL, origemPermitida);
+    registrar(nome + ': banco-sem-resposta');
+    return responder(502, INDISPONIVEL);
   }
   if (resposta.ok) {
-    registrar('fim-quiz: gravado');
-    return responder(201, { ok: true }, origemPermitida);
+    registrar(nome + ': gravado');
+    return responder(201, { ok: true });
   }
-  // O banco recusou (restrição, catálogo) ou falhou. O detalhe fica fora da resposta.
-  registrar('fim-quiz: banco-' + resposta.status);
+  // O banco recusou (restrição, catálogo, clique sem fim do quiz na sessão) ou falhou. O detalhe
+  // fica fora da resposta.
+  registrar(nome + ': banco-' + resposta.status);
   // 400 e 409 são recusa do pacote (restrição, catálogo); 401 e 403 são chave errada, e
   // o resto é falha do banco: os dois últimos aparecem como serviço indisponível.
-  if (resposta.status === 400 || resposta.status === 409) return responder(422, RECUSADO, origemPermitida);
-  return responder(502, INDISPONIVEL, origemPermitida);
+  if (resposta.status === 400 || resposta.status === 409) return responder(422, RECUSADO);
+  return responder(502, INDISPONIVEL);
 }
 
 // ··· Porta privada: GET /api/planilha/leads-novos ···
@@ -365,23 +430,23 @@ async function portaPlanilha(request, env, url) {
   // Segredo vazio, ausente ou curto demais no cofre também dá 401 (a porta fica fechada).
   if (!(await chaveConfere(request.headers.get('X-Chave-Planilha'), env.CHAVE_PLANILHA))) {
     registrar('planilha: chave');
-    return responder(401, NAO_AUTORIZADO, null);
+    return responder(401, NAO_AUTORIZADO);
   }
   if (request.method !== 'GET') {
     registrar('planilha: metodo');
-    const r = responder(405, PEDIDO_RECUSADO, null);
+    const r = responder(405, PEDIDO_RECUSADO);
     r.headers.set('Allow', 'GET');
     return r;
   }
   if (!env.SUPABASE_URL || !env.SUPABASE_CHAVE_SECRETA) {
     registrar('planilha: configuracao-incompleta');
-    return responder(503, INDISPONIVEL, null);
+    return responder(503, INDISPONIVEL);
   }
 
   const cursor = lerCursor(url.searchParams);
   if (cursor.motivo) {
     registrar('planilha: recusado: ' + cursor.motivo);
-    return responder(400, PEDIDO_RECUSADO, null);
+    return responder(400, PEDIDO_RECUSADO);
   }
 
   // só a função leads_para_planilha e só com a chave secreta
@@ -394,23 +459,23 @@ async function portaPlanilha(request, env, url) {
     }, env.SUPABASE_CHAVE_SECRETA, env);
   } catch {
     registrar('planilha: banco-sem-resposta');
-    return responder(502, INDISPONIVEL, null);
+    return responder(502, INDISPONIVEL);
   }
   if (!resposta.ok) {
     registrar('planilha: banco-' + resposta.status);
-    if (resposta.status === 400) return responder(400, PEDIDO_RECUSADO, null);
-    return responder(502, INDISPONIVEL, null);
+    if (resposta.status === 400) return responder(400, PEDIDO_RECUSADO);
+    return responder(502, INDISPONIVEL);
   }
   let leads;
   try {
     leads = await resposta.json();
   } catch {
     registrar('planilha: banco-resposta-ilegivel');
-    return responder(502, INDISPONIVEL, null);
+    return responder(502, INDISPONIVEL);
   }
   if (!Array.isArray(leads) || leads.length > cursor.quantos || !leads.every(ehObjeto)) {
     registrar('planilha: banco-resposta-fora-do-formato');
-    return responder(502, INDISPONIVEL, null);
+    return responder(502, INDISPONIVEL);
   }
 
   // O cursor seguinte é o da última linha, exatamente como veio (com os microssegundos), só com
@@ -422,7 +487,7 @@ async function portaPlanilha(request, env, url) {
     const horario = ultimo.cursor_gravado_em;
     if (!ehTexto(horario) || !ehHorarioDoCursor(horario) || !ehTexto(ultimo.id_pessoa) || !ehUuid(ultimo.id_pessoa)) {
       registrar('planilha: banco-cursor-fora-do-formato');
-      return responder(502, INDISPONIVEL, null);
+      return responder(502, INDISPONIVEL);
     }
     cursorSeguinte = {
       depois_de_gravado_em: horario.replace(/\+00:00$/, 'Z'),
@@ -435,7 +500,7 @@ async function portaPlanilha(request, env, url) {
     cursor_seguinte: cursorSeguinte,
     // página cheia: pode haver mais; quem chama pede de novo com o cursor seguinte
     pode_ter_mais: leads.length === cursor.quantos
-  }, null);
+  });
 }
 
 // ··· Charset dos arquivos de texto (v3, pedido 09) ···
@@ -483,10 +548,11 @@ export default {
     const caminho = url.pathname;
     // as rotas /api/ vêm antes dos arquivos (#101)
     if (caminho === '/api' || caminho.startsWith('/api/')) {
-      if (caminho === ROTA_FIM_QUIZ) return portaFimQuiz(request, env);
+      if (caminho === ROTA_FIM_QUIZ) return portaPublica(request, env, PORTA_FIM_QUIZ);
+      if (caminho === ROTA_EVENTO) return portaPublica(request, env, PORTA_EVENTO);
       if (caminho === ROTA_PLANILHA) return portaPlanilha(request, env, url);
       registrar('api: rota-desconhecida');
-      return responder(404, NAO_ENCONTRADO, null);
+      return responder(404, NAO_ENCONTRADO);
     }
     return arquivos(request, env);
   }

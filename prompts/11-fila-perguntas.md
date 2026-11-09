@@ -271,3 +271,53 @@ Dúvidas das etapas 30 a 36 (prompts/11-decisoes-de-09-11.md), no formato de sem
    - *O que foi feito:* nada em conexoes.md.
    - *Recomendação:* no roteiro da etapa 35, logo depois de o Otávio rodar a migração e o conferir.sql, atualizar a linha do Supabase em conexoes.md (anon executa registrar_fim_quiz e registrar_evento).
    - *Se decidir diferente:* atualizar já, com a ressalva "depois da migração 001"; o risco é a linha descrever um banco que ainda não existe.
+
+## Etapa 33
+
+33.1. **O nome da rota nova: /api/evento.**
+   - *Dúvida:* a planta v4 diz que a visita, o início do quiz e o clique no fim do quiz entram "pela mesma porta, com as mesmas travas", mas não dá o endereço. O banco tem uma função própria para eles (registrar_evento), separada do fim do quiz.
+   - *O que foi feito:* uma rota nova, POST /api/evento, ao lado de /api/fim-quiz, com o mesmo código de portaria (portaPublica) e a função registrar_evento. /api/fim-quiz ficou exatamente como estava e continua recusando visita e clique.
+   - *Recomendação:* aceitar: uma rota por função do banco deixa cada porta conferir só o seu pacote, e o fim do quiz, que leva dado de pessoa, não divide conferência com os eventos que não levam.
+   - *Se decidir diferente:* se os eventos tiverem de entrar por /api/fim-quiz, a porta passa a escolher a conferência e a função pelo tipo; muda só garcom.mjs e o teste, e a etapa 34 manda para o endereço escolhido. Nenhuma página manda eventos ainda.
+
+33.2. **O limite de tamanho do evento é 2 KB, não 16 KB.**
+   - *Dúvida:* "as mesmas travas" pede uma trava de tamanho, sem dizer o número. O pacote de um evento tem perto de 300 bytes; o do fim do quiz, com as respostas, perto de 2 KB.
+   - *O que foi feito:* /api/evento recusa corpo acima de 2 KB (413), pelo Content-Length e lendo em partes, como a outra porta. A sessão no tamanho máximo do banco (60 letras) passa com folga (conferido no teste).
+   - *Recomendação:* aceitar: é a mesma trava, mais apertada, e a porta que não leva dado de pessoa é a mais fácil de usar para encher o banco de lixo.
+   - *Se decidir diferente:* trocar TAMANHO_MAXIMO_EVENTO por TAMANHO_MAXIMO (16 KB) em garcom.mjs; os casos de tamanho do teste mudam junto.
+
+33.3. **O que quer dizer "citar só a planta" no cabeçalho.**
+   - *Dúvida:* a 23.11 diz que o garçom "deixa de depender da página e cita só a planta". Pode ser lido como "só a planta no lugar da página" ou como "só a planta em todo o depende_de".
+   - *O que foi feito:* a leitura mais estreita: saiu quiz-01-pagina, e o formato do pacote passou a ser citado só pela planta (no README e no topo de garcom.mjs). Ficaram as outras bases, com as versões atuais (banco-rascunho 3, planta-do-banco 4, decisoes 5, funil-01 3, funil-01-planilha-sdr 2, regra-seguranca 3, lacunas 6), e entrou banco-migracao-001 1, porque o garçom chama a função criada nela. O garçom continua desatualizado, porque banco-rascunho, banco-migracao-001 e funil-01-planilha-sdr estão marcados (11.1).
+   - *Recomendação:* aceitar: o garçom chama funções do banco e segue decisões e regras que não estão na planta; tirar essas bases esconderia da cascata mudanças que mexem no código.
+   - *Se decidir diferente:* o depende_de fica só com planta-do-banco 4, como forma; nenhuma linha de código muda.
+
+33.4. **Garçom v4 publicado antes da migração.**
+   - *Dúvida:* a porta nova chama registrar_evento, que só existe depois da migração 001. A ordem de publicar é do roteiro da etapa 35.
+   - *O que foi feito:* nada a mais no garçom. Se a função não existir, o banco responde 404 e o garçom devolve 502 `servico indisponivel`, sem detalhe (conferido no teste, simulado). /api/fim-quiz e a porta privada não dependem da migração.
+   - *Recomendação:* no roteiro da etapa 35, a migração e o conferir.sql vêm antes de publicar o Worker; mesmo fora de ordem, nada quebra e nada se grava errado, só os eventos novos se perdem até a migração rodar.
+   - *Se decidir diferente:* nenhuma mudança no código; só a ordem do roteiro.
+
+33.5. **O OPTIONS de outra origem dá 403, não 405.**
+   - *Dúvida:* a 22.2 diz que o OPTIONS passa a dar 405. A porta confere a origem antes do método, como sempre fez.
+   - *O que foi feito:* o bloco do pré-voo saiu e o OPTIONS cai nas mesmas conferências de qualquer pedido: da própria origem, 405 com `Allow: POST`; de outra origem ou sem origem, 403. Nenhuma resposta leva cabeçalho de CORS. Vale para /api/fim-quiz e /api/evento.
+   - *Recomendação:* aceitar: a ordem das conferências não mudou, e as duas respostas recusam sem abrir nada.
+   - *Se decidir diferente:* para 405 em todo OPTIONS, a conferência de método vem antes da de origem em portaPublica; muda um caso do teste.
+
+33.6. **O garçom não confere qual entrega manda cada tipo.**
+   - *Dúvida:* a planta diz que a visita é da landing e o início e o clique são do quiz, mas não diz que um evento com outra entrega deve ser recusado. O banco confere só se o par entrega e versão está no catálogo (18.8).
+   - *O que foi feito:* nada a mais: o garçom confere o formato da entrega e da versão, como no fim do quiz, e deixa o catálogo para o banco. Nenhuma regra que a planta não escreve.
+   - *Recomendação:* aceitar no protótipo; se a medição precisar, escrever na planta qual entrega cada tipo pode levar, e aí o garçom e uma migração nova conferem.
+   - *Se decidir diferente:* uma lista tipo e entregas permitidas em garcom.mjs (visita só landing-page-01; inicio_quiz e interesse_pos_relatorio só quiz-01) e a mesma regra no banco, numa migração nova.
+
+33.7. **A porta nova aumenta o que um robô pode encher.**
+   - *Dúvida:* /api/evento não pede aceite nem dado de pessoa, então é a porta mais fácil de usar com o cabeçalho Origin forjado. Visitas falsas não expõem ninguém, mas estragam a contagem de visitas e a diferença entre visitas e inícios do quiz (10.10).
+   - *O que foi feito:* as mesmas travas de formato, mais o limite de 2 KB (33.2). A proteção contra robô e o limite de pedidos continuam como pendência antes de tráfego real (log.md, Pendências).
+   - *Recomendação:* manter a pendência e ligar o limite de pedidos da Cloudflare também em /api/evento antes de qualquer tráfego real; no protótipo, só com leads de teste, não muda nada.
+   - *Se decidir diferente:* para ligar o limite já, entra um binding de limite no wrangler.toml e uma conferência no garçom; é uma versão nova do garçom e do protótipo.
+
+33.8. **Nutrição e produto da planilha não entraram nesta etapa.**
+   - *Dúvida:* a 32.5 recomendava pôr o resto da planilha-sdr v2 (nutrição e produto) "na etapa 33, com a porta privada". O pedido da etapa 33 fala só das portas públicas e pede que todos os testes anteriores continuem certos.
+   - *O que foi feito:* nada na porta privada nem na planilha em Apps Script; o contrato da porta privada não muda com nutrição e produto, que são listas da planilha.
+   - *Recomendação:* fazer junto com a próxima versão da planilha (32.5, 32.6, 32.11), fora do garçom.
+   - *Se decidir diferente:* uma etapa própria para a planilha v3, com o Codigo.gs, o README e o teste dela; o garçom não muda.
