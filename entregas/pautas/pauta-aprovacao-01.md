@@ -1,6 +1,6 @@
 ---
 id: pauta-aprovacao-01
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -31,12 +31,14 @@ depende_de:
     versao: 1
   - id: landing-page-01-variante-b
     versao: 1
+  - id: funil-01-roteiros-sdr
+    versao: 1
 desatualizado: true
 ---
 
 # Pauta de aprovação 01 · Júnior e Euclides
 
-**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13). O item 6a entrou na versão 4, com as duas variantes de design da página (etapa 17); ganhou letra, e não número, para não mudar a numeração que outros documentos citam (pergunta 17.6).
+**Nota para o Otávio (sai da versão impressa).** Rascunho: nada aqui é decisão nova. A pauta se apoia em documentos marcados desatualizados (funil-01, promessa, tom-de-voz, design-system, provas-e-conformidade e oferta), que só saem dessa marca depois da pergunta 4.5 (prompts/05-fila-perguntas.md). Na oferta, nada sobre o papel da Análise foi tirado dela: nesse ponto vale a decisão de 08/11 e a ficha de fatos. Os números ficam só na ficha de fatos; o corpo diz apenas que o valor está lá, e o nome do campo vai na linha Referência (pergunta 7.1). As escolhas provisórias desta pauta são as perguntas 7.1 a 7.9; os acréscimos da versão 2 vêm da triagem (perguntas 4.3, 5.8, 7.2, 7.4, 7.8, 8.6, 8.7, 9.4, 9.9, 9.10 e 9.11). O item 29 entrou na versão 3, com a copy do quiz (etapa 13). O item 6a entrou na versão 4, com as duas variantes de design da página (etapa 17); ganhou letra, e não número, para não mudar a numeração que outros documentos citam (pergunta 17.6). Os acréscimos da versão 5 vêm da triagem da etapa 19 (perguntas 13.2, 13.3, 13.6, 13.7, 13.8, 13.9, 13.13, 13.14, 14.6, 14.14, 15.2, 15.9, 15.12, 16.2, 16.3, 16.13, 17.2 e 17.3). No item 7, se a pergunta 7.9 for aceita e o Otávio escolher o nome sozinho, o acréscimo sobre "seu diagnóstico" vira confirmação dele.
 
 **Como ler.** Cada item traz o que é, as opções registradas, a posição do Otávio e o que a decisão destrava. Quando só existe uma proposta, as opções são aprovar, ajustar ou recusar. Onde a posição do Otávio não está escrita, o item diz "o Otávio decide antes da reunião". A linha "Referência", no fim de cada item, serve só para rastrear de onde veio cada ponto.
 
@@ -48,20 +50,24 @@ desatualizado: true
 
 ### 1. O funil novo no lugar da página das três portas
 
-- **O que é:** o Otávio propõe trocar a página antiga, com três portas de entrada (com e sem vídeo de vendas, e a calculadora como porta), por um caminho único: página, quiz, banco de dados, planilha de quem liga para os leads e reunião com o Júnior. O documento do funil descreve esse caminho e ainda não foi aprovado por ninguém. Também em aberto: se a página nova tem vídeo, como diz a decisão do Júnior de 28/10 ("quiz e página com vídeo"), e onde (no topo ou numa seção própria). Se tiver, o roteiro vira uma entrega própria, na voz do Júnior.
+- **O que é:** o Otávio propõe trocar a página antiga, com três portas de entrada (com e sem vídeo de vendas, e a calculadora como porta), por um caminho único: página, quiz, banco de dados, planilha de quem liga para os leads e reunião com o Júnior. O documento do funil descreve esse caminho e ainda não foi aprovado por ninguém. Também em aberto: se a página nova tem vídeo, como diz a decisão do Júnior de 28/10 ("quiz e página com vídeo"), e onde (no topo ou numa seção própria). Se tiver, o roteiro vira uma entrega própria, na voz do Júnior. E os contatos não têm o mesmo destino nos dois lados: a cópia nova do quiz manda os contatos para o Triad CRM; o funil novo manda para o banco de dados e a planilha de quem liga.
 - **Opções:** aprovar, ajustar ou recusar. Recusar mantém as três portas, que seguem valendo até a aprovação.
 - **Posição do Otávio:** a favor; é a proposta dele de 08/11/2026. O documento do funil em si ainda espera a aprovação dele, junto com a dos dois. Sobre o vídeo: o Otávio decide antes da reunião.
-- **O que destrava:** a página e o quiz deixam de ser rascunho; a ligação do quiz e da página com o banco de dados e com a agenda de quem liga; a contagem real das análises gratuitas.
-- **Referência:** posição: #90; substitui #66. Lacunas: conflito-06, conflito-14, lacuna-13. Documento: funil-01; pergunta 5.1. Decisão: #51. Pergunta 8.6.
+- **O que destrava:** a página e o quiz deixam de ser rascunho; a ligação do quiz e da página com o banco de dados e com a agenda de quem liga; a contagem real das análises gratuitas; a planilha de quem liga, o banco e a lista de serviços da política de privacidade.
+- **Referência:** posição: #90; substitui #66. Lacunas: conflito-06, conflito-14, lacuna-13. Documento: funil-01; pergunta 5.1. Decisão: #51. Pergunta 8.6. Lacuna: conflito-17. Perguntas 15.2, 16.2 e 16.3.
 
 ### 2. Quem entra na fila de ligação: a nota do lead
 
 - **O que é:** cada lead que termina o quiz ganha uma nota e uma faixa, que dizem a quem ligar primeiro e quem vai para a nutrição, para proteger a agenda do Júnior. Hoje existem cinco cortes diferentes de "para quem é" espalhados pelos documentos, e o filtro atual do quiz é do Júnior.
 - **Opções:** aprovar, ajustar ou recusar a proposta da nota (pontos, eliminatórios e faixas, no documento do lead score). Os cinco cortes que existem hoje estão na ficha de fatos.
 - **Posição do Otávio:** a favor; é a proposta dele de 08/11/2026. Os eliminatórios foram escolhidos pelo corte mais generoso entre os cinco, para não atropelar nenhum documento anterior.
-- **O que destrava:** o filtro do quiz, o texto "Para quem é" e as perguntas frequentes da página, o público dos anúncios e a fila de ligação.
-- **Também na mesa:** depois das primeiras respostas reais, as faixas são conferidas contra quem agendou e comprou, antes de qualquer mudança na nota.
-- **Referência:** posição: #98. Lacunas: conflito-01, lacuna-12, outros-22. Documento: lead-score. Ficha: criterio-de-qualificacao.
+- **O que destrava:** o filtro do quiz, o texto "Para quem é" e as perguntas frequentes da página, o público dos anúncios e a fila de ligação; o final do quiz (quem vê a oferta do plano, quem vê o relatório com "Tenho interesse").
+- **Também na mesa:**
+  - Depois das primeiras respostas reais, as faixas são conferidas contra quem agendou e comprou, antes de qualquer mudança na nota.
+  - O quiz do Júnior decide quem é pré-qualificado por um corte próprio, e a nota do lead por outro; os dois mandam o lead para finais diferentes. Por exemplo: pelo corte do Júnior, quem vende abaixo do mínimo de valor médio da venda pedido pela nota do lead vê a oferta do plano; pela nota do lead, vai para a nutrição.
+  - Quem não entra na fila e clica "Tenho interesse": recebe contato da equipe, como o quiz do Júnior diz hoje, ou vai só para a nutrição?
+  - O que a equipe diz a quem caiu nos cortes e escreve por conta própria: os dois lados estão nos roteiros de quem liga, com uma fala proposta que não diz o corte. Sugestão: tirar a frase "um momento em que o time de vendas já está rodando com mais volume", que não vale para quem caiu pelo valor da venda.
+- **Referência:** posição: #98. Lacunas: conflito-01, lacuna-12, outros-22. Documento: lead-score. Ficha: criterio-de-qualificacao. Lacuna: conflito-16. Documento: funil-01-roteiros-sdr. Perguntas 13.6, 13.7, 14.14 e 15.12.
 
 ### 3. O quiz: consentimento e promessa de resultado
 
@@ -74,10 +80,10 @@ desatualizado: true
 ### 4. O plano de ação no fim do quiz
 
 - **O que é:** o quiz oferece pelo WhatsApp um plano de ação com o prazo do serviço no nome, e a página mostra um plano parecido como saída da Análise. Nenhuma decisão põe esse plano como entrega; no documento mestre do funil antigo, ele aparece só como tarefa a fazer.
-- **Opções:** aprovar o plano como saída do diagnóstico, ajustar ou recusar.
+- **Opções:** aprovar o plano como saída do diagnóstico, ajustar ou recusar. Se o plano for a saída do diagnóstico, ele é a própria Análise para efeito de preço (o valor e a gratuidade da ficha de fatos)? Também: onde o lead que passa no filtro recebe o relatório completo, na tela ou só por e-mail e WhatsApp.
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** o fim do quiz e o que a página promete na seção da Análise.
-- **Referência:** lacunas: conflito-10, lacuna-22.
+- **Referência:** lacunas: conflito-10, lacuna-22, conflito-19. Perguntas 13.3 e 13.9.
 
 ### 5. A promessa da página e do quiz
 
@@ -100,8 +106,9 @@ desatualizado: true
 - **O que é:** para a escolha do item 6 ficar rápida, a página foi montada duas vezes, com o mesmo texto, a mesma ordem e as mesmas imagens de marcação; só o visual muda. A variante A veste o design system 1.0 (fundo escuro, verde menta no botão, fonte Geist; nos prints aparece a letra do computador, porque os arquivos da Geist ainda não estão no projeto). A variante B veste a paleta branco e verde de 07/11, com os botões laranja de 03/11. Os tons exatos de verde da B não estavam registrados e foram escolhidos para o rascunho. As duas mostram como "a definir" tudo o que ainda espera decisão (nome da agência, nome da Análise, critério de qualificação, promessa).
 - **Onde ver:** os prints de celular e de computador de cada uma: entregas/landings/landing-page-01/prints/variante-a-375.png, variante-a-1440.png, variante-b-375.png e variante-b-1440.png. As páginas abrem no navegador, nas pastas variante-a-design-system-v1/ e variante-b-branco-e-verde/.
 - **Opções:** a variante A; a variante B; ou uma mistura, dita ponto a ponto (por exemplo, a paleta de uma com o botão da outra). À parte: a cor do botão (laranja ou menta) e a fonte (Geist, a do sistema ou a pedida pelo Júnior), se não vierem junto com a variante.
+- **Também na mesa:** se a B for escolhida, o Júnior manda a imagem do visual que aprovou em 07/11, para acertar os tons de verde.
 - **Posição do Otávio:** o Otávio decide antes da reunião.
-- **O que destrava:** o visual da página, que hoje trava o funil novo; a variante escolhida vira a base da versão seguinte da página, e a outra pasta vira arquivo. O quiz tem um conflito visual próprio (conflito-18; item 29): a mesma escolha pode valer para ele, se os dois disserem.
+- **O que destrava:** o visual da página, que hoje trava o funil novo; a variante escolhida vira a base da versão seguinte da página, e a outra pasta vira arquivo. O quiz tem um conflito visual próprio (conflito-18; item 29): a mesma escolha pode valer para ele, se os dois disserem. Se a A for escolhida, as cores e fontes da pasta dela viram a referência das peças, e o documento do design system registra isso.
 - **Referência:** documentos: landing-page-01-variante-a, landing-page-01-variante-b. Lacunas: conflito-08, conflito-18. Decisões: #45, #81. Perguntas 17.1 a 17.8.
 
 ### 7. A Análise: nome público, e a reunião com o Júnior: duração e quem conduz
@@ -111,25 +118,27 @@ desatualizado: true
   - Nome: um dos quatro registrados na ficha de fatos: o nome do registro desde as três portas, o nome da entrega 1, o texto do botão da página e o nome que o quiz usa hoje.
   - Duração: uma das duas registradas na ficha de fatos; a ficha traz também uma proposta de duração para a conversa de venda.
   - Quem conduz: o Júnior ou o time do Júnior.
+  - Se o nome escolhido não for o que o quiz usa hoje, "seu diagnóstico" pode continuar no texto do quiz como palavra comum?
 - **Posição do Otávio:** o Otávio decide antes da reunião. Os três pontos são decisões dele; entram na pauta porque é o Júnior quem faz as reuniões de venda e fecha no começo, e a duração e quem conduz mexem na agenda dele.
 - **O que destrava:** a seção da Análise e o passo 3 da página, a fala final e o nome do quiz, e a agenda das reuniões.
-- **Referência:** lacunas: conflito-02, lacuna-11. Decisões: #51, #59 a #62, #92. Ficha: analise-nome-publico, analise-duracao, analise-quem-conduz, duracao-call-de-venda, quem-faz-a-reuniao. Pergunta 7.9.
+- **Referência:** lacunas: conflito-02, lacuna-11. Decisões: #51, #59 a #62, #92. Ficha: analise-nome-publico, analise-duracao, analise-quem-conduz, duracao-call-de-venda, quem-faz-a-reuniao. Perguntas 7.9 e 13.2.
 
 ### 8. Nome da agência e quem assina as peças
 
 - **O que é:** o nome "Triad" está ocupado e em revisão; o nome provisório "Triad H." espera a aprovação dos dois, a busca de marca e a grafia pública. Enquanto isso, não está decidido quem assina a página, o quiz e os anúncios.
 - **Opções:** as quatro formas registradas na ficha de fatos: o nome provisório; "Triad" com a empresa americana do rodapé do quiz; "TRIAD MKT" do logo; ou assinar por Junior Neves e pelo produto, sem marca de agência, até o nome sair. Também em aberto: a agência assina ou o Júnior fala em primeira pessoa. Se o Júnior falar em primeira pessoa, o texto da página passa pela voz dele e é mostrado a ele antes de publicar; as proibições da base continuam valendo.
+- **Também na mesa:** no quiz, o formato escolhido pelo Júnior já é ele conversando em primeira pessoa; a recomendação é manter isso no quiz, seja qual for a decisão para a página.
 - **Posição do Otávio:** a favor do nome provisório, que é proposta dele de 08/11/2026. Quem assina enquanto o nome não sai: o Otávio decide antes da reunião.
 - **O que destrava:** a assinatura e o rodapé da página, do quiz e dos anúncios.
-- **Referência:** posição: #89; #55. Lacunas: lacuna-07, conflito-07, lacuna-19. Ficha: nome-agencia. Documentos: promessa, tom-de-voz. Pergunta 9.4.
+- **Referência:** posição: #89; #55. Lacunas: lacuna-07, conflito-07, lacuna-19. Ficha: nome-agencia. Documentos: promessa, tom-de-voz. Perguntas 9.4 e 13.8.
 
 ### 9. Credenciais, números públicos e as tentativas de contato
 
 - **O que é:** os números de credencial dos dois divergem entre fontes, e nenhum tem comprovante guardado; na ficha de fatos, as credenciais estão marcadas como prova pendente. A faixa de nomes famosos, o mosaico de fotos e o depoimento do Júnior sobre o Marçal estão na página sem comprovante nem autorização de nome e imagem (Código Civil). O contador "Total gerado" do topo da página depende desse mesmo número. Junto vai a regra das tentativas de contato antes de dar o lead como abandonado, que vem da operação do Júnior: a fonte pede confirmar que ela segue valendo e liberar as histórias da operação usadas nos vídeos.
-- **Opções:** para cada número, um dos valores registrados na ficha de fatos, só com comprovante; sem comprovante, nada vai a público. Para as autorizações e as tentativas: aprovar, ajustar ou recusar. Enquanto não há comprovante, uma versão mínima da seção de credenciais: só os nomes dos dois, o papel de cada um no serviço e uma frase do Euclides escrita pelo Otávio, sem números, sem nomes de terceiros e sem fotos com terceiros: aprovar, ajustar ou recusar.
+- **Opções:** para cada número, um dos valores registrados na ficha de fatos, só com comprovante; sem comprovante, nada vai a público. Para as autorizações e as tentativas: aprovar, ajustar ou recusar. Enquanto não há comprovante, uma versão mínima da seção de credenciais: só os nomes dos dois, o papel de cada um no serviço e uma frase do Euclides escrita pelo Otávio, sem números, sem nomes de terceiros e sem fotos com terceiros: aprovar, ajustar ou recusar. E o intervalo entre as tentativas; o número e o intervalo que valem para o funil novo entram na ficha de fatos como campos próprios.
 - **Posição do Otávio:** em 08/11 ele mandou as credenciais e as tentativas para esta pauta, juntas, e deixou tudo como está. Qual número usar: o Otávio decide antes da reunião, depois dos comprovantes.
 - **O que destrava:** a seção de credenciais, as fotos e o contador do topo da página; o número de tentativas que o funil novo usa para dar um lead como abandonado; as histórias nos vídeos.
-- **Referência:** posição: resposta 8 de 08/11 (a resposta 2 só pôs as credenciais na ficha como prova pendente). Decisões: #25, #44. Lacunas: conflito-05, conflito-04, lacuna-16, lacuna-24, outros-21. Ficha: total-dos-dois, lancamento-finch, camila-vieira, credenciais-44, tentativas-ate-abandonado. Perguntas 5.3, 8.7 e 9.11.
+- **Referência:** posição: resposta 8 de 08/11 (a resposta 2 só pôs as credenciais na ficha como prova pendente). Decisões: #25, #44. Lacunas: conflito-05, conflito-04, lacuna-16, lacuna-24, outros-21. Ficha: total-dos-dois, lancamento-finch, camila-vieira, credenciais-44, tentativas-ate-abandonado. Perguntas 5.3, 8.7, 9.11 e 15.9.
 
 ### 10. Parcelamento e taxa da Hotmart
 
@@ -305,10 +314,14 @@ desatualizado: true
 
 - **O que é:** o quiz é do Júnior. A cópia nova dele foi passada para a copy do sistema, e o texto mudou só onde as regras registradas mandam: o nome da agência e o nome do diagnóstico, que estão em aberto (itens 7 e 8); a palavra "reunião", trocada por "conversa de venda", como na página; o consentimento antes de pedir e-mail e WhatsApp, com o link da política de privacidade; a promessa de aumentar o faturamento em até um percentual, que saiu; o valor e a gratuidade, que agora vêm da ficha de fatos; e a escolha de dia e horário no relatório, que saiu porque quem agenda é quem liga para os leads. Cada mudança está numa tabela com o texto original, o texto novo e o motivo.
 - **Opções:** aprovar todas, aprovar com ajustes (mudança por mudança) ou recusar alguma. Recusar uma mudança que vem de regra de conformidade (consentimento ou percentual) mantém o quiz sem poder ser publicado.
-- **Também na mesa:** a cópia nova do quiz trouxe quatro decisões próprias que divergem do sistema e ficaram registradas com os dois lados, sem escolha: quem é pré-qualificado (item 2), para onde vão os contatos (item 1), a identidade visual (item 6) e a promessa percentual (item 3).
+- **Também na mesa:** a cópia nova do quiz trouxe quatro decisões próprias que divergem do sistema e ficaram registradas com os dois lados, sem escolha: quem é pré-qualificado (item 2), para onde vão os contatos (item 1), a identidade visual (item 6) e a promessa percentual (item 3). E quatro ajustes de texto:
+  - No relatório do funil saudável, a frase "O processo comercial funciona." usa um termo que o tom de voz pede para evitar; sugestão: "Suas vendas estão funcionando."
+  - Os números das metas escritos no relatório passam a vir do campo das metas da ficha de fatos, para mudarem junto com ele.
+  - A página do quiz trocou "Triad" nos avisos ("abre o WhatsApp da Triad" virou "o nosso WhatsApp") e tirou o nome da marca do cabeçalho e dos rodapés até o nome sair; o triângulo do logo ficou.
+  - Na ajuda da tela de contato, acrescentar a ressalva "nos canais que você aceitou", como já está no texto do relatório.
 - **Posição do Otávio:** o Otávio decide antes da reunião.
 - **O que destrava:** o texto do quiz.
-- **Referência:** documento: quiz-01-copy, seção "Mudanças no texto do Júnior" (entregas/quizzes/quiz-01/copy.md). Lacunas: conflito-16, conflito-17, conflito-18, conflito-19. Perguntas 13.1 a 13.12.
+- **Referência:** documento: quiz-01-copy, seção "Mudanças no texto do Júnior" (entregas/quizzes/quiz-01/copy.md). Lacunas: conflito-16, conflito-17, conflito-18, conflito-19. Perguntas 13.1 a 13.14, 14.6 e 16.13.
 
 ---
 

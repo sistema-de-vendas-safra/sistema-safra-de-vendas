@@ -67,7 +67,7 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 - documentos/politica-de-privacidade.md · política de privacidade do funil-01: o que a landing e o quiz coletam, finalidades, consentimento, quem acessa, operadores (lista bloqueada, conflito-17), cookies e medição, prazo de guarda a definir (outros-23), direitos do art. 18 e como pedir; precisa de revisão de advogado (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 - emails/ · vazio
 - pautas/README.md · para que serve a pasta de pautas
-- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v4, item 6a para escolher a variante da página; rascunho; desatualizado)
+- pautas/pauta-aprovacao-01.md · pauta de aprovação para o Júnior e o Euclides, ordenada pelo que trava o funil-01 (v5, acréscimos da triagem da etapa 19; item 6a para escolher a variante da página; rascunho; desatualizado)
 
 ## dados/
 

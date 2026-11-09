@@ -8,6 +8,7 @@ Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. En
 - conexoes.md: a conta da Cloudflare do Safra já existe (o endereço do quiz usa o subdomínio sistemadevendassafra); verificação em duas etapas a confirmar.
 - Triagem da etapa 19 · forma (grupo A; nenhum documento sobe de versão). 12.1: lista Fontes do briefing, da copy e da estrutura da landing mantida como registro da escrita (forma). 17.6: item 6a da pauta mantido; renumerar só numa pauta nova (forma). 16.1: a troca do link da política de privacidade fica nas pendências (forma).
 - Triagem da etapa 19 · já decidido (grupo B): nenhuma pergunta; sem commit.
+- entregas/pautas/pauta-aprovacao-01.md v4 para v5, rascunho (otavio: pendente). Motivo: triagem da etapa 19: acréscimos das perguntas 13.2 a 17.3 do grupo D (itens 1, 2, 4, 6a, 7, 8, 9 e 29; 13.2, 13.3, 13.6, 13.7, 13.8, 13.9, 13.13, 13.14, 14.6, 14.14, 15.2, 15.9, 15.12, 16.2, 16.3, 16.13, 17.2 e 17.3); depende_de ganha funil-01-roteiros-sdr 1; nota para o Otávio. Sem números de fatos no corpo (7.1). Sentido. Continua desatualizado (4.5; regra provisória 11.1). Cascata: os dependentes da pauta (briefing da landing-page-01, que aponta para a v2, e briefing do quiz-01, que aponta para a v3) já estavam com desatualizado: true; nada muda neles. index.md: pauta v5.
 
 ## 2026-11-08 · etapa 18 · banco e garcom
 
