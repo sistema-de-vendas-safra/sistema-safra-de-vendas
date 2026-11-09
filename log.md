@@ -2,6 +2,13 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 15 · sdr planilha e roteiros
+
+- funis/funil-01/planilha-sdr.md v1 (id funil-01-planilha-sdr), rascunho (otavio, junior e euclides: pendente). Novo. Colunas com o que guardam, quem preenche, se o SDR edita e se são dado pessoal (lista da planta, mais entrou_em e tentativas_feitas como proposta, 15.3); lista fechada de status igual à do funil-01, com a grafia do banco; ordem da fila pelo lead score; eventos que voltam para o banco; exemplo fictício marcado. Destino dos contatos com os dois lados do conflito-17, bloqueado. Nasce desatualizado (15.15).
+- funis/funil-01/roteiros-sdr.md v1 (id funil-01-roteiros-sdr), rascunho (otavio, junior e euclides: pendente). Novo. Voz e vocabulário público do tom-de-voz; primeiro contato da faixa A e da faixa B por ligação e por WhatsApp; respostas às situações comuns; tentativas até o abandono com número e intervalo {{a definir}} (ficha-de-fatos#tentativas-ate-abandonado é da operação do Júnior, 5.3); fala para quem caiu nos eliminatórios com os dois lados do conflito-16, bloqueado. Nenhum preço, prazo ou número copiado da ficha; nenhuma promessa de resultado. Nasce desatualizado (15.15).
+- index.md: os dois documentos em funis/funil-01/.
+- Perguntas 15.1 a 15.16 em prompts/07-fila-perguntas.md.
+
 ## 2026-11-08 · etapa 14 · quiz-01 codigo
 
 - entregas/quizzes/quiz-01/pagina/index.html v1 (id quiz-01-pagina), rascunho (otavio, junior e euclides: pendente). Novo. Cópia de fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html (fontes/ não foi alterado) com o texto da copy (M1 a M30) e a lógica da etapa: objeto FATOS com os campos da ficha (bloqueados como aviso "a definir"; metas do texto derivadas do campo, 13.13), objeto LEAD_SCORE com pontos, faixas e eliminatórios de lead-score v2, pacote do fim do quiz no formato da planta v2 com etiquetas e utm lidas do endereço, enviarPacote só no console (nenhum endereço externo, nenhuma chave) e consentimento obrigatório. Visual sem mudança (conflito-18): o CSS só perdeu travessões em comentários. Cabeçalho num comentário no topo. Nasce desatualizado (14.13).

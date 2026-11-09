@@ -203,3 +203,101 @@
    - *O que foi feito:* nada no quiz. A etapa 18 (garçom) considera um evento próprio para esse clique.
    - *Recomendação:* criar o evento "interesse_pos_relatorio" na planta e no garçom.
    - *Se decidir diferente:* o interesse do eliminado só aparece se ele mandar mensagem.
+
+## Etapa 15
+
+15.1. **Quem aprova a planilha e os roteiros do SDR.**
+   - *Dúvida:* a etapa pede o Júnior e o Euclides "se a base disser que o processo comercial é deles". A base não diz isso com essas palavras, mas os dois documentos servem ao funil-01 (#90, pendente dos dois), usam o lead score (#98, pendente dos dois), a postura do "vendedor chato" (#26, pendente do Júnior) e o número de tentativas (pendente do Júnior).
+   - *O que foi feito:* os dois cabeçalhos pedem otavio, junior e euclides, todos pendente; status rascunho.
+   - *Recomendação:* manter os três enquanto a #90 e a #98 estiverem pendentes.
+   - *Se decidir diferente:* se a planilha for só do Otávio, sai o Júnior e o Euclides do cabeçalho dela; os roteiros continuam com o Júnior por causa da #26.
+
+15.2. **Onde a planilha mora: Triad CRM ou banco e planilha (conflito-17), e em qual ferramenta (5.4).**
+   - *Dúvida:* a cópia nova do quiz manda os contatos para o Triad CRM; a #90 manda para o banco e a planilha. Mesmo no lado da #90, a ferramenta da planilha segue aberta (dado pessoal fora do Google Drive; #95).
+   - *O que foi feito:* os dois lados escritos e bloqueados; o documento descreve o lado da #90, por ser o que a base desenhou, e diz que a lista de status e as colunas valem como especificação também para um CRM. Nenhuma ferramenta escolhida.
+   - *Recomendação:* decidir o conflito-17 junto com a #90 na pauta; a 5.4 segue com a recomendação já dada em 06-para-o-otavio.md.
+   - *Se decidir diferente:* com o Triad CRM, a seção "O que volta para o banco" sai inteira, e o CRM precisa respeitar a mesma lista fechada; a planta perde a chave da volta do status.
+
+15.3. **Duas colunas a mais do que a planta manda: entrou_em e tentativas_feitas.**
+   - *Dúvida:* a lista "O que vai para a planilha" da planta não traz a data de entrada do lead nem a contagem de contatos, mas o prazo da faixa A e o abandono dependem delas.
+   - *O que foi feito:* as duas entraram como proposta, lidas do banco e não editáveis (entrou_em é o ocorrido_em do fim_quiz; tentativas_feitas é a contagem dos contato_sdr).
+   - *Recomendação:* aceitar e acrescentar as duas à lista da planta na próxima versão dela.
+   - *Se decidir diferente:* o SDR conta o prazo e as tentativas por conta própria, sem coluna, e a planta fica como está.
+
+15.4. **O que é o "histórico" que o SDR confirma na faixa B.**
+   - *Dúvida:* o lead score manda confirmar "valor da venda, time, histórico"; valor e time têm pergunta no quiz, mas "histórico" não diz qual resposta é.
+   - *O que foi feito:* a coluna respostas_a_confirmar traz valor da venda e vendedores; o histórico ficou {{a definir}}, com uma pergunta proposta no roteiro (se guardam o que aconteceu com os leads dos últimos meses).
+   - *Recomendação:* o histórico ser as respostas de leads por mês e de CRM do quiz, e a pergunta proposta ficar.
+   - *Se decidir diferente:* muda só a coluna e a terceira pergunta da faixa B.
+
+15.5. **Quem marca pré-qualificado na faixa A.**
+   - *Dúvida:* o funil diz que a faixa A passa pela porta e a B só depois da confirmação, mas não diz se a faixa A já chega pré-qualificada ou se alguém marca.
+   - *O que foi feito:* o lead chega como captado nas duas faixas, e o SDR marca a passagem no contato, para toda mudança de status seguir o mesmo caminho.
+   - *Recomendação:* aceitar; a meta de pré-qualificação mede o mesmo nas duas faixas.
+   - *Se decidir diferente:* o banco grava a faixa A já como pré-qualificado no fim do quiz, e o garçom passa a gravar um evento mudanca_status, que hoje é só da volta do status.
+
+15.6. **Ordem dentro da faixa e volta do stand-by.**
+   - *Dúvida:* o lead score ordena por faixa; não diz a ordem dentro da faixa, nem onde volta quem estava em stand-by.
+   - *O que foi feito:* proposta: nota maior primeiro; empate, quem entrou antes; o stand-by volta no dia da data_volta, na posição da faixa dele.
+   - *Recomendação:* aceitar.
+   - *Se decidir diferente:* muda só a seção "Ordem da fila".
+
+15.7. **Sem coluna de anotação livre.**
+   - *Dúvida:* o SDR costuma anotar o que ouviu; texto livre traz dado pessoal que não precisa estar ali, como a planta já decidiu para o motivo da perda.
+   - *O que foi feito:* nenhuma coluna de texto livre.
+   - *Recomendação:* manter; se faltar algo, virar uma lista fechada nova.
+   - *Se decidir diferente:* a planilha ganha uma coluna de anotação que não volta ao banco, e a regra de segurança precisa dizer quem a apaga e quando.
+
+15.8. **Ligação com o consentimento de WhatsApp, e o lead só com e-mail.**
+   - *Dúvida:* o quiz pede consentimento por WhatsApp e por e-mail, sem caixa para ligação. O SDR liga (#67; lead score).
+   - *O que foi feito:* ligação só com consentimento_whatsapp = sim (o número foi dado como WhatsApp e o texto aceito fala em alguém da equipe falar com a pessoa). Lead só com e-mail: nem ligação nem WhatsApp, e o contato por e-mail ficou {{a definir}}. Pedido de parar: o SDR marca perdido e avisa o Otávio, que registra a retirada do consentimento.
+   - *Recomendação:* levar o texto de consentimento ao advogado com a política (etapa 16), perguntando se "WhatsApp" cobre ligação; até lá, manter assim.
+   - *Se decidir diferente:* se precisar de caixa própria para ligação, o quiz ganha a terceira caixa e a planta, o campo consentimento_ligacao; se e-mail bastar para o SDR, os roteiros ganham um primeiro contato por e-mail.
+
+15.9. **Número de tentativas, intervalo, janela de horário e lembretes.**
+   - *Dúvida:* o número da ficha é o da operação do Júnior, com liberação pendente dele; o do funil-01 não está escrito (5.3). Intervalo, horário e texto dos lembretes não estão em lugar nenhum.
+   - *O que foi feito:* número e intervalo {{a definir}}; janela proposta evitando noite e almoço, pela fala RA-26 da persona; lembretes {{a definir}}. Três mensagens de tentativa e uma de encerramento escritas sem número.
+   - *Recomendação:* o Júnior confirmar o número da operação dele (pauta, item 9) e dizer o intervalo; o número e o intervalo do funil-01 entrarem como campos novos da ficha, para os roteiros citarem.
+   - *Se decidir diferente:* se o funil-01 tiver número próprio, ele vira campo na ficha e a seção "Tentativas até o abandono" passa a citar esse campo.
+
+15.10. **Ligação ou WhatsApp primeiro.**
+   - *Dúvida:* o funil e o lead score dizem que o SDR liga; a copy do quiz diz a quem pediu a conversa que alguém chama no WhatsApp.
+   - *O que foi feito:* os dois roteiros escritos, a ordem {{a definir}}, com a proposta de ligação primeiro e WhatsApp no mesmo dia se não atender.
+   - *Recomendação:* aceitar a proposta; a nota do quiz continua verdadeira, porque a confirmação vai pelo WhatsApp.
+   - *Se decidir diferente:* com WhatsApp primeiro, a faixa B continua precisando de ligação para confirmar, e muda só a ordem do "Antes de qualquer contato".
+
+15.11. **Faixa B que cai num eliminatório na confirmação, ou fica em dúvida.**
+   - *Dúvida:* a lista fechada não tem estado para quem sai da fila por não passar (nutrição é proposta, fora da lista), e nada diz o que fazer com a dúvida que não se resolve.
+   - *O que foi feito:* não marca; o estágio fica captado; o estado ficou {{a definir}}. Nenhum estado da lista foi usado no lugar (perdido é só quem disse não).
+   - *Recomendação:* decidir junto com a 5.3: com "nutrição" aceita como estado, esse lead vai para nutrição.
+   - *Se decidir diferente:* se o SDR puder marcar mesmo na dúvida, a faixa B confirmada vira "faixa B com pelo menos duas das três confirmações", ou outra regra que o Otávio escrever.
+
+15.12. **O que dizer a quem caiu nos eliminatórios, e se ele recebe contato.**
+   - *Dúvida:* no lado do Júnior (conflito-16), quem clica "Tenho interesse" é chamado pela equipe; no lado do lead score, ninguém liga. E a fala de quem não passa pode deixar o corte à mostra.
+   - *O que foi feito:* os dois lados escritos e bloqueados. Escrita uma fala para quando o SDR fala com o eliminado (ele escreve por conta própria, ou a faixa B cai na confirmação): agradece, diz que a conversa com o Junior ainda não é o melhor próximo passo, aponta o próprio diagnóstico e deixa a porta aberta, sem dizer o corte, sem número, sem prometer contato futuro, sem oferecer o plano nem a Essencial. A frase "um momento em que o time de vendas já está rodando com mais volume" aponta para o corte sem dizê-lo.
+   - *Recomendação:* aceitar a fala, mas tirar essa frase: o revisor notou que ela fala de volume, e os eliminatórios são falta de vendedor, faturamento baixo e valor da venda baixo; para quem caiu pelo valor da venda, a frase é inexata.
+   - *Se decidir diferente:* com o lado do Júnior, o SDR liga para quem clicou "Tenho interesse", e falta um evento que registre esse clique (14.15) e uma linha na planilha para esses leads.
+
+15.13. **A voz do SDR fora da skill junior-neves-voice.**
+   - *Dúvida:* o tom-de-voz diz que a voz final de todas as peças passa pela skill do Júnior; o SDR não é o Júnior e fala em nome da equipe.
+   - *O que foi feito:* as falas seguem o tom-de-voz (vocabulário público, sem promessa, sem "reunião", "vendedor chato" com data) sem passar pela skill, e o SDR se apresenta como "da equipe do Junior", sem nome de agência.
+   - *Recomendação:* aceitar: a skill vale para o que sai na voz do Júnior.
+   - *Se decidir diferente:* as falas passam pela skill numa nova versão, e o SDR fala com os tiques do Júnior, o que soa estranho vindo de outra pessoa.
+
+15.14. **O que o SDR responde sobre custo e duração da conversa.**
+   - *Dúvida:* a #92 diz "a conversa de venda, sem preço", sem dizer se isso é "gratuita" para o lead; a duração está em conflito (conflito-02) e a da call de venda é proposta.
+   - *O que foi feito:* as duas respostas ficaram {{a definir}}; sobre o preço do serviço, o SDR diz que valores não passam por ele.
+   - *Recomendação:* se "sem preço" quer dizer sem custo para o lead, o SDR pode dizer "a conversa não tem custo"; a duração espera o conflito-02.
+   - *Se decidir diferente:* se "sem preço" quer dizer só que não se fala de preço na conversa, a resposta sobre o serviço muda, e a pauta precisa dizer em que momento o lead conhece o valor.
+
+15.15. **Planilha e roteiros nascem desatualizados.**
+   - *Dúvida:* os dois se apoiam em documentos marcados (funil-01, lead-score, planta, metodo, tom-de-voz, persona, provas-e-conformidade, glossario, copy do quiz).
+   - *O que foi feito:* os dois nascem com desatualizado: true (regra provisória 11.1).
+   - *Recomendação:* a mesma da 11.1.
+   - *Se decidir diferente:* os dois passam a desatualizado: false numa correção de forma.
+
+15.16. **O SDR não sabe o que o lead clicou no fim do quiz.**
+   - *Dúvida:* quem clicou "Quero marcar uma conversa" espera a mensagem; quem clicou "Agora não", não. O quiz não grava o clique (14.15).
+   - *O que foi feito:* as falas servem aos dois casos; nenhuma diz "você pediu para conversar".
+   - *Recomendação:* junto com a 14.15, gravar o clique como evento e levar à planilha como coluna só de leitura; aí o roteiro ganha uma abertura para quem pediu.
+   - *Se decidir diferente:* fica como está.

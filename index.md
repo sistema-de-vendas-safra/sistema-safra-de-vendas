@@ -47,6 +47,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 ## funis/
 
 - funil-01/funil.md · caminho do lead e do dado, porta de qualificação pelo lead score, status do SDR, metas, origens e links (UTMs) e contador de escassez (v2, pendente-aprovacao: depende da #90; desatualizado)
+- funil-01/planilha-sdr.md · planilha do SDR: colunas (quem preenche, o que o SDR edita, dado pessoal), lista fechada de status, ordem da fila pelo lead score, o que volta para o banco; destino em conflito (conflito-17) (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
+- funil-01/roteiros-sdr.md · roteiros do SDR: primeiro contato das faixas A e B por ligação e WhatsApp, respostas comuns, tentativas até o abandono (número e intervalo a definir), fala para quem caiu nos eliminatórios (conflito-16) (v1, rascunho; otavio, junior e euclides: pendente; desatualizado)
 
 ## entregas/
 
