@@ -2,6 +2,11 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-08 · etapa 19 · fechamento da noite
+
+- Pendência nova: repositório do quiz-01 na conta pessoal otavio-gif, com publicação automática na Cloudflare (ver Pendências).
+- conexoes.md: a conta da Cloudflare do Safra já existe (o endereço do quiz usa o subdomínio sistemadevendassafra); verificação em duas etapas a confirmar.
+
 ## 2026-11-08 · etapa 18 · banco e garcom
 
 - dados/banco/README.md v1 (id banco-rascunho), rascunho (otavio: pendente). Novo. O que é, o que o esquema faz, as fechaduras e o que falta para funcionar (conta no Supabase, detector de chaves, chave de serviço no cofre, decisão do conflito-17, prazo de guarda, aprovação). Destino dos contatos com os dois lados do conflito-17, bloqueado; segue o lado 2, como a planta e o funil-01. Nasce desatualizado (regra provisória 11.1).
@@ -208,3 +213,4 @@ Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08
 - [x] **Migração:** o projeto "Estrategista de Negócio" no Claude é arquivo histórico desde 08/11/2026; mudança no Safra entra só pelo repositório (#96; CLAUDE.md, regra 10).
 - [ ] **Chaves:** antes de existir a primeira chave, instalar o detector de chaves (pre-commit) e fechar a brecha do .env no terminal (hoje o .claude/settings.json bloqueia só a ferramenta de leitura, não comandos como cat).
 - [ ] **Prazo:** a data de 10/11 do funil pode atrasar. Começar certo vale mais que começar na data.
+- [ ] **Repositório do quiz:** o repositório do quiz-01 (github.com/otavio-gif/sistema-de-vendas-safra-quiz01) mora na conta pessoal otavio-gif, fora da organização do Safra, e está ligado a uma publicação automática na Cloudflare. Depois da migração para o sistema (cópia em fontes/quiz-01-repositorio-2026-11-08/), decidir se ele vira arquivo histórico e se a Cloudflare passa a publicar a partir do repositório do sistema (etapa 19, 08/11/2026).
