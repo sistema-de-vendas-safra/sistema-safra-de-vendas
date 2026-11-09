@@ -7,7 +7,7 @@ aprovado_por:
 depende_de:
   - id: regra-seguranca
     versao: 2
-desatualizado: false
+desatualizado: true
 ---
 
 # Detector de chaves

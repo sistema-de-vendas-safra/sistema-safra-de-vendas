@@ -4,23 +4,23 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## Raiz
 
-- CLAUDE.md · regras da casa
+- CLAUDE.md · regras da casa (regra 4 com a exceção da Regra de pausas numa fila, 4.8)
 - index.md · este mapa
 - log.md · histórico de alterações e pendências
 - conexoes.md · contas e serviços, onde cada chave mora, quem lê e como revogar (sem valores): projeto do Supabase (#99), Worker do protótipo (#101), planilha do SDR
 - GLOSSARY.md · glossário do Safra, no formato da skill grill-with-docs (mattpocock-skills 1.3.1), com a linha _Fonte_ (v3, decidido; desatualizado)
 - .githooks/pre-commit · gancho de pré-commit versionado que roda o detector de chaves (nucleo/ferramentas/detector-de-chaves/); num clone novo, ligar com `git config core.hooksPath .githooks`
-- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta; 06-triagem-das-perguntas.md, a resposta 06-triagem-resposta.md e a lista 06-para-o-otavio.md; 07-fila-da-noite.md, as perguntas 07-fila-perguntas.md, a lista 07-para-o-otavio.md e a resposta 07-fila-da-noite-resposta.md; 08-fila-da-madrugada.md, as perguntas 08-fila-perguntas.md, a triagem 08-triagem.md, a página para o Otávio 08-decisoes-em-uma-pagina.md e a resposta 08-fila-da-madrugada-resposta.md; 09-acentos-do-quiz.md e a resposta 09-acentos-do-quiz-resposta.md; 10-prototipo-ligado.md e a resposta 10-prototipo-ligado-resposta.md)
+- prompts/ · histórico do que foi pedido ao Claude Code e do que ele respondeu (02-plano-da-base.md e a resposta; 03-escrever-a-base.md e a resposta; 04-decisoes-de-08-11-e-lead-score.md e a resposta; 05-fila-de-trabalho.md, a lista de perguntas da fila 05-fila-perguntas.md e a resposta; 06-triagem-das-perguntas.md, a resposta 06-triagem-resposta.md e a lista 06-para-o-otavio.md; 07-fila-da-noite.md, as perguntas 07-fila-perguntas.md, a lista 07-para-o-otavio.md e a resposta 07-fila-da-noite-resposta.md; 08-fila-da-madrugada.md, as perguntas 08-fila-perguntas.md, a triagem 08-triagem.md, a página para o Otávio 08-decisoes-em-uma-pagina.md e a resposta 08-fila-da-madrugada-resposta.md; 09-acentos-do-quiz.md e a resposta 09-acentos-do-quiz-resposta.md; 10-prototipo-ligado.md e a resposta 10-prototipo-ligado-resposta.md; 11-decisoes-de-09-11.md, com as respostas do Otávio à página de decisões, a tabela 11-respostas.md e as perguntas 11-fila-perguntas.md)
 
 ## nucleo/
 
-- regras/versionamento.md · cabeçalho padrão, status, forma e sentido, cascata (v2, decidido)
-- regras/seguranca.md · contas, chaves, dado pessoal, detector de chaves (v2, decidido)
+- regras/versionamento.md · cabeçalho padrão, status, forma e sentido, cascata; um documento só sai da marca quando nenhuma base dele estiver marcada (v3, decidido)
+- regras/seguranca.md · contas, chave só no cofre do serviço, dado pessoal (com a exceção da planilha do SDR no Drive), detector de chaves (v3, decidido)
 - modelos/ · vazio
 - receitas/ · vazio
 - ferramentas/README.md · o que mora na pasta de ferramentas
 - ferramentas/prints/ · print.js (prints em 375 e 1440 pixels; --celular imita celular em 375) e testar-quiz-01.js (teste da página do quiz-01 num servidorzinho local, com o envio interceptado: exemplo 96 faixa a, eliminatório, consentimento, falha com reenvio, file:// sem envio, console sem dado de pessoa; 60 de 60)
-- ferramentas/detector-de-chaves/ · detector de chaves em Node puro (detector.mjs, testar-detector.mjs, README.md): recusa o commit com chave, senha, token ou arquivo de segredos no que está preparado, sem repetir o valor; modos --rastreados e --historico; testes 87 de 87 (v1, rascunho; otavio: pendente)
+- ferramentas/detector-de-chaves/ · detector de chaves em Node puro (detector.mjs, testar-detector.mjs, README.md): recusa o commit com chave, senha, token ou arquivo de segredos no que está preparado, sem repetir o valor; modos --rastreados e --historico; testes 87 de 87 (v1, rascunho; otavio: pendente; desatualizado)
 - ferramentas/prototipo/ · só package.json com o wrangler 4.158.0 como dependência de desenvolvimento, para o dry-run do Worker do protótipo (entregas/prototipo-funil-01/), sem publicar e sem login
 - ferramentas/ensaio/ · ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (ensaio.mjs, supabase-de-mentira.mjs, planilha-no-ensaio.mjs, package.json com `npm run ensaio`, README.md): PGlite com os papéis do Supabase de mentira, esquema duas vezes, conferir.sql 13 de 13, permissões por SET ROLE, Supabase de mentira em 127.0.0.1, garçom no wrangler dev --local, catálogo, quiz no navegador sem tela pela landing (96 faixa A e eliminatório), planilha do SDR com o Google de mentira, casos de erro, charset utf-8 e acentos do consentimento; 96 de 96 (v2, rascunho; otavio: pendente; desatualizado)
 
@@ -33,8 +33,8 @@ Mapa do que existe no sistema. Atualizado a cada documento criado, renomeado ou 
 
 ## base/
 
-- ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, bônus, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v3, decidido)
-- decisoes.md · registro das decisões #1 a #102, cada uma com o seu status (v4, decidido)
+- ficha-de-fatos.md · todos os fatos (preço, vagas, prazos, entregas, Análise, Call de Direcionamento, bônus, prazo de guarda, reels, credenciais, nomes), cada campo com status; campos em conflito bloqueados para entrega (v4, decidido)
+- decisoes.md · registro das decisões #1 a #115, cada uma com o seu status; as de 09/11 e as que continuam abertas (v5, decidido)
 - lacunas.md · lacunas do CTX §10 e conflitos, com quem decide e o que destrava (v5, rascunho; desatualizado: aponta para decisoes 3)
 - produto.md · o que é a IASV Safra: formato, ritos, quem faz o quê, o que não está incluído (v3, decidido; desatualizado)
 - metodo.md · o Sistema de Vendas Safra e a Gestão de Leads por Safra, com as regras do método (v3, decidido; desatualizado)

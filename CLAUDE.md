@@ -21,7 +21,7 @@ O mapa do que existe está em index.md; o histórico e as pendências, em log.md
 1. **fontes/ é somente leitura.** Nada ali é editado, renomeado ou apagado. Quando um documento online e uma cópia FONTE divergirem, vale o documento online.
 2. **Referencie, não copie.** Cite o documento pelo id e declare em depende_de; fatos só na ficha de fatos.
 3. **Toda alteração na base sobe a versão** e registra o motivo no log.md.
-4. **Uma tarefa por vez.** Explicar em português simples o que vai fazer antes de agir. Perguntar antes de qualquer decisão que não esteja escrita.
+4. **Uma tarefa por vez.** Explicar em português simples o que vai fazer antes de agir. Perguntar antes de qualquer decisão que não esteja escrita, fora de uma fila de trabalho; numa fila, vale a Regra de pausas (abaixo).
 5. **Nunca usar travessão** em nenhum texto, código ou comentário. Quando precisar de separador, usar o ponto médio (·).
 6. **Nomes sem acento e sem espaço** em pastas e arquivos criados pelo sistema. As fontes mantêm o nome original.
 7. **Nunca fazer push.** O Claude faz os commits; o Otávio faz o push pelo GitHub Desktop.

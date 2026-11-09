@@ -1,9 +1,9 @@
 ---
 id: regra-versionamento
-versao: 2
+versao: 3
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de: []
 ---
 
@@ -67,6 +67,8 @@ Na dúvida se é forma ou sentido, o Claude pergunta antes de alterar.
 6. Se o dependente também tiver dependentes, a cascata continua a partir dele.
 
 Um documento com `desatualizado: true` não serve de base para entrega nova até ser atualizado.
+
+Um documento só sai da marca (volta para `desatualizado: false`) quando nenhuma das bases dele, direta ou por cadeia, estiver marcada. Enquanto uma base continuar com `desatualizado: true`, o dependente continua marcado, mesmo que já tenha sido atualizado no resto (decisão do Otávio, 09/11/2026, 11.1; base/decisoes.md, #114).
 
 ## Fatos
 

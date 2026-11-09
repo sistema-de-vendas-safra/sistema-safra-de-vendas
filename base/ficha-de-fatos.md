@@ -1,9 +1,9 @@
 ---
 id: ficha-de-fatos
-versao: 3
+versao: 4
 status: decidido
 aprovado_por:
-  otavio: 2026-11-08
+  otavio: 2026-11-09
 depende_de: []
 desatualizado: false
 ---
@@ -112,6 +112,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** 10/11/2026.
 - **Fonte:** #50; CTX §1; Doc Mestre online.
 - **Status:** decidido. O log.md (Pendências) registra que a data pode atrasar.
+- **Obs.:** #111 (09/11/2026): o Otávio mantém esta data ao aprovar o funil-01, aceitando alguns dias de atraso se precisar.
 
 ---
 
@@ -256,7 +257,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - Botão "Faça uma Análise Estratégica do seu Sistema de Vendas" (landing, decidido pelo Otávio).
   - "Diagnóstico de vendas" e o selo "Teste gratuito" (quiz).
 - **Status:** em conflito (nome).
-- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público continua em conflito (Otávio, 08/11/2026).
+- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público continua em conflito (Otávio, 08/11/2026). A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise: o nome público da Análise continua a definir.
 
 ### analise-valor
 - **Valor:** R$ 497 por Análise, cobrado depois das análises gratuitas de ficha-de-fatos#analises-gratuitas.
@@ -281,7 +282,8 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - 30 a 45 minutos (#59, #61; CTX §3; Ficha do Serviço online; Oferta online).
   - "Uma conversa de 60 minutos." (landing, passo 3; no wireframe sem decisão registrada).
 - **Status:** em conflito.
-- **Obs.:** com a #92, a Análise é o diagnóstico do quiz e a reunião com o Júnior é a conversa de venda, sem preço. A #92 não define a duração da reunião: continua em aberto (conflito-02). Ver também ficha-de-fatos#duracao-call-de-venda (proposta).
+- **Obs.:** com a #92, a Análise é o diagnóstico do quiz e a reunião com o Júnior é a conversa de venda, sem preço. A #92 não define a duração da reunião: continua em aberto (conflito-02). Ver também ficha-de-fatos#duracao-call-de-venda.
+- **Obs. (09/11/2026):** a #107 decidiu a duração da conversa de venda (ficha-de-fatos#duracao-call-de-venda). Este campo fica como estava até a cascata decidir se ele se fecha (pergunta em prompts/11-fila-perguntas.md).
 
 ### analise-quem-conduz
 - **Em conflito · bloqueado para entrega até a decisão.**
@@ -290,6 +292,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
   - "Converse com o time de Junior Neves" (landing, passo 3).
 - **Status:** em conflito.
 - **Obs.:** com a #92, a pergunta passa a ser quem conduz a reunião com o Júnior (a conversa de venda), que a #92 não define: continua em aberto (conflito-02). Ver também ficha-de-fatos#quem-faz-a-reuniao (#51).
+- **Obs. (09/11/2026):** a #107 decidiu quem conduz a conversa de venda (ficha-de-fatos#quem-faz-a-reuniao). Este campo fica como estava até a cascata decidir se ele se fecha (pergunta em prompts/11-fila-perguntas.md).
 
 ### analise-conteudo
 - **Valor:** a Análise é o diagnóstico do quiz, o mesmo para todos os públicos. A reunião com o Júnior é a conversa de venda, sem preço. A Análise completa, com documento e painel, é a entrega 1.
@@ -316,16 +319,22 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Status:** decidido; nome em aberto.
 
 ### quem-faz-a-reuniao
-- **Valor:** o Júnior faz as reuniões de venda e fecha, no começo.
-- **Fonte:** #51; CTX §3, §8.
-- **Status:** decidido.
+- **Valor:** o Júnior faz as reuniões de venda e fecha, no começo. A Call de Direcionamento (ficha-de-fatos#nome-call-de-venda) é conduzida pelo Junior Neves (grafia: ficha-de-fatos#grafia-junior).
+- **Fonte:** #51; CTX §3, §8; #107 (condutor da Call de Direcionamento).
+- **Status:** decidido (condutor: otavio, 2026-11-09, #107).
 
 ---
 
+### nome-call-de-venda
+- **Valor:** "Call de Direcionamento": o nome da conversa de venda com o Júnior (a "reunião com o Júnior" da #92). É nela que fica a demonstração com os números do cliente (4.5, #114).
+- **Fonte:** #107.
+- **Status:** decidido (otavio: 2026-11-09). O Júnior e o Euclides são informados na pauta (item 7, "Para informar").
+
 ### duracao-call-de-venda
-- **Valor:** cerca de 60 minutos.
-- **Fonte:** Oferta online ("Na call (cerca de 60 minutos)").
-- **Status:** proposta (entrou na v2, pedido do Otávio em 08/11/2026). Não confundir com analise-duracao, que é a Análise e está em conflito.
+- **Valor:** 60 minutos (a Call de Direcionamento, ficha-de-fatos#nome-call-de-venda).
+- **Fonte:** #107; Oferta online ("Na call (cerca de 60 minutos)").
+- **Status:** decidido (otavio: 2026-11-09, #107). Não confundir com analise-duracao, que é a Análise e está em conflito.
+- **Histórico (não é valor):** "cerca de 60 minutos", proposta (entrou na v2, pedido do Otávio em 08/11/2026, pela Oferta online).
 
 ### multiplo-regra-de-venda
 - **Valor:** cerca de três vezes o preço parado nas safras antigas; abaixo disso, a recomendação é não vender agora.
@@ -418,6 +427,25 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** 18 tentativas de contato antes de um lead virar abandonado, na operação do Júnior.
 - **Fonte:** F1; Criativos rodada 1 online ("Dezoito tentativas").
 - **Status:** fato registrado (entrou na v2, pedido do Otávio em 08/11/2026); liberação para peça pendente do Júnior: a fonte pede "Confirmar com o Júnior que a regra segue valendo" e liberar "as histórias da operação usadas nos talking heads" (Criativos rodada 1 online).
+
+## Dados e canais
+
+### prazo-de-guarda
+- **Valor:** 12 meses, contados do último evento da pessoa.
+- **Fonte:** #106.
+- **Status:** decidido (otavio: 2026-11-09). Entra na política de privacidade e na planta do banco. O caminho de apagamento é pendência com prazo (#106; log.md, Pendências).
+
+### reels-ferramenta
+- **Valor:** ManyChat, a ferramenta que manda o link a quem comenta nos reels.
+- **Fonte:** #112.
+- **Status:** decidido (otavio: 2026-11-09). Conta a criar, com a menor permissão (conexoes.md). Depende da ligação com o Instagram, que é da Meta e está fora do MVP até agora: quando entra é pergunta.
+
+### reels-palavra
+- **Valor:** a palavra curta, sem acento, que o público comenta nos reels para receber o link.
+- **Fonte:** #112.
+- **Status:** para depois (#112).
+
+---
 
 ## Credenciais e números públicos (todos sem comprovante)
 
