@@ -10,7 +10,7 @@ O mentor passa a trabalhar num projeto próprio do Claude, que lê este reposit�
 
 - Leia CLAUDE.md. Valem todas as regras da casa. Dúvidas no fim da resposta, pelo caminho conservador.
 - Um subagente escreve, outro, que não viu a escrita, revisa contra este pedido e contra o repositório. Um commit só ("14 · estado para o mentor"). Este arquivo entra no commit.
-- Proibido: publicar, rodar SQL no Supabase de verdade, push para a main, chave, dado pessoal, mexer em fontes/. No Claude Code online, o push vai só para o branch da sessão, como manda a regra 7.
+- Proibido: publicar, rodar SQL no Supabase de verdade, push fora do que a regra 7 permite, chave, dado pessoal, mexer em fontes/.
 - Nunca travessão. Use ponto médio.
 - Não aplique nada do pedido 13 aqui, mesmo que o arquivo dele esteja na pasta.
 

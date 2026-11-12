@@ -10,7 +10,7 @@ O prompts/12-apresentacao-funil-01.md **não roda**: a apresentação do funil e
 
 - Leia CLAUDE.md antes de começar. Valem a Regra de pausas e todas as regras da casa. Dúvidas em prompts/13-fila-perguntas.md, no formato de sempre, pelo caminho conservador.
 - Uma etapa por vez. Em cada etapa, um subagente escreve e outro, que não viu a escrita, revisa contra este pedido e contra a base. Commit por etapa ("etapa NN · nome curto"). Este arquivo entra no primeiro commit.
-- Proibido: publicar, rodar SQL no Supabase de verdade, push para a main, chave de verdade, dado pessoal real no repositório, mexer em fontes/. No Claude Code online, o push vai só para o branch da sessão, como manda a regra 7. O que precisar das mãos do Otávio vai para o roteiro da etapa 45.
+- Proibido: publicar, rodar SQL no Supabase de verdade, push fora do que a regra 7 permite, chave de verdade, dado pessoal real no repositório, mexer em fontes/. O que precisar das mãos do Otávio vai para o roteiro da etapa 45.
 - Mudança no banco é sempre migração nova, que roda sobre o banco como ele está depois da 001-v3, com dados dentro, sem apagar nada e podendo rodar duas vezes.
 - Nunca travessão. Use ponto médio.
 
@@ -83,7 +83,7 @@ Ensaio geral atualizado: nenhum qualificado chega ao relatório; qualificado com
 
 ## Etapa 45 · Roteiro para o Otávio
 
-entregas/prototipo-funil-01/APLICAR-13.md, no padrão do APLICAR-11: o merge do pull request da fila no GitHub e o Pull no GitHub Desktop do computador que vai publicar, migração 002, conferir.sql, catálogo se mudou, publicar e um teste curto com pessoas de mentira novas (um qualificado com o funil na meta, um com etapa abaixo, um não qualificado, um que desmarca). Sem pedir chave nenhuma.
+entregas/prototipo-funil-01/APLICAR-13.md, no padrão do APLICAR-11: o merge do pull request da fila no GitHub, se ela não tiver subido direto para a main, e o Pull no GitHub Desktop do computador que vai publicar, migração 002, conferir.sql, catálogo se mudou, publicar e um teste curto com pessoas de mentira novas (um qualificado com o funil na meta, um com etapa abaixo, um não qualificado, um que desmarca). Sem pedir chave nenhuma.
 
 ## Etapa 46 · Fechamento
 

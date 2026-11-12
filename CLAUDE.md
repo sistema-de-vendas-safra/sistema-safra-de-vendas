@@ -24,7 +24,7 @@ O mapa do que existe está em index.md; o histórico e as pendências, em log.md
 4. **Uma tarefa por vez.** Explicar em português simples o que vai fazer antes de agir. Perguntar antes de qualquer decisão que não esteja escrita, fora de uma fila de trabalho; numa fila, vale a Regra de pausas (abaixo).
 5. **Nunca usar travessão** em nenhum texto, código ou comentário. Quando precisar de separador, usar o ponto médio (·).
 6. **Nomes sem acento e sem espaço** em pastas e arquivos criados pelo sistema. As fontes mantêm o nome original.
-7. **Push só com o Otávio no controle.** No Mac, o Claude faz os commits e o Otávio faz o push pelo GitHub Desktop. No Claude Code online, o Claude faz push só para o branch da própria sessão, nunca para a main, e abre o pull request. A main só muda com o merge do Otávio no GitHub.
+7. **Push só com o Otávio no controle.** No Mac, o Claude faz os commits e o Otávio faz o push pelo GitHub Desktop. No Claude Code online, o Claude faz push para o branch da própria sessão e abre o pull request; a main só muda com o merge do Otávio no GitHub. Exceção autorizada pelo Otávio em 12/11/2026: até 16/11/2026, enquanto ele trabalha só no Windows, o Claude Code online pode mandar direto para a main, um commit por etapa, e lista no fim da resposta os commits que subiram.
 8. **Nunca escrever chave, senha ou token** em nenhum arquivo do repositório.
 9. **Seguir as diretrizes andrej-karpathy-skills:** pensar antes de agir, simplicidade, mudanças cirúrgicas, objetivo verificável.
 10. **O projeto "Estrategista de Negócio" no Claude é arquivo histórico desde 08/11/2026.** Mudança no Safra entra só pelo repositório (decisão #96).
