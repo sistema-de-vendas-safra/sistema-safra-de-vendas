@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -18,7 +18,7 @@ depende_de:
   - id: prototipo-funil-01
     versao: 6
   - id: quiz-01-pagina
-    versao: 3
+    versao: 4
   - id: landing-page-02
     versao: 1
   - id: planilha-sdr-funil-01
@@ -43,6 +43,8 @@ Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de 
 **O que muda na versão 3 (etapa 35, 09/11/2026).** O ensaio parte do banco como ele está no Supabase (esquema v2, a linha do catálogo de antes e dados de antes, de teste, entre eles uma linha que imita a do Otávio) e roda a migração 001 duas vezes sobre esses dados; conferir.sql v2 (18 de 18); catálogo v2; garçom v4 com /api/evento (visita, início do quiz, clique no fim); a caixa de aceite única marcada e desmarcada; o corte mais restritivo; a faixa B com as respostas novas da planilha (leads-por-mes e crm); a planilha v2 com 20 colunas; fontes locais e nenhum pedido a terceiros, conferido também no Chromium inteiro e no wrangler; a conferência da landing que tinha ficado fora do repositório na etapa 34 (34.17). Opção nova `--esperar-margem`.
 
 **O que muda na versão 4 (12/11/2026).** A landing do site agora é a landing-page-02, a página de vendas, em /, no lugar das duas variantes da landing-page-01; o /b/ saiu do site. O ensaio confere / e /quiz/, o estilo e o programa da landing-page-02 com charset, o catálogo v3 (com a linha landing-page-02, versão 1), a visita gravada como landing-page-02 e a ida ao quiz pelos dois botões de Análise (o do topo e o grande, em 1440 e em 375). As pessoas que entravam pelo /b/ entram pelo /, e a conferência pelo arquivo (file://) abre a landing-page-02.
+
+**O que muda na versão 5 (12/11/2026, quiz-01-pagina v4).** O quiz abre direto na abertura, sem a capa: o ensaio entra no quiz pelo botão "Fazer a Análise" da abertura, sem o clique no cartão da capa, e confere na abertura a Inter, a Space Grotesk e a Geist (a do cabeçalho e do botão da landing-page-02, agora também no quiz). O resto não mudou.
 
 ## Um comando só
 
@@ -85,7 +87,7 @@ Opções:
    - **TESTE Bia Ensaio**: faixa b com o funil todo na meta (nota 68), relatório do funil saudável, clique "Quero marcar uma conversa";
    - **TESTE Davi Ensaio**: as mesmas respostas da Bia, com a **caixa desmarcada**, e o mesmo clique.
 
-   Confere, no navegador: a visita gravada (201) ao abrir a landing, a landing e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing e a Inter, a Space Grotesk e a Permanent Marker no quiz, carregadas do site (10.7); os dois botões levam a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); aberta pelo arquivo (file://), a landing-page-02 não manda nada. O console das páginas, sem dado de pessoa.
+   Confere, no navegador: a visita gravada (201) ao abrir a landing, a landing e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing e a Inter, a Space Grotesk e a Geist na abertura do quiz (v5; a Permanent Marker fica para o relatório), carregadas do site (10.7); os dois botões levam a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); aberta pelo arquivo (file://), a landing-page-02 não manda nada. O console das páginas, sem dado de pessoa.
 
    Confere, no banco: o lead A com nome TESTE, telefone como a página mandou, os dois consentimentos "sim" pela caixa única com a data e o texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página; #104); fim do quiz com nota 96, faixa a, lead score versão 3, quiz-01 versão 2, a sessão vinda da landing e as respostas; a sessão do lead A com visita (landing-page-02, versão 1, utm bio), início do quiz (quiz-01, versão 2, sem nota nem respostas) e fim do quiz, nessa ordem, a visita e o início ligados à pessoa pelo fim do quiz da mesma sessão (6.2); o eliminatório com a nota e o clique tenho-interesse ligado pela sessão (18.4; 32.2); a faixa c do corte com o clique; a faixa b com nota 68, o clique quero-conversa e as respostas com o CRM e a linha "Leads por mês"; da desmarcada, nenhuma pessoa, nenhum fim do quiz e nenhum clique, só a visita e o início do quiz, sem pessoa (34.18); 4 pessoas e 4 fins de quiz novos, nada a mais.
 7. **Planilha do SDR.** Em outro processo (o UrlFetchApp de mentira é síncrono e trava a linha principal de quem chama), roda instalar() e buscar_() de Codigo.gs v2 contra o garçom local, pela porta privada, com a CHAVE_PLANILHA de mentira, numa aba nova, como depois de renomear a antiga (planilha-sdr-funil-01, "Atualizar da versão 1"). Confere: as 20 colunas na ordem, com clique_fim_quiz na 13; a primeira busca, logo depois do quiz, traz **só os 3 leads de antes** (a linha que imita a do Otávio, a faixa a com "=1+1" e a pessoa dos dois envios, uma vez só), e nenhum dos novos (a margem de 1 minuto do banco, 21.6); depois do contorno da margem (abaixo), 2 linhas novas, o lead A e a faixa b, na ordem de chegada; a linha do lead A com os valores certos e o clique vazio; a da faixa b com respostas_a_confirmar trazendo **leads-por-mes: 200** e **crm** (15.4) e clique_fim_quiz **quero-conversa** (18.4); a linha que imita a do Otávio com faixa a e nota 86; o eliminatório, a faixa c, a desmarcada e o eliminatório de antes fora; rodar de novo não duplica; com o cursor perdido, também não; o registro da planilha sem dado pessoal; com a chave errada, 401 e nada gravado.
@@ -113,6 +115,8 @@ O ensaio confere em três lugares que nada sai da máquina:
 Nas duas rodadas finais, o vigia externo (lsof a cada meio segundo nos processos do wrangler, do workerd, do Chromium e do ensaio; script fora do repositório) não viu nenhuma conexão fora de 127.0.0.1.
 
 ## Resultado do ensaio
+
+**v5 (12/11/2026).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev, numa máquina Linux na nuvem: **142 de 142**, em 63 segundos. Mesmo número da v4: a conferência das fontes do quiz trocou a Permanent Marker pela Geist, e o caminho até o quiz perdeu o clique na capa, que não era conferência.
 
 **v4 (12/11/2026).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev: **142 de 142**, em 64 segundos. São três conferências a menos que na v3: saíram as duas do /b/ e as três dos CSS das variantes, e entraram as do estilo e do programa da landing-page-02. Rodado numa máquina Linux na nuvem, com o Chromium do Playwright posto no caminho que nucleo/ferramentas/prints/print.js procura (acharChromium só conhece o caminho do Mac), fora do repositório.
 

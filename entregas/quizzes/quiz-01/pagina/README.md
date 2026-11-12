@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -25,6 +25,8 @@ depende_de:
     versao: 4
   - id: decisoes
     versao: 5
+  - id: landing-page-02
+    versao: 1
 desatualizado: true
 ---
 
@@ -69,7 +71,19 @@ No topo do script, quatro objetos concentram o que se ajusta:
 
 **Texto.** Como está (7.5, #110), salvo a caixa de aceite e a linha da cópia no relatório, que depende dela (M21). A fala 2 do plano de 90 dias continua sem o percentual, como na v2: a volta dele está em aberto (pergunta 31.3; pergunta 34.1). A nota do "Tenho interesse" é a do lado do lead score ("Anotado. Seu interesse fica registrado com o seu diagnóstico."), que já estava na página, porque vale o corte mais restritivo e ela não promete ligação (13.7; pergunta 31.14).
 
-**Visual.** O do mockup, em conflito (conflito-18). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
+**Visual.** O do mockup, em conflito (conflito-18), salvo a abertura, que desde a v4 tem o cabeçalho e o botão da landing-page-02 (abaixo). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
+
+## O que mudou na versão 4
+
+Pedido do Otávio, 12/11/2026, na conversa com o Claude. Só a entrada do quiz; o fim, o aceite, os eventos e as etiquetas não mudaram.
+
+- **A capa saiu do funil.** O quiz abre direto na abertura ("Descubra onde sua equipe de vendas está perdendo performance"), que vira a tela 1 de 27 no botão "Telas". Saíram junto o que só a capa usava: a grade verde do fundo, os cartões (o exemplo de diagnóstico e o vídeo do Júnior), o rótulo "Comece aqui", o "Falar no WhatsApp" e a legenda "na meta" do gráfico pequeno. A pílula, o aviso e o botão de play continuam, porque as telas de vídeo usam.
+- **Cabeçalho da landing-page-02 na abertura:** o mesmo da página de vendas, fixo no alto (faixa escura com desfoque, logo do Safra e o botão "Fazer a Análise"), com as medidas tiradas da landing-page-02 montada; no celular, reduzido para caber, como na landing. Os desenhos do logo e da seta ficam embutidos na página, sem pedir arquivo à landing. Nas outras telas continua o cabeçalho do quiz.
+- **Botão "Fazer a Análise"** no lugar de "Começar diagnóstico", igual ao da landing-page-02 (Botão/Primário: menta, brilho de baixo, reflexo, a faixa de luz que passa sozinha e, no mouse, a seta que anda e a luz que atravessa). Fonte Geist, servida junto com a página como as outras (nucleo/ferramentas/fontes/fontes.json).
+- **Computador:** ao rolar, só o relatório de exemplo se mexe; etiqueta, título, promessa, botão e nota ficam parados logo abaixo do cabeçalho (conferido em 1366, 1440 e 1920 pixels de largura).
+- **Celular** (escolha do Otávio, 12/11/2026, entre três desenhos): título, promessa e botão vêm antes do relatório; ao rolar, quando o botão da página sai da tela, o mesmo "Fazer a Análise" fica fixo no rodapé (e o botão "Telas" sobe para não ficar por cima).
+- **Etiquetas sem mudança:** versao_entrega continua 2. Pela regra escrita nas etiquetas, a versão da entrega sobe quando a página muda o fim do quiz ou o aceite, e esta versão não muda nenhum dos dois; assim o catálogo do banco não precisa de linha nova. Pergunta no log.md (entrada de 12/11/2026, abertura do quiz).
+- depende_de ganha landing-page-02 1, de onde vêm o cabeçalho e o botão.
 
 ## O que mudou na versão 3
 
@@ -109,9 +123,10 @@ Usa o playwright-core de nucleo/ferramentas/prints/ e as fontes de nucleo/ferram
 4. caixa desmarcada: aviso, botão ligado, diagnóstico na tela e nada enviado (nem o fim nem o clique); sessão do endereço fora do formato trocada por uma nova;
 5. envio que falha (502): aviso sem detalhe técnico, diagnóstico na tela e "Tentar de novo" reenviando o mesmo pacote; no eliminatório, o clique feito durante a falha só sai depois do reenvio gravado;
 6. aberta direto do arquivo (file://): percorre tudo sem enviar nada;
-7. em todos, o console sem o pacote nem dado de pessoa, e nenhuma requisição para outro endereço.
+7. (v4) a abertura: o quiz abre nela, sem a capa; cabeçalho da landing-page-02 com o logo; os dois botões dizem "Fazer a Análise"; no computador, ao rolar, só o relatório se mexe e a barra do rodapé não aparece; no celular, o texto vem antes do relatório e a barra aparece ao rolar. Entra no quiz pelo botão da página (exemplo e falhas), pelo do cabeçalho (eliminatório) e, no celular, pelo da barra (corte);
+8. em todos, o console sem o pacote nem dado de pessoa, e nenhuma requisição para outro endereço.
 
-Os prints ficam em entregas/quizzes/quiz-01/prints/: capa, pergunta, contato-consentimento (caixa marcada, como vem), contato-sem-consentimento (caixa desmarcada), resultado-a, resultado-eliminatorio, resultado-faixa-c (novo) e envio-falhou (só a tela visível), cada um com -375 e -1440. Os dados de pessoa do teste são de teste, marcados como manda a #102 (TESTE Marina, marina@teste.invalid, telefone com zeros).
+Os prints ficam em entregas/quizzes/quiz-01/prints/: abertura (v4, no lugar da capa), pergunta, contato-consentimento (caixa marcada, como vem), contato-sem-consentimento (caixa desmarcada), resultado-a, resultado-eliminatorio, resultado-faixa-c (novo) e envio-falhou (só a tela visível), cada um com -375 e -1440. Os dados de pessoa do teste são de teste, marcados como manda a #102 (TESTE Marina, marina@teste.invalid, telefone com zeros).
 
 ### Prints da v3 comparados com os da v2
 
@@ -121,6 +136,10 @@ Comparados pixel a pixel com os da v2 (que estavam sem doctype e com as fontes d
 - **resultado-a em 1440:** o mesmo conteúdo, com o painel fixo do lado direito numa altura diferente da página inteira (o painel acompanha a rolagem no momento do print); nada mudou na tela.
 - **resultado-eliminatorio (depois da correção do revisor):** a linha da cópia do relatório ficou com o texto do mockup, sem "nos canais que você aceitou" (M21); o resto igual.
 - **resultado-faixa-c:** print novo, o relatório de não qualificado do caso do corte mais restritivo.
+
+### Resultado do teste (12/11/2026, v4)
+
+**144 de 144** (72 por largura), seis rodadas seguidas, numa máquina Linux na nuvem. São as 132 da v3 com estas mudanças: a das fontes confere Inter, Space Grotesk e Geist na abertura (a Permanent Marker só aparece no relatório, e a conferência das fontes servidas junto deixa a de mão de fora no exemplo, que vai para o plano); entram as da abertura (sem a capa e na tela 1 de 27; cabeçalho da landing-page-02 com o logo no lugar do do quiz; os dois botões "Fazer a Análise"; sem a barra antes de rolar; no computador, ao rolar, só o relatório se mexe e a barra não aparece; no celular, o texto antes do relatório e a barra ao rolar). Numa rodada anterior, a conferência "só o relatório se mexe" falhou uma vez porque mediu no meio da animação de entrada da tela (10 pixels); o teste passou a esperar a animação acabar antes de medir, e as seis rodadas seguintes passaram. Os prints das outras telas, regravados nesta máquina, só mudaram no desenho das letras e ficaram os de antes; os da abertura substituem os da capa.
 
 ### Resultado do teste (09/11/2026)
 
@@ -276,4 +295,4 @@ Tudo certo: todas as conferências passaram
 
 ## Perguntas
 
-prompts/07-fila-perguntas.md, 14.1 a 14.13; prompts/08-fila-perguntas.md, 23.1 a 23.5 e 23.8 (versão 2); prompts/09-acentos-do-quiz-resposta.md, 09.1; prompts/11-fila-perguntas.md, 30.3, 31.1 a 31.3, 31.13 a 31.15, 32.2 e Etapa 34 (versão 3).
+log.md, entrada de 12/11/2026, abertura do quiz (versão 4); prompts/07-fila-perguntas.md, 14.1 a 14.13; prompts/08-fila-perguntas.md, 23.1 a 23.5 e 23.8 (versão 2); prompts/09-acentos-do-quiz-resposta.md, 09.1; prompts/11-fila-perguntas.md, 30.3, 31.1 a 31.3, 31.13 a 31.15, 32.2 e Etapa 34 (versão 3).

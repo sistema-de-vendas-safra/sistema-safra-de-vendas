@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -28,10 +28,13 @@ depende_de:
     versao: 4
   - id: decisoes
     versao: 5
+  - id: landing-page-02
+    versao: 1
 desatualizado: true
 ---
 Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html.
-Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104). Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
+Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104) e, na v4 (pedido do Otavio, 12/11/2026), a capa (C1 a C11), que saiu do funil, e o botao da abertura, agora "Fazer a Analise". Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
+Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-page-02 (logo do Safra e "Fazer a Analise"). No computador, so o relatorio de exemplo rola; no celular, o texto vem antes do relatorio e o botao fica fixo no rodape quando o da pagina sai da tela.
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 -->
 <title>[a definir: nome público da Análise]</title>
@@ -43,11 +46,12 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
 @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('fontes/inter-latin-wght-normal.woff2') format('woff2')}
 @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url('fontes/space-grotesk-latin-wght-normal.woff2') format('woff2')}
 @font-face{font-family:'Permanent Marker';font-style:normal;font-weight:400;font-display:swap;src:url('fontes/permanent-marker-latin-400-normal.woff2') format('woff2')}
-/* Layout (estrutura da REA do Full Stack Marketing): capa em coluna de 640 com cartões escuros (teste + vídeo do Junior); abertura em duas colunas; teste em conversa + painel ao vivo à direita (abas no celular); relatório em blocos empilhados com a haste semente → fruto como assinatura.
-   Identidade: variação da Triad (triad-www/styles.css). Do site: fundo #07070d, superfícies #11131d e #0d0e16, texto #f4f6f5, cinza #8b8f9c, verde #00ff87 com brilho, grade de 64px do hero, marca ▲ TRIAD e as fontes Space Grotesk, Inter e Permanent Marker (só 1 acento manuscrito por tela).
+@font-face{font-family:'Geist';font-style:normal;font-weight:100 900;font-display:swap;src:url('fontes/geist-latin-wght-normal.woff2') format('woff2')}
+/* Layout (estrutura da REA do Full Stack Marketing): abertura em duas colunas, com o cabeçalho e o botão da landing-page-02 (v4: a capa saiu do funil); teste em conversa + painel ao vivo à direita (abas no celular); relatório em blocos empilhados com a haste semente → fruto como assinatura.
+   Identidade: variação da Triad (triad-www/styles.css). Do site: fundo #07070d, superfícies #11131d e #0d0e16, texto #f4f6f5, cinza #8b8f9c, verde #00ff87 com brilho, marca ▲ TRIAD e as fontes Space Grotesk, Inter e Permanent Marker (só 1 acento manuscrito por tela).
    Acréscimos do quiz: coral #ff5f6d = abaixo da meta, âmbar #ffb547 = dinheiro na mesa, fruto e estimativa. A marca é escura por natureza: os mesmos valores valem nos dois modos. */
 :root{
-  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a;
   --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
   --tomate:#ff5f6d; --tomate-suave:#2e1418;
   --trigo:#ffb547; --trigo-suave:#1a1509;
@@ -61,7 +65,7 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
   color-scheme:dark;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a;
   --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
   --tomate:#ff5f6d; --tomate-suave:#2e1418;
   --trigo:#ffb547; --trigo-suave:#1a1509;
@@ -69,7 +73,7 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
   --painel:#0d0e16; --sobre-painel:#f4f6f5; --folha-viva:#00ff87; --tomate-viva:#ff5f6d; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
-  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a; --grade:rgba(244,246,245,.07);
+  --papel:#07070d; --superficie:#11131d; --tinta:#f4f6f5; --ardosia:#8b8f9c; --linha:#2a2e3d; --trilho:#1b1e2a;
   --folha:#00ff87; --folha-forte:#5cffb4; --folha-suave:#0b2a1d; --sobre-folha:#04130b;
   --tomate:#ff5f6d; --tomate-suave:#2e1418;
   --trigo:#ffb547; --trigo-suave:#1a1509;
@@ -95,7 +99,7 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
 /* Telas claras: abertura e conversa (a página do original é clara). O escuro fica nos cartões e no painel. O neon vira acento:
    onde vai texto, o verde escurece para passar de 4,5:1 no fundo claro */
 body[data-largura="abertura"],body[data-largura="sala"],body[data-largura="plano"]{
-  --papel:#f3f5ef; --superficie:#ffffff; --tinta:#07070d; --ardosia:#586070; --linha:#d8dcd0; --trilho:#e2e6da; --grade:transparent;
+  --papel:#f3f5ef; --superficie:#ffffff; --tinta:#07070d; --ardosia:#586070; --linha:#d8dcd0; --trilho:#e2e6da;
   --folha:#007a3e; --folha-forte:#006733; --folha-suave:#dcfae9; --folha-borda:#a8ebc6; --sobre-folha:#ffffff;
   --tomate:#c4323f; --tomate-suave:#fbe6e8; --trigo:#9a5f00; --trigo-suave:#fdf1dc;
   --sombra:rgba(7,7,13,.3);
@@ -112,10 +116,6 @@ body{
   padding-block:0 104px;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
-/* Grade e brilho verde do hero do site da Triad, só na capa */
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 80%);opacity:0;transition:opacity .5s}
-body[data-largura="capa"]::before{opacity:1}
-body[data-largura="capa"]{background:radial-gradient(ellipse 70% 380px at 50% -60px, color-mix(in srgb,var(--folha) 16%,transparent), transparent 72%) no-repeat, var(--papel)}
 ::selection{background:var(--folha);color:var(--sobre-folha)}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--folha);outline-offset:3px;border-radius:6px}
@@ -126,10 +126,9 @@ h1,h2,h3{text-wrap:balance}
 
 /* ··· Cabeçalho: marca + barra fina sem rótulos ··· */
 .topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--papel) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);max-width:1080px;margin-inline:auto;padding-block:16px 12px}
-body[data-largura="capa"] .topo{display:none}
+body[data-largura="abertura"] .topo{display:none} /* na abertura, o cabeçalho é o da landing-page-02 (.cab-safra) */
 body[data-largura="coluna"] .topo{max-width:620px}
 body[data-largura="relatorio"] .topo{max-width:760px}
-body[data-largura="abertura"] .topo{max-width:1120px}
 body[data-largura="plano"] .topo{max-width:760px}
 /* conversa: só a barra de progresso fina (trecho preto sobre trilho claro), sem cabeçalho carregado */
 body[data-largura="sala"] .topo{max-width:1180px;padding-block:11px}
@@ -170,45 +169,12 @@ body[data-largura="sala"] .progresso__fill{background:var(--tinta);box-shadow:no
 .g-fruto circle{fill:var(--trigo)}
 .g-folha{fill:var(--folha)}
 
-/* ··· Capa (C1 a C11): coluna de 640, foto, rótulo, cartões ··· */
-.hub{max-width:640px;margin-inline:auto;padding-block:clamp(40px,8vh,80px) 24px;display:flex;flex-direction:column;align-items:center;gap:14px}
-.hub__foto{width:clamp(96px,18vw,132px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid color-mix(in srgb,var(--folha) 45%,transparent);box-shadow:0 0 0 6px var(--folha-suave),0 20px 50px -22px var(--sombra);background:var(--painel)}
-.hub__foto img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%}
-.hub__nome{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-dado);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ardosia);padding:6px 14px;border:1px solid var(--linha);border-radius:999px;background:color-mix(in srgb,var(--superficie) 60%,transparent)}
-.hub__nome::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--folha);box-shadow:0 0 10px var(--folha)}
-/* acento manuscrito da capa (Permanent Marker, como o "launches" do site) */
-.rotulo{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;margin:30px 0 0;font-family:var(--f-mao);font-size:1.45rem;font-weight:400;line-height:1.2;color:var(--folha);text-shadow:0 0 18px color-mix(in srgb,var(--folha) 45%,transparent)}
-.rotulo::before,.rotulo::after{content:"";flex:0 1 56px;height:1px;background:var(--linha)}
-.cartoes{width:100%;display:grid;grid-auto-rows:1fr;gap:14px}
-.cartao{--sobe:30px;position:relative;isolation:isolate;background:radial-gradient(ellipse 80% 150px at 30% 100%,color-mix(in srgb,var(--folha-viva) 22%,transparent),transparent 72%),linear-gradient(180deg,#07070d 0%,#07120d 36%,var(--verde-fundo) 74%,var(--verde-fundo-2) 100%);border:1px solid color-mix(in srgb,var(--folha-viva) 28%,transparent);border-radius:18px;overflow:hidden;box-shadow:0 24px 60px -30px color-mix(in srgb,var(--folha) 60%,transparent);transition:border-color .25s var(--curva),box-shadow .25s var(--curva),transform .15s var(--curva)}
-.cartao:hover{border-color:color-mix(in srgb,var(--folha-viva) 60%,transparent);box-shadow:0 28px 64px -28px color-mix(in srgb,var(--folha) 75%,transparent)}
-.cartao:active{transform:scale(.985)}
-/* Mesma faixa do Arthur: 190 a 270 de altura, recorte pelo alto. Ela derrete no degradê do cartão por máscara (sem corte seco),
-   e o corpo sobe só --sobe, sobre a parte já apagada: o conteúdo da faixa termina antes do texto (nada sobreposto, no celular e no computador) */
-.cartao__midia{position:relative;z-index:-1;height:clamp(190px,42vw,270px);overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 50%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 50%,transparent 100%)}
-.cartao__midia img,.cartao__midia video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 28%} /* rosto no terço de cima da faixa */
-.cartao__midia--barras{display:flex;flex-direction:column;gap:8px;padding:14px clamp(20px,3.5vw,32px) 40px;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent 100%);mask-image:linear-gradient(180deg,#000 calc(100% - 46px),transparent 100%)}
-.cartao__midia--barras .barras{flex:1;min-height:0}
-.mini-rel__olho{display:flex;justify-content:space-between;gap:8px;margin:0;font-family:var(--f-dado);font-size:10.5px;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--ardosia)}
-.mini-rel__olho > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cartao__corpo{margin-top:calc(var(--sobe) * -1);padding:0 clamp(20px,3.5vw,32px) clamp(24px,4vw,32px);display:flex;flex-direction:column;gap:14px}
-.cartao__meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0}
+/* ··· Peças dos vídeos (pílula, aviso e play) ··· */
 .pilula{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sobre-painel) 22%,transparent);background:color-mix(in srgb,var(--painel) 78%,transparent);font-family:var(--f-dado);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sobre-painel) 72%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pilula::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--folha-viva)}
-.cartao__ir{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--folha-viva);color:var(--painel);font-family:var(--f-dado);font-size:15px;font-weight:600;transition:background .25s var(--curva),transform .25s var(--curva)}
-.cartao:hover .cartao__ir{background:var(--sobre-painel);transform:translateX(2px)}
-.cartao__titulo{margin:0;font-family:var(--f-titulo);font-weight:700;font-size:clamp(22px,5.6vw,27px);line-height:1.18;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 16px rgba(0,0,0,.45)}
-.cartao__link{all:unset;cursor:pointer}
-.cartao__link::after{content:"";position:absolute;inset:0;border-radius:18px}
-.cartao__link:focus-visible::after{outline:2px solid var(--folha-viva);outline-offset:-4px}
 .cartao__aviso{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--sobre-painel) 10%,transparent);font-family:var(--f-dado);font-size:12.5px;line-height:1.55}
 .play{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,var(--folha-viva) 92%,transparent);box-shadow:0 0 0 8px color-mix(in srgb,var(--folha-viva) 16%,transparent),0 12px 30px -10px rgba(0,0,0,.55)}
 .play::before{content:"";margin-left:5px;border-left:18px solid var(--sobre-folha);border-top:11px solid transparent;border-bottom:11px solid transparent}
-.hub__mais{width:100%;display:grid;gap:10px;margin-top:20px}
-.hub__mais .botao{width:100%;max-width:320px;justify-self:center}
-.hub__mais .fino{text-align:center}
-.hub__pe{width:100%;margin-top:30px;padding-top:18px;border-top:1px solid var(--linha);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;font-family:var(--f-dado);font-size:11.5px;color:var(--ardosia)}
-.hub__pe .marca{font-size:12px}
 
 /* ··· Abertura do teste (A1 a A9): página clara, peça a peça como a do /assessment do original.
    Relatório de exemplo grande à esquerda (cartão escuro, inclinado, clicável); etiqueta, título, texto, botão preto e nota à direita ··· */
@@ -222,14 +188,61 @@ body[data-largura="sala"] .progresso__fill{background:var(--tinta);box-shadow:no
 .abertura__meta li{display:inline-flex;align-items:center;gap:8px}
 .abertura__meta svg{flex:none;width:16px;height:16px}
 .abertura__nota{margin:18px 0 0;max-width:34em;font-size:.88rem;line-height:1.5;color:var(--ardosia)}
+body[data-largura="abertura"] .abertura{padding-top:clamp(24px,6vh,64px)}
 @media (min-width:900px){
   .abertura{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  /* o texto acompanha a rolagem do relatório, que é mais alto que a tela */
-  .abertura__copy{justify-self:start;position:sticky;top:clamp(72px,12vh,120px);padding-top:clamp(0px,4vh,40px)}
+  /* só o relatório rola: etiqueta, título, promessa e botão ficam parados logo abaixo do cabeçalho (v4; pedido do Otávio, 12/11/2026) */
+  .abertura__copy{justify-self:start;position:sticky;top:calc(var(--cab-safra-alt) + clamp(24px,6vh,64px));padding-top:clamp(0px,4vh,40px)}
   /* 3 linhas no computador; o tamanho acompanha a largura da coluna para a linha mais longa (21 letras) sempre caber */
   .abertura h1{font-size:clamp(1.6rem,7.6cqw,3.1rem)}
   .abertura h1 .l{display:block;white-space:nowrap}
 }
+
+/* ··· Peças da landing-page-02 na abertura (v4; pedido do Otávio, 12/11/2026) ···
+   Cabeçalho fixo e botão "Fazer a Análise" (Botão/Primário) iguais aos da página de vendas, com as medidas tiradas da landing-page-02
+   montada: faixa escura com desfoque, conteúdo de 1080 no centro e 30 de margem; botão menta com brilho de baixo, reflexo, faixa de luz
+   que passa sozinha (a cada 2 s no pequeno, a cada 12 s no grande) e, no mouse, a seta que anda e a luz que atravessa. No celular, a
+   landing reduz o cabeçalho inteiro para caber, e aqui também. Só na abertura: nas outras telas fica o cabeçalho do quiz. */
+:root{--cab-safra-alt:87px}
+.cab-safra{display:none;position:sticky;top:0;z-index:25;margin-left:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right, 0px)));background:rgba(10,16,13,.92);border-bottom:1px solid #25312b;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+body[data-largura="abertura"] .cab-safra{display:block}
+.cab-safra__linha{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1140px;margin-inline:auto;padding:20px 30px}
+.cab-safra :focus-visible{outline-color:#8bd6b1}
+.logo-safra{display:flex;align-items:center;gap:9px;flex:none}
+.logo-safra__simbolo{display:block;width:42.06px;height:43.863px}
+.logo-safra__nome{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;width:102.76px}
+.logo-safra__sub{display:block;width:44.845px;font-family:'Geist',system-ui,sans-serif;font-weight:300;font-size:5.634px;line-height:1.1;letter-spacing:2.0845px;color:#cdd6d1;text-box:trim-both cap alphabetic}
+.logo-safra__palavra{display:block;width:102.76px;height:33.634px}
+.btn-safra{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;flex:none;margin:0;padding:12px 18px 12px 22px;border:1px solid rgba(10,16,13,.28);border-radius:12px;overflow:hidden;background:#8bd6b1;box-shadow:0 4px 10px rgba(0,0,0,.4),0 12px 40px -4px rgba(139,214,177,.28);color:#0a100d;font-family:'Geist',system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1.3;text-align:left;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.btn-safra > *{pointer-events:none}
+.btn-safra__brilho{position:absolute;z-index:-1;inset:calc(30% - .4px) calc(-20% - 1.4px) calc(-110% - 3.2px) calc(-20% - 1.4px);background:radial-gradient(closest-side,rgba(233,251,242,.95),rgba(233,251,242,0))}
+.btn-safra__faixa{position:absolute;z-index:-1;inset:-1px;overflow:hidden;border-radius:12px}
+.btn-safra__faixa::before{content:"";position:absolute;left:-177.5px;top:-63.3px;width:70px;height:207px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.38) 50%,rgba(255,255,255,0));transform:rotate(20deg);animation:btn-safra-faixa 2s linear infinite}
+.btn-safra--grande .btn-safra__faixa::before{animation:btn-safra-faixa-lenta 12s linear infinite}
+@keyframes btn-safra-faixa{0%,50%{transform:translateX(0) rotate(20deg);animation-timing-function:ease-in-out}to{transform:translateX(716.5px) rotate(20deg)}}
+@keyframes btn-safra-faixa-lenta{0%,8.33%{transform:translateX(0) rotate(20deg);animation-timing-function:ease-in-out}20%,to{transform:translateX(716.5px) rotate(20deg)}}
+.btn-safra__reflexo{position:absolute;z-index:-1;inset:calc(1.49% - .97px) calc(.17% - 1px);border-radius:11px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 52%)}
+.btn-safra__seta{flex:none;width:20px;height:20px;transition:transform .3s}
+.btn-safra:hover .btn-safra__seta{transform:translateX(5px)}
+.btn-safra__borda{position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-safra::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-30%;width:70px;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.45),rgba(255,255,255,0));transform:skew(-20deg) translate(-120px)}
+.btn-safra:hover::after{animation:btn-safra-passa .9s ease-out}
+@keyframes btn-safra-passa{from{opacity:1;transform:skew(-20deg) translate(-120px)}to{opacity:1;transform:skew(-20deg) translate(900px)}}
+.btn-safra--grande{gap:16px;padding:22px 28px 22px 32px;font-size:18px}
+/* Celular: texto antes do relatório e, quando o botão da página sai da tela, o mesmo botão fixo no rodapé (escolha do Otávio, 12/11/2026) */
+.barra-safra{display:none}
+.barra-safra .btn-safra{width:100%}
+@keyframes barra-safra-sobe{from{transform:translateY(100%)}}
+@media (max-width:899px){
+  .abertura__copy{order:-1}
+  .abertura__copy .btn-safra--grande{display:flex;width:100%;font-size:16px}
+  .abertura__copy .btn-safra--grande .btn-safra__texto{flex:1}
+  body[data-largura="abertura"][data-barra] .barra-safra{display:block;position:fixed;z-index:30;left:0;right:0;bottom:0;padding:12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));background:color-mix(in srgb,var(--papel) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--linha);animation:barra-safra-sobe .25s var(--curva)}
+  body[data-largura="abertura"][data-barra] .proto{bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
+}
+@media (max-width:419px){ .cab-safra__linha{zoom:.893} }
+@media (max-width:374px){ .cab-safra__linha{zoom:.857} }
+@media (max-width:359px){ .cab-safra__linha{zoom:.76} }
 
 /* Relatório de exemplo: o mesmo que a pessoa recebe no final, com dados de exemplo. A conta toda é em "em" e escala com a largura do cartão */
 .previa{position:relative;margin:0;width:100%;max-width:560px;justify-self:center;container-type:inline-size}
@@ -679,7 +692,7 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 .proto__painel button[aria-current="true"]{background:var(--tinta);color:var(--papel)}
 .proto__painel button[aria-current="true"] span{color:inherit}
 
-/* ··· Gráfico de colunas do funil (capa, prévia e painel): da semente ao fruto ···
+/* ··· Gráfico de colunas do funil (prévia e painel): da semente ao fruto ···
    Colunas = volume. Entre elas, a taxa da etapa: verde bate a meta, coral fica abaixo. Tracejado = onde a coluna chegaria com o funil inteiro na meta. */
 .barras{--larg:clamp(20px,40%,44px);--base:var(--painel);font-size:12px;display:flex;flex-direction:column;min-width:0;height:100%}
 .barras__area{position:relative;flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:minmax(0,1fr);border-bottom:1px solid var(--linha)}
@@ -699,15 +712,14 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 @keyframes barra-aparece{from{opacity:0}}
 @media (max-width:359px){ .barras{font-size:11px} }
 @media (prefers-reduced-motion: reduce){ .barras *{animation:none!important} }
-/* legenda do tracejado */
-.leg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.leg i{flex:none;width:14px;height:9px;border:1.5px dashed color-mix(in srgb,var(--tomate) 85%,transparent);border-bottom:0;border-radius:2px 2px 0 0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--tomate) 22%,transparent) 0 2px,transparent 2px 5px)}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
 }
 </style>
 
 <a class="pular" href="#palco">Pular para o conteúdo</a>
+
+<header class="cab-safra" id="cabSafra"></header>
 
 <header class="topo" id="topo">
   <div class="topo__linha">
@@ -718,6 +730,8 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 </header>
 
 <main class="palco" id="palco" tabindex="-1"></main>
+
+<div class="barra-safra" id="barraSafra"></div>
 
 <div class="aviso-selo" id="avisoSelo" role="status" hidden></div>
 
@@ -907,7 +921,6 @@ const pergunta = id => { const p = PERFIL.find(x => x.id === id); return p ? {q:
 
 /* ··· Telas do protótipo ··· */
 const TELAS = [
-  {id:'capa', rot:'Capa', largura:'capa'},
   {id:'abertura', rot:'Abertura do teste', largura:'abertura'},
   {id:'nome', rot:'Nome', chat:true}
 ].concat(PERFIL.map(p => ({id:p.id, rot:'Empresa · ' + p.curto, chat:true, perfil:p})))
@@ -1040,13 +1053,12 @@ const miniLinhas = taxas => ETAPAS.map((e, i) => {
   return '<li class="' + (v < METAS[i] ? 'is-baixo' : '') + '"><span>' + e.nome + '</span><em>' + pct(v) + '</em>' + regua(v, METAS[i]) + '</li>';
 }).join('');
 
-/* ··· Gráfico de colunas do funil (capa, prévia da abertura e painel): da semente ao fruto ···
+/* ··· Gráfico de colunas do funil (prévia da abertura e painel): da semente ao fruto ···
    A altura é em raiz quadrada: 7 vendas ao lado de 400 leads ficariam com 1 pixel numa escala reta. O número real vem embaixo de cada coluna.
    Tracejado = o funil inteiro na meta: cada etapa converte a taxa da meta, partindo dos leads (400, 200, 100, 75, 15).
    Entre as colunas fica a taxa da etapa: verde bate a meta, coral fica abaixo. Volume null = coluna ainda sem número (só o tracejado). */
 const FUNIL_EXEMPLO = [400, 200, 80, 56, 7];
 const COLUNAS = ['Leads', 'Com perfil', 'Agendados', 'Conversas', 'Vendas'];
-const LEG_META = '<span class="leg"><i></i>na meta</span>';
 function graficoBarras(vol, o){
   o = o || {};
   vol = vol || FUNIL_EXEMPLO;
@@ -1072,33 +1084,26 @@ function graficoBarras(vol, o){
     '<div class="barras__area">' + slots + '</div><div class="barras__eixo" aria-hidden="true">' + eixo + '</div></div>';
 }
 
-/* ··· Capa (C1 a C11) ··· */
-function telaCapa(){
-  return '<section class="hub">' +
-    '<div class="hub__foto"><img src="' + FOTO + '" alt="Junior Neves" width="928" height="1152"></div>' +
-    '<span class="hub__nome">' + fato('grafia_junior') + ' · ' + fato('nome_agencia') + '</span>' +
-    '<p class="rotulo">Comece aqui</p>' +
-    '<div class="cartoes">' +
-      '<article class="cartao escuro">' +
-        // Gráfico de colunas do funil no lugar do radar do original (o Arthur mostra um recorte do relatório; aqui o recorte é o funil, da semente ao fruto).
-        '<div class="cartao__midia cartao__midia--barras" aria-hidden="true"><p class="mini-rel__olho"><span>exemplo de diagnóstico</span>' + LEG_META + '</p>' + graficoBarras() + '</div>' +
-        '<div class="cartao__corpo"><p class="cartao__meta"><span class="pilula">' + fato('analise_nome_publico') + '</span><span class="cartao__ir" aria-hidden="true">→</span></p>' +
-        '<h1 class="cartao__titulo" id="foco" tabindex="-1"><button type="button" class="cartao__link" data-acao="proximo">Descubra onde sua equipe de vendas está perdendo performance</button></h1></div>' +
-      '</article>' +
-      '<article class="cartao escuro">' +
-        // Vídeo da capa ("o que o diagnóstico mede"). Versão final: <video src="junior-loop.mp4" poster="poster-junior.jpg" autoplay muted loop playsinline preload="auto" disablepictureinpicture>
-        // 16:9, rosto no terço de cima da faixa, loop de 3 s sem som (parado para quem pede menos movimento). Sem botão de play: só o rosto em movimento.
-        // O clique abre o vídeo de cerca de 1 min, com som, numa janela por cima da página. São dois vídeos diferentes: este da capa e o "antes de decidir" do relatório.
-        '<div class="cartao__midia" aria-hidden="true"><img src="' + FOTO + '" alt="" width="928" height="1152"></div>' +
-        '<div class="cartao__corpo"><p class="cartao__meta"><span class="pilula">vídeo do Junior · cerca de 1 min</span><span class="cartao__ir" aria-hidden="true">→</span></p>' +
-        '<h2 class="cartao__titulo"><button type="button" class="cartao__link" data-acao="aviso" data-alvo="avisoVideo" data-aviso="Protótipo: o vídeo do Junior ainda vai ser gravado. Na versão final, este cartão mostra 3 segundos dele falando, sem som, repetindo; o toque abre o vídeo de cerca de 1 minuto, com som, numa janela por cima da página.">O que o diagnóstico mede e o que você recebe no final</button></h2>' +
-        '<p class="cartao__aviso" id="avisoVideo" role="status" hidden></p></div>' +
-      '</article>' +
-    '</div>' +
-    '<div class="hub__mais"><button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoWhats" data-aviso="Protótipo: na versão final, abre o nosso WhatsApp. Número: ' + A_DEFINIR.whatsapp + '.">' + CONVERSA_SVG + 'Falar no WhatsApp</button>' +
-    '<p class="fino" id="avisoWhats" role="status" hidden></p></div>' +
-    '<footer class="hub__pe"><span class="marca">' + TRIAD + fato('nome_agencia') + '</span><span>Diagnóstico de vendas para empresas que vendem por conversa de venda.</span><span>' + fato('nome_agencia') + '</span></footer>' +
-    '</section>';
+/* ··· Peças da landing-page-02 na abertura (v4; pedido do Otávio, 12/11/2026) ···
+   O logo do Safra e o botão "Fazer a Análise" (Botão/Primário), como na página de vendas. Os desenhos do logo e da seta vêm
+   da landing-page-02 (pagina/a/) e ficam embutidos aqui, sem pedir arquivo a ela. */
+const LOGO_SAFRA = '<span class="logo-safra" role="img" aria-label="Sistema de Vendas Safra">' +
+  '<svg class="logo-safra__simbolo" viewBox="0 0 42.0602 43.8628" aria-hidden="true" focusable="false"><path d="M42.0602 -1.90735e-07H15.0215C11.1969 -1.90735e-07 7.52897 1.51931 4.82457 4.22371C2.12017 6.92811 0.60086 10.5961 0.60086 14.4207C0.60086 18.2452 2.12017 21.9132 4.82457 24.6176C7.52897 27.322 11.1969 28.8413 15.0215 28.8413H27.0387C27.1981 28.8413 27.3509 28.9046 27.4636 29.0173C27.5763 29.13 27.6396 29.2828 27.6396 29.4422C27.6396 29.6015 27.5763 29.7544 27.4636 29.867C27.3509 29.9797 27.1981 30.043 27.0387 30.043H18.0258V33.4479H27.0387C28.1011 33.4479 29.12 33.0259 29.8712 32.2747C30.6224 31.5234 31.0445 30.5046 31.0445 29.4422C31.0445 28.3798 30.6224 27.3609 29.8712 26.6097C29.12 25.8585 28.1011 25.4364 27.0387 25.4364H15.0215C12.0999 25.4364 9.29804 24.2758 7.23218 22.21C5.16632 20.1441 4.00574 17.3422 4.00574 14.4207C4.00574 11.4991 5.16632 8.69718 7.23218 6.63132C9.29804 4.56546 12.0999 3.40488 15.0215 3.40488H42.0602V-1.90735e-07ZM34.0488 5.20746H15.0215C12.578 5.20746 10.2346 6.17813 8.5068 7.90594C6.77899 9.63375 5.80832 11.9772 5.80832 14.4207C5.80832 16.8641 6.77899 19.2076 8.5068 20.9354C10.2346 22.6632 12.578 23.6338 15.0215 23.6338H27.0387C28.5792 23.6338 30.0566 24.2458 31.1458 25.3351C32.2351 26.4243 32.847 27.9017 32.847 29.4422C32.847 30.9826 32.2351 32.46 31.1458 33.5493C30.0566 34.6385 28.5792 35.2505 27.0387 35.2505H8.01147V38.6554H27.0387C29.4822 38.6554 31.8256 37.6847 33.5534 35.9569C35.2812 34.2291 36.2519 31.8857 36.2519 29.4422C36.2519 26.9987 35.2812 24.6553 33.5534 22.9275C31.8256 21.1996 29.4822 20.229 27.0387 20.229H15.0215C13.481 20.229 12.0037 19.617 10.9144 18.5278C9.82514 17.4385 9.21319 15.9611 9.21319 14.4207C9.21319 12.8802 9.82514 11.4028 10.9144 10.3136C12.0037 9.22428 13.481 8.61233 15.0215 8.61233H34.0488V5.20746ZM24.0344 10.4149H15.0215C13.9591 10.4149 12.9403 10.8369 12.189 11.5882C11.4378 12.3394 11.0158 13.3583 11.0158 14.4207C11.0158 15.483 11.4378 16.5019 12.189 17.2531C12.9403 18.0044 13.9591 18.4264 15.0215 18.4264H27.0387C29.9603 18.4264 32.7622 19.587 34.828 21.6528C36.8939 23.7187 38.0545 26.5206 38.0545 29.4422C38.0545 32.3637 36.8939 35.1656 34.828 37.2315C32.7622 39.2974 29.9603 40.4579 27.0387 40.4579H0V43.8628H27.0387C30.8633 43.8628 34.5313 42.3435 37.2357 39.6391C39.9401 36.9347 41.4594 33.2668 41.4594 29.4422C41.4594 25.6176 39.9401 21.9496 37.2357 19.2452C34.5313 16.5408 30.8633 15.0215 27.0387 15.0215H15.0215C14.8622 15.0215 14.7093 14.9582 14.5966 14.8455C14.484 14.7328 14.4207 14.58 14.4207 14.4207C14.4207 14.2613 14.484 14.1085 14.5966 13.9958C14.7093 13.8831 14.8622 13.8198 15.0215 13.8198H24.0344V10.4149Z" fill="#E5ECE7"/></svg>' +
+  '<span class="logo-safra__nome"><span class="logo-safra__sub" aria-hidden="true">Sistema de vendas</span>' +
+  '<svg class="logo-safra__palavra" viewBox="0 0 102.76 33.6339" aria-hidden="true" focusable="false"><path d="M11.5529 33.6339C9.09947 33.6339 7.03424 33.2768 5.3572 32.5625C3.71122 31.8482 2.43791 30.8544 1.53728 29.5811C0.636653 28.3078 0.124225 26.8636 0 25.2487L6.10255 24.9692C6.31994 26.2736 6.86343 27.2829 7.733 27.9972C8.60258 28.7115 9.89141 29.0686 11.5995 29.0686C12.997 29.0686 14.084 28.8512 14.8604 28.4165C15.6679 27.9506 16.0716 27.2363 16.0716 26.2736C16.0716 25.7146 15.9318 25.2487 15.6523 24.876C15.3728 24.5034 14.8449 24.1773 14.0685 23.8978C13.2921 23.6183 12.143 23.3388 10.6212 23.0593C8.07462 22.6245 6.07149 22.0965 4.61185 21.4754C3.15221 20.8232 2.11182 20.0157 1.4907 19.053C0.900631 18.0903 0.605596 16.8946 0.605596 15.466C0.605596 13.1368 1.4907 11.2579 3.2609 9.8293C5.06217 8.36966 7.68642 7.63983 11.1337 7.63983C13.3697 7.63983 15.2486 8.01251 16.7704 8.75786C18.2921 9.47215 19.4723 10.466 20.3108 11.7393C21.1803 12.9815 21.7238 14.4101 21.9412 16.025L15.9318 16.3045C15.7766 15.466 15.4971 14.7362 15.0933 14.1151C14.6896 13.4939 14.1461 13.0281 13.4629 12.7175C12.7796 12.3759 11.9722 12.2051 11.0405 12.2051C9.64296 12.2051 8.58705 12.4846 7.87275 13.0436C7.15846 13.6026 6.80131 14.348 6.80131 15.2797C6.80131 15.9318 6.9566 16.4753 7.26716 16.9101C7.60878 17.3449 8.15226 17.7021 8.89761 17.9816C9.64296 18.23 10.6368 18.4629 11.879 18.6803C14.4877 19.0841 16.5374 19.612 18.0281 20.2642C19.5499 20.8853 20.6213 21.6928 21.2425 22.6866C21.8946 23.6493 22.2207 24.8139 22.2207 26.1804C22.2207 27.7643 21.7704 29.1152 20.8698 30.2332C20.0002 31.3513 18.758 32.2053 17.143 32.7954C15.5592 33.3544 13.6958 33.6339 11.5529 33.6339Z" fill="#E5ECE7"/><path d="M32.1297 33.6339C29.521 33.6339 27.4247 33.0438 25.8408 31.8637C24.257 30.6525 23.465 28.9755 23.465 26.8326C23.465 24.6897 24.1328 23.0127 25.4682 21.8015C26.8036 20.5903 28.8378 19.7207 31.5707 19.1928L39.8161 17.5623C39.8161 15.7921 39.4124 14.4722 38.605 13.6026C37.7975 12.702 36.6018 12.2517 35.018 12.2517C33.5894 12.2517 32.4558 12.5933 31.6173 13.2765C30.8098 13.9287 30.2508 14.8759 29.9403 16.1182L23.8843 15.8387C24.3812 13.1989 25.5924 11.1802 27.5179 9.78271C29.4434 8.35413 31.9434 7.63983 35.018 7.63983C38.5584 7.63983 41.2292 8.54046 43.0305 10.3417C44.8628 12.1119 45.7789 14.6585 45.7789 17.9816V27.0189C45.7789 27.6711 45.8876 28.1214 46.105 28.3699C46.3535 28.6183 46.7106 28.7425 47.1765 28.7425H47.9684V33.0749C47.7821 33.137 47.4715 33.1836 47.0367 33.2146C46.633 33.2457 46.2137 33.2612 45.7789 33.2612C44.7541 33.2612 43.8379 33.1059 43.0305 32.7954C42.223 32.4538 41.6019 31.8792 41.1671 31.0718C40.7323 30.2332 40.5149 29.0997 40.5149 27.6711L41.0273 28.0438C40.7789 29.1307 40.2354 30.109 39.3969 30.9786C38.5894 31.8171 37.5646 32.4693 36.3223 32.9351C35.0801 33.401 33.6825 33.6339 32.1297 33.6339ZM33.3409 29.3016C34.6763 29.3016 35.8254 29.0376 36.7882 28.5096C37.7509 27.9817 38.4963 27.2518 39.0242 26.3202C39.5522 25.3885 39.8161 24.286 39.8161 23.0127V21.6151L33.3875 22.9195C32.0521 23.199 31.0893 23.6183 30.4993 24.1773C29.9403 24.7052 29.6608 25.404 29.6608 26.2736C29.6608 27.2363 29.9713 27.9817 30.5924 28.5096C31.2446 29.0376 32.1608 29.3016 33.3409 29.3016Z" fill="#E5ECE7"/><path d="M50.8464 33.0749V7.22057C50.8464 4.98453 51.4676 3.22985 52.7098 1.95654C53.9831 0.652181 55.9241 0 58.5329 0H63.3776V4.61185H59.6509C58.6881 4.61185 57.9739 4.8603 57.508 5.3572C57.0732 5.8541 56.8558 6.58392 56.8558 7.54666V33.0749H50.8464ZM47.306 13.4629V8.85103H63.0515V13.4629H47.306Z" fill="#E5ECE7"/><path d="M64.6514 33.0749V8.19884H70.2415L70.4745 15.0933L69.962 15.0002C70.3347 12.6088 71.0335 10.8852 72.0583 9.8293C73.1142 8.74233 74.5428 8.19884 76.3441 8.19884H78.6267V13.3231H76.2975C75.0242 13.3231 73.9683 13.5095 73.1298 13.8821C72.2913 14.2548 71.6546 14.8449 71.2198 15.6523C70.8161 16.4287 70.6142 17.4536 70.6142 18.7269V33.0749H64.6514Z" fill="#E5ECE7"/><path d="M86.9209 33.6339C84.3122 33.6339 82.2159 33.0438 80.632 31.8637C79.0482 30.6525 78.2562 28.9755 78.2562 26.8326C78.2562 24.6897 78.9239 23.0127 80.2594 21.8015C81.5948 20.5903 83.629 19.7207 86.3619 19.1928L94.6073 17.5623C94.6073 15.7921 94.2036 14.4722 93.3961 13.6026C92.5887 12.702 91.393 12.2517 89.8092 12.2517C88.3806 12.2517 87.247 12.5933 86.4085 13.2765C85.601 13.9287 85.042 14.8759 84.7315 16.1182L78.6755 15.8387C79.1724 13.1989 80.3836 11.1802 82.3091 9.78271C84.2346 8.35413 86.7346 7.63983 89.8092 7.63983C93.3496 7.63983 96.0204 8.54046 97.8217 10.3417C99.654 12.1119 100.57 14.6585 100.57 17.9816V27.0189C100.57 27.6711 100.679 28.1214 100.896 28.3699C101.145 28.6183 101.502 28.7425 101.968 28.7425H102.76V33.0749C102.573 33.137 102.263 33.1836 101.828 33.2146C101.424 33.2457 101.005 33.2612 100.57 33.2612C99.5453 33.2612 98.6291 33.1059 97.8217 32.7954C97.0142 32.4538 96.3931 31.8792 95.9583 31.0718C95.5235 30.2332 95.3061 29.0997 95.3061 27.6711L95.8185 28.0438C95.5701 29.1307 95.0266 30.109 94.1881 30.9786C93.3806 31.8171 92.3558 32.4693 91.1135 32.9351C89.8713 33.401 88.4737 33.6339 86.9209 33.6339ZM88.1321 29.3016C89.4675 29.3016 90.6166 29.0376 91.5794 28.5096C92.5421 27.9817 93.2875 27.2518 93.8154 26.3202C94.3434 25.3885 94.6073 24.286 94.6073 23.0127V21.6151L88.1787 22.9195C86.8433 23.199 85.8805 23.6183 85.2905 24.1773C84.7315 24.7052 84.452 25.404 84.452 26.2736C84.452 27.2363 84.7625 27.9817 85.3836 28.5096C86.0358 29.0376 86.952 29.3016 88.1321 29.3016Z" fill="#E5ECE7"/></svg></span></span>';
+const SETA_SAFRA = '<svg class="btn-safra__seta" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.33333 10H15.8333M10.8333 15L15.8333 10L10.8333 5" fill="none" stroke="#0A100D" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const botaoSafra = (texto, classe, id) => '<button type="button" class="btn-safra' + (classe ? ' ' + classe : '') + '"' + (id ? ' id="' + id + '"' : '') + ' data-acao="proximo">' +
+  '<span class="btn-safra__brilho" aria-hidden="true"></span><span class="btn-safra__faixa" aria-hidden="true"></span><span class="btn-safra__reflexo" aria-hidden="true"></span>' +
+  '<span class="btn-safra__texto">' + texto + '</span>' + SETA_SAFRA + '<span class="btn-safra__borda" aria-hidden="true"></span></button>';
+// Celular: quando o botão da abertura sai da tela (ou fica sob o cabeçalho), o mesmo botão aparece fixo no rodapé (CSS: [data-barra])
+let vigiaBotao = null;
+function vigiarBotaoAbertura(){
+  if (vigiaBotao) { vigiaBotao.disconnect(); vigiaBotao = null; }
+  document.body.removeAttribute('data-barra');
+  const b = document.getElementById('botaoAbertura');
+  if (!b || !('IntersectionObserver' in window)) return;
+  vigiaBotao = new IntersectionObserver(([e]) => document.body.toggleAttribute('data-barra', !e.isIntersecting), {rootMargin:'-80px 0px 0px 0px'});
+  vigiaBotao.observe(b);
 }
 
 /* ··· Abertura do teste (A1 a A9): o relatório de exemplo, peça a peça como o do /assessment do original ···
@@ -1128,12 +1133,12 @@ function relExemplo(){
 function telaAbertura(){
   return '<section class="abertura">' +
     '<figure class="previa">' + relExemplo() +
-    '<button type="button" class="previa__botao" data-acao="proximo" aria-label="Começar o diagnóstico (exemplo de relatório: funil, perfil, selos e leitura em 4 quadros)"></button></figure>' +
+    '<button type="button" class="previa__botao" data-acao="proximo" aria-label="Fazer a Análise (exemplo de relatório: funil, perfil, selos e leitura em 4 quadros)"></button></figure>' +
     '<div class="abertura__copy"><p class="abertura__olho">' + fato('analise_nome_publico') + '</p>' +
     '<h1 id="foco" tabindex="-1"><span class="l">Descubra onde sua</span> <span class="l">equipe de vendas está</span> <span class="l">perdendo performance</span></h1>' +
     '<p class="abertura__lede">Diagnóstico completo das 4 etapas do funil de vendas: <strong>pré-qualificação</strong>, <strong>agendamento</strong>, <strong>comparecimento</strong> e <strong>fechamento</strong>.</p>' +
     '<ul class="abertura__meta"><li>' + ICO.relogio + '8 minutos</li><li>' + ICO.ok + fato('analise_gratuidade') + '</li></ul>' +
-    '<button type="button" class="botao" data-acao="proximo">Começar diagnóstico <span class="seta" aria-hidden="true">→</span></button>' +
+    botaoSafra('Fazer a Análise', 'btn-safra--grande', 'botaoAbertura') +
     '<p class="abertura__nota">Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: política de privacidade ' + A_DEFINIR.politica + '.</p></div></section>';
 }
 /* ··· Conversa: o que o Junior fala antes e depois de cada pergunta ··· */
@@ -1820,7 +1825,6 @@ const timers = [];
 const limparTimers = () => { while (timers.length) clearTimeout(timers.pop()); };
 
 function render(t){
-  if (t.id === 'capa') return telaCapa();
   if (t.id === 'abertura') return telaAbertura();
   if (t.id === 'erro') return telaErro();
   if (t.id === 'plano-exemplo') return telaPlanoExemplo();
@@ -1846,7 +1850,7 @@ function mostrar(id, o){
   document.body.dataset.largura = t.largura || (t.chat ? 'sala' : 'coluna');
   document.body.dataset.aba = aba;
   document.body.toggleAttribute('data-analisando', t.id === 'montando');
-  topo(t); protoMarcar(t);
+  topo(t); protoMarcar(t); vigiarBotaoAbertura();
   try { history.replaceState(null, '', '#' + t.id); } catch (e) {}
   const focar = !primeira; primeira = false;
   if (t.chat) conversar(focar);
@@ -2135,7 +2139,12 @@ if (ENVIO_LIGADO) $('#protoNota').textContent = 'Protótipo de teste. O contato 
 document.title = fato('analise_nome_publico');
 $('#topo .marca').lastChild.nodeValue = fato('nome_agencia');
 const h = (location.hash || '').slice(1);
-mostrar(tela(h) ? h : 'capa');
+// Cabeçalho e barra do rodapé da landing-page-02: só aparecem na abertura (CSS). Os botões levam ao mesmo próximo passo (v4)
+$('#cabSafra').innerHTML = '<div class="cab-safra__linha">' + LOGO_SAFRA + botaoSafra('Fazer a Análise') + '</div>';
+$('#barraSafra').innerHTML = botaoSafra('Fazer a Análise');
+[$('#cabSafra'), $('#barraSafra')].forEach(el => el.addEventListener('click', e => { if (atual === 'abertura' && e.target.closest('[data-acao="proximo"]')) { clearTimeout(tAuto); avancar(); } }));
+// A capa saiu do funil (v4): o quiz abre na abertura
+mostrar(tela(h) ? h : 'abertura');
 // Início do quiz: registrado quando o quiz abre, com o mesmo código de sessão da landing (10.6; 18.5)
 registrarEvento('inicio_quiz');
 })();

@@ -1,4 +1,4 @@
-// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v3), sem rede de verdade.
+// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v4), sem rede de verdade.
 // Uso: node nucleo/ferramentas/prints/testar-quiz-01.js
 // A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /quiz/ (como no site
 // do protótipo), com as fontes em /quiz/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
@@ -13,6 +13,10 @@
 // 5. Envio que falha: aviso visível, diagnóstico na tela, "Tentar de novo" reenvia o mesmo pacote;
 //    no eliminatório, o clique feito durante a falha só sai depois de o reenvio gravar (32.2).
 // 6. Aberta direto do arquivo (file://): percorre tudo e nada é enviado.
+// Abertura (v4): o quiz abre nela, sem a capa, com o cabeçalho e o botão "Fazer a Análise" da landing-page-02. No computador,
+// título, promessa e botão ficam parados enquanto o relatório de exemplo rola; no celular, o texto vem antes e o botão fica fixo
+// no rodapé quando o da página sai da tela. A entrada no quiz é pelo botão da abertura, pelo do cabeçalho (eliminatório) e,
+// no celular, pelo do rodapé (corte).
 // Em todos: o console não mostra o pacote nem nenhum dado de pessoa, e nenhuma requisição sai para outro endereço.
 // Tira prints em 375 e 1440 pixels em entregas/quizzes/quiz-01/prints/.
 // Dados de pessoa de teste, marcados (#102): nome começando por TESTE, e-mail @teste.invalid.
@@ -124,13 +128,19 @@ const print = (page, nome, largura) => page.screenshot({ path: path.join(PRINTS,
 const doTipo = (t, tipo) => t.eventos.filter(e => e.pacote && e.pacote.evento && e.pacote.evento.tipo === tipo);
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
 
-// Percorre da capa até a tela de contato; devolve o que viu dos campos de número e do valor médio
-async function ateContato(page, r, largura, comPrints) {
+// Percorre da abertura até a tela de contato; devolve o que viu dos campos de número e do valor médio.
+// entrada: 'botao' (o da abertura), 'cabecalho' (o do cabeçalho da landing-page-02) ou 'barra' (o fixo no rodapé, só no celular)
+async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
   const visto = {};
-  if (comPrints) await print(page, 'capa', largura);
-  await page.locator('.cartao__link[data-acao="proximo"]').click();
   await naTela(page, 'abertura');
-  await page.locator('.abertura__copy [data-acao="proximo"]').click();
+  if (comPrints) await print(page, 'abertura', largura);
+  if (entrada === 'barra') {
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await page.waitForFunction(() => document.body.hasAttribute('data-barra'), null, { timeout: 5000 });
+    await page.locator('#barraSafra [data-acao="proximo"]').click();
+  } else {
+    await page.locator(entrada === 'cabecalho' ? '#cabSafra [data-acao="proximo"]' : '.abertura__copy [data-acao="proximo"]').click();
+  }
   await naTela(page, 'nome');
   await page.fill('#nomeIn', 'Marina');
   await page.click('#seguir');
@@ -178,9 +188,34 @@ async function ateContato(page, r, largura, comPrints) {
     // 1. Exemplo do lead score, caixa marcada (o padrão)
     let t = await abrir(browser, largura, PAGINA, [201], 201);
     conferir(await t.page.evaluate(() => document.compatMode) === 'CSS1Compat', 'doctype: modo padrão (CSS1Compat), não mais BackCompat (09.1)');
-    // na capa aparecem as três letras (a de mão só em "Comece aqui")
+    // na abertura aparecem Inter, Space Grotesk e Geist (a do cabeçalho e do botão da landing-page-02); a de mão fica para o relatório
     const estadoFontes = await t.page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].map(f => f.family.replace(/"/g, '') + ':' + f.status).join(', '); });
-    conferir(['Inter', 'Space Grotesk', 'Permanent Marker'].every(n => estadoFontes.includes(n + ':loaded')), 'exemplo: Inter, Space Grotesk e Permanent Marker carregadas na capa (' + estadoFontes + ')');
+    conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => estadoFontes.includes(n + ':loaded')), 'exemplo: Inter, Space Grotesk e Geist carregadas na abertura (' + estadoFontes + ')');
+    const ab = await t.page.evaluate(() => {
+      const vis = s => { const e = document.querySelector(s); return !!e && getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0; };
+      return { hash: location.hash, num: document.getElementById('protoNum').textContent, capa: !!document.querySelector('[data-ir="capa"]'),
+        cab: vis('#cabSafra'), topo: vis('#topo'), logo: !!document.querySelector('#cabSafra .logo-safra svg'),
+        botoes: [...document.querySelectorAll('#cabSafra .btn-safra, .abertura__copy .btn-safra')].map(b => b.textContent.trim()),
+        comecar: document.body.textContent.includes('Começar diagnóstico'), barra: vis('#barraSafra') };
+    });
+    conferir(ab.hash === '#abertura' && ab.num === '1/27' && !ab.capa, 'abertura: o quiz abre nela, sem a capa (tela 1 de 27; ' + ab.hash + ', ' + ab.num + ')');
+    conferir(ab.cab && !ab.topo && ab.logo, 'abertura: cabeçalho da landing-page-02 com o logo do Safra, no lugar do cabeçalho do quiz');
+    conferir(ab.botoes.join('|') === 'Fazer a Análise|Fazer a Análise' && !ab.comecar, 'abertura: botões do cabeçalho e da página dizem "Fazer a Análise" (' + ab.botoes.join(' | ') + ')');
+    conferir(!ab.barra, 'abertura: sem a barra do rodapé antes de rolar');
+    // espera a entrada da tela (desliza alguns pixels) terminar; as animações sem fim (a luz dos botões) não contam
+    await t.page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect && a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))));
+    const antes = await t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
+    await t.page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await t.page.waitForTimeout(400);
+    const depois = await t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
+    const comBarra = await t.page.evaluate(() => document.body.hasAttribute('data-barra') && getComputedStyle(document.getElementById('barraSafra')).display !== 'none');
+    if (largura === 1440) {
+      conferir(depois[0] === antes[0] && depois[1] === antes[1] && depois[2] === antes[2] && depois[3] < antes[3] && depois[4] === 0, 'abertura (computador): ao rolar, só o relatório se mexe; título, promessa, botão e cabeçalho ficam (' + antes.join(',') + ' → ' + depois.join(',') + ')');
+      conferir(!comBarra, 'abertura (computador): a barra do rodapé não aparece');
+    } else {
+      conferir(antes[0] < antes[3] && depois[4] === 0, 'abertura (celular): o texto vem antes do relatório e o cabeçalho fica no alto (' + antes.join(',') + ' → ' + depois.join(',') + ')');
+      conferir(comBarra, 'abertura (celular): rolando, o botão sai da tela e "Fazer a Análise" fica fixo no rodapé');
+    }
+    await t.page.evaluate(() => window.scrollTo(0, 0)); await t.page.waitForTimeout(300);
     await t.page.waitForTimeout(300);
     let ini = doTipo(t, 'inicio_quiz');
     const ei = ini[0] && ini[0].pacote.evento;
@@ -219,13 +254,13 @@ async function ateContato(page, r, largura, comPrints) {
     conferir(doTipo(t, 'interesse_pos_relatorio').length === 0, 'exemplo: nenhum clique mandado sem clique');
     conferir(semDadoNoConsole(t), 'exemplo: console sem o pacote e sem dado de pessoa');
     conferir(t.externas.length === 0, 'exemplo: nenhuma requisição para outro endereço' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
-    conferir(LISTA_FONTES.every(f => t.pedidos.includes(BASE + 'quiz/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /quiz/fontes/, junto com a página (10.7)');
+    conferir(LISTA_FONTES.filter(f => !f.arquivo.startsWith('permanent-marker')).every(f => t.pedidos.includes(BASE + 'quiz/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /quiz/fontes/, junto com a página (10.7; a de mão só no relatório)');
     if (largura === 1440) console.log('  pacote do exemplo: ' + JSON.stringify(p) + '\n  início do quiz: ' + JSON.stringify(ini[0] && ini[0].pacote));
     await t.ctx.close();
 
     // 2. Eliminatório, com a sessão vinda da landing, e o clique no fim
     t = await abrir(browser, largura, PAGINA + '&id_sessao=' + SESSAO_DA_LANDING, [201], 201);
-    await ateContato(t.page, ELIMINATORIO, largura, false);
+    await ateContato(t.page, ELIMINATORIO, largura, false, 'cabecalho');
     await t.page.click('#enviar');
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-eliminatorio', largura);
@@ -252,7 +287,7 @@ async function ateContato(page, r, largura, comPrints) {
 
     // 3. Corte mais restritivo, com /api/evento fora do ar
     t = await abrir(browser, largura, PAGINA, [201], 'abortar');
-    await ateContato(t.page, FAIXA_C, largura, false);
+    await ateContato(t.page, FAIXA_C, largura, false, largura === 375 ? 'barra' : 'cabecalho');
     await t.page.click('#enviar');
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-faixa-c', largura);

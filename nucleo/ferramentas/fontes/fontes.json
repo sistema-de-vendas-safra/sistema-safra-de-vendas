@@ -3,7 +3,8 @@
   "quiz": [
     { "pacote": "@fontsource-variable/inter", "arquivo": "inter-latin-wght-normal.woff2" },
     { "pacote": "@fontsource-variable/space-grotesk", "arquivo": "space-grotesk-latin-wght-normal.woff2" },
-    { "pacote": "@fontsource/permanent-marker", "arquivo": "permanent-marker-latin-400-normal.woff2" }
+    { "pacote": "@fontsource/permanent-marker", "arquivo": "permanent-marker-latin-400-normal.woff2" },
+    { "pacote": "@fontsource-variable/geist", "arquivo": "geist-latin-wght-normal.woff2" }
   ],
   "landing-02": [
     { "pacote": "@fontsource-variable/geist", "arquivo": "geist-latin-wght-normal.woff2" }

@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 4 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 5 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -624,8 +624,7 @@ async function principal() {
       const noQuiz = await lerPagina(page);
       const naTela = (id) => page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
       const opcao = (v) => page.locator('[data-corpo] .opcao[data-valor="' + v + '"]').click();
-      await page.locator('.cartao__link[data-acao="proximo"]').click();
-      await naTela('abertura');
+      await naTela('abertura'); // v5: o quiz abre na abertura (a capa saiu do funil, quiz-01-pagina v4)
       await page.locator('.abertura__copy [data-acao="proximo"]').click();
       await naTela('nome'); await page.fill('#nomeIn', pessoa.nome.split(' ')[1]); await page.click('#seguir');
       await naTela('ramo'); await opcao(respostas.ramo);
@@ -682,7 +681,8 @@ async function principal() {
   conferir(q1.inicio === 201, 'quiz: o início do quiz foi gravado ao abrir (POST /api/evento, ' + q1.inicio + ')');
   conferir(q1.noQuiz.modo === 'CSS1Compat' && q1.noQuiz.charset === 'UTF-8' && q1.noQuiz.titulo.includes('público') && q1.noQuiz.titulo.includes('Análise') && !/Ã|Â/.test(q1.noQuiz.titulo),
     'quiz: modo padrão (' + q1.noQuiz.modo + '; 09.1), lido como UTF-8, título com os acentos certos');
-  conferir(['Inter', 'Space Grotesk', 'Permanent Marker'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Permanent Marker carregadas de /quiz/fontes/ (' + q1.noQuiz.fontes.join(', ') + ')');
+  // v5: o quiz abre na abertura, com o cabeçalho e o botão da landing-page-02 (Geist); a letra de mão (Permanent Marker) fica para o relatório
+  conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Geist carregadas de /quiz/fontes/ na abertura (' + q1.noQuiz.fontes.join(', ') + ')');
   conferir(q1.caixaMarcada && q1.caixas === 1, 'quiz: uma caixa de aceite só, já marcada (13.4)');
   conferir(q1.fim === 201 && !q1.aviso && q1.telaFinal === '#plano', 'lead A: POST /api/fim-quiz gravado (' + q1.fim + '), tela do plano, sem aviso de falha');
 
