@@ -2,6 +2,16 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-12 · publicação da abertura do quiz
+
+Pedido do Otávio (12/11/2026, na mesma conversa, com "Quero" à pergunta se publicava a abertura do quiz): publicar pelo passo 4.3 do APLICAR-11.md, como de manhã. Nenhum documento da base mudou; nada rodou no Supabase.
+
+- **Publicado em 12/11/2026, 11h40 (Brasília)**, da main no 8a6abe0: Current Version ID **fd6ba97b-6a53-4a3b-83b9-b69694594210**. Versão anterior: e344fcdd-d17f-47e6-9353-59e5579d86e3 (10h14). Mesmo jeito de publicar: token de API nas variáveis do ambiente da nuvem, temporário até 16/11/2026, WRANGLER_SEND_METRICS=false, whoami na conta do Safra; nenhum valor de chave em arquivo, log ou chat. Montagem: "Tudo certo", 334 arquivos, 327 caminhos conferidos. Deploy: 382 arquivos lidos, 1 enviado (a página do quiz; a Geist de /quiz/fontes/ é igual à da landing, que já estava lá), Worker de 18,10 KiB, as mesmas três ligações.
+- Conferido no ar, num navegador sem tela, em 1440 e em 375 pixels: / e os dois botões da landing-page-02 como de manhã; /quiz/ abre na abertura (tela 1 de 27), sem a capa, com o cabeçalho da landing-page-02 e os dois "Fazer a Análise", e o do cabeçalho leva à primeira pergunta; no computador, ao rolar, só o relatório se mexe; no celular, o texto vem antes e o botão fica fixo no rodapé ao rolar; nada pedido a outro endereço; nenhum erro de programa. Sem rollback.
+- A visita da landing-page-02 continua recusada pelo banco (422), até o catálogo v3 rodar no Supabase (Pendências); o início do quiz foi gravado (201). A conferência gravou no banco um início do quiz sem pessoa (utm_source bio, utm_campaign funil-01), por volta das 11h41.
+- entregas/prototipo-funil-01/README.md v7 para v8 (prototipo-funil-01), rascunho (otavio: pendente), desatualizado. Motivo: forma; só registra a publicação (frase do topo, linha nova em "Publicações" e a conferência no ar). Os dependentes já estavam com desatualizado: true.
+- conexoes.md, linha da Cloudflare: a versão no ar (fd6ba97b) e o token em uso nas duas publicações do dia. index.md: protótipo v8 e quiz-01 v4 no ar.
+
 ## 2026-11-12 · abertura do quiz (versão 4)
 
 Pedido do Otávio (12/11/2026, na conversa com o Claude, com os prints das duas primeiras telas do quiz e do cabeçalho da página de vendas): tirar do funil a primeira tela do quiz e ir direto para a segunda; nela, o mesmo cabeçalho da página de vendas, o botão "Fazer a Análise" igual ao da landing e, ao rolar, só a imagem se mexendo, com a promessa, o título e o botão sempre na tela. No celular, onde não cabe tudo parado, o Otávio escolheu entre três desenhos: título, promessa e botão antes da imagem e o botão fixo no rodapé ao rolar. Nenhum documento da base mudou; nada rodou no Supabase; nada foi publicado (o protótipo no ar, e344fcdd, ainda abre na capa).

@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 7
+versao: 8
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -24,7 +24,7 @@ desatualizado: true
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. **A v6 está no ar desde 12/11/2026, 10h14** (Current Version ID e344fcdd-d17f-47e6-9353-59e5579d86e3); a v7 só registra essa publicação (seção "Publicações"). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. **No ar desde 12/11/2026, 11h40** (Current Version ID fd6ba97b-6a53-4a3b-83b9-b69694594210), com a v6 desta pasta e o quiz-01 abrindo na abertura (quiz-01-pagina v4); a v7 e a v8 só registram as publicações de 12/11/2026 (seção "Publicações"). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
@@ -41,8 +41,9 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | 09/11/2026 | 7c6024d7-ff13-4ab8-b9f7-1a58213c0909 | Primeira publicação, pelo LIGAR.md (quiz com os acentos quebrados, corrigidos no pedido 09) | Otávio, com o wrangler logado no Mac |
 | 09/11/2026, 19h16 | c4235168-4d3c-46b5-b721-8be77fdd3cb3 | APLICAR-11 v1, parte 4: as páginas da etapa 34 (quiz-01 v3 e as variantes da landing-page-01) e o garçom v4 (prompts/14-estado-para-o-mentor.md) | Otávio, com o wrangler logado no Mac |
 | 12/11/2026, 10h14 | e344fcdd-d17f-47e6-9353-59e5579d86e3 | Esta pasta na v6: landing-page-02 em /, quiz-01 em /quiz/, garçom v4; main no 19e2a84 | Claude Code online, pelo passo 4.3 do APLICAR-11 (wrangler 4.158.0, WRANGLER_SEND_METRICS=false), com o token de API da Cloudflare nas variáveis do ambiente da nuvem, temporário até 16/11/2026. Nenhum valor de chave em arquivo |
+| 12/11/2026, 11h40 | fd6ba97b-6a53-4a3b-83b9-b69694594210 | A mesma pasta, com o quiz-01 v4: a capa fora do funil e a abertura com o cabeçalho e o botão "Fazer a Análise" da landing-page-02; main no 8a6abe0 | Claude Code online, do mesmo jeito da de cima |
 
-**Conferido no ar em 12/11/2026** (navegador sem tela, em 1440 e em 375 pixels como celular, com os envios ao garçom bloqueados, salvo uma visita e um início do quiz):
+**Conferido no ar em 12/11/2026, depois da e344fcdd** (navegador sem tela, em 1440 e em 375 pixels como celular, com os envios ao garçom bloqueados, salvo uma visita e um início do quiz):
 
 - / abre a landing-page-02 (200, `text/html; charset=utf-8`, `X-Robots-Tag: noindex`) e cabe nos 375 pixels.
 - Os dois botões, "Fazer a Análise" e "Faça uma Análise Estratégica do seu Sistema de Vendas", levam a /quiz/ com utm_source, utm_campaign e id_sessao.
@@ -50,6 +51,15 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 - Nenhuma página pede arquivo a outro endereço, e nenhuma mostrou erro de programa.
 - No garçom, o início do quiz (quiz-01, 2) foi gravado (201), mas a **visita da landing-page-02 foi recusada (422)**: o catálogo do banco ainda não tem a linha (landing-page-02, 1), porque em 09/11 entraram as três linhas da v2 do catalogo-prototipo.sql. O resto funciona. Para a visita ser gravada, falta rodar dados/banco/catalogo-prototipo.sql v3 no Supabase (APLICAR-11.md, 2.5 e 2.6). Não houve rollback: a página e o quiz abriram.
 - O que a conferência gravou no banco: um início do quiz sem pessoa (utm_source bio, utm_campaign funil-01), por volta das 10h20 de 12/11/2026. Nenhum fim do quiz, nenhum contato.
+
+**Conferido no ar em 12/11/2026, depois da fd6ba97b** (do mesmo jeito):
+
+- / e os dois botões da landing-page-02 como acima: levam a /quiz/ com utm_source, utm_campaign e id_sessao.
+- /quiz/ abre na abertura (tela 1 de 27), sem a capa, com o cabeçalho da landing-page-02 no lugar do do quiz e os dois botões "Fazer a Análise"; o do cabeçalho leva à primeira pergunta.
+- Em 1440 pixels, ao rolar, só o relatório de exemplo se mexe (título, promessa e botão no mesmo lugar); em 375, o texto vem antes do relatório e, rolando, o botão aparece fixo no rodapé. As páginas cabem na largura.
+- Nenhuma página pede arquivo a outro endereço, e nenhuma mostrou erro de programa.
+- No garçom, o início do quiz foi gravado (201); a visita da landing-page-02 continua recusada (422), até o catálogo v3 rodar.
+- O que a conferência gravou no banco: um início do quiz sem pessoa (utm_source bio, utm_campaign funil-01), por volta das 11h41 de 12/11/2026. Nenhum fim do quiz, nenhum contato.
 
 ## O que tem dentro
 
