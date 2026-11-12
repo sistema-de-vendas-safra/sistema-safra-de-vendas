@@ -66,4 +66,4 @@ Para a primeira versão do ESTADO.md. Registrar como informado pelo mentor em 10
 - **Partes 5, 6 e 7 do APLICAR-11: sem confirmação.** Escrever assim. Não atualizar o conexoes.md por conta deste pedido: quem dispara essa atualização é a parte 7 do roteiro, quando o Otávio avisar.
 - **Decisões.** Em 09/11/2026, 16h10, o Otávio respondeu prompts/11-decisoes-restantes.md com "Aceito todas as recomendações." A aplicação está em prompts/13-correcoes-e-decisoes-restantes.md, ainda não rodado, que só roda depois da parte 7 do APLICAR-11.
 - **Pedido 12.** Descartado: a apresentação do funil está sendo feita no Claude Design. O registro do descarte no log.md fica com o pedido 13.
-- **De 12/11 a 16/11/2026.** O Otávio está só no Windows, sem o Mac, e trabalha com o Claude Code online. Nada se publica nesse período: publicar depende do wrangler logado no Mac. Informado pelo mentor em 12/11/2026.
+- **De 12/11 a 16/11/2026.** O Otávio está só no Windows, sem o Mac, e trabalha com o Claude Code online. Nesse período, publicar é pela nuvem, com um token de API temporário nas variáveis do ambiente (pedido 15). Informado pelo mentor em 12/11/2026.
