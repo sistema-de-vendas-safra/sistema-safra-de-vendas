@@ -2,6 +2,14 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-12 · catálogo v3 conferido no ar
+
+O Otávio informou (12/11/2026, na conversa com o Claude) que rodou dados/banco/catalogo-prototipo.sql v3 no Supabase às 13h22, e pediu para conferir no ar. Nenhum documento mudou; nada rodou no Supabase pelo Claude; nada publicado.
+
+- **A visita da landing-page-02 volta 201** (antes, 422). Conferido às 13h26, num navegador sem tela, abrindo / no protótipo no ar (versão fd6ba97b) com utm_source bio e utm_campaign funil-01: o pedido saiu como tipo visita, entrega landing-page-02, versão 1, com as utm e o id_sessao, sem pessoa, e o garçom respondeu 201. Os outros envios ficaram bloqueados.
+- O que a conferência gravou no banco: uma visita sem pessoa (bio, funil-01), às 13h26. Uma tentativa logo antes, por volta das 13h24, travou no navegador sem tela depois de mandar a visita e pode ter gravado mais uma, também sem pessoa.
+- Pendências: o item (1) da publicação de 12/11/2026 fica feito; falta o (2), o token.
+
 ## 2026-11-12 · publicação da abertura do quiz
 
 Pedido do Otávio (12/11/2026, na mesma conversa, com "Quero" à pergunta se publicava a abertura do quiz): publicar pelo passo 4.3 do APLICAR-11.md, como de manhã. Nenhum documento da base mudou; nada rodou no Supabase.
@@ -541,4 +549,4 @@ Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08
 
 - [ ] **Correções para a próxima versão de cada documento (triagem da etapa 36):** cada uma entra quando o documento subir de versão por outro motivo, como forma, sem mudar sentido. 30.10: nucleo/regras/versionamento.md, "(numa fila, pela Regra de pausas do CLAUDE.md)" ao fim da frase "Na dúvida se é forma ou sentido, o Claude pergunta antes de alterar". 31.9 (B, pela 9.8; #114): base/ficha-de-fatos.md ganha os subcampos de nome fixo duracao:dias, nome-call-de-venda:nome, duracao-call-de-venda:duracao e quem-faz-a-reuniao:condutor, que a copy da landing v4 já usa. 32.11: entregas/planilha-sdr-funil-01/ (Codigo.gs e README) passa a citar garcom 4, regra-seguranca 3 e decisoes 5, depois de conferir que nada muda no código. 34.16: a política de privacidade tira a frase sobre a página do quiz de antes (duas caixas, fontes de fora) e declara quiz-01-pagina 3. 35.6: dados/banco/README.md, "Como aplicar", com o catálogo antes do conferir.sql, como o APLICAR-11.md. 35.8: dados/banco/README.md, "Conferido nesta máquina", com o ensaio v3; README do protótipo com o dry-run de 09/11 (19 arquivos, 18,10 KiB).
 
-- [ ] **Depois da publicação de 12/11/2026 (e344fcdd):** (1) o Otávio roda dados/banco/catalogo-prototipo.sql v3 no SQL Editor do Supabase (APLICAR-11.md, 2.5 e 2.6; quatro linhas), para a visita da landing-page-02 deixar de ser recusada; (2) até 16/11/2026, apagar a variável CLOUDFLARE_API_TOKEN do ambiente da nuvem e revogar o token na Cloudflare (Profile, API Tokens); (3) atualizar conexoes.md (linha da Cloudflare: publicação e jeito de publicar) e index.md (protótipo v7, landing-page-02 publicada), que o registro da publicação não mexeu. **(3) feito em 12/11/2026** (entrada "pendências da publicação"); (1) e (2) continuam com o Otávio, passo a passo em prompts/15-publicar-landing-02-resposta.md.
+- [ ] **Depois da publicação de 12/11/2026 (e344fcdd):** (1) o Otávio roda dados/banco/catalogo-prototipo.sql v3 no SQL Editor do Supabase (APLICAR-11.md, 2.5 e 2.6; quatro linhas), para a visita da landing-page-02 deixar de ser recusada; (2) até 16/11/2026, apagar a variável CLOUDFLARE_API_TOKEN do ambiente da nuvem e revogar o token na Cloudflare (Profile, API Tokens); (3) atualizar conexoes.md (linha da Cloudflare: publicação e jeito de publicar) e index.md (protótipo v7, landing-page-02 publicada), que o registro da publicação não mexeu. **(3) feito em 12/11/2026** (entrada "pendências da publicação"). **(1) feito em 12/11/2026, 13h22**, pelo Otávio; conferido no ar (entrada "catálogo v3 conferido no ar"). (2) continua com o Otávio, passo a passo em prompts/15-publicar-landing-02-resposta.md.
