@@ -10,7 +10,7 @@ O mentor passa a trabalhar num projeto próprio do Claude, que lê este reposit�
 
 - Leia CLAUDE.md. Valem todas as regras da casa. Dúvidas no fim da resposta, pelo caminho conservador.
 - Um subagente escreve, outro, que não viu a escrita, revisa contra este pedido e contra o repositório. Um commit só ("14 · estado para o mentor"). Este arquivo entra no commit.
-- Proibido: publicar, rodar SQL no Supabase de verdade, push, chave, dado pessoal, mexer em fontes/.
+- Proibido: publicar, rodar SQL no Supabase de verdade, push para a main, chave, dado pessoal, mexer em fontes/. No Claude Code online, o push vai só para o branch da sessão, como manda a regra 7.
 - Nunca travessão. Use ponto médio.
 - Não aplique nada do pedido 13 aqui, mesmo que o arquivo dele esteja na pasta.
 
@@ -21,7 +21,7 @@ O mentor passa a trabalhar num projeto próprio do Claude, que lê este reposit�
    - Na frase "O mapa do que existe está em index.md; o histórico e as pendências, em log.md.", acrescentar: "o resumo de como o sistema está agora, em ESTADO.md."
    - Regra nova, a 11: "**ESTADO.md sempre em dia.** No fechamento de todo pedido e de toda fila, reescrever o ESTADO.md inteiro, no formato do próprio arquivo, no mesmo commit do fechamento. É a porta de entrada do mentor: uma página, sem fato copiado, sem dado pessoal e sem chave."
 3. **index.md:** a linha do ESTADO.md em "Raiz" e este pedido na linha de prompts/.
-4. **log.md:** a entrada deste pedido.
+4. **log.md:** a entrada deste pedido e a mudança da regra 7 do CLAUDE.md, feita pelo mentor em 12/11/2026 por decisão do Otávio, para o trabalho no Claude Code online.
 5. **Resposta** em prompts/14-estado-para-o-mentor-resposta.md, com as perguntas, se houver.
 
 ## Formato do ESTADO.md
@@ -66,3 +66,4 @@ Para a primeira versão do ESTADO.md. Registrar como informado pelo mentor em 10
 - **Partes 5, 6 e 7 do APLICAR-11: sem confirmação.** Escrever assim. Não atualizar o conexoes.md por conta deste pedido: quem dispara essa atualização é a parte 7 do roteiro, quando o Otávio avisar.
 - **Decisões.** Em 09/11/2026, 16h10, o Otávio respondeu prompts/11-decisoes-restantes.md com "Aceito todas as recomendações." A aplicação está em prompts/13-correcoes-e-decisoes-restantes.md, ainda não rodado, que só roda depois da parte 7 do APLICAR-11.
 - **Pedido 12.** Descartado: a apresentação do funil está sendo feita no Claude Design. O registro do descarte no log.md fica com o pedido 13.
+- **De 12/11 a 16/11/2026.** O Otávio está só no Windows, sem o Mac, e trabalha com o Claude Code online. Nada se publica nesse período: publicar depende do wrangler logado no Mac. Informado pelo mentor em 12/11/2026.
