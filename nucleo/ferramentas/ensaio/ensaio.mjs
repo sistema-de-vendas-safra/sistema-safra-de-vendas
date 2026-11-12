@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 5 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 6 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -23,7 +23,11 @@
 //   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
 //   8. Casos de erro: chaves no lugar errado, pacote sem consentimento, clique sem fim do quiz,
 //      a mesma pessoa enviando duas vezes ao mesmo tempo.
-//   9. Fechamento: conferir.sql de novo e registros sem dado pessoal.
+//   9. (v6; #116) A medição no site montado, em 375, 360 e 1440: sem escolha e com "Recusar", nada para fora
+//      de 127.0.0.1, na landing e no quiz; com "Aceitar" na landing, num contexto que responde 404 ao Google, o gtm.js
+//      do GTM-T6L4QTB8 é o primeiro e único pedido para fora, a pagina_limpa sai sem o id_sessao, e a escolha passa
+//      para o quiz, que abre sem o aviso e já pede o gtm.js; no banco, a visita e o início com a mesma sessão.
+//  10. Fechamento: conferir.sql de novo e registros sem dado pessoal.
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -582,14 +586,22 @@ async function principal() {
   const tipoDoPedido = (rq) => { try { return JSON.parse(rq.postData() || '{}').evento.tipo; } catch { return null; } };
   const ehEvento = (tipo) => (rr) => rr.url() === BASE + '/api/evento' && rr.request().method() === 'POST' && tipoDoPedido(rr.request()) === tipo;
 
-  async function novoContexto(largura, { eventoForaDoAr = false } = {}) {
-    const ctx = await navegador.newContext({ viewport: { width: largura, height: largura === 375 ? 812 : 900 }, reducedMotion: 'reduce' });
+  // v6: 360 com 640 de altura, o celular pequeno da medição
+  const ALTURA = { 375: 812, 360: 640, 1440: 900 };
+  // google (v6; #116): só no contexto que vai aceitar o aviso de cookies. O pedido a www.googletagmanager.com é anotado nessa
+  // lista e respondido aqui com 404, como o Google responde enquanto o contêiner não é publicado, sem sair da máquina.
+  async function novoContexto(largura, { eventoForaDoAr = false, google = null } = {}) {
+    const ctx = await navegador.newContext({ viewport: { width: largura, height: ALTURA[largura] || 900 }, reducedMotion: 'reduce' });
     // Só 127.0.0.1: qualquer outro endereço é anotado e bloqueado (desde a v3, nada deve tentar sair; 10.7)
     await ctx.route('**/*', (rota) => {
       const end = rota.request().url();
       if (end.startsWith(BASE + '/') || end.startsWith('data:')) {
         if (eventoForaDoAr && end === BASE + '/api/evento') return rota.abort();
         return rota.continue();
+      }
+      if (google && new URL(end).hostname === 'www.googletagmanager.com') {
+        google.push(end);
+        return rota.fulfill({ status: 404, contentType: 'text/plain', body: '' });
       }
       fora.push(new URL(end).hostname || end.slice(0, 20));
       return rota.abort();
@@ -953,8 +965,151 @@ async function principal() {
   conferir(await contar(`select count(*) as n from public.pessoas where email = $1`, [PESSOA_DUPLA.email]) === 1 && ed.length === 2,
     'uma pessoa só no banco e dois eventos fim_quiz ligados a ela (' + ed.length + ')');
 
-  // ═══ 9. Fechamento ═══
-  secao('9. Fechamento');
+  // ═══ 9. Medição no site montado (v6; #116; prompts/17-medicao-google.md, 17.2) ═══
+  // O bloco que a montagem acrescenta (entregas/prototipo-funil-01/medicao.mjs). As pessoas de 6 nunca tocam no aviso; aqui, as
+  // provas de ponta a ponta que só o ensaio faz: a landing e o quiz servidos pelo workerd, a escolha de uma página valendo na outra,
+  // e a sessão gravada no banco mesmo com o endereço já limpo. Vem depois da planilha (7) para não atrasar a primeira busca, que
+  // conta com a margem de 1 minuto (21.6). Não grava pessoa nem fim do quiz: só visitas e inícios do quiz, sem pessoa.
+  secao('9. Medição no site montado: aviso de cookies e Tag Manager (#116)');
+  const MEDICAO = await import(pathToFileURL(join(PROTOTIPO, 'medicao.mjs')).href);
+  const GTM = MEDICAO.ENDERECO_GTM, TA = MEDICAO.TEXTO_DO_AVISO;
+  const SESSAO_DE_VOLTA = 'sessao-ensaio-volta-0001';   // quem volta do quiz para a landing com o código no endereço
+  const doAviso = (page, texto) => page.locator('#aviso-cookies button').filter({ hasText: new RegExp('^' + texto + '$') });
+  const lerEscolha = (page) => page.evaluate(ch => { try { return localStorage.getItem(ch); } catch { return 'erro'; } }, MEDICAO.CHAVE_ESCOLHA);
+  const temAviso = (page) => page.evaluate(() => !!document.getElementById('aviso-cookies'));
+  const camadaDe = (page) => page.evaluate(() => (window.dataLayer || []).map(x => x && typeof x === 'object' && typeof x.length === 'number' && !Array.isArray(x) ? { gtag: Array.from(x) } : x));
+  const doGtm = (c) => c.some(x => x && (x.event === 'gtm.js' || 'pagina_limpa' in x));
+  const soAnalise = (c) => c.filter(x => x && x.gtag && x.gtag[0] === 'consent' && x.gtag[1] === 'update').map(x => JSON.stringify(x.gtag[2])).join() === '{"analytics_storage":"granted"}';
+  const livreDoAviso = (loc, rolar) => loc.evaluate(async (b, rolar) => {
+    if (rolar) b.scrollIntoView({ block: 'center', behavior: 'instant' }); else window.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise(ok => requestAnimationFrame(() => requestAnimationFrame(ok)));
+    const a = document.getElementById('aviso-cookies'), r = b.getBoundingClientRect(), ra = a.getBoundingClientRect();
+    const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return !(r.left < ra.right && ra.left < r.right && r.top < ra.bottom && ra.top < r.bottom) && !!el && b.contains(el);
+  }, rolar);
+  const pedidoAoGoogle = (page) => page.waitForRequest(rq => rq.url().startsWith('https://www.googletagmanager.com/'), { timeout: 10000 }).catch(() => null);
+  // O "Fazer a Análise" do topo da landing-page-02: no computador é um <button>; no celular, o programa da landing desenha o mesmo
+  // botão como um bloco (data-name "Botão/Primário"), sem <button>. Para ir ao quiz no celular, o ensaio usa o botão grande, como em 6.
+  const ctaDoTopo = (page) => page.locator('button:visible, [data-name="Botão/Primário"]:visible', { hasText: BOTAO_DO_TOPO }).first();
+  const sessoesAceitas = [];
+  for (const largura of [375, 360, 1440]) {
+    const rotulo = 'medição ' + largura;
+    const ida = largura < 900 ? BOTAO_GRANDE : BOTAO_DO_TOPO;
+    // Sem escolha e com "Recusar": na landing e no quiz, nada para fora de 127.0.0.1
+    {
+      const foraAntes = fora.length;
+      const ctx = await novoContexto(largura);
+      const page = await ctx.newPage();
+      page.on('console', m => consoleTexto.push(m.text()));
+      try {
+        const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+        await page.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
+        await visita;
+        await page.evaluate(() => document.fonts.ready);
+        await page.waitForTimeout(300);
+        const av = await page.evaluate(() => {
+          const a = document.getElementById('aviso-cookies');
+          return a && { primeiro: document.body.firstElementChild === a, pos: getComputedStyle(a).position, topo: Math.round(a.getBoundingClientRect().top),
+            lateral: document.documentElement.scrollWidth - innerWidth, ultimo: document.body.lastElementChild.id, texto: a.innerText.replace(/\s+/g, ' ') };
+        });
+        conferir(av && av.primeiro && av.pos === 'static' && av.topo === 0 && av.lateral <= 0 && av.ultimo === 'aviso-cookies-reabrir' && av.texto.includes(TA.texto),
+          rotulo + ' · landing sem escolha: o aviso no topo, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado, e o link "' + TA.reabrir + '" no fim');
+        const topo = await livreDoAviso(ctaDoTopo(page), false);
+        const grande = await livreDoAviso(botaoDaLanding(page, BOTAO_GRANDE), true);
+        conferir(topo && grande, rotulo + ' · landing sem escolha: o aviso não cobre o "' + BOTAO_DO_TOPO + '" do topo nem o botão grande');
+        const semNada = (await lerEscolha(page)) === null && !doGtm(await camadaDe(page));
+        // "Recusar" pelo teclado: com o foco no aviso (a rolagem acima mudou o ponto de partida do Tab no Chromium), o primeiro Tab
+        // chega ao "Aceitar", o segundo ao "Recusar"; depois do Enter, o foco vai ao primeiro botão ou link desenhado na landing
+        // depois do aviso, nunca ao body
+        await page.evaluate(() => { window.scrollTo({ top: 0, behavior: 'instant' }); document.getElementById('aviso-cookies').focus(); });
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Tab');
+        const noRecusar = await page.evaluate(() => (document.activeElement.textContent || '').trim());
+        await page.keyboard.press('Enter');
+        await page.waitForTimeout(300);
+        const foco = await page.evaluate(() => {
+          const e = document.activeElement;
+          const primeiro = [...document.body.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])')]
+            .find(x => x.getClientRects().length && getComputedStyle(x).visibility !== 'hidden');
+          return { body: e === document.body, primeiro: e === primeiro,
+            quem: e.tagName.toLowerCase() + ' "' + (e.getAttribute('aria-label') || e.textContent || '').trim().slice(0, 30) + '", a ' + Math.round(e.getBoundingClientRect().top + scrollY) + ' pixels do topo' };
+        });
+        conferir(noRecusar === TA.recusar && !foco.body && foco.primeiro,
+          rotulo + ' · landing, "' + TA.recusar + '" pelo teclado: o foco vai ao primeiro botão ou link visível depois do aviso, nunca ao body (' + foco.quem + ')');
+        const escolha = await lerEscolha(page);
+        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
+        await botaoDaLanding(page, ida).click();
+        await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 });
+        await inicio;
+        await page.waitForTimeout(500);
+        conferir(semNada && escolha === 'recusado' && !(await temAviso(page)) && !doGtm(await camadaDe(page)) && (await lerEscolha(page)) === 'recusado',
+          rotulo + ' · "Recusar" na landing: guarda "recusado"; o quiz abre sem o aviso e sem nada do Google na camada de dados');
+        conferir(fora.length === foraAntes, rotulo + ' · sem escolha e com "Recusar", na landing e no quiz: nenhum pedido para fora de 127.0.0.1' + (fora.length > foraAntes ? ' (' + fora.slice(foraAntes).join(', ') + ')' : ''));
+      } finally {
+        await ctx.close();
+      }
+    }
+    // "Aceitar" na landing: só o gtm.js do Google, a pagina_limpa sem o id_sessao, e a escolha passa para o quiz
+    {
+      const google = [];
+      const foraAntes = fora.length;
+      const ctx = await novoContexto(largura, { google });
+      const page = await ctx.newPage();
+      const idas = [];
+      page.on('request', rq => { if (rq.isNavigationRequest()) idas.push(rq.url()); });
+      page.on('console', m => consoleTexto.push(m.text()));
+      try {
+        const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+        await page.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01&id_sessao=' + SESSAO_DE_VOLTA);
+        await visita;
+        await page.waitForTimeout(300);
+        const antesDoAceite = google.length;
+        let pedido = pedidoAoGoogle(page);
+        await doAviso(page, TA.aceitar).click();
+        await pedido;
+        await page.waitForTimeout(300);
+        const camL = await camadaDe(page);
+        const limpaL = camL.find(x => x && 'pagina_limpa' in x);
+        const endL = new URL(page.url());
+        conferir(antesDoAceite === 0 && google.length === 1 && google[0] === GTM && fora.length === foraAntes,
+          rotulo + ' · "Aceitar" na landing: o pedido ao ' + GTM + ' é o primeiro e único para fora, só para o Google (' + (google.join(', ') || 'nenhum') + ')');
+        conferir(limpaL && limpaL.pagina_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01' && !JSON.stringify(camL).includes('id_sessao') && !endL.searchParams.has('id_sessao') && soAnalise(camL),
+          rotulo + ' · "Aceitar" na landing: pagina_limpa sem o id_sessao (' + (limpaL ? limpaL.pagina_limpa.replace(BASE, '') : 'nenhuma') + '), o endereço da barra também, e só a análise concedida');
+        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
+        pedido = pedidoAoGoogle(page);
+        await botaoDaLanding(page, ida).click();
+        await page.waitForURL(/\/quiz\//, { timeout: 15000 });
+        const ri = await inicio;
+        await pedido;
+        await page.waitForTimeout(400);
+        const paraOQuiz = idas.map(u => new URL(u)).find(u => u.pathname === '/quiz/');
+        const sessaoDaIda = paraOQuiz ? paraOQuiz.searchParams.get('id_sessao') : null;
+        let sessaoDoInicio = null;
+        try { sessaoDoInicio = JSON.parse(ri.request().postData()).evento.id_sessao; } catch { /* fica vazio */ }
+        const endQ = new URL(page.url());
+        const camQ = await camadaDe(page);
+        const limpaQ = camQ.find(x => x && 'pagina_limpa' in x);
+        conferir(!(await temAviso(page)) && (await lerEscolha(page)) === 'aceito' && google.length === 2 && google[1] === GTM && fora.length === foraAntes && soAnalise(camQ),
+          rotulo + ' · a escolha passa da landing para o quiz: clicando o botão da landing ("' + ida + '"), o quiz abre sem o aviso e já pede o gtm.js, só ao Google');
+        conferir(/^sessao-[a-z0-9-]{1,60}$/.test(sessaoDaIda || '') && sessaoDoInicio === sessaoDaIda && !endQ.searchParams.has('id_sessao') && endQ.searchParams.get('utm_source') === 'bio' &&
+          limpaQ && limpaQ.pagina_limpa === BASE + '/quiz/?utm_source=bio&utm_campaign=funil-01' && limpaQ.origem_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01',
+          rotulo + ' · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (' + endQ.search + endQ.hash + ')');
+        if (sessaoDaIda) sessoesAceitas.push(sessaoDaIda);
+      } finally {
+        await ctx.close();
+      }
+    }
+  }
+  {
+    // No banco: a medição própria não depende do aviso, e o endereço limpo não muda a sessão (a página guarda o código na memória)
+    const tipos = [];
+    for (const s of sessoesAceitas) tipos.push((await eventosDaSessao(s)).map(e => e.tipo + (e.id_pessoa === null ? '' : '+pessoa')).join(','));
+    conferir(sessoesAceitas.length === 3 && tipos.every(t => t === 'visita,inicio_quiz'),
+      'banco · com "Aceitar": a visita da landing e o início do quiz gravados com a mesma sessão, sem pessoa, nas três larguras (' + tipos.join(' | ') + ')');
+  }
+
+  // ═══ 10. Fechamento ═══
+  secao('10. Fechamento');
   await rodarConferir('no fim');
   conferir(JSON.stringify(await fotografiaDeAntes(naFila, db)) === JSON.stringify(fotografiaDeAntesInicial),
     'os dados de antes da migração continuam iguais no fim do ensaio');
@@ -966,7 +1121,8 @@ async function principal() {
   const PORTAS = { '/rest/v1/rpc/registrar_fim_quiz': 'anon', '/rest/v1/rpc/registrar_evento': 'anon', '/rest/v1/rpc/leads_para_planilha': 'service_role' };
   conferir(porPapel.length > 0 && porPapel.every(l => PORTAS[l.rota] === l.papel),
     'o garçom só chamou registrar_fim_quiz e registrar_evento com a publicável (anon) e leads_para_planilha com a secreta (service_role) (' + porPapel.length + ' chamadas)');
-  conferir(fora.length === 0, 'navegador · páginas: nenhum pedido para fora de 127.0.0.1, nem fonte do Google (10.7; ' + (fora.length ? [...new Set(fora)].join(', ') : 'nenhum') + ')');
+  // v6: nos contextos que aceitaram o aviso de cookies, o gtm.js do Google é anotado à parte (9) e não entra aqui
+  conferir(fora.length === 0, 'navegador · páginas: nenhum pedido para fora de 127.0.0.1, nem fonte do Google (10.7; ' + (fora.length ? [...new Set(fora)].join(', ') : 'nenhum') + '); nos contextos que aceitaram, só o gtm.js, conferido em 9');
   // O registro de rede do Chromium: só existe inteiro depois de o navegador fechar
   await navegador.close();
   let rede = null;
@@ -984,9 +1140,12 @@ async function principal() {
       if (typeof pr.url === 'string') { try { nomes.add(new URL(pr.url).hostname); } catch { /* não é endereço */ } }
     }
     const tcpFora = [...tcp].filter(a => !/^127\.0\.0\.1:\d+$/.test(a));
-    const nomesFora = [...nomes].filter(n => n && n !== '127.0.0.1');
+    // v6: o gtm.js dos contextos que aceitaram passa pelo registro, mas é respondido pelo ensaio com 404 dentro do navegador
+    const doTagManager = nomes.has('www.googletagmanager.com');
+    const nomesFora = [...nomes].filter(n => n && n !== '127.0.0.1' && n !== 'www.googletagmanager.com');
     conferir(tcpFora.length === 0 && tcp.size > 0, 'navegador · Chromium inteiro (netlog): nenhuma conexão TCP fora de 127.0.0.1 (' + tcp.size + ' endereços, ' + (tcpFora.join(', ') || 'todos locais') + ')');
     informar('tentativas de fundo do próprio Chromium, recusadas antes de sair (nome não encontrado e proxy local inexistente): ' + (nomesFora.join(', ') || 'nenhuma'));
+    if (doTagManager) informar('www.googletagmanager.com no registro de rede: pedidos parados dentro do navegador (respondidos com 404 nos contextos que aceitaram, conferidos em 9; bloqueados nos outros, conferidos acima), sem conexão');
     if (udp.size) informar('UDP sem envio de dado (o teste de IPv6 do Chromium, que só "conecta" para descobrir o endereço local): ' + [...udp].join(', '));
   } else {
     conferir(false, 'navegador · Chromium inteiro (netlog): o registro de rede não pôde ser lido');

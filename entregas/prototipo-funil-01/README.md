@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 8
+versao: 9
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -14,17 +14,21 @@ depende_de:
   - id: banco-rascunho
     versao: 4
   - id: decisoes
-    versao: 5
+    versao: 6
   - id: regra-seguranca
     versao: 3
   - id: lacunas
     versao: 6
+  - id: aviso-de-cookies
+    versao: 1
+  - id: politica-de-privacidade
+    versao: 3
 desatualizado: true
 ---
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. **No ar desde 12/11/2026, 11h40** (Current Version ID fd6ba97b-6a53-4a3b-83b9-b69694594210), com a v6 desta pasta e o quiz-01 abrindo na abertura (quiz-01-pagina v4); a v7 e a v8 só registram as publicações de 12/11/2026 (seção "Publicações"). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. **No ar desde 12/11/2026, 11h40** (Current Version ID fd6ba97b-6a53-4a3b-83b9-b69694594210), com a v6 desta pasta e o quiz-01 abrindo na abertura (quiz-01-pagina v4); a v7 e a v8 só registram as publicações de 12/11/2026 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"); ainda não foi publicada. Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
@@ -32,7 +36,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 
 **Protótipo de teste não é entrega.** Serve só para o Otávio testar o caminho do dado com leads de mentira (#102: nome começando por TESTE, e-mail @teste.invalid). Ir ao ar com gente de verdade continua travado: o destino dos contatos está em conflito (conflito-17, em base/lacunas.md; o garçom segue o lado 2, #90, sem escolher), as páginas e o garçom são rascunhos pendentes de aprovação (do Otávio e, nas páginas, do Júnior e do Euclides) e, antes de tráfego real, falta a proteção contra robô e o limite de pedidos (log.md, Pendências).
 
-**Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (garcom, quiz-01-pagina, landing-page-02, banco-rascunho e lacunas; regra provisória 11.1).
+**Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (garcom, quiz-01-pagina, landing-page-02, banco-rascunho, lacunas e, desde a v9, aviso-de-cookies e politica-de-privacidade; regra provisória 11.1).
 
 ## Publicações
 
@@ -69,6 +73,8 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | APLICAR-11.md | O roteiro para aplicar no protótipo que está no ar as mudanças das etapas 32 a 34, no mesmo padrão (id prototipo-funil-01-aplicar-11) |
 | wrangler.toml | A configuração do Worker: nome, main apontando para ../garcom/garcom.mjs, arquivos pelo binding ASSETS com run_worker_first, preview_urls = false (um endereço só, #101), as duas variáveis comuns e, só em comentário, o nome dos três segredos. Sem id de conta e sem segredo |
 | montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro) |
+| medicao.mjs | (v9) O bloco da medição que a montagem acrescenta em cada HTML: o consentimento padrão do Google com tudo negado, o aviso de cookies (texto de entregas/documentos/aviso-de-cookies.md) e o carregador do Google Tag Manager, que só roda depois do "Aceitar". Node, sem dependências. O teste do quiz usa o mesmo módulo |
+| medicao.json | (v9) O lugar único do código do contêiner do Tag Manager (GTM-T6L4QTB8, que não é segredo) e do nome da chave em que o navegador guarda a escolha (safra_cookies_v1) |
 | prints/ | Prints das duas páginas montadas em 375 e 1440 pixels |
 | site/ | A pasta montada. Fica fora do Git (.gitignore) e é refeita a cada montagem |
 
@@ -83,9 +89,28 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | POST /api/evento | Porta pública do garçom: a visita da landing, o início do quiz e o clique do fim, sem dado de pessoa (garçom v4) | entregas/garcom/garcom.mjs |
 | GET /api/planilha/leads-novos | Porta privada do garçom: só a planilha do SDR, com a CHAVE_PLANILHA | entregas/garcom/garcom.mjs |
 
-As rotas /api/ são atendidas pelo garçom antes dos arquivos. Todo pedido passa pelo Worker (run_worker_first = true), e o garçom põe o cabeçalho X-Robots-Tag: noindex em toda resposta, inclusive nos arquivos, e o charset utf-8 em todo HTML, CSS e JavaScript que a Cloudflare entrega sem charset (garçom v3). Além do cabeçalho, todo HTML do site tem a meta robots noindex, nofollow e a meta charset utf-8 no começo.
+As rotas /api/ são atendidas pelo garçom antes dos arquivos. Todo pedido passa pelo Worker (run_worker_first = true), e o garçom põe o cabeçalho X-Robots-Tag: noindex em toda resposta, inclusive nos arquivos, e o charset utf-8 em todo HTML, CSS e JavaScript que a Cloudflare entrega sem charset (garçom v3). Além do cabeçalho, todo HTML do site tem a meta robots noindex, nofollow e a meta charset utf-8 no começo e, desde a v9, o bloco da medição logo depois dela.
 
 Os botões "Fazer a Análise" e "Faça uma Análise Estratégica do seu Sistema de Vendas" da landing-page-02 levam a /quiz/ com as utm do endereço da landing (as que existirem: utm_source, utm_medium, utm_campaign, utm_content, utm_term) e o código de sessão da visita, no parâmetro id_sessao, no formato do banco (10.5). Exemplo para testar: /?utm_source=bio&utm_campaign=funil-01. O quiz só lê utm_source e utm_campaign, da lista do funil-01 (pergunta 23.5).
+
+## Medição (v9)
+
+Decisão #116 (Otávio, 12/11/2026; prompts/17-medicao-google.md, parte 17.2), como a política de privacidade v3 (item 7) descreve. Entra só pela montagem, nos dois HTML do site (/ e /quiz/); as entregas não mudam. O bloco fica logo depois da `<meta charset="utf-8">`, entre `<!-- medicao: inicio -->` e `<!-- medicao: fim -->`, e vem de medicao.mjs:
+
+1. **Antes de tudo**, o padrão de consentimento do Google com a análise e os três de anúncio negados (`gtag('consent', 'default', ...)`). O anúncio nunca recebe update.
+2. **O estilo do aviso**, todo com o prefixo `.aviso-cookies`, no visual da landing-page-02: faixa escura com borda #25312b, texto #cdd6d1 e #e5ece7, Geist, e os dois botões iguais (mesmo tamanho, cor e borda, menta #8bd6b1; só o rótulo muda), com foco visível pelo teclado. Mais compacto no celular.
+3. **Dois modelos** (`<template>`, que não carregam nada): o aviso e o link "Cookies". O texto vem do bloco `aviso` de entregas/documentos/aviso-de-cookies.md, com escape de HTML; `{{a definir: X}}` aparece como "[a definir: X]", como no quiz, e qualquer outro marcador para a montagem.
+4. **O programa do aviso**, que roda quando a página já está montada (DOMContentLoaded), depois que o programa da página leu o id_sessao:
+   - sem escolha guardada: o aviso entra como primeiro filho do body, em fluxo normal (não fixo, não por cima de nada), de uma borda à outra; ele sai da tela com a rolagem e nunca cobre o "Fazer a Análise" nem a barra fixa do rodapé do quiz no celular;
+   - com "recusado": não mostra nem carrega nada;
+   - com "aceito": não mostra o aviso e carrega o Tag Manager direto;
+   - em todo caso, o link discreto "Cookies" entra como último filho do body, em fluxo normal; ele reabre o aviso no topo, com o foco nele, e depois da escolha o foco volta ao link.
+5. **Ao "Aceitar"**: guarda `aceito` em `localStorage` (`safra_cookies_v1`); muda só a análise para concedida; troca o endereço da barra pelo mesmo endereço sem o parâmetro id_sessao (com os outros parâmetros e o #, por `history.replaceState`); põe na camada de dados `pagina_limpa` (endereço da página sem o id_sessao e sem o #) e `origem_limpa` (a página de origem, do mesmo jeito, ou vazio); e só então carrega o gtm.js do GTM-T6L4QTB8, uma vez, pelo carregador padrão do Google sem o `<noscript>`. O aviso some.
+6. **Ao "Recusar"**: guarda `recusado` e não carrega nada. Se antes era `aceito`, manda a análise negada ao Google e apaga os cookies cujo nome começa por `_ga` (path /, sem domínio e com o domínio do endereço e os de cima dele); o Tag Manager já carregado não é descarregado, e da próxima página em diante nada do Google carrega.
+
+**O foco depois da escolha** nunca fica no body: se o aviso foi reaberto pelo link "Cookies", volta ao link; se a escolha foi feita com o foco dentro do aviso, vai ao primeiro elemento focável da página depois dele, sem rolar a página. Pelo teclado, é o primeiro de todos (no quiz, o "Pular para o conteúdo"; na landing, o primeiro botão ou link desenhado); pelo mouse ou pelo toque, o primeiro que está à vista (no quiz, o "Fazer a Análise" do cabeçalho), para o "Pular para o conteúdo", que aparece quando recebe o foco, não surgir na tela de quem clicou.
+
+O navegador guarda só a escolha; sem escolha, nada. Leitura e escrita do `localStorage` ficam em try/catch: no modo privado, a página só não lembra a escolha. O quiz lê o id_sessao uma vez, ao abrir, e o guarda numa constante (conferido no código: `ID_SESSAO`; as utm são relidas, o id_sessao não), então tirar o código do endereço depois do "Aceitar" não muda a sessão: o início, o fim do quiz e o clique levam o mesmo código. Custo: quem aceitou e recarrega o quiz ganha uma sessão nova (pergunta 10 da 17.1). Nada do Google além do gtm.js; o Google Analytics é ligado pelo Otávio dentro do Tag Manager, depois da publicação, e deve usar `pagina_limpa` e `origem_limpa` como endereço e origem da página (log.md, Pendências). Enquanto o contêiner não é publicado, o Google responde 404 ao gtm.js, e isso é esperado.
 
 ## Como montar
 
@@ -95,28 +120,30 @@ Da raiz do repositório:
 node entregas/prototipo-funil-01/montar-site.mjs
 ```
 
-O script apaga site/ e monta de novo. Copia só os arquivos e as pastas do mapa (nada de README nem prints) e as fontes de cada página, de nucleo/ferramentas/fontes/ (v4, 10.7); se uma fonte faltar, diz para rodar `npm install` lá e sai com erro. Nos HTML montados, e nunca nas entregas: acrescenta `<meta charset="utf-8">` como primeiríssima linha quando não houver nos primeiros 1024 bytes (só o quiz, que não tem; o navegador só procura o charset nesse começo, e o comentário de cabeçalho do quiz passa disso; v3, pedido 09); acrescenta `<meta name="robots" content="noindex, nofollow">` quando não houver (o quiz não tinha; a landing já tem); acrescenta `<meta name="viewport" content="width=device-width, initial-scale=1">` antes do `<title>` quando não houver (só o quiz: sem ela, o celular desenha a página com 980 pixels e encolhe; a entrega fica para uma v3, conflito-18, pergunta 23.8). A landing-page-02 já leva ao quiz por /quiz/ e não muda na montagem (v6). Depois confere cada caminho de css, imagem e link nos arquivos montados, a meta charset nos primeiros 1024 bytes, a meta noindex e a meta viewport em todo HTML, (v6) cada imagem que o programa da landing-page-02 cita, (v4) que nenhuma página pede arquivo a outro endereço: nenhum src, link, url() ou @import para http(s) e nenhuma menção a fonts.googleapis ou fonts.gstatic, e (v6) que o programa não cita fonts.googleapis, fonts.gstatic nem vercel.live. Se algo falhar, diz o que e sai com erro.
+O script apaga site/ e monta de novo. Copia só os arquivos e as pastas do mapa (nada de README nem prints) e as fontes de cada página, de nucleo/ferramentas/fontes/ (v4, 10.7); se uma fonte faltar, diz para rodar `npm install` lá e sai com erro. Nos HTML montados, e nunca nas entregas: acrescenta `<meta charset="utf-8">` como primeiríssima linha quando não houver nos primeiros 1024 bytes (só o quiz, que não tem; o navegador só procura o charset nesse começo, e o comentário de cabeçalho do quiz passa disso; v3, pedido 09); acrescenta `<meta name="robots" content="noindex, nofollow">` quando não houver (o quiz não tinha; a landing já tem); acrescenta `<meta name="viewport" content="width=device-width, initial-scale=1">` antes do `<title>` quando não houver (só o quiz: sem ela, o celular desenha a página com 980 pixels e encolhe; a entrega fica para uma v3, conflito-18, pergunta 23.8). A landing-page-02 já leva ao quiz por /quiz/ e não muda na montagem (v6). Por último (v9), acrescenta o bloco da medição logo depois da meta charset (seção "Medição") e diz isso numa linha do relatório. Depois confere cada caminho de css, imagem e link nos arquivos montados, a meta charset nos primeiros 1024 bytes, a meta noindex e a meta viewport em todo HTML, (v6) cada imagem que o programa da landing-page-02 cita, (v4) que nenhuma página pede arquivo a outro endereço: nenhum src, link, url() ou @import para http(s) e nenhuma menção a fonts.googleapis ou fonts.gstatic, e (v6) que o programa não cita fonts.googleapis, fonts.gstatic nem vercel.live. (v9) A única exceção a "nenhum pedido a outro endereço" é o carregador do Tag Manager, exatamente `https://www.googletagmanager.com/gtm.js?id=`, e só dentro do bloco da medição: o bloco é separado do resto pelos marcadores antes de a conferência apagar os comentários; dentro dele, qualquer outro endereço é barrado (inclusive em comentário), e o carregador tem de aparecer uma vez; fora dele, e no programa da landing, qualquer menção ao Tag Manager, ao gtm.js ou ao Google Analytics é barrada. E confere que cada HTML tem o bloco uma vez só, antes de qualquer outro programa da página, com o consentimento padrão negado (análise e os três de anúncio) no primeiro programa do bloco, antes do carregador, sem `<noscript>` e sem update de anúncio. Provado com sete mudanças de propósito numa cópia fora do repositório (outro endereço dentro do bloco, o carregador fora dele, o bloco duas vezes, a análise concedida no padrão, o `<noscript>` do Google, update de anúncio e um programa antes do bloco): todas barradas. A ordem em que o programa roda (nada antes do "Aceitar") a conferência estática não vê; quem prova são o teste do quiz e o ensaio. Se algo falhar, diz o que e sai com erro.
 
-Resultado (12/11/2026, v6):
+Resultado (12/11/2026, v9):
 
 ```
 Site montado em entregas/prototipo-funil-01/site/
-  index.html (meta charset já existia no início; meta noindex já existia; meta viewport já existia)
+  index.html (meta charset já existia no início; meta noindex já existia; meta viewport já existia; aviso de cookies e Tag Manager acrescentados depois da meta charset)
   assets/ (cópia da pasta inteira)
   a/ (cópia da pasta inteira)
-  quiz/index.html (meta charset já existia no início; meta noindex acrescentada; meta viewport acrescentada)
+  quiz/index.html (meta charset já existia no início; meta noindex acrescentada; meta viewport acrescentada; aviso de cookies e Tag Manager acrescentados depois da meta charset)
   quiz/poster-junior.jpg (cópia)
+  medição (v9; #116): aviso de cookies (texto do aviso-de-cookies v1) e Google Tag Manager GTM-T6L4QTB8, que só carrega depois do "Aceitar"; o navegador guarda só a escolha (safra_cookies_v1); em index.html e quiz/index.html
   fontes/geist-latin-wght-normal.woff2 (cópia de @fontsource-variable/geist, com licenca-geist.txt)
   quiz/fontes/inter-latin-wght-normal.woff2 (cópia de @fontsource-variable/inter, com licenca-inter.txt)
   quiz/fontes/space-grotesk-latin-wght-normal.woff2 (cópia de @fontsource-variable/space-grotesk, com licenca-space-grotesk.txt)
   quiz/fontes/permanent-marker-latin-400-normal.woff2 (cópia de @fontsource/permanent-marker, com licenca-permanent-marker.txt)
-332 arquivos, 7129 KB; 326 caminhos conferidos
-Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, todos os caminhos e todas as imagens do programa da landing existem no site e nenhuma página pede arquivo a outro endereço.
+  quiz/fontes/geist-latin-wght-normal.woff2 (cópia de @fontsource-variable/geist, com licenca-geist.txt)
+334 arquivos, 7191 KB; 327 caminhos conferidos
+Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, o bloco da medição uma vez em cada HTML, antes de qualquer outro programa, com o consentimento padrão negado antes do carregador do Tag Manager, todos os caminhos e todas as imagens do programa da landing existem no site e nenhuma página pede arquivo a outro endereço, salvo o carregador do Tag Manager (https://www.googletagmanager.com/gtm.js?id=), só dentro do bloco da medição, que só roda depois do "Aceitar".
 ```
 
 Desde a v4, as páginas já trazem o doctype e a meta charset no começo (quiz v3, landings v3; 09.1), e o montador não acrescenta doctype. Procura no site montado (html, css e js) por endereço http (v6): só aparecem os nomes de espaço do SVG, do XML e do MathML (www.w3.org) e os links de erro do React (react.dev) no programa da landing-page-02, o comentário de licença do Tailwind (tailwindcss.com) no estilo dela e o https://wa.me/ do botão do WhatsApp do quiz, que só abre no clique e só com o número preenchido (hoje vazio). Nenhum deles é pedido a ninguém. As licenças copiadas (licenca-*.txt) citam endereços no texto, mas não são páginas (pergunta 34.10).
 
-Conferido pelo ensaio geral (nucleo/ferramentas/ensaio/, v4): em /, com utm no endereço, os dois botões de Análise levam a `/quiz/?utm_source=...&id_sessao=...` e a visita é gravada como landing-page-02, versão 1.
+Conferido pelo ensaio geral (nucleo/ferramentas/ensaio/, v4): em /, com utm no endereço, os dois botões de Análise levam a `/quiz/?utm_source=...&id_sessao=...` e a visita é gravada como landing-page-02, versão 1. Desde a v6 do ensaio, também a medição no site montado (seção 9 do ensaio): sem escolha e com "Recusar", nada para fora de 127.0.0.1, na landing e no quiz; com "Aceitar" na landing, o gtm.js do GTM-T6L4QTB8 é o primeiro e único pedido para fora, a pagina_limpa sai sem o id_sessao, e a escolha passa para o quiz, que abre sem o aviso e já pede o gtm.js.
 
 ## Como conferir com o dry-run
 

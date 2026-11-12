@@ -1,0 +1,5 @@
+{
+  "_comentario": "Medicao com o Google no site do prototipo do funil-01 (decisao #116; prompts/17-medicao-google.md, parte 17.2). Lugar unico do codigo do conteiner do Google Tag Manager (nao e segredo: aparece no codigo de qualquer pagina que usa o Tag Manager) e do nome da chave em que o navegador guarda so a escolha do aviso de cookies (valor aceito ou recusado; politica-de-privacidade v3, item 7). Lido por medicao.mjs, que a montagem (montar-site.mjs) e o teste do quiz (nucleo/ferramentas/prints/testar-quiz-01.js) usam. Mudar o codigo e mudar aqui e montar o site de novo.",
+  "codigo_gtm": "GTM-T6L4QTB8",
+  "chave_do_navegador": "safra_cookies_v1"
+}

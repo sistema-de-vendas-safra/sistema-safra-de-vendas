@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -16,7 +16,7 @@ depende_de:
   - id: garcom
     versao: 4
   - id: prototipo-funil-01
-    versao: 6
+    versao: 9
   - id: quiz-01-pagina
     versao: 4
   - id: landing-page-02
@@ -26,9 +26,11 @@ depende_de:
   - id: lead-score
     versao: 3
   - id: decisoes
-    versao: 5
+    versao: 6
   - id: regra-seguranca
     versao: 3
+  - id: aviso-de-cookies
+    versao: 1
 desatualizado: true
 ---
 
@@ -36,7 +38,7 @@ desatualizado: true
 
 Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de mentira, o site montado, o garçom, a landing e o quiz num navegador sem tela e a planilha do SDR com um Google de mentira. Serve para não ter surpresa quando o Otávio aplicar as mudanças no protótipo que está no ar (prompts/08-fila-da-madrugada.md, etapa 25; prompts/11-decisoes-de-09-11.md, etapa 35; o roteiro é entregas/prototipo-funil-01/APLICAR-11.md).
 
-**Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (banco-rascunho, banco-migracao-001, garcom, quiz-01-pagina, a landing-page-02, planilha-sdr-funil-01 e o protótipo; regra 11.1).
+**Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (banco-rascunho, banco-migracao-001, garcom, quiz-01-pagina, a landing-page-02, planilha-sdr-funil-01, o protótipo e, desde a v6, o aviso-de-cookies; regra 11.1).
 
 **Protótipo de teste não é entrega.** O ensaio usa só leads de mentira (#102: nome começando por TESTE, e-mail @teste.invalid), só valores de mentira montados na hora e só o endereço 127.0.0.1. Nada vai ao ar, nada é publicado, ninguém faz login, e nada sai da máquina (ver "Rede").
 
@@ -46,6 +48,8 @@ Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de 
 
 **O que muda na versão 5 (12/11/2026, quiz-01-pagina v4).** O quiz abre direto na abertura, sem a capa: o ensaio entra no quiz pelo botão "Fazer a Análise" da abertura, sem o clique no cartão da capa, e confere na abertura a Inter, a Space Grotesk e a Geist (a do cabeçalho e do botão da landing-page-02, agora também no quiz). O resto não mudou.
 
+**O que muda na versão 6 (12/11/2026, pedido 17, parte 17.2; decisão #116; prototipo-funil-01 v9).** O site montado já leva, em / e em /quiz/, o bloco da medição: o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (entregas/prototipo-funil-01/README.md, "Medição"). As pessoas de teste da seção 6 continuam sem tocar no aviso, e tudo o que passava continua passando. Seção nova, a 9 ("Medição no site montado"), com as provas que só o ensaio faz, de ponta a ponta no workerd, em 375, 360 (com 640 de altura) e 1440: sem escolha e com "Recusar", nenhum pedido para fora de 127.0.0.1, na landing e no quiz; o aviso no topo, em fluxo normal, sem cobrir o "Fazer a Análise" do topo nem o botão grande da landing; "Recusar" pelo teclado, com o foco indo depois ao primeiro botão ou link desenhado na landing, nunca ao body; com "Aceitar" na landing, num contexto próprio que responde 404 a www.googletagmanager.com (como o Google, enquanto o contêiner não é publicado) sem tirar a trava de rede do resto, o pedido ao gtm.js do GTM-T6L4QTB8 é o primeiro e único para fora; a pagina_limpa e o endereço da barra saem sem o id_sessao (a landing aberta com um id_sessao no endereço, como quem volta do quiz); a escolha passa da landing para o quiz: clicando o botão da landing, o quiz abre sem o aviso e já pede o gtm.js, e o início do quiz leva o id_sessao que veio da landing, com o endereço, a pagina_limpa e a origem_limpa sem ele; no banco, a visita e o início do quiz da mesma sessão, sem pessoa. A seção vem depois da planilha (7) e dos casos de erro (8), para não atrasar a primeira busca da planilha, que conta com a margem de 1 minuto (21.6); o fechamento passa a ser a seção 10. A conferência "navegador · páginas: nenhum pedido para fora de 127.0.0.1" continua valendo para todos os contextos que não aceitaram; nos que aceitaram, o gtm.js é anotado à parte e conferido na seção 9, e qualquer outro pedido para fora continua contando nela. No celular, o "Fazer a Análise" do topo da landing-page-02 não é um `<button>` (o programa da landing o desenha como um bloco com data-name "Botão/Primário"): o ensaio confere que o aviso não o cobre por esse bloco e, no celular, vai ao quiz pelo botão grande, como a pessoa da seção 6 em 375.
+
 ## Um comando só
 
 De dentro desta pasta:
@@ -54,7 +58,7 @@ De dentro desta pasta:
 npm run ensaio
 ```
 
-Ou da raiz do repositório: `node nucleo/ferramentas/ensaio/ensaio.mjs`. Leva perto de 55 segundos. Cada conferência sai com OK ou FALHOU; no fim, "Tudo certo: N de N" e código 0, ou "FALHOU: ..." e código 1.
+Ou da raiz do repositório: `node nucleo/ferramentas/ensaio/ensaio.mjs`. Leva perto de 90 segundos (v6). Cada conferência sai com OK ou FALHOU; no fim, "Tudo certo: N de N" e código 0, ou "FALHOU: ..." e código 1.
 
 Precisa de quatro instalações, todas dentro de nucleo/ferramentas/ (node_modules fica fora do Git): `npm install` nesta pasta (PGlite), em ../prototipo/ (wrangler), em ../prints/ (playwright-core; o Chromium vem do cache do Playwright da máquina, como na ferramenta de prints) e em ../fontes/ (as fontes que o montador põe no site).
 
@@ -92,7 +96,8 @@ Opções:
    Confere, no banco: o lead A com nome TESTE, telefone como a página mandou, os dois consentimentos "sim" pela caixa única com a data e o texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página; #104); fim do quiz com nota 96, faixa a, lead score versão 3, quiz-01 versão 2, a sessão vinda da landing e as respostas; a sessão do lead A com visita (landing-page-02, versão 1, utm bio), início do quiz (quiz-01, versão 2, sem nota nem respostas) e fim do quiz, nessa ordem, a visita e o início ligados à pessoa pelo fim do quiz da mesma sessão (6.2); o eliminatório com a nota e o clique tenho-interesse ligado pela sessão (18.4; 32.2); a faixa c do corte com o clique; a faixa b com nota 68, o clique quero-conversa e as respostas com o CRM e a linha "Leads por mês"; da desmarcada, nenhuma pessoa, nenhum fim do quiz e nenhum clique, só a visita e o início do quiz, sem pessoa (34.18); 4 pessoas e 4 fins de quiz novos, nada a mais.
 7. **Planilha do SDR.** Em outro processo (o UrlFetchApp de mentira é síncrono e trava a linha principal de quem chama), roda instalar() e buscar_() de Codigo.gs v2 contra o garçom local, pela porta privada, com a CHAVE_PLANILHA de mentira, numa aba nova, como depois de renomear a antiga (planilha-sdr-funil-01, "Atualizar da versão 1"). Confere: as 20 colunas na ordem, com clique_fim_quiz na 13; a primeira busca, logo depois do quiz, traz **só os 3 leads de antes** (a linha que imita a do Otávio, a faixa a com "=1+1" e a pessoa dos dois envios, uma vez só), e nenhum dos novos (a margem de 1 minuto do banco, 21.6); depois do contorno da margem (abaixo), 2 linhas novas, o lead A e a faixa b, na ordem de chegada; a linha do lead A com os valores certos e o clique vazio; a da faixa b com respostas_a_confirmar trazendo **leads-por-mes: 200** e **crm** (15.4) e clique_fim_quiz **quero-conversa** (18.4); a linha que imita a do Otávio com faixa a e nota 86; o eliminatório, a faixa c, a desmarcada e o eliminatório de antes fora; rodar de novo não duplica; com o cursor perdido, também não; o registro da planilha sem dado pessoal; com a chave errada, 401 e nada gravado.
 8. **Casos de erro.** Chave publicável lendo tabela, visão, gravando direto ou chamando leads_para_planilha pelo Supabase de mentira: 401. Chave secreta lendo tabela, gravando o fim do quiz ou um evento: 403. Porta privada do garçom com a chave da planilha errada, sem chave ou com a publicável no lugar: 401 sem detalhe; com a certa, os 5 leads. Pacote sem consentimento: o garçom recusa (422) sem chamar o banco, e a função chamada direto com a publicável também recusa (400, restrição 23514). Clique numa sessão sem fim do quiz: o banco recusa e o garçom responde 422 (32.2). /api/evento com pessoa no pacote: 422 sem chamar o banco. A mesma pessoa enviando duas vezes ao mesmo tempo: uma pessoa só no banco e dois eventos.
-9. **Fechamento.** conferir.sql de novo (18 de 18); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
+9. **Medição no site montado** (v6; #116), em 375, 360 e 1440. Por largura, dois contextos. No primeiro, sem escolha: a landing-page-02 com o aviso no topo, primeiro filho do body, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado e com o link "Cookies" no fim; o aviso não cobre o "Fazer a Análise" do topo nem o botão grande (retângulos separados e, no centro do botão, o próprio botão); "Recusar" pelo teclado (o segundo Tab, depois o Enter) leva o foco ao primeiro botão ou link desenhado na landing depois do aviso, nunca ao body, e guarda "recusado", e o quiz, aberto pelo botão da landing, abre sem o aviso e sem nada do Google na camada de dados; e, do começo ao fim, nenhum pedido para fora de 127.0.0.1. No segundo, que responde 404 ao Google: a landing aberta com um id_sessao no endereço; "Aceitar" faz do gtm.js do GTM-T6L4QTB8 o primeiro e único pedido para fora; a pagina_limpa e o endereço da barra saem sem o id_sessao, e só a análise é concedida; pelo botão da landing, o quiz abre sem o aviso, já pede o gtm.js (só ao Google), e o início do quiz leva o id_sessao da ida, com o endereço, a pagina_limpa e a origem_limpa sem ele. No banco, a visita e o início do quiz de cada uma dessas três sessões, com a mesma sessão e sem pessoa.
+10. **Fechamento.** conferir.sql de novo (18 de 18); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
 
 No fim, e também se algo falhar no meio ou se o ensaio for interrompido (Ctrl+C), fecha o navegador, o wrangler e o workerd (o grupo de processos inteiro), o processo da planilha, os servidores e o banco, e apaga a pasta temporária. O navegador é aberto sem os tratadores de sinal do Playwright (handleSIGINT, handleSIGTERM e handleSIGHUP desligados), senão ele encerraria o processo antes da limpeza.
 
@@ -108,13 +113,65 @@ O que o contorno pula: a espera de verdade e a conta da margem com o relógio de
 
 O ensaio confere em três lugares que nada sai da máquina:
 
-- **As páginas.** Todo pedido do navegador para um endereço que não seja 127.0.0.1 é bloqueado e anotado. Desde a v3, nada deve tentar sair: as fontes vêm do site (10.7). Conferência: nenhum pedido.
+- **As páginas.** Todo pedido do navegador para um endereço que não seja 127.0.0.1 é bloqueado e anotado. Desde a v3, nada deve tentar sair: as fontes vêm do site (10.7). Conferência: nenhum pedido. Desde a v6, só nos contextos da seção 9 que aceitam o aviso de cookies, o pedido a www.googletagmanager.com é anotado à parte e respondido pelo próprio ensaio com 404, dentro do navegador, sem conexão; ele é conferido na seção 9 (o gtm.js do GTM-T6L4QTB8, primeiro e único), e qualquer outro pedido para fora, também nesses contextos, continua contando aqui. No registro de rede do Chromium, www.googletagmanager.com aparece numa linha INFO própria, separada das tentativas de fundo.
 - **O Chromium inteiro.** O próprio Chromium, por conta dele, tenta falar com o Google em segundo plano (atualização, conta, mensagens), mesmo sem a página pedir nada: na primeira rodada desta etapa, sem trava, um vigia externo (lsof) viu o processo do Chromium do ensaio conectado a endereços do Google. Agora o navegador é aberto com todo nome que não seja 127.0.0.1 virando "não encontrado" (`--host-resolver-rules`) e com todo pedido de fora mandado para um proxy que não existe (`--proxy-server=http://127.0.0.1:9`); o registro de rede do Chromium (netlog), na pasta temporária, é lido no fim. Conferência: nenhuma conexão TCP fora de 127.0.0.1. Linhas INFO mostram as tentativas de fundo recusadas (clients2.google.com, accounts.google.com, www.google.com, update.googleapis.com, android.clients.google.com) e uma "conexão" UDP ao endereço [2001:4860:4860::8888]:443, que é o teste de IPv6 do Chromium: ele só abre o UDP para descobrir o endereço local da máquina, sem mandar dado.
 - **O wrangler.** Na mesma primeira rodada, o vigia viu o wrangler conectado a workers.cloudflare.com: é o miniflare buscando o cf.json (os dados de localização que o Workers põe no pedido). Agora o wrangler sobe com CLOUDFLARE_CF_FETCH_ENABLED=false, WRANGLER_HIDE_BANNER=true (sem a procura de versão nova no registro do npm), WRANGLER_SEND_METRICS=false e DO_NOT_TRACK=1, e com a trava rede-so-local.cjs carregada em todo processo Node dele (NODE_OPTIONS=--require): todo pedido de nome ou conexão para fora da máquina é recusado e anotado. Conferência: nenhuma tentativa. Prova de que a trava pega: rodado uma vez sem os quatro avisos, a conferência deu FALHOU com workers.cloudflare.com.
 
 Nas duas rodadas finais, o vigia externo (lsof a cada meio segundo nos processos do wrangler, do workerd, do Chromium e do ensaio; script fora do repositório) não viu nenhuma conexão fora de 127.0.0.1.
 
 ## Resultado do ensaio
+
+**v6 (12/11/2026, pedido 17, parte 17.2).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev, numa máquina Linux na nuvem: **170 de 170**, em 86 e 87 segundos, em duas rodadas seguidas. São as 142 da v5, todas de pé, mais 28 da seção 9: 9 por largura, em 375, 360 e 1440, e a do banco. Numa rodada anterior, com a seção da medição logo depois da 6, quatro conferências da planilha caíram (a primeira busca já trazia o lead A, porque a seção nova atrasou a busca além da margem de 1 minuto, 21.6); a seção foi para depois dos casos de erro, e tudo passou. Prova de que a seção nova pega o erro, rodada com a versão anterior da seção (167 conferências, sem a do foco): com o carregador do Tag Manager forçado a rodar antes do "Aceitar" (mudança de propósito em entregas/prototipo-funil-01/medicao.mjs, desfeita pelo Git), **16 FALHOU**: nas três larguras, "Recusar" sem nada do Google, "sem escolha e com Recusar: nenhum pedido para fora", "Aceitar: o gtm.js primeiro e único", a pagina_limpa e o endereço limpos na landing e no quiz; e a de antes, no fechamento, "navegador · páginas: nenhum pedido para fora de 127.0.0.1". A conferência do netlog continuou certa, porque o pedido ao Google é parado dentro do navegador. No celular, o primeiro botão da landing depois do aviso, para onde o foco vai depois da escolha pelo teclado, é um botão sem rótulo a mais de 5 mil pixels do topo: o "Fazer a Análise" do cabeçalho, no celular, não é um botão. Saída da seção nova e do fechamento (segunda rodada):
+
+```
+· 9. Medição no site montado: aviso de cookies e Tag Manager (#116)
+OK     · medição 375 · landing sem escolha: o aviso no topo, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado, e o link "Cookies" no fim
+OK     · medição 375 · landing sem escolha: o aviso não cobre o "Fazer a Análise" do topo nem o botão grande
+OK     · medição 375 · landing, "Recusar" pelo teclado: o foco vai ao primeiro botão ou link visível depois do aviso, nunca ao body (button "", a 5532 pixels do topo)
+OK     · medição 375 · "Recusar" na landing: guarda "recusado"; o quiz abre sem o aviso e sem nada do Google na camada de dados
+OK     · medição 375 · sem escolha e com "Recusar", na landing e no quiz: nenhum pedido para fora de 127.0.0.1
+OK     · medição 375 · "Aceitar" na landing: o pedido ao https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8 é o primeiro e único para fora, só para o Google (https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8)
+OK     · medição 375 · "Aceitar" na landing: pagina_limpa sem o id_sessao (/?utm_source=bio&utm_campaign=funil-01), o endereço da barra também, e só a análise concedida
+OK     · medição 375 · a escolha passa da landing para o quiz: clicando o botão da landing ("Faça uma Análise Estratégica"), o quiz abre sem o aviso e já pede o gtm.js, só ao Google
+OK     · medição 375 · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (?utm_source=bio&utm_campaign=funil-01#abertura)
+OK     · medição 360 · landing sem escolha: o aviso no topo, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado, e o link "Cookies" no fim
+OK     · medição 360 · landing sem escolha: o aviso não cobre o "Fazer a Análise" do topo nem o botão grande
+OK     · medição 360 · landing, "Recusar" pelo teclado: o foco vai ao primeiro botão ou link visível depois do aviso, nunca ao body (button "", a 5312 pixels do topo)
+OK     · medição 360 · "Recusar" na landing: guarda "recusado"; o quiz abre sem o aviso e sem nada do Google na camada de dados
+OK     · medição 360 · sem escolha e com "Recusar", na landing e no quiz: nenhum pedido para fora de 127.0.0.1
+OK     · medição 360 · "Aceitar" na landing: o pedido ao https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8 é o primeiro e único para fora, só para o Google (https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8)
+OK     · medição 360 · "Aceitar" na landing: pagina_limpa sem o id_sessao (/?utm_source=bio&utm_campaign=funil-01), o endereço da barra também, e só a análise concedida
+OK     · medição 360 · a escolha passa da landing para o quiz: clicando o botão da landing ("Faça uma Análise Estratégica"), o quiz abre sem o aviso e já pede o gtm.js, só ao Google
+OK     · medição 360 · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (?utm_source=bio&utm_campaign=funil-01#abertura)
+OK     · medição 1440 · landing sem escolha: o aviso no topo, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado, e o link "Cookies" no fim
+OK     · medição 1440 · landing sem escolha: o aviso não cobre o "Fazer a Análise" do topo nem o botão grande
+OK     · medição 1440 · landing, "Recusar" pelo teclado: o foco vai ao primeiro botão ou link visível depois do aviso, nunca ao body (button "Fazer a Análise", a 20 pixels do topo)
+OK     · medição 1440 · "Recusar" na landing: guarda "recusado"; o quiz abre sem o aviso e sem nada do Google na camada de dados
+OK     · medição 1440 · sem escolha e com "Recusar", na landing e no quiz: nenhum pedido para fora de 127.0.0.1
+OK     · medição 1440 · "Aceitar" na landing: o pedido ao https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8 é o primeiro e único para fora, só para o Google (https://www.googletagmanager.com/gtm.js?id=GTM-T6L4QTB8)
+OK     · medição 1440 · "Aceitar" na landing: pagina_limpa sem o id_sessao (/?utm_source=bio&utm_campaign=funil-01), o endereço da barra também, e só a análise concedida
+OK     · medição 1440 · a escolha passa da landing para o quiz: clicando o botão da landing ("Fazer a Análise"), o quiz abre sem o aviso e já pede o gtm.js, só ao Google
+OK     · medição 1440 · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (?utm_source=bio&utm_campaign=funil-01#abertura)
+OK     · banco · com "Aceitar": a visita da landing e o início do quiz gravados com a mesma sessão, sem pessoa, nas três larguras (visita,inicio_quiz | visita,inicio_quiz | visita,inicio_quiz)
+
+· 10. Fechamento
+OK     · no fim · conferir.sql: linha "tudo certo" = true (18 de 18)
+OK     · os dados de antes da migração continuam iguais no fim do ensaio
+OK     · saída do garçom (wrangler dev, 50 linhas [garcom]) sem dado pessoal, sem id_pessoa e sem chave
+OK     · o garçom só chamou registrar_fim_quiz e registrar_evento com a publicável (anon) e leads_para_planilha com a secreta (service_role) (40 chamadas)
+OK     · navegador · páginas: nenhum pedido para fora de 127.0.0.1, nem fonte do Google (10.7; nenhum); nos contextos que aceitaram, só o gtm.js, conferido em 9
+OK     · navegador · Chromium inteiro (netlog): nenhuma conexão TCP fora de 127.0.0.1 (2 endereços, todos locais)
+INFO   · tentativas de fundo do próprio Chromium, recusadas antes de sair (nome não encontrado e proxy local inexistente): clients2.google.com, redirector.gvt1.com, accounts.google.com, update.googleapis.com, www.google.com, content-autofill.googleapis.com, android.clients.google.com
+INFO   · www.googletagmanager.com no registro de rede: pedidos parados dentro do navegador (respondidos com 404 nos contextos que aceitaram, conferidos em 9; bloqueados nos outros, conferidos acima), sem conexão
+OK     · wrangler dev: nenhuma tentativa de falar com fora da máquina (trava rede-so-local.cjs; nenhuma)
+  tempo do ensaio: 87 s
+
+Tudo certo: 170 de 170 conferências passaram
+
+real	1m27.277s
+user	0m32.935s
+sys	0m8.432s
+```
 
 **v5 (12/11/2026).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev, numa máquina Linux na nuvem: **142 de 142**, em 63 segundos. Mesmo número da v4: a conferência das fontes do quiz trocou a Permanent Marker pela Geist, e o caminho até o quiz perdeu o clique na capa, que não era conferência.
 
@@ -322,6 +379,8 @@ Tudo certo: 142 de 142 conferências passaram
 **O que o Google de mentira não prova:** tudo da pergunta 24.13 (autorização, gatilho de 5 minutos rodando sozinho, formatos e listas no Google Planilhas de verdade) e a troca da aba de verdade (renomear a antiga e rodar instalar() de novo; APLICAR-11.md).
 
 **O navegador:** o visual não é conferido aqui (os prints das etapas 23 e 34 conferem). O quiz roda no site montado, servido pelo workerd, e não no celular de verdade.
+
+**A medição (v6):** o Google é respondido pelo ensaio com 404, como enquanto o contêiner não é publicado; o Tag Manager de verdade, o Google Analytics, os cookies que ele grava e o que ele manda ao Google não rodam aqui. Isso só se confere no ar, depois que o Otávio publicar o contêiner e ligar o Analytics (log.md, Pendências).
 
 **Contorno sem wrangler** (`--sem-wrangler`): o handler do garçom roda num servidor Node, com um ASSETS simples que lê a pasta montada. Não imita o binding de assets da Cloudflare (por exemplo, o redirecionamento de /quiz para /quiz/); serve só se o wrangler dev falhar. Esse ASSETS entrega HTML e CSS sem charset, como a Cloudflare entregou em 09/11, para o garçom ter de acrescentar.
 

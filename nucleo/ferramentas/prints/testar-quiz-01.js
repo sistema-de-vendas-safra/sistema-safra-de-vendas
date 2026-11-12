@@ -18,7 +18,20 @@
 // no rodapé quando o da página sai da tela. A entrada no quiz é pelo botão da abertura, pelo do cabeçalho (eliminatório) e,
 // no celular, pelo do rodapé (corte).
 // Em todos: o console não mostra o pacote nem nenhum dado de pessoa, e nenhuma requisição sai para outro endereço.
-// Tira prints em 375 e 1440 pixels em entregas/quizzes/quiz-01/prints/.
+// Medição (v9 do protótipo, pedido 17, 17.2; decisão #116): a página é servida com o bloco que a montagem acrescenta
+// (entregas/prototipo-funil-01/medicao.mjs), salvo no caso 6, que abre a entrega crua. Os casos 1 a 6 rodam em 375, 360 (com 640
+// de altura) e 1440, sem tocar no aviso de cookies, que fica no topo. Duas conferências da abertura mudaram de ponto de partida por
+// causa dele: "só o relatório rola" começa com o aviso rolado para fora (a forma original, de scroll 0, roda na seção da medição
+// com "recusado" guardado); e "sem a barra antes de rolar" virou a regra da página, que vale com e sem o aviso: a barra aparece
+// se, e só se, o botão da abertura está fora da tela ou sob o cabeçalho. Seção nova da medição, nas três larguras: sem escolha (o
+// aviso no topo, em fluxo normal, sem cobrir os botões nem a barra do celular, nada guardado, nada para fora); "Recusar" (guarda
+// "recusado", nada para fora, nem depois de recarregar; o foco não fica no body); "Aceitar" com o id_sessao no endereço (o
+// primeiro pedido para fora é o gtm.js do GTM-T6L4QTB8, só o Google, pagina_limpa e origem_limpa sem o id_sessao, o endereço da
+// barra limpo, só a análise concedida); uma rodada inteira com o "Aceitar" no começo (o mesmo id_sessao no início, no fim e no
+// clique); teclado (o foco vai ao "Pular para o conteúdo" depois da escolha); o link "Cookies"; e a troca de aceito para recusado
+// (cookies _ga apagados). Em todo contexto, o pedido a www.googletagmanager.com é respondido aqui com 404, como enquanto o
+// contêiner não é publicado, e anotado como requisição para outro endereço: nenhum pedido ao Google sai da máquina.
+// Tira prints em 375 e 1440 pixels em entregas/quizzes/quiz-01/prints/ (e os do aviso, aviso-375 e aviso-1440); em 360, nenhum.
 // Dados de pessoa de teste, marcados (#102): nome começando por TESTE, e-mail @teste.invalid.
 const { chromium } = require('playwright-core');
 const path = require('path');
@@ -57,6 +70,8 @@ function servir() {
     }
     if (!arq || !fs.existsSync(arq) || fs.statSync(arq).isDirectory()) { res.writeHead(404); return res.end(); }
     res.writeHead(200, { 'Content-Type': TIPOS[path.extname(arq)] || 'application/octet-stream' });
+    // A página vai com o bloco da medição, como no site montado (o mesmo medicao.mjs da montagem; v9 do protótipo)
+    if (arq === path.join(PASTA, 'index.html')) return res.end(medicao.acrescentarMedicao(fs.readFileSync(arq, 'utf8')));
     fs.createReadStream(arq).pipe(res);
   });
   return new Promise(ok => srv.listen(0, '127.0.0.1', () => ok(srv)));
@@ -82,15 +97,21 @@ const FAIXA_C = Object.assign({}, EXEMPLO, {
   cargo: 'Vendedor(a)', numeros: ['30', '50', '5', '4', '1']
 });
 
+// Altura da janela em cada largura: 375 e 1440 como sempre; 360 com 640, o celular pequeno (medição, v9 do protótipo)
+const ALTURA = { 375: 812, 360: 640, 1440: 900 };
 let falhas = 0;
 const conferir = (ok, texto) => { console.log((ok ? 'OK    ' : 'FALHOU') + ' · ' + texto); if (!ok) falhas++; };
 
 // fim: lista de status que o garçom de mentira devolve em /api/fim-quiz, um por envio (o último se repete)
 // evento: status de /api/evento, ou 'abortar' para a conexão cair
-let garcom = null;
-async function abrir(browser, largura, endereco, fim, evento) {
-  const ctx = await browser.newContext({ viewport: { width: largura, height: largura === 375 ? 812 : 900 }, reducedMotion: 'reduce' });
+let garcom = null, medicao = null;
+// O pedido a www.googletagmanager.com é respondido aqui com 404 em todo contexto (medição, v9 do protótipo), como o Google
+// enquanto o contêiner não é publicado: nenhum pedido ao Google sai da máquina, e ele continua anotado em externas, para as
+// conferências "nenhuma requisição para outro endereço" pegarem o vazamento. opcoes.referer abre a página como se viesse dali.
+async function abrir(browser, largura, endereco, fim, evento, opcoes = {}) {
+  const ctx = await browser.newContext({ viewport: { width: largura, height: ALTURA[largura] || 900 }, reducedMotion: 'reduce' });
   const page = await ctx.newPage();
+  await page.route('https://www.googletagmanager.com/**', rota => rota.fulfill({ status: 404, contentType: 'text/plain', body: '' }));
   const t = { ctx, page, pacotes: [], envios: [], eventos: [], ordem: [], consoleTexto: [], externas: [], pedidos: [] };
   page.on('console', m => t.consoleTexto.push(m.text()));
   await page.route('**/api/fim-quiz', async rota => {
@@ -117,14 +138,15 @@ async function abrir(browser, largura, endereco, fim, evento) {
     t.pedidos.push(u);
     if (!u.startsWith('file://') && !u.startsWith('data:') && !u.startsWith(BASE)) t.externas.push(u);
   });
-  await page.goto(endereco);
+  await page.goto(endereco, opcoes.referer ? { referer: opcoes.referer } : undefined);
   return t;
 }
 let BASE = '';
 const semDadoNoConsole = t => t.consoleTexto.every(x => !DADO_PESSOAL.test(x));
 const naTela = (page, id) => page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
 const opcao = (page, valor) => page.locator('[data-corpo] .opcao[data-valor="' + valor + '"]').click();
-const print = (page, nome, largura) => page.screenshot({ path: path.join(PRINTS, nome + '-' + largura + '.png'), fullPage: true });
+// Prints só em 375 e 1440, como sempre; em 360 os casos rodam sem print
+const print = (page, nome, largura) => largura === 360 ? Promise.resolve() : page.screenshot({ path: path.join(PRINTS, nome + '-' + largura + '.png'), fullPage: true });
 const doTipo = (t, tipo) => t.eventos.filter(e => e.pacote && e.pacote.evento && e.pacote.evento.tipo === tipo);
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
 
@@ -176,14 +198,25 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
 (async () => {
   const { conferirPacote, conferirEvento } = await import(pathToFileURL(path.join(RAIZ, 'entregas/garcom/garcom.mjs')).href);
   garcom = { conferirPacote, conferirEvento };
+  medicao = await import(pathToFileURL(path.join(RAIZ, 'entregas/prototipo-funil-01/medicao.mjs')).href);
   fs.mkdirSync(PRINTS, { recursive: true });
   const srv = await servir();
   BASE = 'http://127.0.0.1:' + srv.address().port + '/';
   const PAGINA = BASE + 'quiz/' + BUSCA;
   const browser = await chromium.launch({ executablePath: acharChromium() });
 
-  for (const largura of [375, 1440]) {
-    console.log('\n· ' + largura + ' pixels');
+  // A barra fixa do rodapé (só no celular) aparece se, e só se, o botão da abertura está fora da tela ou sob o cabeçalho
+  // (a regra da página, vigiarBotaoAbertura): vale com e sem o aviso de cookies, que, no alto, pode empurrar o botão para baixo da dobra
+  const regraDaBarra = page => page.evaluate(async () => {
+    await new Promise(ok => requestAnimationFrame(() => requestAnimationFrame(ok)));
+    const b = document.getElementById('botaoAbertura').getBoundingClientRect(), cab = document.getElementById('cabSafra').getBoundingClientRect();
+    const fora = b.bottom <= Math.max(0, cab.bottom) || b.top >= innerHeight;
+    const aparece = document.body.hasAttribute('data-barra') && getComputedStyle(document.getElementById('barraSafra')).display !== 'none';
+    return { fora, aparece, celular: innerWidth < 900, botao: Math.round(b.top) + '-' + Math.round(b.bottom), visivel: Math.max(0, Math.round(Math.min(b.bottom, innerHeight) - Math.max(b.top, cab.bottom))) };
+  });
+
+  for (const largura of [375, 360, 1440]) {
+    console.log('\n· ' + largura + ' pixels' + (largura === 360 ? ', 640 de altura' : ''));
 
     // 1. Exemplo do lead score, caixa marcada (o padrão)
     let t = await abrir(browser, largura, PAGINA, [201], 201);
@@ -196,15 +229,20 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
       return { hash: location.hash, num: document.getElementById('protoNum').textContent, capa: !!document.querySelector('[data-ir="capa"]'),
         cab: vis('#cabSafra'), topo: vis('#topo'), logo: !!document.querySelector('#cabSafra .logo-safra svg'),
         botoes: [...document.querySelectorAll('#cabSafra .btn-safra, .abertura__copy .btn-safra')].map(b => b.textContent.trim()),
-        comecar: document.body.textContent.includes('Começar diagnóstico'), barra: vis('#barraSafra') };
+        comecar: document.body.textContent.includes('Começar diagnóstico') };
     });
     conferir(ab.hash === '#abertura' && ab.num === '1/27' && !ab.capa, 'abertura: o quiz abre nela, sem a capa (tela 1 de 27; ' + ab.hash + ', ' + ab.num + ')');
     conferir(ab.cab && !ab.topo && ab.logo, 'abertura: cabeçalho da landing-page-02 com o logo do Safra, no lugar do cabeçalho do quiz');
     conferir(ab.botoes.join('|') === 'Fazer a Análise|Fazer a Análise' && !ab.comecar, 'abertura: botões do cabeçalho e da página dizem "Fazer a Análise" (' + ab.botoes.join(' | ') + ')');
-    conferir(!ab.barra, 'abertura: sem a barra do rodapé antes de rolar');
+    await t.page.waitForTimeout(200);
+    const rb = await regraDaBarra(t.page);
+    conferir(rb.aparece === (rb.fora && rb.celular), 'abertura, antes de rolar: a barra do rodapé aparece se, e só se, o botão da abertura está fora da tela ou sob o cabeçalho (botão ' + rb.botao + ', ' + rb.visivel + ' pixels à vista; barra ' + (rb.aparece ? 'aparece' : 'não aparece') + ')');
     // espera a entrada da tela (desliza alguns pixels) terminar; as animações sem fim (a luz dos botões) não contam
     await t.page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect && a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))));
-    const antes = await t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
+    // Sem escolha guardada, o aviso de cookies (v9 do protótipo) fica no topo, em fluxo normal, e sai da tela com a rolagem: a medida
+    // começa com ele rolado para fora (a altura dele), onde a abertura encosta no alto como antes. O aviso não é tocado.
+    await t.page.evaluate(() => { const a = document.getElementById('aviso-cookies'); window.scrollTo(0, a ? a.offsetHeight : 0); }); await t.page.waitForTimeout(300);
+    const antes =await t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
     await t.page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await t.page.waitForTimeout(400);
     const depois = await t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
     const comBarra = await t.page.evaluate(() => document.body.hasAttribute('data-barra') && getComputedStyle(document.getElementById('barraSafra')).display !== 'none');
@@ -287,7 +325,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
 
     // 3. Corte mais restritivo, com /api/evento fora do ar
     t = await abrir(browser, largura, PAGINA, [201], 'abortar');
-    await ateContato(t.page, FAIXA_C, largura, false, largura === 375 ? 'barra' : 'cabecalho');
+    await ateContato(t.page, FAIXA_C, largura, false, largura < 900 ? 'barra' : 'cabecalho');
     await t.page.click('#enviar');
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-faixa-c', largura);
@@ -331,7 +369,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(!/502|servico|indisponivel|erro|api|fetch/i.test(aviso), 'falha: aviso sem detalhe técnico');
     conferir(await t.page.locator('#avisoEnvio').isVisible() && await t.page.evaluate(() => location.hash) === '#plano', 'falha: o diagnóstico continua na tela, com o aviso por cima');
     // só a tela visível, onde o aviso fica preso no alto
-    await t.page.screenshot({ path: path.join(PRINTS, 'envio-falhou-' + largura + '.png') });
+    if (largura !== 360) await t.page.screenshot({ path: path.join(PRINTS, 'envio-falhou-' + largura + '.png') });
     await t.page.click('#reenviar');
     await t.page.locator('#avisoEnvio').waitFor({ state: 'hidden', timeout: 15000 });
     conferir(t.envios.length === 2, 'falha: "Tentar de novo" reenvia (2 envios)');
@@ -364,6 +402,274 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(!(await t.page.locator('#avisoEnvio').isVisible()), 'arquivo (file://): nenhum aviso de falha');
     conferir(t.externas.length === 0, 'arquivo (file://): nenhuma requisição para outro endereço (sem a pasta fontes/, cai na letra do sistema)');
     conferir(semDadoNoConsole(t), 'arquivo (file://): console sem dado de pessoa');
+    await t.ctx.close();
+  }
+
+  // ··· Medição (v9 do protótipo; decisão #116): o aviso de cookies e o Tag Manager, no bloco que a montagem acrescenta ···
+  // O Google é respondido com 404 em todo contexto (abrir); nenhum pedido ao Google sai da máquina.
+  const T = medicao.TEXTO_DO_AVISO;
+  const ALVO_GTM = medicao.ENDERECO_GTM;
+  const DO_GOOGLE = /^https:\/\/([a-z0-9-]+\.)*(googletagmanager\.com|google-analytics\.com|google\.com)\//;
+  const SESSAO_TESTE = 'sessao-teste-0001';
+  const doAviso = (page, texto) => page.locator('#aviso-cookies button').filter({ hasText: new RegExp('^' + texto + '$') });
+  const lerMedicao = page => page.evaluate(chave => {
+    const ls = f => { try { return f(); } catch (e) { return 'erro'; } };
+    return { escolha: ls(() => localStorage.getItem(chave)), guardados: ls(() => localStorage.length), aviso: !!document.getElementById('aviso-cookies'),
+      camada: (window.dataLayer || []).map(x => x && typeof x === 'object' && typeof x.length === 'number' && !Array.isArray(x) ? { gtag: Array.from(x) } : x),
+      cookies: document.cookie, hash: location.hash };
+  }, medicao.CHAVE_ESCOLHA);
+  const consentimentos = (m, tipo) => m.camada.filter(x => x && x.gtag && x.gtag[0] === 'consent' && x.gtag[1] === tipo).map(x => x.gtag[2]);
+  const padraoNegado = m => {
+    const d = consentimentos(m, 'default');
+    return d.length === 1 && m.camada[0] && m.camada[0].gtag && m.camada[0].gtag[1] === 'default' &&
+      JSON.stringify(d[0]) === '{"ad_storage":"denied","ad_user_data":"denied","ad_personalization":"denied","analytics_storage":"denied"}';
+  };
+  const anuncioNuncaMuda = m => consentimentos(m, 'update').every(u => Object.keys(u).join() === 'analytics_storage');
+  const focoNoAviso = page => page.evaluate(() => {
+    const e = document.activeElement, c = getComputedStyle(e);
+    return { texto: (e.textContent || '').trim(), dentro: !!e.closest('#aviso-cookies'), visivel: e.matches(':focus-visible') && c.outlineStyle !== 'none' && parseFloat(c.outlineWidth) >= 2 };
+  });
+  const pedidoAoGoogle = page => page.waitForRequest(r => r.url().startsWith('https://www.googletagmanager.com/'), { timeout: 10000 }).catch(() => null);
+  const enderecoDe = page => new URL(page.url());
+
+  for (const largura of [375, 360, 1440]) {
+    const rotulo = 'medição ' + largura;
+    console.log('\n· medição (aviso de cookies e Tag Manager) · ' + largura + ' pixels' + (largura === 360 ? ', 640 de altura' : ''));
+
+    // M1. Sem escolha: o aviso no topo, em fluxo normal, sem cobrir nenhum botão; nada guardado e nada para fora
+    let t = await abrir(browser, largura, PAGINA, [201], 201);
+    await naTela(t.page, 'abertura');
+    await t.page.evaluate(() => document.fonts.ready);
+    await t.page.waitForTimeout(400);
+    let m = await lerMedicao(t.page);
+    const av = await t.page.evaluate(() => {
+      const a = document.getElementById('aviso-cookies');
+      if (!a) return null;
+      const r = a.getBoundingClientRect(), fim = document.body.lastElementChild;
+      const bot = [...a.querySelectorAll('button')].map(b => {
+        const c = getComputedStyle(b), q = b.getBoundingClientRect();
+        return { texto: b.textContent.trim(), tipo: b.getAttribute('type'), w: Math.round(q.width), h: Math.round(q.height),
+          estilo: [c.backgroundColor, c.color, c.borderTopWidth, c.borderTopStyle, c.borderTopColor, c.borderRadius, c.fontFamily, c.fontSize, c.fontWeight, c.paddingTop, c.paddingLeft].join(' | ') };
+      });
+      return { primeiro: document.body.firstElementChild === a, pos: getComputedStyle(a).position, topo: Math.round(r.top), esq: Math.round(r.left), larg: Math.round(r.width), alt: Math.round(r.height),
+        papel: a.getAttribute('role'), rotulo: a.getAttribute('aria-label'), texto: a.innerText.replace(/\s+/g, ' '), bot,
+        ultimo: fim.id, link: fim.innerText.trim(), linkPos: getComputedStyle(fim).position, lateral: document.documentElement.scrollWidth - window.innerWidth };
+    });
+    conferir(av && av.primeiro && av.pos === 'static' && av.topo === 0 && av.esq === 0 && av.larg === largura,
+      rotulo + ' · sem escolha: o aviso aparece no topo, primeiro filho do body, em fluxo normal (' + (av ? av.pos + ', topo ' + av.topo + ', ' + av.larg + ' por ' + av.alt : 'sem aviso') + ')');
+    conferir(av && av.papel === 'region' && av.rotulo === T.titulo && [T.titulo, T.texto, T.politica].every(x => av.texto.includes(x)) &&
+      av.bot.map(b => b.texto).join('|') === T.aceitar + '|' + T.recusar && av.bot.every(b => b.tipo === 'button'),
+      rotulo + ' · sem escolha: o texto do aviso-de-cookies v' + medicao.VERSAO_DO_AVISO + ', região com rótulo e os botões "' + T.aceitar + '" e "' + T.recusar + '" (button type="button")');
+    conferir(av && av.bot.length === 2 && av.bot[0].w === av.bot[1].w && av.bot[0].h === av.bot[1].h && av.bot[0].estilo === av.bot[1].estilo,
+      rotulo + ' · sem escolha: os dois botões com o mesmo peso visual (' + (av && av.bot[0] ? av.bot[0].w + ' por ' + av.bot[0].h + '; ' + av.bot[0].estilo : '') + ')');
+    conferir(av && av.ultimo === 'aviso-cookies-reabrir' && av.link === T.reabrir && av.linkPos === 'static', rotulo + ' · o link "' + T.reabrir + '" é o último filho do body, em fluxo normal');
+    conferir(av && av.lateral <= 0, rotulo + ' · sem rolagem para o lado com o aviso (' + (av && av.lateral) + ')');
+    conferir(m.escolha === null && m.guardados === 0 && m.cookies === '', rotulo + ' · sem escolha: nada guardado no navegador, nem escolha nem cookie');
+    conferir(padraoNegado(m) && consentimentos(m, 'update').length === 0 && !m.camada.some(x => x && x.event === 'gtm.js'),
+      rotulo + ' · sem escolha: consentimento padrão com a análise e os três de anúncio negados, antes de tudo; nenhum update e nenhum carregador');
+    if (largura !== 360) { await t.page.evaluate(() => window.scrollTo(0, 0)); await t.page.waitForTimeout(200); await t.page.screenshot({ path: path.join(PRINTS, 'aviso-' + largura + '.png') }); }
+    // O aviso não cobre o "Fazer a Análise" do cabeçalho (com a página no alto) nem o da abertura (rolado até ele)
+    const cobertura = await t.page.evaluate(async () => {
+      const quadro = () => new Promise(ok => requestAnimationFrame(() => requestAnimationFrame(ok)));
+      const a = document.getElementById('aviso-cookies');
+      const cruza = (p, q) => p.left < q.right && q.left < p.right && p.top < q.bottom && q.top < p.bottom;
+      const ver = async (sel, rolar) => {
+        const b = document.querySelector(sel);
+        if (rolar) b.scrollIntoView({ block: 'center', behavior: 'instant' }); else window.scrollTo({ top: 0, behavior: 'instant' });
+        await quadro();
+        const r = b.getBoundingClientRect(), ra = a.getBoundingClientRect();
+        const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return { cruza: cruza(r, ra), centro: !!el && b.contains(el), naTela: r.top >= 0 && r.bottom <= innerHeight, r: [Math.round(r.top), Math.round(r.bottom)].join('-'), ra: [Math.round(ra.top), Math.round(ra.bottom)].join('-') };
+      };
+      const cab = await ver('#cabSafra [data-acao="proximo"]', false);
+      const abe = await ver('.abertura__copy [data-acao="proximo"]', true);
+      window.scrollTo(0, 0);
+      return { cab, abe };
+    });
+    for (const [k, nome] of [['cab', 'do cabeçalho'], ['abe', 'da abertura']]) {
+      const c = cobertura[k];
+      conferir(!c.cruza && c.centro && c.naTela, rotulo + ' · sem escolha: o aviso não cobre o "Fazer a Análise" ' + nome + ' (botão ' + c.r + ', aviso ' + c.ra + '; no centro do botão está o botão)');
+    }
+    if (largura < 900) {
+      // No celular, rolando até a barra fixa do rodapé aparecer: o aviso (em fluxo, lá no alto) não cobre a barra
+      await t.page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      await t.page.waitForFunction(() => document.body.hasAttribute('data-barra'), null, { timeout: 5000 }).catch(() => {});
+      await t.page.waitForTimeout(400);
+      const barra = await t.page.evaluate(() => {
+        const a = document.getElementById('aviso-cookies'), b = document.querySelector('#barraSafra [data-acao="proximo"]');
+        const r = b.getBoundingClientRect(), ra = a.getBoundingClientRect();
+        const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return { aparece: document.body.hasAttribute('data-barra') && r.height > 0, cruza: r.left < ra.right && ra.left < r.right && r.top < ra.bottom && ra.top < r.bottom, centro: !!el && b.contains(el) };
+      });
+      conferir(barra.aparece && !barra.cruza && barra.centro, rotulo + ' · sem escolha (celular): rolando, a barra fixa do rodapé aparece e o aviso não cobre o botão dela');
+    }
+    // O link "Cookies" no fim da página não fica coberto (rolado até ele)
+    const link = await t.page.evaluate(async () => {
+      const b = document.querySelector('#aviso-cookies-reabrir button');
+      b.scrollIntoView({ block: 'center', behavior: 'instant' });
+      await new Promise(ok => requestAnimationFrame(() => requestAnimationFrame(ok)));
+      const r = b.getBoundingClientRect(), el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return !!el && b.contains(el);
+    });
+    conferir(link, rotulo + ' · o link "' + T.reabrir + '" no fim da página fica livre (no centro dele está ele)');
+    await t.page.waitForTimeout(300);
+    conferir(t.externas.length === 0, rotulo + ' · sem escolha: nenhuma requisição para outro endereço' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
+    await t.ctx.close();
+
+    // M2. Recusar: guarda "recusado", o aviso some, nada sai, nem depois de recarregar; a medição própria continua
+    t = await abrir(browser, largura, PAGINA, [201], 201);
+    await naTela(t.page, 'abertura');
+    await doAviso(t.page, T.recusar).click();
+    await t.page.waitForTimeout(400);
+    m = await lerMedicao(t.page);
+    conferir(m.escolha === medicao.ESCOLHAS.recusar && m.guardados === 1 && !m.aviso && m.hash === '#abertura', rotulo + ' · Recusar: guarda só "recusado" (' + medicao.CHAVE_ESCOLHA + '), o aviso some e o quiz continua na abertura');
+    // Escolhido pelo mouse, o foco vai ao primeiro elemento focável à vista depois do aviso: nunca ao body, e sem fazer surgir o "Pular para o conteúdo"
+    const focoMouse = await t.page.evaluate(() => { const e = document.activeElement, r = e.getBoundingClientRect();
+      return { body: e === document.body, pular: e.matches('.pular'), naTela: r.bottom > 0 && r.top < innerHeight, quem: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + ' ' + (e.textContent || '').trim().slice(0, 20) }; });
+    conferir(!focoMouse.body && !focoMouse.pular && focoMouse.naTela, rotulo + ' · Recusar pelo mouse: o foco vai ao primeiro elemento focável à vista depois do aviso, nunca ao body (' + focoMouse.quem + ')');
+    conferir(padraoNegado(m) && consentimentos(m, 'update').length === 0 && !m.camada.some(x => x && ('pagina_limpa' in x || x.event === 'gtm.js')), rotulo + ' · Recusar: o consentimento continua negado e nada vai para a camada de dados');
+    await t.page.reload();
+    await naTela(t.page, 'abertura');
+    await t.page.waitForTimeout(600);
+    m = await lerMedicao(t.page);
+    conferir(m.escolha === medicao.ESCOLHAS.recusar && !m.aviso && m.cookies === '', rotulo + ' · Recusar e recarregar: o aviso não volta e nenhum cookie aparece');
+    if (largura === 1440) {
+      // A forma original da conferência da abertura (v4), com a escolha guardada: sem o aviso, de scroll 0 até o fim, título, promessa,
+      // botão e cabeçalho não saem do lugar e só o relatório se mexe; depois da escolha, a abertura é exatamente a de antes
+      await t.page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect && a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))));
+      await t.page.evaluate(() => window.scrollTo(0, 0)); await t.page.waitForTimeout(300);
+      const pos = () => t.page.evaluate(() => ['.abertura h1', '.abertura__lede', '#botaoAbertura', '.previa', '#cabSafra'].map(s => Math.round(document.querySelector(s).getBoundingClientRect().top)));
+      const a0 = await pos();
+      await t.page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight)); await t.page.waitForTimeout(400);
+      const a1 = await pos();
+      conferir(a0[4] === 0 && a1[0] === a0[0] && a1[1] === a0[1] && a1[2] === a0[2] && a1[3] < a0[3] && a1[4] === 0,
+        rotulo + ' · com "recusado" guardado, a forma original: de scroll 0 até o fim, só o relatório se mexe; título, promessa, botão e cabeçalho ficam (' + a0.join(',') + ' → ' + a1.join(',') + ')');
+      await t.page.evaluate(() => window.scrollTo(0, 0)); await t.page.waitForTimeout(200);
+    }
+    conferir(t.externas.length === 0, rotulo + ' · Recusar: nenhuma requisição para outro endereço, nem depois de recarregar' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
+    conferir(doTipo(t, 'inicio_quiz').length === 2, rotulo + ' · Recusar: a medição própria, sem cookie, continua (o início do quiz foi mandado nas duas aberturas; política v3, item 7)');
+    await t.ctx.close();
+
+    // M3. Aceitar, com o id_sessao no endereço e na página de origem
+    t = await abrir(browser, largura, PAGINA + '&id_sessao=' + SESSAO_TESTE, [201], 201, { referer: BASE + '?utm_source=bio&id_sessao=' + SESSAO_TESTE });
+    await naTela(t.page, 'abertura');
+    let pedido = pedidoAoGoogle(t.page);
+    await doAviso(t.page, T.aceitar).click();
+    await pedido;
+    await t.page.waitForTimeout(400);
+    m = await lerMedicao(t.page);
+    let end = enderecoDe(t.page);
+    conferir(t.externas[0] === ALVO_GTM, rotulo + ' · Aceitar: a primeira requisição para outro endereço é ' + ALVO_GTM + ' (' + (t.externas[0] || 'nenhuma') + ')');
+    conferir(t.externas.length > 0 && t.externas.every(u => DO_GOOGLE.test(u)), rotulo + ' · Aceitar: nenhuma requisição vai para fora do Google (' + t.externas.length + ': ' + [...new Set(t.externas)].join(', ') + ')');
+    conferir(m.escolha === medicao.ESCOLHAS.aceitar && m.guardados === 1 && !m.aviso, rotulo + ' · Aceitar: guarda só "aceito" e o aviso some');
+    const limpa = m.camada.find(x => x && 'pagina_limpa' in x);
+    const camadaTexto = JSON.stringify(m.camada);
+    conferir(limpa && limpa.pagina_limpa === BASE + 'quiz/' + BUSCA && !camadaTexto.includes('id_sessao') && !camadaTexto.includes(SESSAO_TESTE),
+      rotulo + ' · Aceitar: pagina_limpa sem o id_sessao e sem o # (' + (limpa && limpa.pagina_limpa.replace(BASE, '/')) + '); nada da camada de dados tem o código da visita');
+    conferir(limpa && limpa.origem_limpa === BASE + '?utm_source=bio', rotulo + ' · Aceitar: origem_limpa sem o id_sessao da página de origem (' + (limpa && limpa.origem_limpa.replace(BASE, '/')) + ')');
+    conferir(end.searchParams.get('id_sessao') === null && end.searchParams.get('utm_source') === 'bio' && end.searchParams.get('utm_campaign') === 'funil-01' && end.hash === '#abertura',
+      rotulo + ' · Aceitar: o endereço da barra fica sem o id_sessao, com os outros parâmetros e o # (' + end.search + end.hash + ')');
+    const atualizacoes = consentimentos(m, 'update');
+    conferir(atualizacoes.length === 1 && JSON.stringify(atualizacoes[0]) === '{"analytics_storage":"granted"}' && padraoNegado(m),
+      rotulo + ' · Aceitar: o consentimento muda só a análise para concedida; os três de anúncio ficam negados');
+    const iUpd = m.camada.findIndex(x => x && x.gtag && x.gtag[1] === 'update'), iLimpa = m.camada.indexOf(limpa), iGtm = m.camada.findIndex(x => x && x.event === 'gtm.js');
+    conferir(iUpd > 0 && iUpd < iLimpa && iLimpa < iGtm && m.camada.filter(x => x && x.event === 'gtm.js').length === 1,
+      rotulo + ' · Aceitar: na camada de dados, o consentimento, depois a pagina_limpa e só então o carregador, uma vez (' + [iUpd, iLimpa, iGtm].join(', ') + ')');
+    const iniM3 = doTipo(t, 'inicio_quiz')[0];
+    conferir(iniM3 && iniM3.pacote.evento.id_sessao === SESSAO_TESTE, rotulo + ' · Aceitar: o quiz leu o id_sessao antes de ele sair do endereço (o início do quiz leva ' + SESSAO_TESTE + ')');
+    // Com "aceito" guardado, a página seguinte não mostra o aviso e carrega o Tag Manager direto
+    const jaPedidas = t.externas.length;
+    pedido = pedidoAoGoogle(t.page);
+    await t.page.reload();
+    await naTela(t.page, 'abertura');
+    await pedido;
+    await t.page.waitForTimeout(400);
+    m = await lerMedicao(t.page);
+    const novas = t.externas.slice(jaPedidas);
+    conferir(!m.aviso && novas[0] === ALVO_GTM && novas.every(u => DO_GOOGLE.test(u)) && consentimentos(m, 'update').length === 1 && m.camada.some(x => x && 'pagina_limpa' in x),
+      rotulo + ' · com "aceito" guardado, ao abrir de novo: sem o aviso, o consentimento e a pagina_limpa e o gtm.js direto, só do Google');
+    conferir(semDadoNoConsole(t), rotulo + ' · Aceitar: console sem dado de pessoa');
+    await t.ctx.close();
+
+    // M4. Rodada inteira (eliminatório) com o "Aceitar" logo no começo e o id_sessao da landing no endereço
+    t = await abrir(browser, largura, PAGINA + '&id_sessao=' + SESSAO_DA_LANDING, [201], 201);
+    await naTela(t.page, 'abertura');
+    pedido = pedidoAoGoogle(t.page);
+    await doAviso(t.page, T.aceitar).click();
+    await pedido;
+    const limpoNoComeco = enderecoDe(t.page).searchParams.get('id_sessao') === null;
+    await ateContato(t.page, ELIMINATORIO, largura, false, 'cabecalho');
+    end = enderecoDe(t.page);
+    await t.page.click('#enviar');
+    await naTela(t.page, 'relatorio-nao');
+    await t.page.click('[data-acao="interesse"]');
+    await t.page.waitForTimeout(500);
+    const pacoteDe = tipo => doTipo(t, tipo)[0] && doTipo(t, tipo)[0].pacote;
+    const sessoes = [pacoteDe('inicio_quiz'), t.pacotes[0], pacoteDe('interesse_pos_relatorio')].map(x => x && x.evento && x.evento.id_sessao);
+    conferir(limpoNoComeco && sessoes.length === 3 && sessoes.every(s => s === SESSAO_DA_LANDING),
+      rotulo + ' · rodada inteira com "Aceitar" no começo: o início, o fim do quiz e o clique levam o id_sessao do endereço original, com o endereço já limpo (' + sessoes.join(', ') + ')');
+    conferir(end.searchParams.get('id_sessao') === null && end.searchParams.get('utm_source') === 'bio' && enderecoDe(t.page).searchParams.get('id_sessao') === null,
+      rotulo + ' · rodada inteira: o endereço segue sem o id_sessao de tela em tela, com as utm (' + end.search + end.hash + ')');
+    conferir(t.externas.filter(u => u === ALVO_GTM).length === 1 && t.externas.every(u => DO_GOOGLE.test(u)), rotulo + ' · rodada inteira: só o gtm.js do Google, uma vez, e nada mais para fora');
+    conferir(semDadoNoConsole(t), rotulo + ' · rodada inteira: console sem dado de pessoa');
+    await t.ctx.close();
+
+    // M5. Teclado: o Tab chega aos dois botões do aviso, com o foco visível, e o Enter funciona
+    t = await abrir(browser, largura, PAGINA, [201], 201);
+    await naTela(t.page, 'abertura');
+    await t.page.keyboard.press('Tab');
+    const f1 = await focoNoAviso(t.page);
+    await t.page.keyboard.press('Tab');
+    const f2 = await focoNoAviso(t.page);
+    conferir(f1.dentro && f1.texto === T.aceitar && f1.visivel && f2.dentro && f2.texto === T.recusar && f2.visivel,
+      rotulo + ' · teclado: o primeiro Tab chega ao "' + T.aceitar + '" e o segundo ao "' + T.recusar + '", com o foco visível (' + f1.texto + ', ' + f2.texto + ')');
+    await t.page.keyboard.press('Enter');
+    await t.page.waitForTimeout(300);
+    m = await lerMedicao(t.page);
+    conferir(m.escolha === medicao.ESCOLHAS.recusar && !m.aviso && t.externas.length === 0, rotulo + ' · teclado: Enter no "' + T.recusar + '" guarda a escolha e fecha o aviso, sem nada para fora');
+    const focoTeclado = await t.page.evaluate(() => { const e = document.activeElement; return { pular: e.matches('a.pular'), body: e === document.body, quem: e.tagName.toLowerCase() + ' ' + (e.textContent || '').trim().slice(0, 30) }; });
+    conferir(focoTeclado.pular && !focoTeclado.body, rotulo + ' · teclado: depois da escolha, o foco vai ao primeiro elemento focável depois do aviso, o "Pular para o conteúdo", nunca ao body (' + focoTeclado.quem + ')');
+
+    // M6. O link "Cookies" reabre o aviso no topo, com o foco nele; de recusado para aceito, pelo teclado
+    await t.page.locator('#aviso-cookies-reabrir button').click();
+    await t.page.waitForTimeout(300);
+    const re = await t.page.evaluate(() => { const a = document.getElementById('aviso-cookies'); return a && { primeiro: document.body.firstElementChild === a, foco: document.activeElement === a, topo: Math.round(a.getBoundingClientRect().top) }; });
+    conferir(re && re.primeiro && re.foco && re.topo === 0, rotulo + ' · o link "' + T.reabrir + '" reabre o aviso no topo e leva o foco a ele' + (re ? ' (topo ' + re.topo + ')' : ''));
+    await t.page.keyboard.press('Tab');
+    const f3 = await focoNoAviso(t.page);
+    pedido = pedidoAoGoogle(t.page);
+    await t.page.keyboard.press('Enter');
+    await pedido;
+    await t.page.waitForTimeout(400);
+    m = await lerMedicao(t.page);
+    const voltou = await t.page.evaluate(() => !!document.activeElement.closest('#aviso-cookies-reabrir'));
+    conferir(f3.texto === T.aceitar && m.escolha === medicao.ESCOLHAS.aceitar && !m.aviso && t.externas[0] === ALVO_GTM && consentimentos(m, 'update').length === 1,
+      rotulo + ' · de recusado para aceito pelo link: Tab até o "' + T.aceitar + '", Enter, guarda "aceito" e só então o gtm.js (' + (t.externas[0] || 'nenhum') + ')');
+    conferir(voltou, rotulo + ' · depois da escolha pelo link, o foco volta ao link "' + T.reabrir + '"');
+
+    // M7. De aceito para recusado: guarda "recusado", manda a análise negada e apaga os cookies _ga (um de teste, posto antes)
+    await t.page.evaluate(() => {
+      document.cookie = '_ga=GA1.1.000000000.0000000000; path=/';
+      document.cookie = '_ga_TESTE00=GS1.1.0000000000.1.0.0000000000.0.0.0; path=/';
+      document.cookie = 'outro_teste=1; path=/';
+    });
+    const cookiesAntes = (await t.ctx.cookies()).map(c => c.name).sort().join(',');
+    await t.page.locator('#aviso-cookies-reabrir button').click();
+    await doAviso(t.page, T.recusar).click();
+    await t.page.waitForTimeout(300);
+    m = await lerMedicao(t.page);
+    const cookiesDepois = (await t.ctx.cookies()).map(c => c.name).sort().join(',');
+    conferir(m.escolha === medicao.ESCOLHAS.recusar && !m.aviso && cookiesAntes === '_ga,_ga_TESTE00,outro_teste' && cookiesDepois === 'outro_teste',
+      rotulo + ' · de aceito para recusado: guarda "recusado" e apaga os cookies _ga de teste, e só eles (antes ' + cookiesAntes + '; depois ' + cookiesDepois + ')');
+    const atu = consentimentos(m, 'update');
+    conferir(atu.length === 2 && JSON.stringify(atu[1]) === '{"analytics_storage":"denied"}' && anuncioNuncaMuda(m), rotulo + ' · de aceito para recusado: manda a análise negada; o consentimento de anúncio nunca muda');
+    const gtmAntes = t.externas.filter(u => u === ALVO_GTM).length;
+    await t.page.reload();
+    await naTela(t.page, 'abertura');
+    await t.page.waitForTimeout(600);
+    m = await lerMedicao(t.page);
+    conferir(!m.aviso && m.escolha === medicao.ESCOLHAS.recusar && t.externas.filter(u => u === ALVO_GTM).length === gtmAntes && consentimentos(m, 'update').length === 0,
+      rotulo + ' · de aceito para recusado: na página seguinte, o aviso não volta e nada do Google carrega');
     await t.ctx.close();
   }
 
