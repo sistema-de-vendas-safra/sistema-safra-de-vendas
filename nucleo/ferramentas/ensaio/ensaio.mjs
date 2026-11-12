@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 3 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 4 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -16,8 +16,8 @@
 //   4. Site montado (montar-site.mjs) e o garçom v4 no wrangler dev --local, com a configuração do
 //      protótipo copiada para uma pasta temporária e só SUPABASE_URL e ORIGEM_PERMITIDA trocadas.
 //   5. Sem as linhas novas do catálogo, o fim do quiz novo, a visita e o início do quiz são
-//      recusados; depois, dados/banco/catalogo-prototipo.sql (v2) duas vezes.
-//   6. Landing e quiz num navegador sem tela: visita, início do quiz, fim do quiz e clique no fim;
+//      recusados; depois, dados/banco/catalogo-prototipo.sql (v3) duas vezes.
+//   6. Landing (a landing-page-02 em /, v4) e quiz num navegador sem tela: visita, início do quiz, fim do quiz e clique no fim;
 //      caixa marcada e desmarcada; o corte mais restritivo; a faixa B; fontes locais e nenhum
 //      pedido fora de 127.0.0.1; a conferência da landing que estava fora do repositório (34.17).
 //   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
@@ -158,7 +158,7 @@ function pacoteDeTeste(pessoa, { whatsapp = 'sim', email = 'sim', sessao = novaS
   };
 }
 // Evento sem pessoa, no formato de registrarEvento() das páginas
-function eventoDeTeste(tipo, { entrega = tipo === 'visita' ? 'landing-page-01' : 'quiz-01', versao = tipo === 'visita' ? 1 : 2, sessao = novaSessao(), extra = {} } = {}) {
+function eventoDeTeste(tipo, { entrega = tipo === 'visita' ? 'landing-page-02' : 'quiz-01', versao = tipo === 'visita' ? 1 : 2, sessao = novaSessao(), extra = {} } = {}) {
   return { evento: Object.assign({ tipo, funil: 'funil-01', entrega, versao_entrega: versao, utm_source: 'bio', utm_campaign: 'funil-01',
     id_sessao: sessao, ocorrido_em: new Date().toISOString() }, extra) };
 }
@@ -392,7 +392,7 @@ async function principal() {
   conferir(montou && existsSync(join(SITE, 'quiz/index.html')) && /nenhuma página pede arquivo a outro endereço/.test(saidaMontador),
     'montar-site.mjs: site montado em entregas/prototipo-funil-01/site/ (fora do Git), sem nenhuma página pedindo arquivo a outro endereço');
   const LISTA_FONTES = JSON.parse(readFileSync(join(RAIZ, 'nucleo/ferramentas/fontes/fontes.json'), 'utf8'));
-  const arquivosDeFonte = [...LISTA_FONTES.quiz.map(f => 'quiz/fontes/' + f.arquivo), ...LISTA_FONTES['landing-a'].map(f => 'fontes/' + f.arquivo)];
+  const arquivosDeFonte = [...LISTA_FONTES.quiz.map(f => 'quiz/fontes/' + f.arquivo), ...LISTA_FONTES['landing-02'].map(f => 'fontes/' + f.arquivo)];
   conferir(arquivosDeFonte.every(a => existsSync(join(SITE, a))), 'as fontes estão no site montado, ao lado das páginas (' + arquivosDeFonte.length + ' arquivos; 10.7)');
 
   const temp = mkdtempSync(join(tmpdir(), 'ensaio-safra-'));
@@ -497,7 +497,7 @@ async function principal() {
     console.log('  avisos do wrangler: ' + (avisos.length ? avisos.join(' | ') : 'nenhum'));
   }
 
-  for (const [caminho, rotulo] of [['/', 'variante A'], ['/b/', 'variante B'], ['/quiz/', 'quiz']]) {
+  for (const [caminho, rotulo] of [['/', 'landing-page-02'], ['/quiz/', 'quiz']]) {
     const x = await fetch(BASE + caminho);
     const html = await x.text();
     conferir(x.status === 200 && x.headers.get('x-robots-tag') === 'noindex' && /<meta\s+name="robots"[^>]*noindex/.test(html),
@@ -508,11 +508,15 @@ async function principal() {
     conferir(/^text\/html\s*;.*charset=utf-8/i.test(tipo) && /<meta\s+charset=["']?utf-8/i.test(inicio1024),
       'GET ' + caminho + ' (' + rotulo + '): Content-Type com charset utf-8 (' + tipo + ') e meta charset nos primeiros 1024 bytes');
   }
-  for (const caminho of ['/tokens.css', '/estilo.css', '/b/estilo.css']) {
+  // O estilo e o programa da landing-page-02, pelo nome que o index.html dela cita (v4)
+  const indexDaLanding = readFileSync(join(SITE, 'index.html'), 'utf8');
+  const estiloDaLanding = (indexDaLanding.match(/href="(\/assets\/[^"]+\.css)"/) || [])[1] || '/assets/sem-estilo.css';
+  const programaDaLanding = (indexDaLanding.match(/src="(\/assets\/[^"]+\.js)"/) || [])[1] || '/assets/sem-programa.js';
+  for (const [caminho, tipoCerto] of [[estiloDaLanding, /^text\/css\s*;.*charset=utf-8/i], [programaDaLanding, /^(text|application)\/javascript\s*;.*charset=utf-8/i]]) {
     const x = await fetch(BASE + caminho);
     await x.arrayBuffer();
     const tipo = x.headers.get('content-type') || '';
-    conferir(x.status === 200 && /^text\/css\s*;.*charset=utf-8/i.test(tipo), 'GET ' + caminho + ': Content-Type com charset utf-8 (' + tipo + ')');
+    conferir(x.status === 200 && tipoCerto.test(tipo), 'GET ' + caminho + ': Content-Type com charset utf-8 (' + tipo + ')');
   }
   let x = await fetch(BASE + '/api/nao-existe');
   conferir(x.status === 404 && x.headers.get('x-robots-tag') === 'noindex', 'GET /api/nao-existe: 404 com noindex (' + x.status + ')');
@@ -521,7 +525,7 @@ async function principal() {
   conferir(x.status === 405 && !x.headers.get('access-control-allow-origin'), 'OPTIONS /api/evento: 405 sem cabeçalho de CORS (22.2; ' + x.status + ')');
 
   // ═══ 5. Catálogo ═══
-  secao('5. Catálogo de entregas v2 (perguntas 23.10, 32.4 e 34.4)');
+  secao('5. Catálogo de entregas v3 (perguntas 23.10, 32.4 e 34.4; landing-page-02)');
   const postFimQuiz = (pacote, origem = BASE) => fetch(BASE + '/api/fim-quiz', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origem }, body: JSON.stringify(pacote)
   });
@@ -538,7 +542,7 @@ async function principal() {
   x = await postEvento(eventoDeTeste('visita'));
   u = ultimaDoBanco();
   conferir(x.status === 422 && u.rota === '/rest/v1/rpc/registrar_evento' && u.status === 409,
-    'sem a linha (landing-page-01, 1), a visita é recusada (409 no banco, ' + x.status + ' no garçom)');
+    'sem a linha (landing-page-02, 1), a visita é recusada (409 no banco, ' + x.status + ' no garçom)');
   x = await postEvento(eventoDeTeste('inicio_quiz'));
   u = ultimaDoBanco();
   conferir(x.status === 422 && u.rota === '/rest/v1/rpc/registrar_evento' && u.status === 409,
@@ -549,17 +553,17 @@ async function principal() {
   conferir(x.status === 403, 'outra origem no fim do quiz: 403 (' + x.status + ')');
   x = await postEvento(eventoDeTeste('visita'), 'http://127.0.0.1:1');
   conferir(x.status === 403, 'outra origem na visita: 403 (' + x.status + ')');
-  const LINHAS_DO_CATALOGO = 'landing-page-01 1 landing|quiz-01 1 quiz|quiz-01 2 quiz';
+  const LINHAS_DO_CATALOGO = 'landing-page-01 1 landing|landing-page-02 1 landing|quiz-01 1 quiz|quiz-01 2 quiz';
   for (const vez of ['primeira', 'segunda']) {
     let erro = null, linhas = [];
     try { const s = await comoDono(CATALOGO); linhas = s[s.length - 1].rows; } catch (e) { erro = e; }
     const vistas = linhas.map(l => l.id_entrega + ' ' + l.versao + ' ' + l.tipo_entrega).join('|');
     conferir(!erro && vistas === LINHAS_DO_CATALOGO && linhas.every(l => l.retirada_em === null && l.publicada_em),
-      'dados/banco/catalogo-prototipo.sql (v2) aplicado pelo dono, ' + vez + ' vez: mostra as três linhas (' + (erro ? erro.message : vistas.replace(/\|/g, '; ')) + ')');
+      'dados/banco/catalogo-prototipo.sql (v3) aplicado pelo dono, ' + vez + ' vez: mostra as quatro linhas (' + (erro ? erro.message : vistas.replace(/\|/g, '; ')) + ')');
   }
   const dataDepois = (await naFila(() => db.query(`select publicada_em::text as d from public.entregas where id_entrega = 'quiz-01' and versao = 1`))).rows[0].d;
-  conferir(await contar(`select count(*) as n from public.entregas`) === 3 && dataDepois === dataDaLinhaAntiga,
-    'catálogo com três linhas (rodar de novo não duplica) e a linha antiga (quiz-01, 1) com a mesma data');
+  conferir(await contar(`select count(*) as n from public.entregas`) === 4 && dataDepois === dataDaLinhaAntiga,
+    'catálogo com quatro linhas (rodar de novo não duplica) e a linha antiga (quiz-01, 1) com a mesma data');
 
   // ═══ 6. Landing e quiz no navegador sem tela ═══
   secao('6. Landing e quiz no navegador sem tela (só 127.0.0.1)');
@@ -598,7 +602,10 @@ async function principal() {
       fontes: [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family.replace(/"/g, '')) };
   });
 
-  async function fazerQuiz({ landing, busca, respostas, pessoa, largura, telaFinal, desmarcar = false, clique = null }) {
+  // Os botões da landing-page-02 que levam ao quiz (v4): o do topo e o grande, que se repete pela página
+  const BOTAO_DO_TOPO = 'Fazer a Análise', BOTAO_GRANDE = 'Faça uma Análise Estratégica';
+  const botaoDaLanding = (page, texto) => page.locator('button:visible', { hasText: texto }).first();
+  async function fazerQuiz({ landing, busca, respostas, pessoa, largura, telaFinal, desmarcar = false, clique = null, botao = BOTAO_GRANDE }) {
     const ctx = await novoContexto(largura);
     const page = await ctx.newPage();
     const api = [];
@@ -610,7 +617,7 @@ async function principal() {
       const rv = await visita;
       const naLanding = await lerPagina(page);
       const inicioQuiz = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
-      await page.locator('[data-quiz]').first().click();
+      await botaoDaLanding(page, botao).click();
       await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 });
       const ri = await inicioQuiz;
       const endereco = new URL(page.url());
@@ -665,13 +672,13 @@ async function principal() {
     }
   }
 
-  // Lead 1: variante A, utm bio, 1440, o exemplo do lead score (96, faixa a), caixa marcada
-  const q1 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: EXEMPLO, pessoa: PESSOA_A, largura: 1440, telaFinal: 'plano' });
-  conferir(q1.visita === 201, 'landing A: a visita foi gravada (POST /api/evento, ' + q1.visita + ')');
-  conferir(q1.naLanding.modo === 'CSS1Compat' && q1.naLanding.charset === 'UTF-8', 'landing A: modo padrão (' + q1.naLanding.modo + ') e UTF-8 (34.13)');
-  conferir(LISTA_FONTES['landing-a'].length === 0 || q1.naLanding.fontes.includes('Geist'), 'landing A: Geist carregada de /fontes/, sem o Google (' + q1.naLanding.fontes.join(', ') + ')');
+  // Lead 1: landing-page-02 pelo botão do topo, utm bio, 1440, o exemplo do lead score (96, faixa a), caixa marcada
+  const q1 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: EXEMPLO, pessoa: PESSOA_A, largura: 1440, telaFinal: 'plano', botao: BOTAO_DO_TOPO });
+  conferir(q1.visita === 201, 'landing: a visita foi gravada (POST /api/evento, ' + q1.visita + ')');
+  conferir(q1.naLanding.modo === 'CSS1Compat' && q1.naLanding.charset === 'UTF-8', 'landing: modo padrão (' + q1.naLanding.modo + ') e UTF-8 (34.13)');
+  conferir(LISTA_FONTES['landing-02'].length === 0 || q1.naLanding.fontes.includes('Geist'), 'landing: Geist carregada de /fontes/, sem o Google (' + q1.naLanding.fontes.join(', ') + ')');
   conferir(q1.endereco.pathname === '/quiz/' && q1.endereco.searchParams.get('utm_source') === 'bio' && q1.endereco.searchParams.get('utm_campaign') === 'funil-01' && /^sessao-[a-z0-9-]{1,60}$/.test(q1.sessao || ''),
-    'landing A leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+    'landing: o botão do topo ("' + BOTAO_DO_TOPO + '") leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
   conferir(q1.inicio === 201, 'quiz: o início do quiz foi gravado ao abrir (POST /api/evento, ' + q1.inicio + ')');
   conferir(q1.noQuiz.modo === 'CSS1Compat' && q1.noQuiz.charset === 'UTF-8' && q1.noQuiz.titulo.includes('público') && q1.noQuiz.titulo.includes('Análise') && !/Ã|Â/.test(q1.noQuiz.titulo),
     'quiz: modo padrão (' + q1.noQuiz.modo + '; 09.1), lido como UTF-8, título com os acentos certos');
@@ -679,10 +686,10 @@ async function principal() {
   conferir(q1.caixaMarcada && q1.caixas === 1, 'quiz: uma caixa de aceite só, já marcada (13.4)');
   conferir(q1.fim === 201 && !q1.aviso && q1.telaFinal === '#plano', 'lead A: POST /api/fim-quiz gravado (' + q1.fim + '), tela do plano, sem aviso de falha');
 
-  // Lead 2: variante B, utm stories, 375, eliminatório, caixa marcada, clique "Tenho interesse"
-  const q2 = await fazerQuiz({ landing: '/b/', busca: '?utm_source=stories&utm_campaign=funil-01', respostas: ELIMINATORIO, pessoa: PESSOA_ELIM, largura: 375, telaFinal: 'relatorio-nao', clique: 'interesse' });
-  conferir(q2.visita === 201 && q2.naLanding.modo === 'CSS1Compat', 'landing B: a visita foi gravada (' + q2.visita + ') e a página está no modo padrão (' + q2.naLanding.modo + ')');
-  conferir(q2.endereco.pathname === '/quiz/' && q2.endereco.searchParams.get('utm_source') === 'stories', 'landing B leva a /quiz/ com utm_source=stories');
+  // Lead 2: landing-page-02 pelo botão grande, utm stories, 375, eliminatório, caixa marcada, clique "Tenho interesse"
+  const q2 = await fazerQuiz({ landing: '/', busca: '?utm_source=stories&utm_campaign=funil-01', respostas: ELIMINATORIO, pessoa: PESSOA_ELIM, largura: 375, telaFinal: 'relatorio-nao', clique: 'interesse' });
+  conferir(q2.visita === 201 && q2.naLanding.modo === 'CSS1Compat', 'landing em 375: a visita foi gravada (' + q2.visita + ') e a página está no modo padrão (' + q2.naLanding.modo + ')');
+  conferir(q2.endereco.pathname === '/quiz/' && q2.endereco.searchParams.get('utm_source') === 'stories', 'landing em 375: o botão grande ("' + BOTAO_GRANDE + '...") leva a /quiz/ com utm_source=stories');
   conferir(q2.fim === 201 && !q2.aviso && q2.telaFinal === '#relatorio-nao', 'eliminatório: POST /api/fim-quiz gravado (' + q2.fim + '), tela do relatório de não qualificado, sem aviso de falha');
   conferir(q2.clique === 201, 'eliminatório: o clique "Tenho interesse" foi gravado (POST /api/evento, ' + q2.clique + ')');
 
@@ -692,7 +699,7 @@ async function principal() {
     'corte mais restritivo: quem passa no corte do Júnior e fica na faixa c vai para o relatório de não qualificado (antes, plano); fim do quiz e clique gravados (' + q3.telaFinal + ')');
 
   // Lead 4: faixa b com o funil todo na meta (relatório saudável), clique "Quero marcar uma conversa"
-  const q4 = await fazerQuiz({ landing: '/b/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: FAIXA_B, pessoa: PESSOA_B, largura: 375, telaFinal: 'relatorio-saudavel', clique: 'marcar' });
+  const q4 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: FAIXA_B, pessoa: PESSOA_B, largura: 375, telaFinal: 'relatorio-saudavel', clique: 'marcar' });
   conferir(q4.fim === 201 && !q4.aviso && q4.telaFinal === '#relatorio-saudavel' && q4.clique === 201, 'faixa b: fim do quiz gravado (' + q4.fim + '), relatório do funil saudável, clique "Quero marcar uma conversa" gravado (' + q4.clique + ')');
 
   // Lead 5: as mesmas respostas da faixa b, com a caixa desmarcada (13.4; 30.3): nada da pessoa vai a lugar nenhum
@@ -708,9 +715,9 @@ async function principal() {
     const page = await ctx.newPage();
     page.on('console', m => consoleTexto.push(m.text()));
     await page.goto(BASE + '/?utm_source=bio');
-    await page.waitForTimeout(300);
-    const href = await page.locator('[data-quiz]').first().getAttribute('href');
-    const ida = new URL(href, BASE);
+    await botaoDaLanding(page, BOTAO_GRANDE).click();
+    await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 }).catch(() => {});
+    const ida = new URL(page.url());
     conferir(ida.pathname === '/quiz/' && ida.searchParams.get('utm_source') === 'bio' && /^sessao-[a-z0-9-]{1,60}$/.test(ida.searchParams.get('id_sessao') || '') && !ida.searchParams.has('utm_campaign'),
       'landing com /api/evento fora do ar: o botão continua levando a /quiz/ com a utm presente e a sessão (10.10)');
     await ctx.close();
@@ -719,12 +726,10 @@ async function principal() {
     const pedidos = [];
     ctx2.on('request', rq => pedidos.push(rq.url()));
     const p2 = await ctx2.newPage();
-    for (const pasta of ['variante-a-design-system-v1', 'variante-b-branco-e-verde']) {
-      await p2.goto(pathToFileURL(join(RAIZ, 'entregas/landings/landing-page-01', pasta, 'index.html')).href + '?utm_source=bio');
-      await p2.waitForTimeout(300);
-    }
+    await p2.goto(pathToFileURL(join(RAIZ, 'entregas/landings/landing-page-02/pagina/index.html')).href + '?utm_source=bio');
+    await p2.waitForTimeout(300);
     await ctx2.close();
-    conferir(pedidos.every(end => end.startsWith('file:') || end.startsWith('data:')), 'as duas landings abertas pelo arquivo (file://): nada é enviado e nada é pedido a outro endereço (' + pedidos.length + ' pedidos, todos file: ou data:)');
+    conferir(pedidos.every(end => end.startsWith('file:') || end.startsWith('data:')), 'a landing-page-02 aberta pelo arquivo (file://): nada é enviado e nada é pedido a outro endereço (' + pedidos.length + ' pedidos, todos file: ou data:)');
   }
   conferir(consoleTexto.every(t => !DADO_PESSOAL.test(t)), 'console das páginas sem dado de pessoa (' + consoleTexto.length + ' linhas)');
 
@@ -761,8 +766,8 @@ async function principal() {
     const vis = s1.find(e => e.tipo === 'visita'), ini = s1.find(e => e.tipo === 'inicio_quiz');
     conferir(s1.map(e => e.tipo).join(',') === 'visita,inicio_quiz,fim_quiz',
       'banco · a sessão do lead A tem, na ordem, visita, início do quiz e fim do quiz (' + s1.map(e => e.tipo).join(', ') + ')');
-    conferir(vis && vis.entrega === 'landing-page-01' && vis.versao_entrega === 1 && vis.utm_source === 'bio' && vis.utm_campaign === 'funil-01' && vis.id_pessoa === pa.id_pessoa && vis.gravado_por === 'garcom',
-      'banco · visita: landing-page-01 versão 1, utm bio e funil-01, gravada pelo garçom sem pessoa e ligada à pessoa pelo fim do quiz da mesma sessão (6.2)');
+    conferir(vis && vis.entrega === 'landing-page-02' && vis.versao_entrega === 1 && vis.utm_source === 'bio' && vis.utm_campaign === 'funil-01' && vis.id_pessoa === pa.id_pessoa && vis.gravado_por === 'garcom',
+      'banco · visita: landing-page-02 versão 1, utm bio e funil-01, gravada pelo garçom sem pessoa e ligada à pessoa pelo fim do quiz da mesma sessão (6.2)');
     conferir(ini && ini.entrega === 'quiz-01' && ini.versao_entrega === 2 && ini.id_pessoa === pa.id_pessoa && ini.lead_score_faixa === null && ini.respostas === null,
       'banco · início do quiz: quiz-01 versão 2, sem nota e sem respostas, ligado à pessoa pelo fim do quiz (6.2)');
   }

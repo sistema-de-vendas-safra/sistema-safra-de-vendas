@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="816.2" height="124.2" viewBox="0 0 816.2 124.2" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse id="Brilho (de baixo)" cx="408.1" cy="62.1" rx="408.1" ry="62.1" fill="url(#paint0_radial_0_47)"/>
+<defs>
+<radialGradient id="paint0_radial_0_47" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(408.1 62.1) scale(408.1 62.1)">
+<stop stop-color="#E9FBF2" stop-opacity="0.95"/>
+<stop offset="1" stop-color="#E9FBF2" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

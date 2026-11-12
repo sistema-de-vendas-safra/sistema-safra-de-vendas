@@ -1,25 +1,26 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 4 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 6 · rascunho · otavio: pendente (ver README.md desta pasta)
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
-// O que faz (decisão #101):
-//   /            variante A da landing-page-01 (index.html, tokens.css, estilo.css)
-//   /b/          variante B da landing-page-01 (index.html, estilo.css)
+// O que faz (decisão #101; v6, 12/11/2026: a landing-page-02 no lugar das duas variantes da landing-page-01):
+//   /            landing-page-02 (index.html, com o programa em assets/ e as imagens em a/, na raiz do site)
 //   /quiz/       página do quiz-01 (index.html, poster-junior.jpg)
-//   fontes/      ao lado de cada página que usa fonte própria (/fontes/ da variante A e /quiz/fontes/), os arquivos
+//   fontes/      ao lado de cada página que usa fonte própria (/fontes/ da landing-page-02 e /quiz/fontes/), os arquivos
 //                de fonte de licença livre instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json
 //                daquela pasta) e a licença de cada um. Nada vem do Google nem de outro terceiro (10.7; v4, etapa 34).
 //   /api/...     não é arquivo: é o garçom (entregas/garcom/garcom.mjs), pela configuração wrangler.toml
 //
 // Nos HTML montados (nunca nas entregas), acrescenta <meta charset="utf-8"> como primeiríssima linha quando
 // não houver nos primeiros 1024 bytes (o quiz; v3, pedido 09), <meta name="robots" content="noindex, nofollow">
-// quando não houver, a meta viewport (width=device-width) quando não houver, e troca o link do botão da landing para o quiz (caminho do repositório) por /quiz/.
-// Depois confere cada caminho relativo de css, imagem, fonte e link nos arquivos montados, e que nenhuma página
-// pede arquivo a outro endereço (folha de estilo, script, imagem, fonte ou @import de http, e nada de fonts.googleapis
-// nem fonts.gstatic; v4). Os links que a pessoa clica (<a href="https://...">) não são pedidos da página e ficam.
+// quando não houver e a meta viewport (width=device-width) quando não houver. A landing-page-02 já leva ao quiz
+// por /quiz/ e não muda na montagem.
+// Depois confere cada caminho de css, imagem, fonte e link nos arquivos montados, cada imagem que o programa da
+// landing-page-02 cita, e que nenhuma página pede arquivo a outro endereço (folha de estilo, script, imagem, fonte
+// ou @import de http, e nada de fonts.googleapis, fonts.gstatic nem vercel.live; v4 e v6). Os links que a pessoa
+// clica (<a href="https://...">) não são pedidos da página e ficam.
 // A pasta montada (site/) fica fora do Git (.gitignore). Ela é apagada e montada de novo a cada vez.
 
-import { mkdirSync, rmSync, readFileSync, writeFileSync, copyFileSync, existsSync, statSync, readdirSync } from 'node:fs';
+import { mkdirSync, rmSync, readFileSync, writeFileSync, copyFileSync, cpSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { dirname, join, relative, resolve, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,14 +28,11 @@ const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = resolve(AQUI, '../..');
 const SITE = join(AQUI, 'site');
 
-const LANDING = 'entregas/landings/landing-page-01';
+const LANDING = 'entregas/landings/landing-page-02/pagina';
 // Fontes (10.7): os pacotes ficam em nucleo/ferramentas/fontes/node_modules (fora do Git); a lista, em fontes.json
 const FONTES = 'nucleo/ferramentas/fontes';
 const LISTA_FONTES = JSON.parse(readFileSync(join(RAIZ, FONTES, 'fontes.json'), 'utf8'));
 const QUIZ = 'entregas/quizzes/quiz-01/pagina';
-// O href do botão da landing para o quiz, como está nas entregas (caminho do repositório, para a revisão local)
-const LINK_QUIZ_NO_REPOSITORIO = '../../../quizzes/quiz-01/pagina/index.html';
-const LINK_QUIZ_NO_SITE = '/quiz/';
 const META_ROBOTS = '<meta name="robots" content="noindex, nofollow">';
 // O quiz não tem viewport (vem do mockup): sem ela, o celular desenha a página com 980 pixels e encolhe (23.8)
 const META_VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">';
@@ -46,10 +44,9 @@ const META_CHARSET = '<meta charset="utf-8">';
 const BYTES_DO_CHARSET = 1024;
 const temCharsetNoInicio = html => /<meta\s+charset=["']?utf-8["']?\s*\/?>/i.test(Buffer.from(html, 'utf8').subarray(0, BYTES_DO_CHARSET).toString('utf8'));
 
-// O que vai para onde. Só estes arquivos entram no site (README.md e prints ficam no repositório).
+// O que vai para onde. Só estes arquivos e pastas entram no site (README.md e prints ficam no repositório).
 const MAPA = [
-  { de: LANDING + '/variante-a-design-system-v1', para: '', arquivos: ['index.html', 'tokens.css', 'estilo.css'], landing: true, fontes: 'landing-a' },
-  { de: LANDING + '/variante-b-branco-e-verde', para: 'b', arquivos: ['index.html', 'estilo.css'], landing: true, fontes: 'landing-b' },
+  { de: LANDING, para: '', arquivos: ['index.html'], pastas: ['assets', 'a'], fontes: 'landing-02' },
   { de: QUIZ, para: 'quiz', arquivos: ['index.html', 'poster-junior.jpg'], fontes: 'quiz' }
 ];
 // Arquivos que o programa da página carrega sem estar num atributo src ou href
@@ -96,12 +93,6 @@ for (const item of MAPA) {
     if (!arq.endsWith('.html')) { copyFileSync(origem, alvo); relatorio.push(nomeNoSite + ' (cópia)'); continue; }
     let html = readFileSync(origem, 'utf8');
     const mudancas = [];
-    if (item.landing) {
-      const vezes = html.split('href="' + LINK_QUIZ_NO_REPOSITORIO + '"').length - 1;
-      if (vezes !== 1) problema(nomeNoSite + ': esperava 1 link para o quiz no caminho do repositório, achou ' + vezes);
-      html = html.replace('href="' + LINK_QUIZ_NO_REPOSITORIO + '"', 'href="' + LINK_QUIZ_NO_SITE + '"');
-      if (vezes === 1) mudancas.push('link do quiz trocado por ' + LINK_QUIZ_NO_SITE);
-    }
     const c = garantirCharset(html);
     html = c.html;
     mudancas.push(c.acrescentou ? 'meta charset acrescentada na primeira linha' : 'meta charset já existia no início');
@@ -113,6 +104,13 @@ for (const item of MAPA) {
     mudancas.push(v.acrescentou ? 'meta viewport acrescentada' : 'meta viewport já existia');
     writeFileSync(alvo, html);
     relatorio.push(nomeNoSite + ' (' + mudancas.join('; ') + ')');
+  }
+  // Pastas inteiras, copiadas como estão (o programa e as imagens da landing-page-02)
+  for (const pasta of item.pastas || []) {
+    const origem = join(RAIZ, item.de, pasta);
+    if (!existsSync(origem)) { problema('falta na entrega: ' + relative(RAIZ, origem) + '/'); continue; }
+    cpSync(origem, join(destino, pasta), { recursive: true });
+    relatorio.push(posix.join(item.para, pasta) + '/ (cópia da pasta inteira)');
   }
 }
 
@@ -182,20 +180,37 @@ for (const arquivo of arquivosDoSite) {
     if (!temCharsetNoInicio(html)) problema(arquivo + ': sem meta charset utf-8 nos primeiros ' + BYTES_DO_CHARSET + ' bytes');
     if (!/<meta\s+name=["']robots["'][^>]*noindex/i.test(html)) problema(arquivo + ': sem meta noindex');
     if (!/<meta\s+name=["']viewport["'][^>]*width=device-width/i.test(html)) problema(arquivo + ': sem meta viewport');
-    if (html.includes(LINK_QUIZ_NO_REPOSITORIO)) problema(arquivo + ': ainda tem o caminho do quiz no repositório');
   }
 }
-// As três páginas do mapa de rotas existem
-for (const p of ['index.html', 'b/index.html', 'quiz/index.html']) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
+// O programa da landing-page-02 (React e Vite, v6) monta o caminho das imagens em duas partes: uma constante com a
+// pasta (ol="/a/00bf60e5") e o arquivo depois dela (`${ol}/76509.svg`). Cada imagem citada assim, ou por inteiro,
+// tem de existir no site. E o programa não pode citar o Google Fonts nem a Vercel.
+for (const arquivo of arquivosDoSite) {
+  if (!arquivo.endsWith('.js')) continue;
+  const js = readFileSync(join(SITE, arquivo), 'utf8');
+  if (/fonts\.(googleapis|gstatic)\.com|vercel\.live/i.test(js)) problema(arquivo + ': cita fonts.googleapis, fonts.gstatic ou vercel.live');
+  const imagens = new Set();
+  for (const [, nome, pasta] of js.matchAll(/([A-Za-z_$][\w$]*)="(\/a\/[0-9a-z]+)"/g)) {
+    const depois = new RegExp('\\$\\{' + nome.replace(/\$/g, '\\$') + '\\}(/[A-Za-z0-9_.-]+)', 'g');
+    for (const m of js.matchAll(depois)) imagens.add(pasta + m[1]);
+  }
+  for (const m of js.matchAll(/["'`](\/(?:a|assets)\/[A-Za-z0-9_.\/-]+\.[a-z0-9]+)["'`]/g)) imagens.add(m[1]);
+  for (const img of imagens) {
+    conferidas++;
+    if (!arquivosDoSite.includes(img.slice(1))) problema(arquivo + ': "' + img + '" não existe no site montado');
+  }
+}
+// As duas páginas do mapa de rotas existem
+for (const p of ['index.html', 'quiz/index.html']) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
 
 // ··· 3. Resultado ···
 console.log('Site montado em ' + relative(RAIZ, SITE) + '/');
 for (const linha of relatorio) console.log('  ' + linha);
 const bytes = arquivosDoSite.reduce((t, a) => t + statSync(join(SITE, a)).size, 0);
-console.log(arquivosDoSite.length + ' arquivos, ' + Math.round(bytes / 1024) + ' KB; ' + conferidas + ' caminhos relativos conferidos');
+console.log(arquivosDoSite.length + ' arquivos, ' + Math.round(bytes / 1024) + ' KB; ' + conferidas + ' caminhos conferidos');
 if (problemas.length) {
   console.log('\nProblemas:');
   for (const p of problemas) console.log('  ' + p);
   process.exit(1);
 }
-console.log('Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, link da landing para /quiz/, todos os caminhos existem no site e nenhuma página pede arquivo a outro endereço.');
+console.log('Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, todos os caminhos e todas as imagens do programa da landing existem no site e nenhuma página pede arquivo a outro endereço.');

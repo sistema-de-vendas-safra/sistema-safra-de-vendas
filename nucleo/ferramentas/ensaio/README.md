@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -12,17 +12,15 @@ depende_de:
   - id: banco-conferir
     versao: 2
   - id: banco-catalogo-prototipo
-    versao: 2
+    versao: 3
   - id: garcom
     versao: 4
   - id: prototipo-funil-01
-    versao: 5
+    versao: 6
   - id: quiz-01-pagina
     versao: 3
-  - id: landing-page-01-variante-a
-    versao: 3
-  - id: landing-page-01-variante-b
-    versao: 3
+  - id: landing-page-02
+    versao: 1
   - id: planilha-sdr-funil-01
     versao: 2
   - id: lead-score
@@ -38,11 +36,13 @@ desatualizado: true
 
 Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de mentira, o site montado, o garçom, a landing e o quiz num navegador sem tela e a planilha do SDR com um Google de mentira. Serve para não ter surpresa quando o Otávio aplicar as mudanças no protótipo que está no ar (prompts/08-fila-da-madrugada.md, etapa 25; prompts/11-decisoes-de-09-11.md, etapa 35; o roteiro é entregas/prototipo-funil-01/APLICAR-11.md).
 
-**Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (banco-rascunho, banco-migracao-001, garcom, quiz-01-pagina, as variantes da landing, planilha-sdr-funil-01 e o protótipo; regra 11.1).
+**Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (banco-rascunho, banco-migracao-001, garcom, quiz-01-pagina, a landing-page-02, planilha-sdr-funil-01 e o protótipo; regra 11.1).
 
 **Protótipo de teste não é entrega.** O ensaio usa só leads de mentira (#102: nome começando por TESTE, e-mail @teste.invalid), só valores de mentira montados na hora e só o endereço 127.0.0.1. Nada vai ao ar, nada é publicado, ninguém faz login, e nada sai da máquina (ver "Rede").
 
 **O que muda na versão 3 (etapa 35, 09/11/2026).** O ensaio parte do banco como ele está no Supabase (esquema v2, a linha do catálogo de antes e dados de antes, de teste, entre eles uma linha que imita a do Otávio) e roda a migração 001 duas vezes sobre esses dados; conferir.sql v2 (18 de 18); catálogo v2; garçom v4 com /api/evento (visita, início do quiz, clique no fim); a caixa de aceite única marcada e desmarcada; o corte mais restritivo; a faixa B com as respostas novas da planilha (leads-por-mes e crm); a planilha v2 com 20 colunas; fontes locais e nenhum pedido a terceiros, conferido também no Chromium inteiro e no wrangler; a conferência da landing que tinha ficado fora do repositório na etapa 34 (34.17). Opção nova `--esperar-margem`.
+
+**O que muda na versão 4 (12/11/2026).** A landing do site agora é a landing-page-02, a página de vendas, em /, no lugar das duas variantes da landing-page-01; o /b/ saiu do site. O ensaio confere / e /quiz/, o estilo e o programa da landing-page-02 com charset, o catálogo v3 (com a linha landing-page-02, versão 1), a visita gravada como landing-page-02 e a ida ao quiz pelos dois botões de Análise (o do topo e o grande, em 1440 e em 375). As pessoas que entravam pelo /b/ entram pelo /, e a conferência pelo arquivo (file://) abre a landing-page-02.
 
 ## Um comando só
 
@@ -76,18 +76,18 @@ Opções:
 1. **Banco v2, como está no Supabase.** Um Postgres que roda dentro do Node (PGlite 0.5.15, PostgreSQL 18.6), só na memória. Cria de mentira os papéis do Supabase: anon, authenticated, service_role (que passa por cima da RLS, como no Supabase) e **dono**, no lugar do postgres do Supabase (dono das tabelas, sem ser superusuário). Para conferir o pior caso, o dono começa com as permissões padrão que o Supabase daria (tudo para anon, authenticated e service_role no que ele criar). Aplica dados/banco/esquema.sql (v2) como o dono, duas vezes, e confere que conferir.sql v2 avisa que falta a migração (false nas linhas 4, 8 e 14 a 18, "11 de 18"). Grava a linha do catálogo que o banco do protótipo já tem (quiz-01, versão 1) e os **dados de antes**, pela porta do v2 (registrar_fim_quiz com a chave publicável), do jeito da página v2 (quiz-01 versão 1, lead score versão 2), como os do teste de 09/11 (prompts/10-prototipo-ligado.md): uma linha que **imita a do Otávio** (faixa a, nota 86, utm stories, os dois aceites; nome TESTE e e-mail @teste.invalid, nada dela é real), uma faixa a com a empresa "=1+1", um eliminatório e uma pessoa com dois envios. Esses dados são atrasados 6 horas (o mesmo contorno da seção 7), como se tivessem chegado de manhã.
 2. **Migração 001 duas vezes sobre os dados.** dados/banco/migracoes/001-v3.sql pelo dono, duas vezes: sem erro, cada linha de pessoas, eventos e entregas igual antes e depois (o campo novo clique_fim_quiz fica de fora da comparação e nasce vazio), e a segunda rodada deixa restrições, colunas, funções e permissões iguais às da primeira. conferir.sql v2: **18 de 18**. Depois troca de papel (SET ROLE) e tenta de verdade: anon executa registrar_fim_quiz e registrar_evento e nada mais; anon não lê tabela nem visão, não grava direto e não chama leads_para_planilha; authenticated não pode nada; service_role chama leads_para_planilha e nada mais; um papel qualquer, sem permissão dada, também não executa nada (PUBLIC).
 3. **Supabase de mentira** em 127.0.0.1, porta livre (supabase-de-mentira.mjs). Recebe `POST /rest/v1/rpc/<funcao>` e, para os casos de erro, `GET` e `POST /rest/v1/<tabela>`. Lê o cabeçalho apikey: a chave publicável de mentira vira o papel anon, a secreta de mentira vira service_role; sem chave ou com chave desconhecida, 401. Cada pedido roda numa transação com SET LOCAL ROLE, como o PostgREST, e os erros do Postgres viram status parecidos com os do PostgREST: permissão negada é 401 para anon e 403 para os outros; chave estrangeira é 409; função que não existe é 404; restrição (CHECK) e pacote fora do formato (22023) são 400. O PGlite tem uma conexão só: os pedidos entram numa fila e rodam um de cada vez. A função da planilha v3, chamada com a secreta, já devolve os 3 leads de antes (faixas a e b), com o campo do clique.
-4. **Site e garçom.** Roda entregas/prototipo-funil-01/montar-site.mjs e confere que ele termina dizendo que nenhuma página pede arquivo a outro endereço e que as fontes estão ao lado das páginas. Copia entregas/prototipo-funil-01/wrangler.toml para uma pasta temporária **fora do repositório**, com só quatro trocas: os caminhos de main e de assets ficam absolutos, SUPABASE_URL aponta para o Supabase de mentira e ORIGEM_PERMITIDA para o endereço local. Confere que a cópia não tem endereço real (supabase.co, workers.dev). Os três segredos, de mentira, vão num arquivo dessa pasta temporária (`--env-file`), nunca num .dev.vars do repositório. Liga `wrangler dev --local` (workerd, o mesmo motor do Workers) em 127.0.0.1, com a trava de rede (ver "Rede"). Confere /, /b/ e /quiz/ com noindex, Content-Type com charset utf-8 e meta charset nos primeiros 1024 bytes, os três CSS com charset, uma rota /api/ desconhecida com 404 e o OPTIONS em /api/evento com 405, sem CORS (22.2).
-5. **Catálogo v2** (23.10, 32.4, 34.4). Sem as linhas novas, o fim do quiz da página nova (quiz-01, 2), a visita (landing-page-01, 1) e o início do quiz (quiz-01, 2) são recusados pela chave estrangeira (409 no banco, 422 no garçom), e nada novo fica no banco; outra origem dá 403. Depois aplica **dados/banco/catalogo-prototipo.sql** (v2), o mesmo arquivo que o APLICAR-11.md manda o Otávio rodar, duas vezes: três linhas, sem duplicar, e a linha antiga (quiz-01, 1) com a mesma data.
-6. **Landing e quiz no navegador sem tela** (playwright-core e o Chromium do cache). Cinco pessoas de teste, cada uma entrando pela landing e clicando no botão do quiz:
-   - **TESTE Marina Ensaio**: variante A (/), `utm_source=bio&utm_campaign=funil-01`, 1440, o exemplo do lead score (nota 96, faixa a), caixa marcada, tela do plano;
-   - **TESTE Paulo Ensaio**: variante B (/b/), `utm_source=stories`, 375, eliminatório, caixa marcada, clique "Tenho interesse";
+4. **Site e garçom.** Roda entregas/prototipo-funil-01/montar-site.mjs e confere que ele termina dizendo que nenhuma página pede arquivo a outro endereço e que as fontes estão ao lado das páginas. Copia entregas/prototipo-funil-01/wrangler.toml para uma pasta temporária **fora do repositório**, com só quatro trocas: os caminhos de main e de assets ficam absolutos, SUPABASE_URL aponta para o Supabase de mentira e ORIGEM_PERMITIDA para o endereço local. Confere que a cópia não tem endereço real (supabase.co, workers.dev). Os três segredos, de mentira, vão num arquivo dessa pasta temporária (`--env-file`), nunca num .dev.vars do repositório. Liga `wrangler dev --local` (workerd, o mesmo motor do Workers) em 127.0.0.1, com a trava de rede (ver "Rede"). Confere / e /quiz/ com noindex, Content-Type com charset utf-8 e meta charset nos primeiros 1024 bytes, o estilo e o programa da landing-page-02 com charset (v4), uma rota /api/ desconhecida com 404 e o OPTIONS em /api/evento com 405, sem CORS (22.2).
+5. **Catálogo v3** (23.10, 32.4, 34.4). Sem as linhas novas, o fim do quiz da página nova (quiz-01, 2), a visita (landing-page-02, 1) e o início do quiz (quiz-01, 2) são recusados pela chave estrangeira (409 no banco, 422 no garçom), e nada novo fica no banco; outra origem dá 403. Depois aplica **dados/banco/catalogo-prototipo.sql** (v3), o mesmo arquivo que o APLICAR-11.md manda o Otávio rodar, duas vezes: quatro linhas, sem duplicar, e a linha antiga (quiz-01, 1) com a mesma data.
+6. **Landing e quiz no navegador sem tela** (playwright-core e o Chromium do cache). Cinco pessoas de teste, cada uma entrando pela landing-page-02 e clicando num botão de Análise:
+   - **TESTE Marina Ensaio**: landing-page-02 (/), pelo botão do topo ("Fazer a Análise"), `utm_source=bio&utm_campaign=funil-01`, 1440, o exemplo do lead score (nota 96, faixa a), caixa marcada, tela do plano;
+   - **TESTE Paulo Ensaio**: landing-page-02 (/), pelo botão grande ("Faça uma Análise Estratégica..."), `utm_source=stories`, 375, eliminatório, caixa marcada, clique "Tenho interesse";
    - **TESTE Carla Ensaio**: o **corte mais restritivo** (14.2): faixa c que passa no corte do Júnior (nota 24); até a página v2 ia para o plano, agora vai para o relatório de quem não se qualifica; clique "Tenho interesse";
    - **TESTE Bia Ensaio**: faixa b com o funil todo na meta (nota 68), relatório do funil saudável, clique "Quero marcar uma conversa";
    - **TESTE Davi Ensaio**: as mesmas respostas da Bia, com a **caixa desmarcada**, e o mesmo clique.
 
-   Confere, no navegador: a visita gravada (201) ao abrir cada landing, as duas landings e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing A e a Inter, a Space Grotesk e a Permanent Marker no quiz, carregadas do site (10.7); o botão leva a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); abertas pelo arquivo (file://), as duas landings não mandam nada. O console das páginas, sem dado de pessoa.
+   Confere, no navegador: a visita gravada (201) ao abrir a landing, a landing e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing e a Inter, a Space Grotesk e a Permanent Marker no quiz, carregadas do site (10.7); os dois botões levam a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); aberta pelo arquivo (file://), a landing-page-02 não manda nada. O console das páginas, sem dado de pessoa.
 
-   Confere, no banco: o lead A com nome TESTE, telefone como a página mandou, os dois consentimentos "sim" pela caixa única com a data e o texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página; #104); fim do quiz com nota 96, faixa a, lead score versão 3, quiz-01 versão 2, a sessão vinda da landing e as respostas; a sessão do lead A com visita (landing-page-01, versão 1, utm bio), início do quiz (quiz-01, versão 2, sem nota nem respostas) e fim do quiz, nessa ordem, a visita e o início ligados à pessoa pelo fim do quiz da mesma sessão (6.2); o eliminatório com a nota e o clique tenho-interesse ligado pela sessão (18.4; 32.2); a faixa c do corte com o clique; a faixa b com nota 68, o clique quero-conversa e as respostas com o CRM e a linha "Leads por mês"; da desmarcada, nenhuma pessoa, nenhum fim do quiz e nenhum clique, só a visita e o início do quiz, sem pessoa (34.18); 4 pessoas e 4 fins de quiz novos, nada a mais.
+   Confere, no banco: o lead A com nome TESTE, telefone como a página mandou, os dois consentimentos "sim" pela caixa única com a data e o texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página; #104); fim do quiz com nota 96, faixa a, lead score versão 3, quiz-01 versão 2, a sessão vinda da landing e as respostas; a sessão do lead A com visita (landing-page-02, versão 1, utm bio), início do quiz (quiz-01, versão 2, sem nota nem respostas) e fim do quiz, nessa ordem, a visita e o início ligados à pessoa pelo fim do quiz da mesma sessão (6.2); o eliminatório com a nota e o clique tenho-interesse ligado pela sessão (18.4; 32.2); a faixa c do corte com o clique; a faixa b com nota 68, o clique quero-conversa e as respostas com o CRM e a linha "Leads por mês"; da desmarcada, nenhuma pessoa, nenhum fim do quiz e nenhum clique, só a visita e o início do quiz, sem pessoa (34.18); 4 pessoas e 4 fins de quiz novos, nada a mais.
 7. **Planilha do SDR.** Em outro processo (o UrlFetchApp de mentira é síncrono e trava a linha principal de quem chama), roda instalar() e buscar_() de Codigo.gs v2 contra o garçom local, pela porta privada, com a CHAVE_PLANILHA de mentira, numa aba nova, como depois de renomear a antiga (planilha-sdr-funil-01, "Atualizar da versão 1"). Confere: as 20 colunas na ordem, com clique_fim_quiz na 13; a primeira busca, logo depois do quiz, traz **só os 3 leads de antes** (a linha que imita a do Otávio, a faixa a com "=1+1" e a pessoa dos dois envios, uma vez só), e nenhum dos novos (a margem de 1 minuto do banco, 21.6); depois do contorno da margem (abaixo), 2 linhas novas, o lead A e a faixa b, na ordem de chegada; a linha do lead A com os valores certos e o clique vazio; a da faixa b com respostas_a_confirmar trazendo **leads-por-mes: 200** e **crm** (15.4) e clique_fim_quiz **quero-conversa** (18.4); a linha que imita a do Otávio com faixa a e nota 86; o eliminatório, a faixa c, a desmarcada e o eliminatório de antes fora; rodar de novo não duplica; com o cursor perdido, também não; o registro da planilha sem dado pessoal; com a chave errada, 401 e nada gravado.
 8. **Casos de erro.** Chave publicável lendo tabela, visão, gravando direto ou chamando leads_para_planilha pelo Supabase de mentira: 401. Chave secreta lendo tabela, gravando o fim do quiz ou um evento: 403. Porta privada do garçom com a chave da planilha errada, sem chave ou com a publicável no lugar: 401 sem detalhe; com a certa, os 5 leads. Pacote sem consentimento: o garçom recusa (422) sem chamar o banco, e a função chamada direto com a publicável também recusa (400, restrição 23514). Clique numa sessão sem fim do quiz: o banco recusa e o garçom responde 422 (32.2). /api/evento com pessoa no pacote: 422 sem chamar o banco. A mesma pessoa enviando duas vezes ao mesmo tempo: uma pessoa só no banco e dois eventos.
 9. **Fechamento.** conferir.sql de novo (18 de 18); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
@@ -114,6 +114,8 @@ Nas duas rodadas finais, o vigia externo (lsof a cada meio segundo nos processos
 
 ## Resultado do ensaio
 
+**v4 (12/11/2026).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev: **142 de 142**, em 64 segundos. São três conferências a menos que na v3: saíram as duas do /b/ e as três dos CSS das variantes, e entraram as do estilo e do programa da landing-page-02. Rodado numa máquina Linux na nuvem, com o Chromium do Playwright posto no caminho que nucleo/ferramentas/prints/print.js procura (acharChromium só conhece o caminho do Mac), fora do repositório.
+
 **v3 (09/11/2026, etapa 35).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev, duas vezes seguidas: **145 de 145** nas duas. Com `--esperar-margem`: 144 de 144 (sem a conferência do contorno). Com `--sem-wrangler`: 142 de 142 (sem as três conferências do wrangler).
 
 Para provar que as conferências novas pegam o defeito, rodado com `--sem-wrangler` e uma mudança de propósito na página do quiz, desfeita pelo Git logo depois:
@@ -121,10 +123,10 @@ Para provar que as conferências novas pegam o defeito, rodado com `--sem-wrangl
 - o fim do quiz pelo corte de antes (`CRITERIO_DO_FIM = 'junior'`): 2 FALHOU, o corte (a faixa c foi para o plano) e a linha do banco do corte (sem o clique, que não existe no plano);
 - o envio mesmo com a caixa desmarcada (`if (true)` no lugar de `if (temConsentimento())`): 1 FALHOU, "desmarcada: nenhum POST /api/fim-quiz". O banco continuou limpo, porque o garçom recusa o pacote sem consentimento (422) antes de chamar o banco.
 
-As linhas INFO só informam e não entram na contagem. Saída real da primeira rodada final:
+As linhas INFO só informam e não entram na contagem. Saída real da rodada da v4:
 
 ```
-Ensaio geral do protótipo do funil-01 · 2026-11-09T16:50:12.318Z
+Ensaio geral do protótipo do funil-01 · 2026-11-12T12:08:34.344Z
 Só 127.0.0.1, só valores de mentira, só leads de teste (#102).
 
 · 1. Banco v2 (PGlite) como está no Supabase, com os papéis de mentira e dados de antes
@@ -181,42 +183,39 @@ OK     · as fontes estão no site montado, ao lado das páginas (4 arquivos; 10
 OK     · configuração temporária fora do repositório: só main, assets, SUPABASE_URL e ORIGEM_PERMITIDA trocados; nenhum endereço real
 OK     · wrangler dev --local no ar (workerd), sem login, com os segredos de mentira por arquivo temporário
   modo do garçom: wrangler dev --local
-  avisos do wrangler: nenhum
-OK     · GET / (variante A): 200, X-Robots-Tag noindex e meta noindex (200)
-OK     · GET / (variante A): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
-OK     · GET /b/ (variante B): 200, X-Robots-Tag noindex e meta noindex (200)
-OK     · GET /b/ (variante B): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
+  avisos do wrangler: [33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+OK     · GET / (landing-page-02): 200, X-Robots-Tag noindex e meta noindex (200)
+OK     · GET / (landing-page-02): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
 OK     · GET /quiz/ (quiz): 200, X-Robots-Tag noindex e meta noindex (200)
 OK     · GET /quiz/ (quiz): Content-Type com charset utf-8 (text/html; charset=utf-8) e meta charset nos primeiros 1024 bytes
-OK     · GET /tokens.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
-OK     · GET /estilo.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
-OK     · GET /b/estilo.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
+OK     · GET /assets/index-Btrkg4Yg.css: Content-Type com charset utf-8 (text/css; charset=utf-8)
+OK     · GET /assets/index-BSwcbsoR.js: Content-Type com charset utf-8 (text/javascript; charset=utf-8)
 OK     · GET /api/nao-existe: 404 com noindex (404)
 OK     · OPTIONS /api/evento: 405 sem cabeçalho de CORS (22.2; 405)
 
-· 5. Catálogo de entregas v2 (perguntas 23.10, 32.4 e 34.4)
+· 5. Catálogo de entregas v3 (perguntas 23.10, 32.4 e 34.4; landing-page-02)
 OK     · sem a linha (quiz-01, 2), o fim do quiz da página nova é recusado pela chave estrangeira (409) e o garçom responde 422
-OK     · sem a linha (landing-page-01, 1), a visita é recusada (409 no banco, 422 no garçom)
+OK     · sem a linha (landing-page-02, 1), a visita é recusada (409 no banco, 422 no garçom)
 OK     · sem a linha (quiz-01, 2), o início do quiz é recusado (409 no banco, 422 no garçom)
 OK     · e nada novo ficou no banco
 OK     · outra origem no fim do quiz: 403 (403)
 OK     · outra origem na visita: 403 (403)
-OK     · dados/banco/catalogo-prototipo.sql (v2) aplicado pelo dono, primeira vez: mostra as três linhas (landing-page-01 1 landing; quiz-01 1 quiz; quiz-01 2 quiz)
-OK     · dados/banco/catalogo-prototipo.sql (v2) aplicado pelo dono, segunda vez: mostra as três linhas (landing-page-01 1 landing; quiz-01 1 quiz; quiz-01 2 quiz)
-OK     · catálogo com três linhas (rodar de novo não duplica) e a linha antiga (quiz-01, 1) com a mesma data
+OK     · dados/banco/catalogo-prototipo.sql (v3) aplicado pelo dono, primeira vez: mostra as quatro linhas (landing-page-01 1 landing; landing-page-02 1 landing; quiz-01 1 quiz; quiz-01 2 quiz)
+OK     · dados/banco/catalogo-prototipo.sql (v3) aplicado pelo dono, segunda vez: mostra as quatro linhas (landing-page-01 1 landing; landing-page-02 1 landing; quiz-01 1 quiz; quiz-01 2 quiz)
+OK     · catálogo com quatro linhas (rodar de novo não duplica) e a linha antiga (quiz-01, 1) com a mesma data
 
 · 6. Landing e quiz no navegador sem tela (só 127.0.0.1)
-OK     · landing A: a visita foi gravada (POST /api/evento, 201)
-OK     · landing A: modo padrão (CSS1Compat) e UTF-8 (34.13)
-OK     · landing A: Geist carregada de /fontes/, sem o Google (Geist)
-OK     · landing A leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco
+OK     · landing: a visita foi gravada (POST /api/evento, 201)
+OK     · landing: modo padrão (CSS1Compat) e UTF-8 (34.13)
+OK     · landing: Geist carregada de /fontes/, sem o Google (Geist)
+OK     · landing: o botão do topo ("Fazer a Análise") leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco
 OK     · quiz: o início do quiz foi gravado ao abrir (POST /api/evento, 201)
 OK     · quiz: modo padrão (CSS1Compat; 09.1), lido como UTF-8, título com os acentos certos
 OK     · quiz: Inter, Space Grotesk e Permanent Marker carregadas de /quiz/fontes/ (Inter, Space Grotesk, Permanent Marker)
 OK     · quiz: uma caixa de aceite só, já marcada (13.4)
 OK     · lead A: POST /api/fim-quiz gravado (201), tela do plano, sem aviso de falha
-OK     · landing B: a visita foi gravada (201) e a página está no modo padrão (CSS1Compat)
-OK     · landing B leva a /quiz/ com utm_source=stories
+OK     · landing em 375: a visita foi gravada (201) e a página está no modo padrão (CSS1Compat)
+OK     · landing em 375: o botão grande ("Faça uma Análise Estratégica...") leva a /quiz/ com utm_source=stories
 OK     · eliminatório: POST /api/fim-quiz gravado (201), tela do relatório de não qualificado, sem aviso de falha
 OK     · eliminatório: o clique "Tenho interesse" foi gravado (POST /api/evento, 201)
 OK     · corte mais restritivo: quem passa no corte do Júnior e fica na faixa c vai para o relatório de não qualificado (antes, plano); fim do quiz e clique gravados (#relatorio-nao)
@@ -224,8 +223,8 @@ OK     · faixa b: fim do quiz gravado (201), relatório do funil saudável, cli
 OK     · desmarcada: a visita e o início do quiz, que vêm antes da caixa e não têm pessoa, foram gravados (34.18)
 OK     · desmarcada: nenhum POST /api/fim-quiz e nenhum clique mandado; o diagnóstico aparece na tela, sem aviso
 OK     · landing com /api/evento fora do ar: o botão continua levando a /quiz/ com a utm presente e a sessão (10.10)
-OK     · as duas landings abertas pelo arquivo (file://): nada é enviado e nada é pedido a outro endereço (6 pedidos, todos file: ou data:)
-OK     · console das páginas sem dado de pessoa (7 linhas)
+OK     · a landing-page-02 aberta pelo arquivo (file://): nada é enviado e nada é pedido a outro endereço (3 pedidos, todos file: ou data:)
+OK     · console das páginas sem dado de pessoa (8 linhas)
 OK     · banco · pessoas: o lead A, com nome TESTE, e-mail @teste.invalid e telefone como a página mandou
 OK     · banco · pessoas: a caixa marcada vira consentimento por WhatsApp e por e-mail, com a data (#104)
 OK     · banco · pessoas: texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página)
@@ -234,7 +233,7 @@ OK     · banco · eventos: um fim_quiz do lead A com nota 96, faixa a, versão 
 OK     · banco · eventos: etiquetas funil-01, quiz-01 versão 2, utm bio e funil-01, gravado pelo garçom, com a sessão que veio da landing
 OK     · banco · eventos: as respostas do quiz gravadas
 OK     · banco · a sessão do lead A tem, na ordem, visita, início do quiz e fim do quiz (visita, inicio_quiz, fim_quiz)
-OK     · banco · visita: landing-page-01 versão 1, utm bio e funil-01, gravada pelo garçom sem pessoa e ligada à pessoa pelo fim do quiz da mesma sessão (6.2)
+OK     · banco · visita: landing-page-02 versão 1, utm bio e funil-01, gravada pelo garçom sem pessoa e ligada à pessoa pelo fim do quiz da mesma sessão (6.2)
 OK     · banco · início do quiz: quiz-01 versão 2, sem nota e sem respostas, ligado à pessoa pelo fim do quiz (6.2)
 OK     · banco · o eliminatório: faixa eliminatorio (nota 81), utm stories
 OK     · banco · o clique do eliminatório: interesse_pos_relatorio, tenho-interesse, ligado à pessoa pela sessão (18.4; 32.2)
@@ -292,12 +291,11 @@ OK     · saída do garçom (wrangler dev, 38 linhas [garcom]) sem dado pessoal,
 OK     · o garçom só chamou registrar_fim_quiz e registrar_evento com a publicável (anon) e leads_para_planilha com a secreta (service_role) (28 chamadas)
 OK     · navegador · páginas: nenhum pedido para fora de 127.0.0.1, nem fonte do Google (10.7; nenhum)
 OK     · navegador · Chromium inteiro (netlog): nenhuma conexão TCP fora de 127.0.0.1 (2 endereços, todos locais)
-INFO   · tentativas de fundo do próprio Chromium, recusadas antes de sair (nome não encontrado e proxy local inexistente): clients2.google.com, accounts.google.com, www.google.com, update.googleapis.com, android.clients.google.com
-INFO   · UDP sem envio de dado (o teste de IPv6 do Chromium, que só "conecta" para descobrir o endereço local): [2001:4860:4860::8888]:443
+INFO   · tentativas de fundo do próprio Chromium, recusadas antes de sair (nome não encontrado e proxy local inexistente): clients2.google.com, accounts.google.com, redirector.gvt1.com, www.google.com, update.googleapis.com, android.clients.google.com, content-autofill.googleapis.com
 OK     · wrangler dev: nenhuma tentativa de falar com fora da máquina (trava rede-so-local.cjs; nenhuma)
-  tempo do ensaio: 54 s
+  tempo do ensaio: 64 s
 
-Tudo certo: 145 de 145 conferências passaram
+Tudo certo: 142 de 142 conferências passaram
 ```
 
 **v2 (09/11/2026, pedido 09).** 96 de 96 com o wrangler dev e 94 de 94 com `--sem-wrangler`. Conferências do charset: o wrangler dev local já acrescenta o charset sozinho, a Cloudflare de verdade não; por isso o contorno entrega HTML e CSS sem charset.

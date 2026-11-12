@@ -2,6 +2,20 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-12 · landing-page-02 no protótipo
+
+Pedido do Otávio (12/11/2026, na conversa com o Claude): trocar a página que aparece antes do quiz pelo site do zip safra-pagina-vendas-git-preview-klyver.vercel.app. Respostas do Otávio na mesma conversa: a página nova entra no lugar das duas variantes (o /b/ sai do site); os botões levam ao quiz e a visita conta como página nova (landing-page-02); o texto fica como veio, sem anotar; e o Claude envia direto para o main (exceção da regra 7, autorizada pelo Otávio até 16/11/2026). Nenhum documento da base mudou. Nada publicado, nada rodou no Supabase.
+
+- entregas/landings/landing-page-02/ v1 (novo), rascunho (otavio, junior e euclides: pendente), desatualizado (depende do garçom, marcado). README.md com o cabeçalho; pagina/ com o index.html original e três mudanças (Geist de /fontes/ no lugar do Google, sem o script de comentários da Vercel, e o programa da visita e da ida ao quiz), assets/ (programa e estilo) e a/ (imagens) como vieram. O zip veio sem 24 imagens que o programa cita (ícones das abas e das trocas); foram baixadas da mesma prévia, que usa o mesmo programa, depois de o Otávio liberar o endereço num ambiente novo da sessão. Os botões "Fazer a Análise" e "Faça uma Análise Estratégica do seu Sistema de Vendas" levam a /quiz/ com as utm e o id_sessao (antes, só rolavam a página).
+- entregas/prototipo-funil-01/montar-site.mjs, README.md e prints/ v5 para v6; wrangler.toml v3 para v4, só no comentário. A landing-page-02 em /, o /b/ fora do site; o montador copia pastas inteiras e confere cada imagem que o programa da landing cita e que ele não cita o Google Fonts nem a Vercel. Montagem: "Tudo certo", 332 arquivos, 7129 KB, 326 caminhos conferidos. Prova de que a conferência pega: com uma imagem tirada de propósito, o montador apontou a falta. Dry-run (sem login e sem publicar): wrangler 4.158.0, "Read 380 files from the assets directory", Total Upload 18,10 KiB (gzip 5,29 KiB), as mesmas três ligações. Prints novos da landing-page-02 em 375 (como celular) e 1440; os das variantes saíram do protótipo e continuam em entregas/landings/landing-page-01/prints/.
+- entregas/prototipo-funil-01/APLICAR-11.md v1 para v2: parte 1 com o pull dos commits do Claude, catálogo com quatro linhas, mensagem nova do montador e os três testes entrando por / e pelos botões novos; a visita esperada como landing-page-02.
+- nucleo/ferramentas/fontes/fontes.json: landing-02 no lugar de landing-a e landing-b.
+- dados/banco/catalogo-prototipo.sql v2 para v3: acrescenta (landing-page-02, 1), sem mudar as outras linhas. No protótipo que está no ar, rodar o arquivo de novo antes de publicar (APLICAR-11.md, 2.5 e 2.6); sem a linha, a visita é recusada e o resto funciona.
+- nucleo/ferramentas/ensaio/ensaio.mjs e README.md v3 para v4: a landing-page-02 em /, os dois botões de Análise, o catálogo v3 e a visita como landing-page-02. Resultado: 142 de 142 com o wrangler dev, do zero, numa máquina Linux na nuvem (o Chromium do Playwright posto no caminho do Mac que print.js procura, fora do repositório).
+- index.md: landing-page-02, protótipo v6, APLICAR-11 v2, ensaio v4 e catálogo v3.
+- Não registrado em base/decisoes.md: nenhum documento da base mudou nesta troca. Se o Otávio quiser a decisão no registro, ela entra numa versão nova de decisoes.md.
+
+
 ## 2026-11-09 · etapa 36 · fechamento
 
 Pedido: prompts/11-decisoes-de-09-11.md, etapa 36. Nenhum documento da base, funil ou entrega mudou; nada publicado, nada rodou no Supabase.

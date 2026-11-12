@@ -1,12 +1,12 @@
 ---
 id: prototipo-funil-01-aplicar-11
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: prototipo-funil-01
-    versao: 5
+    versao: 6
   - id: prototipo-funil-01-ligar
     versao: 5
   - id: banco-migracao-001
@@ -14,7 +14,7 @@ depende_de:
   - id: banco-conferir
     versao: 2
   - id: banco-catalogo-prototipo
-    versao: 2
+    versao: 3
   - id: banco-rascunho
     versao: 4
   - id: planilha-sdr-funil-01
@@ -23,12 +23,10 @@ depende_de:
     versao: 4
   - id: quiz-01-pagina
     versao: 3
-  - id: landing-page-01-variante-a
-    versao: 3
-  - id: landing-page-01-variante-b
-    versao: 3
+  - id: landing-page-02
+    versao: 1
   - id: ensaio-prototipo-funil-01
-    versao: 3
+    versao: 4
   - id: lead-score
     versao: 3
   - id: decisoes
@@ -42,9 +40,11 @@ desatualizado: true
 
 O passo a passo para o Otávio levar ao protótipo que já está no ar o que as etapas 32 a 34 fizeram (prompts/11-decisoes-de-09-11.md): a migração do banco, o catálogo novo, a planilha com 20 colunas, o garçom v4 e as páginas novas (a caixa de aceite única, o corte mais restritivo, a visita, o início do quiz e o clique no fim). No mesmo padrão do LIGAR.md: uma ação por passo, como saber que deu certo e o que fazer se der errado. **Tempo total estimado: cerca de 40 minutos.**
 
-**Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (a migração, o banco, o garçom, as páginas, a planilha e o protótipo; regra 11.1). Tudo o que está aqui foi ensaiado na máquina, sem serviço real: o ensaio geral (nucleo/ferramentas/ensaio/, v3) roda a migração duas vezes sobre dados como os de hoje, o catálogo, o garçom v4, as páginas e a planilha v2, e deu 145 de 145, duas vezes.
+**Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (a migração, o banco, o garçom, as páginas, a planilha e o protótipo; regra 11.1). Tudo o que está aqui foi ensaiado na máquina, sem serviço real: o ensaio geral (nucleo/ferramentas/ensaio/, v4) roda a migração duas vezes sobre dados como os de hoje, o catálogo, o garçom v4, as páginas e a planilha v2, e deu 145 de 145, duas vezes.
 
-**A ordem importa.** O banco antes de tudo: o garçom v4 chama a função nova do banco (registrar_evento), que só existe depois da migração (33.4), e as páginas novas mandam o quiz-01 versão 2 e a landing-page-01 versão 1, que só existem depois do catálogo (34.4). Publicar antes deixa a visita, o início e o fim do quiz novo recusados. Nada se grava errado, mas o teste não fecha.
+**A ordem importa.** O banco antes de tudo: o garçom v4 chama a função nova do banco (registrar_evento), que só existe depois da migração (33.4), e as páginas novas mandam o quiz-01 versão 2 e a landing-page-02 versão 1, que só existem depois do catálogo (34.4). Publicar antes deixa a visita, o início e o fim do quiz novo recusados. Nada se grava errado, mas o teste não fecha.
+
+**Versão 2 (12/11/2026).** A página antes do quiz agora é a landing-page-02, a página de vendas, em /, no lugar das variantes A e B da landing-page-01; o /b/ saiu do site. Mudaram: a parte 1 (puxar os commits que o Claude mandou direto ao GitHub), o 2.6 (quatro linhas no catálogo), o 4.3 (a mensagem do montador e o que aparece em /), a parte 6 (os três testes entram por / e pelos botões novos) e o 6.5 (a visita como landing-page-02).
 
 > **Leia antes de começar** (as mesmas regras do LIGAR.md)
 >
@@ -74,7 +74,7 @@ Se algo der errado no caminho, os erros mais prováveis estão no fim de cada pa
 
 ### 1.1 · Mandar os commits para o GitHub
 
-**Faça:** abra o GitHub Desktop, escolha o repositório sistema-safra-de-vendas e clique em **Push origin**.
+**Faça:** abra o GitHub Desktop, escolha o repositório sistema-safra-de-vendas e clique em **Fetch origin**. Se o botão virar **Pull origin**, clique nele: ele traz os commits de 12/11/2026 que o Claude mandou direto ao GitHub (a página de vendas). Se o botão mostrar **Push origin**, clique nele também.
 
 **Como saber que deu certo:** o botão volta a dizer "Fetch origin", sem número, e a mensagem do último commit no site do GitHub é a mesma do topo da aba **History**.
 
@@ -146,13 +146,13 @@ pbcopy < dados/banco/catalogo-prototipo.sql
 
 ### 2.6 · Gravar o catálogo novo (antes de publicar)
 
-Sem este passo, a visita da landing, o início do quiz e o fim do quiz da página nova são recusados pelo banco (34.4). Ele só acrescenta as duas linhas novas; a do quiz-01 versão 1, que já está lá, não muda.
+Sem este passo, a visita da landing, o início do quiz e o fim do quiz da página nova são recusados pelo banco (34.4). Ele só acrescenta as linhas que faltarem (quiz-01 versão 2, landing-page-01 versão 1 e landing-page-02 versão 1); a do quiz-01 versão 1, que já está lá, não muda.
 
 **Faça:** no SQL Editor, crie outra consulta nova, cole e clique em **Run**.
 
-**Como saber que deu certo:** aparecem **três linhas**: landing-page-01, versão 1, tipo landing; quiz-01, versão 1, tipo quiz (com a data de 09/11 de manhã, a de antes); e quiz-01, versão 2, tipo quiz. Todas com funil funil-01, publicada_em com data e hora e retirada_em vazia (NULL). Rodar de novo não duplica.
+**Como saber que deu certo:** aparecem **quatro linhas**: landing-page-01, versão 1, tipo landing; landing-page-02, versão 1, tipo landing; quiz-01, versão 1, tipo quiz (com a data de 09/11 de manhã, a de antes); e quiz-01, versão 2, tipo quiz. Todas com funil funil-01, publicada_em com data e hora e retirada_em vazia (NULL). Rodar de novo não duplica.
 
-**Se der errado:** se aparecer menos de três linhas ou um erro, não publique (parte 4): copie a mensagem e traga ao Claude.
+**Se der errado:** se aparecer menos de quatro linhas ou um erro, não publique (parte 4): copie a mensagem e traga ao Claude.
 
 **Tempo:** 1 min.
 
@@ -283,7 +283,7 @@ O mesmo comando do LIGAR.md (fim do passo 3.7): monta o site a partir das entreg
 node entregas/prototipo-funil-01/montar-site.mjs && nucleo/ferramentas/prototipo/node_modules/.bin/wrangler deploy --config entregas/prototipo-funil-01/wrangler.toml
 ```
 
-**Como saber que deu certo:** o montador termina com "Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, link da landing para /quiz/, todos os caminhos existem no site e nenhuma página pede arquivo a outro endereço." Depois o wrangler mostra o endereço **https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev** e uma linha **Current Version ID**: anote esse código (não é segredo). Abra o endereço: aparece a landing (variante A). Abra com /quiz/ no fim: a capa do quiz, com os acentos certos.
+**Como saber que deu certo:** o montador termina com "Tudo certo: charset utf-8 no início, noindex e viewport em todo HTML, todos os caminhos e todas as imagens do programa da landing existem no site e nenhuma página pede arquivo a outro endereço." Depois o wrangler mostra o endereço **https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev** e uma linha **Current Version ID**: anote esse código (não é segredo). Abra o endereço: aparece a página de vendas (landing-page-02). Abra com /quiz/ no fim: a capa do quiz, com os acentos certos.
 
 **Se der errado:**
 
@@ -319,9 +319,9 @@ Três pessoas de mentira **novas** (#102), cada uma com telefone e e-mail só de
 
 | Teste | O que confere | Onde | Pessoa | E-mail | Telefone (Brasil) | Respostas |
 |---|---|---|---|---|---|---|
-| 1 | Caixa marcada e clique no fim | Computador, variante A | TESTE Clara Aplicar | clara.aplicar@teste.invalid | 00 90000-0021 | Faixa B |
-| 2 | Caixa desmarcada | Computador, variante A | TESTE Davi Aplicar | davi.aplicar@teste.invalid | 00 90000-0022 | Faixa B |
-| 3 | O corte novo | Celular, variante B | TESTE Caio Aplicar | caio.aplicar@teste.invalid | 00 90000-0023 | Corte |
+| 1 | Caixa marcada e clique no fim | Computador | TESTE Clara Aplicar | clara.aplicar@teste.invalid | 00 90000-0021 | Faixa B |
+| 2 | Caixa desmarcada | Computador | TESTE Davi Aplicar | davi.aplicar@teste.invalid | 00 90000-0022 | Faixa B |
+| 3 | O corte novo | Celular | TESTE Caio Aplicar | caio.aplicar@teste.invalid | 00 90000-0023 | Corte |
 
 **As respostas da faixa B** (nota 68; a mesma conta do ensaio). Na tela "Para começar: como você se chama?", escreva **TESTE**. Depois:
 
@@ -347,7 +347,7 @@ Três pessoas de mentira **novas** (#102), cada uma com telefone e e-mail só de
 
 ### 6.1 · Teste 1 · caixa marcada e clique no fim
 
-**Faça:** no computador, abra `https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev/?utm_source=bio&utm_campaign=funil-01`, clique em **Quero responder as perguntas do meu funil** e faça o quiz com a TESTE Clara Aplicar e as respostas da faixa B. Deixe a caixa marcada e clique em **Ver meu diagnóstico**. No relatório, em "Quer crescer junto com a nossa equipe?", clique em **Quero marcar uma conversa**. Anote a hora.
+**Faça:** no computador, abra `https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev/?utm_source=bio&utm_campaign=funil-01`, clique em **Faça uma Análise Estratégica do seu Sistema de Vendas** e faça o quiz com a TESTE Clara Aplicar e as respostas da faixa B. Deixe a caixa marcada e clique em **Ver meu diagnóstico**. No relatório, em "Quer crescer junto com a nossa equipe?", clique em **Quero marcar uma conversa**. Anote a hora.
 
 **Como saber que deu certo:** o quiz chega ao relatório do funil saudável, a linha do alto diz "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp.", **não** aparece o aviso "Não conseguimos enviar o seu contato para a nossa equipe agora", e depois do clique aparece "Anotado. Alguém da nossa equipe chama você no WhatsApp para marcar o horário."
 
@@ -363,7 +363,7 @@ Três pessoas de mentira **novas** (#102), cada uma com telefone e e-mail só de
 
 ### 6.3 · Teste 3 · o corte novo, no celular
 
-**Faça:** no celular, abra `https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev/b/?utm_source=stories&utm_campaign=funil-01`, toque em **Quero responder as perguntas do meu funil** e faça o quiz com o TESTE Caio Aplicar e as respostas do corte, com a caixa marcada. Toque em **Ver meu diagnóstico** e, no relatório, em **Tenho interesse**.
+**Faça:** no celular, abra `https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev/?utm_source=stories&utm_campaign=funil-01`, toque em **Fazer a Análise**, no topo da página, e faça o quiz com o TESTE Caio Aplicar e as respostas do corte, com a caixa marcada. Toque em **Ver meu diagnóstico** e, no relatório, em **Tenho interesse**.
 
 **Como saber que deu certo:** a página cabe na largura do celular; o quiz vai para o relatório "Quer conversar sobre esse diagnóstico?", **não** para a tela do plano; sem aviso de falha; depois do toque aparece "Anotado. Seu interesse fica registrado com o seu diagnóstico."
 
@@ -402,11 +402,11 @@ select p.email, e.tipo, e.entrega, e.versao_entrega, e.lead_score_faixa, e.lead_
 
 | Pessoa | tipo | entrega | versao_entrega | faixa e nota | clique_fim_quiz |
 |---|---|---|---|---|---|
-| Caio | visita | landing-page-01 | 1 | vazias | vazio |
+| Caio | visita | landing-page-02 | 1 | vazias | vazio |
 | Caio | inicio_quiz | quiz-01 | 2 | vazias | vazio |
 | Caio | fim_quiz | quiz-01 | 2 | c, 24 | vazio |
 | Caio | interesse_pos_relatorio | quiz-01 | 2 | vazias | tenho-interesse |
-| Clara | visita | landing-page-01 | 1 | vazias | vazio |
+| Clara | visita | landing-page-02 | 1 | vazias | vazio |
 | Clara | inicio_quiz | quiz-01 | 2 | vazias | vazio |
 | Clara | fim_quiz | quiz-01 | 2 | b, 68 | vazio |
 | Clara | interesse_pos_relatorio | quiz-01 | 2 | vazias | quero-conversa |

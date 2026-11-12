@@ -1,8 +1,9 @@
 # Worker do protótipo do funil-01 · configuração da Cloudflare. RASCUNHO; publicado no protótipo em 09/11/2026, só com leads de teste.
-# id: prototipo-funil-01 · versao 3 · rascunho · otavio: pendente (ver README.md desta pasta)
+# id: prototipo-funil-01 · versao 4 · rascunho · otavio: pendente (ver README.md desta pasta)
 #
-# Um Worker só para o protótipo (decisão #101): serve a variante A da landing em /, a variante B
-# em /b/, o quiz em /quiz/ e o garçom em /api/ (entregas/garcom/garcom.mjs), no mesmo endereço.
+# Um Worker só para o protótipo (decisão #101): serve a landing-page-02 em / (desde 12/11/2026, no lugar
+# das variantes A e B da landing-page-01), o quiz em /quiz/ e o garçom em /api/ (entregas/garcom/garcom.mjs),
+# no mesmo endereço.
 # Os arquivos vêm da pasta montada por montar-site.mjs (site/, fora do Git).
 #
 # Sem id de conta (account_id) e sem nenhum segredo neste arquivo. Publicar é só pelo roteiro da

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!--
+Landing-page-02 · página de vendas do Sistema de Vendas Safra (id landing-page-02, versão 1, rascunho; cabeçalho completo no README.md da pasta acima).
+Feita fora do sistema (React e Vite) e trazida do zip safra-pagina-vendas-git-preview-klyver.vercel.app, capturado em 12/11/2026.
+O programa e o estilo (assets/) e as imagens (a/) estão como vieram. Este arquivo é o index.html original com três mudanças:
+a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa do fim,
+que registra a visita e leva os botões de Análise ao quiz.
+Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona servida na raiz do site, como no protótipo.
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sistema de Vendas Safra</title>
+<style>
+@font-face {
+  font-family: 'Geist';
+  src: url('/fontes/geist-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+</style>
+<script type="module" crossorigin src="/assets/index-BSwcbsoR.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/index-Btrkg4Yg.css">
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* Visita e ida ao quiz: o mesmo comportamento da landing-page-01 (18.5, 10.5, 10.8, 10.9, 10.10).
+   Ao abrir, cria um código de sessão no formato do banco (sessao- e até 60 letras minúsculas, números e hífen),
+   só na memória da aba: nada é guardado no navegador, e recarregar cria outro.
+   Manda a visita ao garçom (POST /api/evento, mesma origem) sem esperar a resposta: se falhar, a visita se perde,
+   sem aviso e sem nova tentativa. As utm vão como vieram no endereço, ou vazias (10.8). Aberta do arquivo, não manda nada.
+   Etiquetas: entrega landing-page-02, versão 1, que precisa da linha no catálogo (dados/banco/catalogo-prototipo.sql v3).
+   Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /quiz/ com as utm presentes e o mesmo
+   código, no parâmetro id_sessao (10.5). O clique é pego antes do programa da página, que antes só rolava a tela.
+   Os acentos do texto dos botões estão escritos como á, ç e é, para não depender da leitura do arquivo. */
+(function () {
+  var ETIQUETAS = { funil: 'funil-01', entrega: 'landing-page-02', versao_entrega: 1 };
+  var ROTA_EVENTO = '/api/evento';
+  var DESTINO_QUIZ = '/quiz/';
+  var CHAMADAS = /^(Fazer a Análise|Faça uma Análise)/;
+  function novaSessao() {
+    var letras = '';
+    if (window.crypto && crypto.getRandomValues) {
+      var n = crypto.getRandomValues(new Uint8Array(8));
+      for (var i = 0; i < n.length; i++) letras += (n[i] % 36).toString(36);
+    } else {
+      while (letras.length < 8) letras += Math.floor(Math.random() * 36).toString(36);
+    }
+    return 'sessao-' + Date.now().toString(36) + '-' + letras;
+  }
+  var params = new URLSearchParams(window.location.search);
+  var sessao = novaSessao();
+  var utm = function (k) { return (params.get(k) || '').trim(); };
+  if (window.location.protocol !== 'file:' && window.fetch) {
+    try {
+      fetch(ROTA_EVENTO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ evento: {
+          tipo: 'visita', funil: ETIQUETAS.funil, entrega: ETIQUETAS.entrega, versao_entrega: ETIQUETAS.versao_entrega,
+          utm_source: utm('utm_source'), utm_campaign: utm('utm_campaign'),
+          id_sessao: sessao, ocorrido_em: new Date().toISOString()
+        } }),
+        credentials: 'same-origin', cache: 'no-store', keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  var ida = new URLSearchParams();
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+    var valor = params.get(k);
+    if (valor) ida.set(k, valor);
+  });
+  ida.set('id_sessao', sessao);
+  var enderecoDoQuiz = DESTINO_QUIZ + '?' + ida.toString();
+  document.addEventListener('click', function (e) {
+    var botao = e.target && e.target.closest ? e.target.closest('button') : null;
+    if (!botao || !CHAMADAS.test(botao.textContent.replace(/\s+/g, ' ').trim())) return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = enderecoDoQuiz;
+  }, true);
+})();
+</script>
+</body>
+</html>
