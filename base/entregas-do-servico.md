@@ -13,7 +13,7 @@ depende_de:
     versao: 6
   - id: produto
     versao: 4
-desatualizado: false
+desatualizado: true
 ---
 
 # Entregas do serviço

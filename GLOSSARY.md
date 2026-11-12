@@ -29,7 +29,7 @@ depende_de:
     versao: 4
   - id: lead-score
     versao: 3
-desatualizado: false
+desatualizado: true
 ---
 
 # Glossário do Sistema de Vendas Safra

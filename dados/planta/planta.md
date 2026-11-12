@@ -21,7 +21,7 @@ depende_de:
     versao: 3
   - id: lacunas
     versao: 6
-desatualizado: false
+desatualizado: true
 ---
 
 # Planta do banco
