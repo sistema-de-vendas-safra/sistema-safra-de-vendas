@@ -235,7 +235,7 @@ Cada imagem é um recorte da janela, na largura inteira, com 2 pixels por ponto 
 | topo-1440.png | 1440 por 1100 | O topo da página no computador, como abre, sem rolar, até o fim da seção 01: o cabeçalho, com o "Fazer a Análise", e a chamada do topo, que já levava ao quiz. O cartão "Ao vivo" passa 61 px da borda direita da janela, e o número aparece cortado (pergunta 20.3.4) |
 | topo-375.png | 375 por 1400 | O topo da página no celular, como abre, sem rolar, até o fim da seção 01: o cabeçalho e a chamada do topo, que agora leva ao quiz em vez de só rolar a tela |
 
-As fotos e os nomes que aparecem nos prints (o Júnior e o Euclides, no topo, e o Júnior, no cartão das Sessões de Comando) são da própria página; nenhum print tem dado de lead. Os prints mostram a página do repositório na versão 4, não a que está no ar: a v3 não foi publicada, e a v4 também não.
+As fotos e os nomes que aparecem nos prints (o Júnior e o Euclides, no topo, e o Júnior, no cartão das Sessões de Comando) são da própria página; nenhum print tem dado de lead. Os prints mostram a página do repositório na versão 4 e foram tirados do site montado, antes da publicação. A v4 foi ao ar em 13/11/2026, 16h35 (entregas/prototipo-funil-01/README.md, "Publicações"); a v3 não chegou a ser publicada sozinha.
 
 ## Como funciona no protótipo
 

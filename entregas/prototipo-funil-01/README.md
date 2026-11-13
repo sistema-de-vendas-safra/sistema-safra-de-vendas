@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 12
+versao: 13
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -10,11 +10,11 @@ depende_de:
   - id: quiz-01-pagina
     versao: 5
   - id: landing-page-02
-    versao: 2
+    versao: 4
   - id: banco-rascunho
     versao: 4
   - id: decisoes
-    versao: 7
+    versao: 9
   - id: regra-seguranca
     versao: 3
   - id: lacunas
@@ -28,7 +28,7 @@ desatualizado: true
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. A v7 e a v8 só registram as publicações de 12/11/2026 das 10h14 e das 11h40 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"). **No ar desde 13/11/2026, 9h20** (Current Version ID 31e6f08c-025d-4885-8601-63b145b7ffc5), com a v11 desta pasta: a página da política em /politica-de-privacidade/, o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2; a v12 só registra essa publicação. Antes, desde 12/11/2026, 16h16 (a82e93cc), com a v9 desta pasta: a landing-page-02 em /, o quiz-01 abrindo na abertura (quiz-01-pagina v4) e a medição nas duas páginas; a v10 só registra essa publicação (pedido 17, parte 17.3). A v11 (13/11/2026, #117), ainda não publicada, monta a página da política de privacidade em /politica-de-privacidade/ (pagina-politica.mjs), com o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2 (com o link da política). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. A v7 e a v8 só registram as publicações de 12/11/2026 das 10h14 e das 11h40 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"). **No ar desde 13/11/2026, 9h20** (Current Version ID 31e6f08c-025d-4885-8601-63b145b7ffc5), com a v11 desta pasta: a página da política em /politica-de-privacidade/, o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2; a v12 só registra essa publicação. Antes, desde 12/11/2026, 16h16 (a82e93cc), com a v9 desta pasta: a landing-page-02 em /, o quiz-01 abrindo na abertura (quiz-01-pagina v4) e a medição nas duas páginas; a v10 só registra essa publicação (pedido 17, parte 17.3). A v11 (13/11/2026, #117) monta a página da política de privacidade em /politica-de-privacidade/ (pagina-politica.mjs), com o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2 (com o link da política). A v12 só registra a publicação da v11 (13/11/2026, 9h20). A v13 só registra a publicação de 13/11/2026, 16h35, que levou ao ar a landing-page-02 v4 (pedidos 18 e 20; #118 e #119), e acerta o depende_de (landing-page-02 4 e decisoes 9). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
@@ -48,6 +48,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | 12/11/2026, 11h40 | fd6ba97b-6a53-4a3b-83b9-b69694594210 | A mesma pasta, com o quiz-01 v4: a capa fora do funil e a abertura com o cabeçalho e o botão "Fazer a Análise" da landing-page-02; main no 8a6abe0 | Claude Code online, do mesmo jeito da de cima |
 | 12/11/2026, 16h16 | a82e93cc-82cd-45c5-b2fa-c78d557cef32 | Esta pasta na v9: o mesmo da de cima, mais a medição nos dois HTML montados (o aviso de cookies com o texto do aviso-de-cookies v1 e o Google Tag Manager GTM-T6L4QTB8, que só carrega depois do "Aceitar"; seção "Medição"; #116; pedido 17); main no e3390e1 | Claude Code online, do mesmo jeito das duas de cima. Montagem "Tudo certo"; deploy com 382 arquivos lidos pelo wrangler e 2 enviados (os dois HTML; dos 334 do site, 332 já estavam lá), Worker de 18,10 KiB, as mesmas três ligações |
 | 13/11/2026, 9h20 | 31e6f08c-025d-4885-8601-63b145b7ffc5 | Esta pasta na v11: a página da política de privacidade em /politica-de-privacidade/ (pagina-politica.mjs), o quiz-01 v5, a landing-page-02 v2 e o aviso-de-cookies v2 (#117); main no bc15909 | Claude Code online, do mesmo jeito das de cima. Montagem "Tudo certo"; deploy com 384 arquivos lidos pelo wrangler e 4 enviados (as duas páginas, o programa da landing e a página da política; dos 335 do site, 331 já estavam lá), Worker de 18,10 KiB, as mesmas três ligações |
+| 13/11/2026, 16h35 | 70f8766c-166d-4930-8db3-cd74a1ae4d53 | Esta pasta com a landing-page-02 v4 (pedidos 18 e 20; #118 e #119): a seção "Como funciona" no calendário do Júnior, o carrossel com 9 cartões, sem o GSAAS, a demonstração do produto sem os agentes de IA, o FAQ e os rótulos novos, e as 10 chamadas de cada largura levando ao quiz; o quiz-01 v5, a página da política e o garçom v4 como estavam; main no cd3fcc7 | Claude Code online, do mesmo jeito das de cima, a pedido do Otávio ("pode publicar."). Montagem "Tudo certo"; deploy com 384 arquivos lidos pelo wrangler e 2 enviados (a página e o programa da landing; dos 335 do site, 333 já estavam lá), Worker de 18,10 KiB, as mesmas três ligações |
 
 **Conferido no ar em 12/11/2026, depois da e344fcdd** (navegador sem tela, em 1440 e em 375 pixels como celular, com os envios ao garçom bloqueados, salvo uma visita e um início do quiz):
 
@@ -85,6 +86,18 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 - Sem escolha no aviso, nada sai para fora do protótipo. Sem rollback.
 - No celular, o "Fazer a Análise" do cabeçalho da landing continua sem levar ao quiz (Pendências).
 - O que a conferência gravou no banco, sem pessoa: 19 eventos, 10 visitas e 9 inícios do quiz, entre 9h22 e 9h23 de 13/11/2026.
+
+**Conferido no ar em 13/11/2026, depois da 70f8766c** (navegador sem tela): as **56 de 56** da a82e93cc e as **22 de 22** da 31e6f08c de novo, e **30 de 30** do que os pedidos 18 e 20 mudaram na landing-page-02, em 1440 por 900, 375 por 812 e 360 por 640, com o aviso de cookies já recusado e os envios ao garçom bloqueados:
+
+- / abre (200), e o programa no ar é o do repositório (o mesmo SHA-256, cc58b5ed504179b548c2fef3cfd1ceafc8878260d2676d822d0107405fe4d060); "GSAAS" não está no programa.
+- O carrossel tem 9 cartões, e o contador dá a volta até "09 / 09" e de volta ao "01 / 09"; nenhum chip cortado em nenhum cartão, nas três larguras.
+- "Fase 1 · Ponto de partida" aparece na régua e no cartão 01, e "Encerramento · 3ª Sessão de Comando", no cartão 08; o FAQ tem 6 perguntas e as duas respostas do pedido 20.
+- A demonstração do produto tem o menu com 5 itens, sem "Agentes de IA", e cada item abre a sua tela.
+- "GSAAS", "Agentes de IA" e os textos antigos não aparecem em nenhuma das 17 leituras de texto à vista de cada largura (a página como abre, os estados do carrossel, o FAQ aberto e as telas da demonstração).
+- **As 10 chamadas de cada largura levam a /quiz/** com as utm e o id_sessao, clicadas uma a uma (toque, no celular): 9 botões e 1 bloco em 1440; 7 botões e 3 blocos em 375 e em 360. No celular, o "Fazer a Análise" do cabeçalho passou a levar ao quiz, e também a chamada do topo e a do cartão da oferta (log.md, Pendências: item fechado).
+- Nada sai para fora do protótipo, e nenhum erro de programa. Sem rollback: a página e o quiz abriram.
+- Como está no repositório, o cartão da oferta mostra "O seu mês vira em [X] dias e [Y] horas." com [X] e [Y] à vista (prompts/20-gsaas-fora-da-landing-resposta.md, pergunta 20.3.4); já estava assim no ar.
+- O que a conferência gravou no banco, sem pessoa: 20 eventos, 10 visitas e 10 inícios do quiz, todos 201, entre 16h35 e 16h37 de 13/11/2026.
 
 ## O que tem dentro
 
