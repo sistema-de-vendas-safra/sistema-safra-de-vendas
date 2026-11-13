@@ -31,6 +31,7 @@ A página que aparece antes do quiz no protótipo do funil-01, no lugar das duas
 | pagina/index.html | O index.html original da página, com três mudanças: a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa da visita e da ida ao quiz, que desde a v3 também pega o "Fazer a Análise" do cabeçalho no celular |
 | pagina/assets/ | O programa (index-BSwcbsoR.js) e o estilo (index-Btrkg4Yg.css) da página. O estilo está como veio. O programa está como veio, salvo duas mudanças: as perguntas 6 e 7 do FAQ, tiradas na v2 (#117); e a seção "Como funciona" e duas respostas do FAQ, trocadas na v3 (#118; lista em "O que mudou na versão 3") |
 | pagina/a/ | As imagens da página: 295 do zip e 24 baixadas da mesma prévia na Vercel em 12/11/2026, porque o zip veio sem elas (ícones das abas e das trocas, que só aparecem com um clique). A prévia usa o mesmo programa do zip |
+| prints/ | Os prints da v3: a seção "Como funciona" e o FAQ, em 1440 e em 375 (lista em "Prints") |
 
 ## O que mudou na versão 2
 
@@ -116,6 +117,23 @@ No celular, o cartão tem 290 por 480 px e corta o que passa da altura. Com a de
 ### Cabeçalho deste documento
 
 depende_de ganha decisoes 8 (no lugar de decisoes 7).
+
+## Prints
+
+Em prints/, tirados em 13/11/2026 (pedido 18, parte 18.3) do site montado, num navegador sem tela, com o aviso de cookies já recusado e sem dado de pessoa. Fazem parte da v3 (o pedido 18 pede a landing-page-02 v3 no index.md depois dos prints; pergunta 18.3.6 da resposta do pedido). Cada imagem é um recorte da janela, na largura inteira, com 2 pixels por ponto (o print de 1440 tem 2880 de largura); a altura é a da parte fotografada, menor que a da janela. O cabeçalho da página fica preso no topo da janela e aparece no topo de cada print. Os da régua e do FAQ são mais altos que a janela de costume (900 no computador, 812 no celular): foram tirados numa janela mais alta, com a mesma largura, para a parte inteira caber numa imagem só. As perguntas citadas estão em prompts/18-como-funciona-landing-02-resposta.md.
+
+| Arquivo | Janela | O que mostra |
+|---|---|---|
+| como-funciona-regua-1440.png | 1440 por 1500 | A seção no computador, com o carrossel no 01: o título novo, o filtro, a régua em quatro fases (o rótulo "Fase 1 · Análise" acima do bloco), os losangos e o negrito em S1, S2 e S13, a legenda, os cartões 01, 02 e 03 inteiros e "Arraste para ver as 8 entregas" |
+| como-funciona-regua-375.png | 375 por 1320 | A seção no celular, com o carrossel no 01: o título, o filtro, a régua e o cartão 01 inteiro. A régua do celular vai além da tela e não rola: aparecem as quatro fases, S1 a S6 e os dois primeiros losangos; S7 a S13 e o losango de S13 ficam fora, como já ficavam (pergunta 18.2.5) |
+| como-funciona-cartao-06-1440.png | 1440 por 900 | O carrossel no 06, no computador: os cartões 06, 07 e 08 inteiros (o 06 com a descrição nova; o 08 com a linha "Fechamento · 3ª Sessão de Comando" em duas) e o começo do cartão das Sessões de Comando |
+| como-funciona-cartao-06-375.png | 375 por 812 | O carrossel no 06, no celular. **Mostra o defeito conhecido:** a última fileira de chips ("Inteligência de Mercado" e "Dados") cortada pela borda de baixo do cartão. Não foi consertado nem escondido: é para o Otávio ver e decidir (pergunta 18.2.1) |
+| como-funciona-sessoes-1440.png | 1440 por 900 | O carrossel no 09, no computador: o cartão das Sessões de Comando inteiro, sem número, entre o 08 e o do GSAAS. O cartão 08 aparece com 20 px cortados à esquerda, como já acontecia nesse ponto do carrossel (pergunta 18.3.4) |
+| como-funciona-sessoes-375.png | 375 por 812 | O carrossel no 09, no celular: o cartão das Sessões de Comando, sem número, com o título e as três linhas inteiras. O chip "Mentalidade de Vendas" fica escondido abaixo da borda do cartão, como já ficava no antigo 09 (pergunta 18.2.1) |
+| faq-respostas-1440.png | 1440 por 1200 | O FAQ no computador, com "É mais uma mentoria?" e "Quem me atende depois que eu assinar?" abertas, com as respostas novas |
+| faq-respostas-375.png | 375 por 1320 | O FAQ no celular, com as duas respostas novas abertas |
+
+Os prints mostram a página do repositório, não a que está no ar: a v3 ainda não foi publicada.
 
 ## Como funciona no protótipo
 

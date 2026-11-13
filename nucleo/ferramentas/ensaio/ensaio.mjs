@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 7 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 8 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -20,6 +20,8 @@
 //   6. Landing (a landing-page-02 em /, v4) e quiz num navegador sem tela: visita, início do quiz, fim do quiz e clique no fim;
 //      caixa marcada e desmarcada; o corte mais restritivo; a faixa B; fontes locais e nenhum
 //      pedido fora de 127.0.0.1; a conferência da landing que estava fora do repositório (34.17).
+//      (v8; #118) No programa da landing-page-02 v3: nenhum texto antigo da seção "Como funciona" e do FAQ,
+//      e todo texto novo com as cópias certas, na versão do computador e na do celular.
 //   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
 //   8. Casos de erro: chaves no lugar errado, pacote sem consentimento, clique sem fim do quiz,
 //      a mesma pessoa enviando duas vezes ao mesmo tempo.
@@ -27,7 +29,10 @@
 //      de 127.0.0.1, na landing e no quiz; com "Aceitar" na landing, num contexto que responde 404 ao Google, o gtm.js
 //      do GTM-T6L4QTB8 é o primeiro e único pedido para fora, a pagina_limpa sai sem o id_sessao, e a escolha passa
 //      para o quiz, que abre sem o aviso e já pede o gtm.js; no banco, a visita e o início com a mesma sessão.
-//  10. Fechamento: conferir.sql de novo e registros sem dado pessoal.
+//  10. (v8; #118) A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta, em 1440, 375 e 360: o título, a
+//      régua, os oito cartões, o cartão das Sessões de Comando sem número, o controle do carrossel e as duas respostas; nenhum
+//      texto antigo; e o "Fazer a Análise" do cabeçalho, que no celular é um bloco, levando ao quiz com as utm e o id_sessao.
+//  11. Fechamento: conferir.sql de novo e registros sem dado pessoal.
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -136,6 +141,69 @@ const FAIXA_B = Object.assign({}, EXEMPLO, {
   faturamento: 'R$ 150 mil a R$ 500 mil', crm: 'Sim, mas pouca gente atualiza', cargo: 'Vendedor(a)',
   numeros: ['200', '50', '50', '40', '10']
 });
+
+// v8 (pedido 18, parte 18.3; decisão #118; landing-page-02 v3): a seção "Como funciona" e duas respostas do FAQ.
+// Os textos novos são os aprovados pelo Otávio em 13/11/2026 (prompts/18-como-funciona-landing-02.md, "Os textos aprovados"),
+// escritos aqui só para conferir a página: quem manda é o pedido. Os antigos são os que a página tinha e não pode mais ter.
+const LANDING_V3 = {
+  antigos: ['Mentoria 1:1', 'semanas 3, 7 e 13', '9 entregas', '45 dias', 'gerente de safra', 'Fase 4 · Entrega', 'Semana 12', 'Semanas 6 a 13', 'Semanas 5 a 13'],
+  // o título vem em três pedaços no programa: o do meio, "máxima eficácia", é o que fica em verde
+  titulo: ['Em 15 dias o sistema está instalado. Nos 90, a gente capacita o seu time a operar com ', 'máxima eficácia', '.'],
+  fases: ['Fase 1 · Análise', 'Fase 2 · Preparo do solo', 'Fase 3 · Colheita', 'Fase 4 · Plantio · em paralelo'],
+  legenda: 'Sessões de Comando com o Junior Neves: duas no começo e uma no fim',
+  // número · rótulo da semana · linha da fase · título do cartão (o título não mudou; serve para achar o cartão na página)
+  cartoes: [
+    ['01', 'Semana 1', 'Fase 1 · Análise', 'Análise Estratégica das Safras'],
+    ['02', 'Semanas 1 e 2', 'Fase 2 · Preparo do solo', 'Implementação da Infraestrutura'],
+    ['03', 'Até o dia 15', 'Fase 2 · Preparo do solo', 'Playbook de Comunicação Persuasiva'],
+    ['04', 'Semanas 3 a 13', 'Fase 3 · Colheita', 'Recuperação de Ativos'],
+    ['05', 'Até o dia 15', 'Fase 2 · Preparo do solo', 'Painel de Safras'],
+    ['06', 'Semanas 3 a 13', 'Fase 4 · Plantio', 'Treinamento para Otimização da Conversão'],
+    ['07', 'Semanas 1 e 2', 'Fase 2 · Preparo do solo', 'Playbook da Gestão de Vendas por Safra'],
+    ['08', 'Semana 13', 'Fechamento · 3ª Sessão de Comando', 'Relatório de Produtividade']
+  ],
+  descricao06: 'A parte teórica sai nos primeiros 15 dias. Da semana 3 em diante, call semanal em grupo, com análise das calls do seu time.',
+  // o cartão das Sessões de Comando (o antigo 09), sem número; cada linha vem em dois pedaços: a semana, em negrito, e o resto
+  sessoes: {
+    rotulo: 'Do começo ao fim', nome: 'Junior Neves',
+    titulo: 'Sessões de Comando entre o Junior Neves, você e o seu Head Comercial',
+    linhas: [['Semana 1', ' · A Análise Estratégica das Safras'], ['Semana 1 ou 2', ' · As mudanças, em aula e tarefa'], ['Semana 13', ' · O fechamento, com o Relatório de Produtividade']]
+  },
+  controle: 'Arraste para ver as 8 entregas',   // só existe no computador
+  faq: [
+    ['É mais uma mentoria?', 'Não. São 8 entregas de implementação, dentro da sua operação: CRM, painel, régua de contato e playbooks. O Junior conduz as Sessões de Comando, e o seu time executa.'],
+    ['Quem me atende depois que eu assinar?', 'O Junior, nas três Sessões de Comando com você e o seu Head Comercial: duas no começo e uma no fim. Da semana 3 em diante, o Junior e o Euclides conduzem a call semanal em grupo, e o seu time tem um grupo de WhatsApp com a nossa equipe para as dúvidas do dia a dia.']
+  ],
+  // os dois únicos lugares em que a página pode dizer "mentoria" (#53)
+  mentoriaQuePode: ['É mais uma mentoria?', 'não mais um curso ou mentoria']
+};
+// Quantas cópias de cada texto novo o programa tem de ter: [na versão do computador, na do celular, nas definições dos cartões].
+// O título, os textos da régua e o controle só existem nas versões da seção; os dos cartões, também nas definições (escura e clara).
+function copiasDaLandingV3() {
+  const m = new Map(), T = LANDING_V3;
+  const soma = (texto, pc, cel, def) => { const k = 'children:"' + texto + '"', a = m.get(k) || [0, 0, 0]; m.set(k, [a[0] + pc, a[1] + cel, a[2] + def]); };
+  soma(T.titulo[0], 1, 1, 0); soma(T.titulo[1], 1, 1, 0);
+  for (const f of T.fases) soma(f, 1, 1, 0);
+  soma(T.legenda, 1, 1, 0);
+  for (const [, rotulo, fase] of T.cartoes) { soma(rotulo, 1, 1, 2); soma(fase, 1, 1, 2); }
+  soma(T.descricao06, 1, 1, 2);
+  soma(T.sessoes.rotulo, 1, 1, 2); soma(T.sessoes.titulo, 1, 1, 2);
+  for (const [semana, resto] of T.sessoes.linhas) { soma(semana, 1, 1, 2); soma(resto, 1, 1, 2); }
+  soma(T.controle, 1, 0, 0);
+  return m;
+}
+// As duas versões da seção no programa da landing: a do computador vai do começo da função que desenha a régua até o nome da seção;
+// a do celular, do começo da função dos cartões do celular até o fim da função da seção. O resto guarda as definições dos cartões.
+function versoesDaSecao(js) {
+  const REGUA = '"data-name":"Régua dos 90 dias"', CARTAO = '"data-name":"Entrega 01"';
+  const segundo = (t) => js.indexOf(t, js.indexOf(t) + 1);
+  const pcA = js.lastIndexOf('function ', js.indexOf(REGUA)), pcB = js.indexOf('"data-name":"05 · Os 90 dias (carrossel)"');
+  const celA = js.lastIndexOf('function ', segundo(CARTAO)), celB = js.indexOf('function ', js.indexOf('"data-name":"M · 05 · Os 90 dias (carrossel)"'));
+  const achou = js.indexOf(REGUA) > 0 && segundo(REGUA) > 0 && segundo(CARTAO) > 0 && pcA > 0 && pcA < js.indexOf(CARTAO) && js.indexOf(CARTAO) < pcB &&
+    pcB <= celA && celA < segundo(REGUA) && segundo(REGUA) < celB;
+  return achou ? { computador: js.slice(pcA, pcB), celular: js.slice(celA, celB), resto: js.slice(0, pcA) + js.slice(pcB, celA) + js.slice(celB) } : null;
+}
+const quantas = (texto, pedaco) => texto.split(pedaco).length - 1;
 
 const COLUNAS_PLANILHA = ['id_pessoa', 'nome', 'telefone', 'email', 'empresa', 'consentimento_whatsapp', 'consentimento_email',
   'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
@@ -702,6 +770,23 @@ async function principal() {
   const jsLanding = readdirSync(join(SITE, 'assets')).filter(a => a.endsWith('.js')).map(a => readFileSync(join(SITE, 'assets', a), 'utf8')).join('');
   conferir(!jsLanding.includes('Por que só 10 vagas?') && !jsLanding.includes('Posso parcelar?') && !/a definir/i.test(jsLanding),
     'landing: sem as perguntas 6 e 7 do FAQ e sem nenhum "a definir" (v7; landing-page-02 v2)');
+  // v8 (#118; landing-page-02 v3): no programa montado, nenhum texto antigo da seção "Como funciona" e do FAQ, e todo texto novo com
+  // as cópias certas, na versão do computador, na do celular e nas definições dos cartões. Na página aberta, a seção 10 confere de novo.
+  {
+    const sobras = LANDING_V3.antigos.filter(t => jsLanding.includes(t));
+    conferir(sobras.length === 0, 'landing · programa: nenhum texto antigo da seção "Como funciona" e do FAQ (' + LANDING_V3.antigos.join(' | ') + ')' +
+      (sobras.length ? ', mas sobrou: ' + sobras.join(' | ') : '') + ' (v8; landing-page-02 v3)');
+    const versoes = versoesDaSecao(jsLanding), copias = [...copiasDaLandingV3()];
+    for (const [k, nome, onde] of [[0, 'computador', 'versão do computador'], [1, 'celular', 'versão do celular'], [2, 'resto', 'definições dos cartões, escura e clara']]) {
+      const erradas = versoes ? copias.filter(([texto, n]) => quantas(versoes[nome], texto) !== n[k]).map(([texto, n]) => texto.slice(10, 60) + ': ' + quantas(versoes[nome], texto) + ' no lugar de ' + n[k])
+        : ['a seção não foi achada no programa'];
+      conferir(erradas.length === 0, 'landing · programa, ' + onde + ': os textos novos da seção "Como funciona" com as cópias certas (' + copias.filter(([, n]) => n[k]).length + ' textos, ' +
+        copias.reduce((t, [, n]) => t + n[k], 0) + ' cópias)' + (erradas.length ? ', mas: ' + erradas.join(' | ') : '') + ' (v8)');
+    }
+    const faqErradas = LANDING_V3.faq.filter(([p, r]) => quantas(jsLanding, 'pergunta:"' + p + '",resposta:"' + r + '"') !== 2 || quantas(jsLanding, 'pergunta:"' + p + '"') !== 2).map(([p]) => p);
+    conferir(faqErradas.length === 0, 'landing · programa: as duas respostas novas do FAQ, cada uma logo depois da sua pergunta, nas duas cópias (a do computador e a do celular)' +
+      (faqErradas.length ? ', mas não em: ' + faqErradas.join(' | ') : '') + ' (v8)');
+  }
   const htmlQuiz = readFileSync(join(SITE, 'quiz', 'index.html'), 'utf8');
   conferir(!htmlQuiz.includes('{bloqueado:true') && htmlQuiz.includes("const POLITICA = {endereco:'/politica-de-privacidade/'}"),
     'quiz: nenhum fato bloqueado na página (nome da Análise e da agência vindos da ficha) e os links da política para /politica-de-privacidade/ (v7; #117)');
@@ -1000,13 +1085,15 @@ async function principal() {
     return !(r.left < ra.right && ra.left < r.right && r.top < ra.bottom && ra.top < r.bottom) && !!el && b.contains(el);
   }, rolar);
   const pedidoAoGoogle = (page) => page.waitForRequest(rq => rq.url().startsWith('https://www.googletagmanager.com/'), { timeout: 10000 }).catch(() => null);
-  // O "Fazer a Análise" do topo da landing-page-02: no computador é um <button>; no celular, o programa da landing desenha o mesmo
-  // botão como um bloco (data-name "Botão/Primário"), sem <button>. Para ir ao quiz no celular, o ensaio usa o botão grande, como em 6.
-  const ctaDoTopo = (page) => page.locator('button:visible, [data-name="Botão/Primário"]:visible', { hasText: BOTAO_DO_TOPO }).first();
+  // O "Fazer a Análise" do cabeçalho da landing-page-02: no computador é um <button>; no celular, o programa da landing desenha o mesmo
+  // botão como um bloco (data-name "Botão/Primário"), sem <button>. Até a v7, o clique nesse bloco não levava ao quiz, e o ensaio ia
+  // ao quiz, no celular, pelo botão grande. Desde a v8 (landing-page-02 v3; #118), o bloco leva ao quiz, e o ensaio vai por ele nas
+  // três larguras. O botão grande no celular continua conferido em 6 (375) e em 10 (375 e 360).
+  const ctaDoTopo = (page) => page.locator('.hdr button:visible, .hdr [data-name="Botão/Primário"]:visible', { hasText: BOTAO_DO_TOPO }).first();
   const sessoesAceitas = [];
   for (const largura of [375, 360, 1440]) {
     const rotulo = 'medição ' + largura;
-    const ida = largura < 900 ? BOTAO_GRANDE : BOTAO_DO_TOPO;
+    const ida = BOTAO_DO_TOPO;
     // Sem escolha e com "Recusar": na landing e no quiz, nada para fora de 127.0.0.1
     {
       const foraAntes = fora.length;
@@ -1050,13 +1137,14 @@ async function principal() {
         conferir(noRecusar === TA.recusar && !foco.body && foco.primeiro,
           rotulo + ' · landing, "' + TA.recusar + '" pelo teclado: o foco vai ao primeiro botão ou link visível depois do aviso, nunca ao body (' + foco.quem + ')');
         const escolha = await lerEscolha(page);
-        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
-        await botaoDaLanding(page, ida).click();
-        await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 });
+        // v8: se o botão não levar ao quiz, a conferência abaixo sai FALHOU, em vez de o ensaio parar no meio
+        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
+        await ctaDoTopo(page).click();
+        const chegou = await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 }).then(() => true, () => false);
         await inicio;
         await page.waitForTimeout(500);
-        conferir(semNada && escolha === 'recusado' && !(await temAviso(page)) && !doGtm(await camadaDe(page)) && (await lerEscolha(page)) === 'recusado',
-          rotulo + ' · "Recusar" na landing: guarda "recusado"; o quiz abre sem o aviso e sem nada do Google na camada de dados');
+        conferir(chegou && semNada && escolha === 'recusado' && !(await temAviso(page)) && !doGtm(await camadaDe(page)) && (await lerEscolha(page)) === 'recusado',
+          rotulo + ' · "Recusar" na landing: guarda "recusado"; o quiz, aberto pelo "' + ida + '" do cabeçalho, abre sem o aviso e sem nada do Google na camada de dados');
         conferir(fora.length === foraAntes, rotulo + ' · sem escolha e com "Recusar", na landing e no quiz: nenhum pedido para fora de 127.0.0.1' + (fora.length > foraAntes ? ' (' + fora.slice(foraAntes).join(', ') + ')' : ''));
       } finally {
         await ctx.close();
@@ -1088,10 +1176,10 @@ async function principal() {
           rotulo + ' · "Aceitar" na landing: o pedido ao ' + GTM + ' é o primeiro e único para fora, só para o Google (' + (google.join(', ') || 'nenhum') + ')');
         conferir(limpaL && limpaL.pagina_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01' && !JSON.stringify(camL).includes('id_sessao') && !endL.searchParams.has('id_sessao') && soAnalise(camL),
           rotulo + ' · "Aceitar" na landing: pagina_limpa sem o id_sessao (' + (limpaL ? limpaL.pagina_limpa.replace(BASE, '') : 'nenhuma') + '), o endereço da barra também, e só a análise concedida');
-        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
+        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
         pedido = pedidoAoGoogle(page);
-        await botaoDaLanding(page, ida).click();
-        await page.waitForURL(/\/quiz\//, { timeout: 15000 });
+        await ctaDoTopo(page).click();
+        await page.waitForURL(/\/quiz\//, { timeout: 15000 }).catch(() => {});
         const ri = await inicio;
         await pedido;
         await page.waitForTimeout(400);
@@ -1121,8 +1209,94 @@ async function principal() {
       'banco · com "Aceitar": a visita da landing e o início do quiz gravados com a mesma sessão, sem pessoa, nas três larguras (' + tipos.join(' | ') + ')');
   }
 
-  // ═══ 10. Fechamento ═══
-  secao('10. Fechamento');
+  // ═══ 10. A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta (v8; #118; prompts/18-como-funciona-landing-02.md, 18.3) ═══
+  // O que a seção 6 confere no programa, aqui na página servida pelo workerd, nas três larguras: em 1440 aparece a versão do
+  // computador; em 375 e 360, a do celular. Os textos são comparados sem olhar maiúsculas, porque a página escreve alguns rótulos em
+  // caixa alta. Vem depois da planilha (7), como a 9, pela margem de 1 minuto. Não grava pessoa: só visitas e inícios do quiz.
+  secao('10. A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta (#118)');
+  {
+    const T = LANDING_V3, S = T.sessoes;
+    const min = (t) => t.toLocaleLowerCase('pt-BR').replace(/\s+/g, ' ').trim();
+    const temSeq = (linhas, seq) => { const s = seq.map(min); return linhas.some((_, i) => s.every((t, k) => linhas[i + k] === t)); };
+    const mas = (lista) => lista.length ? ', mas faltou: ' + lista.join(' | ') : '';
+    // Clica o botão e diz se a ida foi a /quiz/ com as utm e o id_sessao no formato do banco (pelo pedido de navegação)
+    const levaAoQuiz = async (page, botao) => {
+      const idas = [];
+      page.on('request', rq => { if (rq.isNavigationRequest()) idas.push(rq.url()); });
+      const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 10000 }).catch(() => null);
+      await botao.click({ timeout: 10000 }).catch(() => {});
+      await page.waitForURL(/\/quiz\//, { timeout: 10000 }).catch(() => {});
+      await inicio;
+      const u = idas.map(x => new URL(x)).find(x => x.pathname === '/quiz/');
+      return !!u && new URL(page.url()).pathname === '/quiz/' && u.searchParams.get('utm_source') === 'bio' && u.searchParams.get('utm_campaign') === 'funil-01' &&
+        /^sessao-[a-z0-9-]{1,60}$/.test(u.searchParams.get('id_sessao') || '');
+    };
+    for (const largura of [1440, 375, 360]) {
+      const rotulo = 'como funciona ' + largura, celular = largura < 900;
+      const ctx = await novoContexto(largura);
+      try {
+        const page = await ctx.newPage();
+        page.on('console', m => consoleTexto.push(m.text()));
+        const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+        await page.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
+        await visita;
+        await page.evaluate(() => document.fonts.ready);
+        // As linhas de texto da seção desenhada nesta largura (a outra versão fica no documento, sem desenho)
+        const linhas = (await page.evaluate(() => {
+          const s = [...document.querySelectorAll('[data-name$="05 · Os 90 dias (carrossel)"]')].find(e => e.getClientRects().length);
+          return s ? s.innerText.split('\n') : [];
+        })).map(min).filter(Boolean);
+        const faltas = [];
+        if (!linhas.includes(min(T.titulo.join('')))) faltas.push('o título');
+        if (!temSeq(linhas, T.fases)) faltas.push('as quatro fases da régua, na ordem');
+        if (!linhas.includes(min(T.legenda))) faltas.push('a legenda dos losangos');
+        conferir(faltas.length === 0, rotulo + ' · a versão do ' + (celular ? 'celular' : 'computador') + ' mostra o título novo, as quatro fases da régua e a legenda das Sessões de Comando' + mas(faltas));
+        const cartoes = T.cartoes.filter(([n, semana, fase, titulo]) => !temSeq(linhas, n === '06' ? [n, semana, fase, titulo, T.descricao06] : [n, semana, fase, titulo])).map(c => 'o cartão ' + c[0]);
+        conferir(cartoes.length === 0, rotulo + ' · os oito cartões com o número, o rótulo da semana, a linha da fase e o título, e o 06 com a descrição nova' + mas(cartoes));
+        // O cartão das Sessões de Comando: sem número antes de "Do começo ao fim", e nenhum "09" na seção
+        const semNumero = linhas.includes(min(S.rotulo)) && !linhas.includes('09') && linhas.every((l, i) => l !== min(S.rotulo) || !/^\d\d$/.test(linhas[i - 1] || ''));
+        const controles = linhas.filter(l => l.startsWith('arraste para ver'));
+        const faltasS = [];
+        if (!semNumero) faltasS.push('o cartão sem número');
+        if (!temSeq(linhas, [S.rotulo, S.nome, S.titulo, ...S.linhas.map(l => l.join(''))])) faltasS.push('o título e as três linhas, na ordem');
+        if (!controles.every(l => l === min(T.controle)) || (!celular && controles.length !== 1)) faltasS.push('"' + T.controle + '"');
+        conferir(faltasS.length === 0, rotulo + ' · o cartão das Sessões de Comando sem número, com o título e as três linhas novas; ' +
+          (controles.length ? '"' + T.controle + '" no controle do carrossel' : 'o controle "Arraste para ver..." não existe nesta versão') + mas(faltasS));
+        // A página inteira é lida duas vezes: como abre (a primeira resposta do FAQ já vem aberta) e com as duas respostas abertas
+        const lerPaginaInteira = async () => min(await page.evaluate(() => document.body.innerText));
+        const paginas = [await lerPaginaInteira()];
+        // As duas respostas do FAQ: a primeira já vem aberta; a segunda abre com um clique
+        const faq = [];
+        for (const [pergunta, resposta] of T.faq) {
+          const item = page.locator('button:visible', { hasText: pergunta }).first();
+          const ler = async () => min(await item.innerText({ timeout: 5000 }).catch(() => ''));
+          if (!(await ler()).includes(min(resposta))) { await item.click({ timeout: 5000 }).catch(() => {}); await page.waitForTimeout(300); }
+          if (!(await ler()).includes(min(resposta))) faq.push('"' + pergunta + '"');
+        }
+        conferir(faq.length === 0, rotulo + ' · FAQ: "' + T.faq[0][0] + '" e "' + T.faq[1][0] + '" abertas com as respostas novas' + mas(faq));
+        paginas.push(await lerPaginaInteira());
+        const antigos = T.antigos.filter(t => paginas.some(pg => pg.includes(min(t))));
+        const mentoriaDeMais = paginas.some(pg => T.mentoriaQuePode.reduce((t, f) => t.split(min(f)).join(' '), pg).includes('mentoria'));
+        conferir(antigos.length === 0 && !mentoriaDeMais, rotulo + ' · a página inteira, como abre e com as duas respostas abertas: nenhum texto antigo à vista, e "mentoria" só em "' + T.mentoriaQuePode.join('" e em "') + '"' +
+          (antigos.length ? ', mas sobrou: ' + antigos.join(' | ') : '') + (mentoriaDeMais ? ', mas há "mentoria" em outro lugar' : ''));
+        // O "Fazer a Análise" do cabeçalho: um botão no computador, um bloco no celular; e o botão grande, numa página nova
+        const doTopo = ctaDoTopo(page);
+        const feitio = await doTopo.evaluate(b => b.tagName === 'BUTTON' ? 'um botão' : 'um bloco, não um botão', null, { timeout: 5000 }).catch(() => 'não achado');
+        conferir(await levaAoQuiz(page, doTopo), rotulo + ' · o "' + BOTAO_DO_TOPO + '" do cabeçalho (' + feitio + ') leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+        const page2 = await ctx.newPage();
+        page2.on('console', m => consoleTexto.push(m.text()));
+        const visita2 = page2.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+        await page2.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
+        await visita2;
+        conferir(await levaAoQuiz(page2, botaoDaLanding(page2, BOTAO_GRANDE)), rotulo + ' · o botão grande ("' + BOTAO_GRANDE + '...") leva a /quiz/ com as utm e o id_sessao no formato do banco');
+      } finally {
+        await ctx.close();
+      }
+    }
+  }
+
+  // ═══ 11. Fechamento ═══
+  secao('11. Fechamento');
   await rodarConferir('no fim');
   conferir(JSON.stringify(await fotografiaDeAntes(naFila, db)) === JSON.stringify(fotografiaDeAntesInicial),
     'os dados de antes da migração continuam iguais no fim do ensaio');

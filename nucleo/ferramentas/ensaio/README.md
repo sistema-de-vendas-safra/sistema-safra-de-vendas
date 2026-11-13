@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 7
+versao: 8
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -20,13 +20,13 @@ depende_de:
   - id: quiz-01-pagina
     versao: 5
   - id: landing-page-02
-    versao: 2
+    versao: 3
   - id: planilha-sdr-funil-01
     versao: 2
   - id: lead-score
     versao: 3
   - id: decisoes
-    versao: 7
+    versao: 8
   - id: regra-seguranca
     versao: 3
   - id: aviso-de-cookies
@@ -54,6 +54,8 @@ Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de 
 
 **O que muda na versão 7 (13/11/2026, #117).** Três conferências novas, com o site da v11 do protótipo: /politica-de-privacidade/ abre (200) só com o texto para o lead, sem marcador {{...}}, sem anotação da equipe e com o aviso de cookies; o programa da landing-page-02 v2 não tem as perguntas 6 e 7 do FAQ nem nenhum "a definir"; o quiz-01 v5 não tem fato bloqueado e aponta a política para /politica-de-privacidade/. Duas mudaram: o título do quiz passa a ser o nome público da Análise (ficha-de-fatos#analise-nome-publico), e o "Recusar" pelo teclado na landing passa pelo link da política do aviso antes dos botões.
 
+**O que muda na versão 8 (13/11/2026, pedido 18, parte 18.3; decisão #118; landing-page-02 v3).** A seção "Como funciona" e duas respostas do FAQ da landing-page-02 mudaram de texto, e o "Fazer a Análise" do cabeçalho passou a levar ao quiz também no celular. São 26 conferências novas. Cinco entram na seção 6, no programa montado da landing: nenhum texto antigo sobra ("Mentoria 1:1", "semanas 3, 7 e 13", "9 entregas", "45 dias", "gerente de safra", "Fase 4 · Entrega", "Semana 12", "Semanas 6 a 13", "Semanas 5 a 13"); cada texto novo com o número certo de cópias na versão do computador (22 textos, 33 cópias), na do celular (21 textos, 32 cópias; o controle "Arraste para ver as 8 entregas" só existe no computador) e nas definições dos cartões, escura e clara (17 textos, 50 cópias); e as duas respostas novas do FAQ, cada uma logo depois da sua pergunta, nas duas cópias. As outras 21 são da seção nova, a 10, sete por largura, em 1440, 375 e 360, na página aberta: o título, as quatro fases da régua e a legenda das Sessões de Comando; os oito cartões com o número, o rótulo da semana, a linha da fase e o título, e o 06 com a descrição nova; o cartão das Sessões de Comando sem número, com o título e as três linhas, e "Arraste para ver as 8 entregas" onde esse controle existe; as duas respostas do FAQ abertas; nenhum texto antigo à vista na página inteira, e "mentoria" só em "É mais uma mentoria?" e em "não mais um curso ou mentoria"; o "Fazer a Análise" do cabeçalho (um botão no computador, um bloco no celular) levando a /quiz/ com as utm e o id_sessao no formato do banco; e o botão grande, também. O contorno da v6 saiu: na seção 9, o ensaio vai ao quiz pelo "Fazer a Análise" do cabeçalho nas três larguras (até a v7, no celular, ia pelo botão grande, que continua conferido na seção 6, em 375, e agora na 10, em 375 e 360); se esse botão não levar ao quiz, as conferências saem FALHOU, em vez de o ensaio parar no meio. Os textos novos estão escritos no ensaio (LANDING_V3) só para conferir a página: quem manda é o pedido (prompts/18-como-funciona-landing-02.md, "Os textos aprovados"). O ensaio confere os textos, não o desenho: a régua sem rótulo cortado, os rótulos em uma linha e o alinhamento do cartão das Sessões foram medidos à parte, na 18.3 (prompts/18-como-funciona-landing-02-resposta.md), e estão nos prints de entregas/landings/landing-page-02/prints/. O fechamento passa a ser a seção 11.
+
 ## Um comando só
 
 De dentro desta pasta:
@@ -62,7 +64,7 @@ De dentro desta pasta:
 npm run ensaio
 ```
 
-Ou da raiz do repositório: `node nucleo/ferramentas/ensaio/ensaio.mjs`. Leva perto de 90 segundos (v6). Cada conferência sai com OK ou FALHOU; no fim, "Tudo certo: N de N" e código 0, ou "FALHOU: ..." e código 1.
+Ou da raiz do repositório: `node nucleo/ferramentas/ensaio/ensaio.mjs`. Leva perto de 100 segundos (v8). Cada conferência sai com OK ou FALHOU; no fim, "Tudo certo: N de N" e código 0, ou "FALHOU: ..." e código 1.
 
 Precisa de quatro instalações, todas dentro de nucleo/ferramentas/ (node_modules fica fora do Git): `npm install` nesta pasta (PGlite), em ../prototipo/ (wrangler), em ../prints/ (playwright-core; o Chromium vem do cache do Playwright da máquina, como na ferramenta de prints) e em ../fontes/ (as fontes que o montador põe no site).
 
@@ -95,13 +97,14 @@ Opções:
    - **TESTE Bia Ensaio**: faixa b com o funil todo na meta (nota 68), relatório do funil saudável, clique "Quero marcar uma conversa";
    - **TESTE Davi Ensaio**: as mesmas respostas da Bia, com a **caixa desmarcada**, e o mesmo clique.
 
-   Confere, no navegador: a visita gravada (201) ao abrir a landing, a landing e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing e a Inter, a Space Grotesk e a Geist na abertura do quiz (v5; a Permanent Marker fica para o relatório), carregadas do site (10.7); os dois botões levam a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); aberta pelo arquivo (file://), a landing-page-02 não manda nada. O console das páginas, sem dado de pessoa.
+   Confere, no navegador: a visita gravada (201) ao abrir a landing, a landing e o quiz no modo padrão (CSS1Compat; 34.13, 09.1) e em UTF-8, o título com os acentos certos, a Geist na landing e a Inter, a Space Grotesk e a Geist na abertura do quiz (v5; a Permanent Marker fica para o relatório), carregadas do site (10.7); os dois botões levam a /quiz/ com as utm e o id_sessao no formato do banco; o início do quiz gravado ao abrir; uma caixa de aceite só, já marcada (13.4); o fim do quiz e o clique gravados (201) e sem aviso de falha; com a caixa desmarcada, nenhum POST /api/fim-quiz e nenhum clique, o diagnóstico na tela. Da conferência da landing que estava fora do repositório (34.17), o que não se repete acima: com /api/evento fora do ar, o botão continua levando ao quiz com a utm e a sessão (10.10); aberta pelo arquivo (file://), a landing-page-02 não manda nada. O console das páginas, sem dado de pessoa. Desde a v8, no programa montado da landing-page-02 (v3; #118): nenhum texto antigo da seção "Como funciona" e do FAQ; cada texto novo com as cópias certas na versão do computador, na do celular e nas definições dos cartões; e as duas respostas novas do FAQ nas duas cópias.
 
    Confere, no banco: o lead A com nome TESTE, telefone como a página mandou, os dois consentimentos "sim" pela caixa única com a data e o texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página; #104); fim do quiz com nota 96, faixa a, lead score versão 3, quiz-01 versão 2, a sessão vinda da landing e as respostas; a sessão do lead A com visita (landing-page-02, versão 1, utm bio), início do quiz (quiz-01, versão 2, sem nota nem respostas) e fim do quiz, nessa ordem, a visita e o início ligados à pessoa pelo fim do quiz da mesma sessão (6.2); o eliminatório com a nota e o clique tenho-interesse ligado pela sessão (18.4; 32.2); a faixa c do corte com o clique; a faixa b com nota 68, o clique quero-conversa e as respostas com o CRM e a linha "Leads por mês"; da desmarcada, nenhuma pessoa, nenhum fim do quiz e nenhum clique, só a visita e o início do quiz, sem pessoa (34.18); 4 pessoas e 4 fins de quiz novos, nada a mais.
 7. **Planilha do SDR.** Em outro processo (o UrlFetchApp de mentira é síncrono e trava a linha principal de quem chama), roda instalar() e buscar_() de Codigo.gs v2 contra o garçom local, pela porta privada, com a CHAVE_PLANILHA de mentira, numa aba nova, como depois de renomear a antiga (planilha-sdr-funil-01, "Atualizar da versão 1"). Confere: as 20 colunas na ordem, com clique_fim_quiz na 13; a primeira busca, logo depois do quiz, traz **só os 3 leads de antes** (a linha que imita a do Otávio, a faixa a com "=1+1" e a pessoa dos dois envios, uma vez só), e nenhum dos novos (a margem de 1 minuto do banco, 21.6); depois do contorno da margem (abaixo), 2 linhas novas, o lead A e a faixa b, na ordem de chegada; a linha do lead A com os valores certos e o clique vazio; a da faixa b com respostas_a_confirmar trazendo **leads-por-mes: 200** e **crm** (15.4) e clique_fim_quiz **quero-conversa** (18.4); a linha que imita a do Otávio com faixa a e nota 86; o eliminatório, a faixa c, a desmarcada e o eliminatório de antes fora; rodar de novo não duplica; com o cursor perdido, também não; o registro da planilha sem dado pessoal; com a chave errada, 401 e nada gravado.
 8. **Casos de erro.** Chave publicável lendo tabela, visão, gravando direto ou chamando leads_para_planilha pelo Supabase de mentira: 401. Chave secreta lendo tabela, gravando o fim do quiz ou um evento: 403. Porta privada do garçom com a chave da planilha errada, sem chave ou com a publicável no lugar: 401 sem detalhe; com a certa, os 5 leads. Pacote sem consentimento: o garçom recusa (422) sem chamar o banco, e a função chamada direto com a publicável também recusa (400, restrição 23514). Clique numa sessão sem fim do quiz: o banco recusa e o garçom responde 422 (32.2). /api/evento com pessoa no pacote: 422 sem chamar o banco. A mesma pessoa enviando duas vezes ao mesmo tempo: uma pessoa só no banco e dois eventos.
-9. **Medição no site montado** (v6; #116), em 375, 360 e 1440. Por largura, dois contextos. No primeiro, sem escolha: a landing-page-02 com o aviso no topo, primeiro filho do body, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado e com o link "Cookies" no fim; o aviso não cobre o "Fazer a Análise" do topo nem o botão grande (retângulos separados e, no centro do botão, o próprio botão); "Recusar" pelo teclado (o segundo Tab, depois o Enter) leva o foco ao primeiro botão ou link desenhado na landing depois do aviso, nunca ao body, e guarda "recusado", e o quiz, aberto pelo botão da landing, abre sem o aviso e sem nada do Google na camada de dados; e, do começo ao fim, nenhum pedido para fora de 127.0.0.1. No segundo, que responde 404 ao Google: a landing aberta com um id_sessao no endereço; "Aceitar" faz do gtm.js do GTM-T6L4QTB8 o primeiro e único pedido para fora; a pagina_limpa e o endereço da barra saem sem o id_sessao, e só a análise é concedida; pelo botão da landing, o quiz abre sem o aviso, já pede o gtm.js (só ao Google), e o início do quiz leva o id_sessao da ida, com o endereço, a pagina_limpa e a origem_limpa sem ele. No banco, a visita e o início do quiz de cada uma dessas três sessões, com a mesma sessão e sem pessoa.
-10. **Fechamento.** conferir.sql de novo (18 de 18); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
+9. **Medição no site montado** (v6; #116), em 375, 360 e 1440. Por largura, dois contextos. No primeiro, sem escolha: a landing-page-02 com o aviso no topo, primeiro filho do body, em fluxo normal, com o texto do aviso-de-cookies, sem rolagem para o lado e com o link "Cookies" no fim; o aviso não cobre o "Fazer a Análise" do topo nem o botão grande (retângulos separados e, no centro do botão, o próprio botão); "Recusar" pelo teclado (o segundo Tab, depois o Enter) leva o foco ao primeiro botão ou link desenhado na landing depois do aviso, nunca ao body, e guarda "recusado", e o quiz, aberto pelo "Fazer a Análise" do cabeçalho (v8: nas três larguras), abre sem o aviso e sem nada do Google na camada de dados; e, do começo ao fim, nenhum pedido para fora de 127.0.0.1. No segundo, que responde 404 ao Google: a landing aberta com um id_sessao no endereço; "Aceitar" faz do gtm.js do GTM-T6L4QTB8 o primeiro e único pedido para fora; a pagina_limpa e o endereço da barra saem sem o id_sessao, e só a análise é concedida; pelo botão da landing, o quiz abre sem o aviso, já pede o gtm.js (só ao Google), e o início do quiz leva o id_sessao da ida, com o endereço, a pagina_limpa e a origem_limpa sem ele. No banco, a visita e o início do quiz de cada uma dessas três sessões, com a mesma sessão e sem pessoa.
+10. **A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta** (v8; #118), em 1440, 375 e 360. Em 1440 aparece a versão do computador; em 375 e 360, a do celular. Os textos são comparados sem olhar maiúsculas, porque a página escreve alguns rótulos em caixa alta. Por largura: o título, as quatro fases da régua, na ordem, e a legenda; os oito cartões, cada um com o número, o rótulo da semana, a linha da fase e o título em sequência, e o 06 com a descrição nova; o cartão das Sessões de Comando sem número antes de "Do começo ao fim", sem nenhum "09" na seção, com o título e as três linhas, e o controle "Arraste para ver as 8 entregas" no computador (no celular ele não existe); as duas respostas do FAQ (a primeira já vem aberta; a segunda abre com um clique); a página inteira, lida como abre e com as duas respostas abertas, sem nenhum texto antigo e com "mentoria" só nos dois lugares permitidos (#53); o "Fazer a Análise" do cabeçalho e, numa página nova, o botão grande, cada um levando a /quiz/ com utm_source, utm_campaign e o id_sessao no formato do banco. Não grava pessoa: só visitas e inícios do quiz.
+11. **Fechamento.** conferir.sql de novo (18 de 18); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
 
 No fim, e também se algo falhar no meio ou se o ensaio for interrompido (Ctrl+C), fecha o navegador, o wrangler e o workerd (o grupo de processos inteiro), o processo da planilha, os servidores e o banco, e apaga a pasta temporária. O navegador é aberto sem os tratadores de sinal do Playwright (handleSIGINT, handleSIGTERM e handleSIGHUP desligados), senão ele encerraria o processo antes da limpeza.
 
@@ -124,6 +127,44 @@ O ensaio confere em três lugares que nada sai da máquina:
 Nas duas rodadas finais, o vigia externo (lsof a cada meio segundo nos processos do wrangler, do workerd, do Chromium e do ensaio; script fora do repositório) não viu nenhuma conexão fora de 127.0.0.1.
 
 ## Resultado do ensaio
+
+**v8 (13/11/2026, pedido 18, parte 18.3).** Rodado inteiro, com o wrangler dev, numa máquina Linux na nuvem, duas vezes seguidas: **199 de 199**, em 104 e 103 segundos. São as 173 da v7, todas de pé, mais 26: 5 na seção 6 e 21 na seção 10 (7 por largura). O modo `--sem-wrangler` não foi rodado: ele já falhava no passo 6 antes deste pedido (prompts/18-como-funciona-landing-02-resposta.md, pergunta 18.3.3). Duas provas de que as conferências novas pegam o erro, cada uma com uma mudança de propósito num arquivo da landing, desfeita pelo Git (`git checkout --`) e conferida por SHA-256 contra o arquivo do commit:
+
+- **Uma cópia antiga no programa.** A resposta antiga de "É mais uma mentoria?" ("Não. A mentoria é uma das 9 entregas...") devolvida só à cópia do celular de assets/index-BSwcbsoR.js: **6 FALHOU** de 199. Na seção 6, "nenhum texto antigo" (sobrou "9 entregas") e "as duas respostas novas do FAQ, nas duas cópias"; na seção 10, em 375 e em 360, a do FAQ e a da página inteira (sobrou "9 entregas" e apareceu "mentoria" fora dos dois lugares permitidos). Em 1440, tudo passou, porque a cópia do computador estava certa. Arquivo de volta com o SHA-256 do commit (091b703a...8242af).
+- **O botão do cabeçalho.** A mudança da v3 desfeita no programa do fim de pagina/index.html (o clique volta a valer só para `<button>`): **9 FALHOU** de 199. Na seção 10, em 375 e em 360, "o 'Fazer a Análise' do cabeçalho (um bloco, não um botão) leva a /quiz/"; na seção 9, em 375 e em 360, as três que dependem de chegar ao quiz por esse botão; e a do banco, que ficou com uma sessão só. Em 1440, tudo passou. Arquivo de volta com o SHA-256 do commit (60a37d37...82ef465).
+
+Saída das conferências novas (segunda rodada):
+
+```
+OK     · landing · programa: nenhum texto antigo da seção "Como funciona" e do FAQ (Mentoria 1:1 | semanas 3, 7 e 13 | 9 entregas | 45 dias | gerente de safra | Fase 4 · Entrega | Semana 12 | Semanas 6 a 13 | Semanas 5 a 13) (v8; landing-page-02 v3)
+OK     · landing · programa, versão do computador: os textos novos da seção "Como funciona" com as cópias certas (22 textos, 33 cópias) (v8)
+OK     · landing · programa, versão do celular: os textos novos da seção "Como funciona" com as cópias certas (21 textos, 32 cópias) (v8)
+OK     · landing · programa, definições dos cartões, escura e clara: os textos novos da seção "Como funciona" com as cópias certas (17 textos, 50 cópias) (v8)
+OK     · landing · programa: as duas respostas novas do FAQ, cada uma logo depois da sua pergunta, nas duas cópias (a do computador e a do celular) (v8)
+
+· 10. A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta (#118)
+OK     · como funciona 1440 · a versão do computador mostra o título novo, as quatro fases da régua e a legenda das Sessões de Comando
+OK     · como funciona 1440 · os oito cartões com o número, o rótulo da semana, a linha da fase e o título, e o 06 com a descrição nova
+OK     · como funciona 1440 · o cartão das Sessões de Comando sem número, com o título e as três linhas novas; "Arraste para ver as 8 entregas" no controle do carrossel
+OK     · como funciona 1440 · FAQ: "É mais uma mentoria?" e "Quem me atende depois que eu assinar?" abertas com as respostas novas
+OK     · como funciona 1440 · a página inteira, como abre e com as duas respostas abertas: nenhum texto antigo à vista, e "mentoria" só em "É mais uma mentoria?" e em "não mais um curso ou mentoria"
+OK     · como funciona 1440 · o "Fazer a Análise" do cabeçalho (um botão) leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco
+OK     · como funciona 1440 · o botão grande ("Faça uma Análise Estratégica...") leva a /quiz/ com as utm e o id_sessao no formato do banco
+OK     · como funciona 375 · a versão do celular mostra o título novo, as quatro fases da régua e a legenda das Sessões de Comando
+OK     · como funciona 375 · os oito cartões com o número, o rótulo da semana, a linha da fase e o título, e o 06 com a descrição nova
+OK     · como funciona 375 · o cartão das Sessões de Comando sem número, com o título e as três linhas novas; o controle "Arraste para ver..." não existe nesta versão
+OK     · como funciona 375 · FAQ: "É mais uma mentoria?" e "Quem me atende depois que eu assinar?" abertas com as respostas novas
+OK     · como funciona 375 · a página inteira, como abre e com as duas respostas abertas: nenhum texto antigo à vista, e "mentoria" só em "É mais uma mentoria?" e em "não mais um curso ou mentoria"
+OK     · como funciona 375 · o "Fazer a Análise" do cabeçalho (um bloco, não um botão) leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco
+OK     · como funciona 375 · o botão grande ("Faça uma Análise Estratégica...") leva a /quiz/ com as utm e o id_sessao no formato do banco
+OK     · como funciona 360 · a versão do celular mostra o título novo, as quatro fases da régua e a legenda das Sessões de Comando
+OK     · como funciona 360 · os oito cartões com o número, o rótulo da semana, a linha da fase e o título, e o 06 com a descrição nova
+OK     · como funciona 360 · o cartão das Sessões de Comando sem número, com o título e as três linhas novas; o controle "Arraste para ver..." não existe nesta versão
+OK     · como funciona 360 · FAQ: "É mais uma mentoria?" e "Quem me atende depois que eu assinar?" abertas com as respostas novas
+OK     · como funciona 360 · a página inteira, como abre e com as duas respostas abertas: nenhum texto antigo à vista, e "mentoria" só em "É mais uma mentoria?" e em "não mais um curso ou mentoria"
+OK     · como funciona 360 · o "Fazer a Análise" do cabeçalho (um bloco, não um botão) leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco
+OK     · como funciona 360 · o botão grande ("Faça uma Análise Estratégica...") leva a /quiz/ com as utm e o id_sessao no formato do banco
+```
 
 **v7 (13/11/2026).** Rodado inteiro, do zero, com o wrangler dev, numa máquina Linux na nuvem: **173 de 173**, em 81 segundos. São as 170 da v6 mais as três novas da v7 (a política, a landing sem as perguntas 6 e 7, o quiz sem fato bloqueado); duas da v6 mudaram de expectativa (o título do quiz e o Tab a mais no aviso).
 
@@ -384,7 +425,7 @@ Tudo certo: 142 de 142 conferências passaram
 
 **O que o Google de mentira não prova:** tudo da pergunta 24.13 (autorização, gatilho de 5 minutos rodando sozinho, formatos e listas no Google Planilhas de verdade) e a troca da aba de verdade (renomear a antiga e rodar instalar() de novo; APLICAR-11.md).
 
-**O navegador:** o visual não é conferido aqui (os prints das etapas 23 e 34 conferem). O quiz roda no site montado, servido pelo workerd, e não no celular de verdade.
+**O navegador:** o visual não é conferido aqui (os prints das etapas 23 e 34 conferem; os da seção "Como funciona", em entregas/landings/landing-page-02/prints/). Na seção 10 (v8), o ensaio lê o texto da seção como o navegador o entrega, com os dez cartões de uma vez: não diz se um rótulo está cortado, sobreposto ou fora da tela. O quiz roda no site montado, servido pelo workerd, e não no celular de verdade.
 
 **A medição (v6):** o Google é respondido pelo ensaio com 404, como enquanto o contêiner não é publicado; o Tag Manager de verdade, o Google Analytics, os cookies que ele grava e o que ele manda ao Google não rodam aqui. Isso só se confere no ar, depois que o Otávio publicar o contêiner e ligar o Analytics (log.md, Pendências).
 
