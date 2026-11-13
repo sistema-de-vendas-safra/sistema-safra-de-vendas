@@ -1,6 +1,6 @@
 ---
 id: landing-page-02
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -14,7 +14,7 @@ depende_de:
   - id: banco-catalogo-prototipo
     versao: 3
   - id: decisoes
-    versao: 8
+    versao: 9
 desatualizado: true
 ---
 
@@ -28,10 +28,10 @@ A página que aparece antes do quiz no protótipo do funil-01, no lugar das duas
 
 | Caminho | O que é |
 |---|---|
-| pagina/index.html | O index.html original da página, com três mudanças: a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa da visita e da ida ao quiz, que desde a v3 também pega o "Fazer a Análise" do cabeçalho no celular |
-| pagina/assets/ | O programa (index-BSwcbsoR.js) e o estilo (index-Btrkg4Yg.css) da página. O estilo está como veio. O programa está como veio, salvo duas mudanças: as perguntas 6 e 7 do FAQ, tiradas na v2 (#117); e a seção "Como funciona" e duas respostas do FAQ, trocadas na v3 (#118; lista em "O que mudou na versão 3") |
+| pagina/index.html | O index.html original da página, com três mudanças: a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa da visita e da ida ao quiz, que desde a v3 também pega o "Fazer a Análise" do cabeçalho no celular e, desde a v4, as outras chamadas que a página desenha como bloco (a do topo no celular e a do cartão da oferta) |
+| pagina/assets/ | O programa (index-BSwcbsoR.js) e o estilo (index-Btrkg4Yg.css) da página. O estilo está como veio. O programa está como veio, salvo três mudanças: as perguntas 6 e 7 do FAQ, tiradas na v2 (#117); a seção "Como funciona" e duas respostas do FAQ, trocadas na v3 (#118; lista em "O que mudou na versão 3"); e o GSAAS fora da página, com as respostas do Otávio ao pedido 18, na v4 (#119; lista em "O que mudou na versão 4") |
 | pagina/a/ | As imagens da página: 295 do zip e 24 baixadas da mesma prévia na Vercel em 12/11/2026, porque o zip veio sem elas (ícones das abas e das trocas, que só aparecem com um clique). A prévia usa o mesmo programa do zip |
-| prints/ | Os prints da v3: a seção "Como funciona" e o FAQ, em 1440 e em 375 (lista em "Prints") |
+| prints/ | Os prints da v3: a seção "Como funciona" e o FAQ, em 1440 e em 375 (lista em "Prints"). Ficaram velhos com a v4 e serão refeitos na parte 20.3 do pedido 20 |
 
 ## O que mudou na versão 2
 
@@ -114,11 +114,105 @@ No celular, o programa da página desenha o "Fazer a Análise" do cabeçalho com
 
 No celular, o cartão tem 290 por 480 px e corta o que passa da altura. Com a descrição nova do cartão 06 (cinco linhas no celular), o conteúdo vai até 495 px: a última fileira de chips ("Inteligência de Mercado" e "Dados") aparece cortada ao meio, com 10 dos 25 px. Antes, o conteúdo do 06 terminava em 480 e os chips apareciam inteiros: é defeito novo, que vem do texto aprovado. No cartão das Sessões de Comando, o conteúdo passa 32,9 px da borda (antes, 23,6) e o chip "Mentalidade de Vendas" fica escondido, como já ficava. O cartão 03 passa 2,5 px, antes e agora. No computador, tudo cabe. Nada foi mudado na altura, porque é desenho: subir os dez cartões do celular para 524 px resolve o 06, e para 544 px resolve também o das Sessões (log.md, entrada da 18.2, pergunta 1).
 
+**Resolvido na versão 4** (pergunta 18.2.1, aprovada na #119): os 9 cartões do celular passaram a 544 px de altura. O que isso resolve, medido em 375 e em 360: nos 9 cartões, a última fileira de chips termina 27 a 28 px acima da borda de baixo, que é o respiro do cartão; nenhum chip aparece cortado. Com a altura solta, o cartão 03 pede 510 px, o 06 pede 523 e o das Sessões de Comando pede 541: sobram 34, 21 e 3 px. O que isso não resolve de todo: a folga do cartão das Sessões é de só 3 px. Uma linha a mais de texto nesse cartão come o respiro de baixo (de 28 para cerca de 9 px), com o chip "Mentalidade de Vendas" ainda inteiro; duas linhas a mais voltam a cortar o chip. No computador, a altura continua em 480 px e tudo cabe.
+
 ### Cabeçalho deste documento
 
 depende_de ganha decisoes 8 (no lugar de decisoes 7).
 
+## O que mudou na versão 4
+
+Decisão do Otávio, 13/11/2026 (base/decisoes.md, #119; prompts/20-gsaas-fora-da-landing.md). Sobre o GSAAS na landing: "Tira da landing." Sobre as perguntas da resposta do pedido 18, com uma recomendação para cada uma: "Aprovo tudo." A página deixa de falar do GSAAS (a #68 e a #84 aplicadas à landing-page-02), os rótulos seguem a 9.15 (#114), a resposta de "Quem me atende depois que eu assinar?" sai sem os nomes de quem conduz a call em grupo, e três pendências da versão 3 ficam resolvidas: a altura dos cartões no celular, a barra acesa da régua e as duas chamadas que não levavam ao quiz. Nenhum fato muda: a ficha de fatos e base/produto.md ficam como estão.
+
+**Onde mudou.** No programa empacotado (assets/index-BSwcbsoR.js): o carrossel da seção "Como funciona", a régua, os cartões 01 e 08, a demonstração do produto e duas respostas do FAQ, em todas as cópias de cada texto (computador, celular e as definições dos cartões, em variante escura e clara). No programa do fim do index.html: só a regra que leva as chamadas ao quiz. O nome do arquivo do programa continua o mesmo; ele passou de 1.628.886 para 1.590.652 bytes (66 edições). O estilo (assets/index-Btrkg4Yg.css) não mudou: as medidas novas vão escritas no próprio programa.
+
+**O projeto original não tem estas mudanças.** O projeto da página, na Vercel, continua como veio. Se um zip novo vier de lá, é a lista abaixo, junto com a da versão 3 e a da versão 2, que precisa ir junto, senão o GSAAS volta à página.
+
+### Cada troca de texto visível (antes · depois)
+
+FAQ (as perguntas não mudam; computador e celular)
+- "Quem me atende depois que eu assinar?" · "O Junior, nas três Sessões de Comando com você e o seu Head Comercial: duas no começo e uma no fim. Da semana 3 em diante, o Junior e o Euclides conduzem a call semanal em grupo, e o seu time tem um grupo de WhatsApp com a nossa equipe para as dúvidas do dia a dia." · "O Junior, nas três Sessões de Comando com você e o seu Head Comercial: duas no começo e uma no fim. Da semana 3 em diante, o seu time participa da call semanal em grupo e tem um grupo de WhatsApp com a nossa equipe para as dúvidas do dia a dia."
+- "E depois dos 90 dias?" · "Os playbooks e o treinamento ficam com o seu time. Quem quiser continuar tem o GSAAS, opcional: a gente mantém o CRM e o painel e coloca os agentes de IA para trabalhar." · "Os playbooks e o treinamento ficam com o seu time. O sistema fica por escrito, para rodar sem a gente."
+
+Rótulos
+- Régua, no computador e no celular: "Fase 1 · Análise" · "Fase 1 · Ponto de partida"
+- Cartão 01, linha da fase: "Fase 1 · Análise" · "Fase 1 · Ponto de partida"
+- Cartão 08, linha da fase: "Fechamento · 3ª Sessão de Comando" · "Encerramento · 3ª Sessão de Comando"
+
+Contador do carrossel
+- No computador e no celular: "01 / 10" a "10 / 10" · "01 / 09" a "09 / 09"
+
+Demonstração do produto, no computador
+- Título da janela na tela dos agentes: "Sistema de Vendas Safra · Agentes de IA" · saiu, com a tela (os títulos das outras telas ficam)
+
+Não mudaram, como o pedido manda: o título do cartão 01 ("Análise Estratégica das Safras"), a linha "Semana 1 · A Análise Estratégica das Safras", os botões "Fazer a Análise", a linha "Semana 13 · O fechamento, com o Relatório de Produtividade" e "Arraste para ver as 8 entregas".
+
+### Cada bloco que saiu
+
+Carrossel da seção "Como funciona"
+- O cartão do GSAAS, o décimo do carrossel, no computador e no celular: "Depois dos 90 dias · opcional", "Do relatório, a próxima safra já começa lida", "GSAAS · Gestão de Safra as a Service", "Agentes de IA que lembram a reunião, acompanham o lead pelo WhatsApp e passam ao vendedor a tarefa do dia." e os chips "Inteligência Artificial" e "Tecnologia".
+- No programa, isso são: a definição do cartão, em variante escura e clara (6.242 caracteres); as 9 cópias apagadas dele na trilha do computador (uma por estado, do "02" ao "10"); a cópia em destaque da trilha do computador (2.971 caracteres); e o cartão da trilha do celular (5.247 caracteres).
+
+Demonstração do produto (perfil "Para quem gere o time")
+- No computador, o item "Agentes de IA" do menu lateral, com a etiqueta "GSAAS": as 5 cópias do item, uma para cada tela que fica (cerca de 1.110 caracteres cada), e o pedaço do menu que só aparecia com a tela dos agentes aberta (2.258 caracteres).
+- No computador, a tela "Agentes de IA" (6.207 caracteres): "Agentes trabalhando agora", "Lembram a reunião, acompanham o lead pelo WhatsApp e passam ao vendedor a tarefa do dia.", o selo "No GSAAS, depois dos 90 dias", os três cartões de agente, cada um com o selo "trabalhando" ("Lembrete de reunião", com "Confirmando as reuniões de amanhã"; "Acompanhamento no WhatsApp", com "Lendo as conversas de ontem à noite"; e "Tarefa diária do vendedor", com "Separando os 14 contatos de hoje da safra de setembro") e a nota "Os agentes entram no GSAAS, depois dos 90 dias.".
+- No computador, a sexta bolinha do indicador de telas, embaixo da janela, que só existia nesse perfil (400 caracteres). Ficam cinco, uma por tela, como no perfil do vendedor.
+- No celular, o item "Agentes de IA" do menu (678 caracteres; lá ele não tinha a etiqueta) e a tela dos agentes (6.253 caracteres), com os mesmos textos da do computador.
+- Das listas de telas do perfil, no computador e no celular, saiu "Agentes de IA": o avanço sozinho da demonstração volta de "Avaliação de calls" para "Painel de Safras".
+
+### Cada medida que mudou
+
+Carrossel, no computador
+- Trilha: de 3.620 para 3.260 px (8 cartões de 340 px, o das Sessões de Comando, de 380 px, e 8 espaços de 20 px).
+- Onde a trilha para: antes, em -2.520 px no estado "08" e em -2.540 px nos estados "09" e "10"; agora, em -2.180 px nos estados "08" e "09". É a mesma regra de antes: o fim da trilha encosta no fim do conteúdo, de 1.080 px. Os estados "01" a "07" ficam onde estavam (de 0 a -2.160 px).
+- Barra do controle, ao lado do contador: de um décimo da largura, andando de 10 em 10%, para um nono (11,111%), andando de 11,111 em 11,111%.
+- Altura dos cartões: não mudou (480 px).
+
+Carrossel, no celular
+- Trilha: de 3.026 para 2.722 px (9 cartões de 290 px e 8 espaços de 14 px).
+- Onde a trilha para: antes, em -2.432 px no estado "09" e em -2.666 px no "10"; agora, em -2.362 px no estado "09" (o fim da trilha encosta no fim da janela, de 360 px). Os estados "01" a "08" ficam onde estavam (de 0 a -2.128 px).
+- Barrinha de avanço dos controles (20 px): antes, em 0, 18, 37, 55, 74, 92, 112, 129, 148 e 169 px; agora, em 0, 21,125, 42,25, 63,375, 84,5, 105,625, 126,75, 147,875 e 169 px (nove posições iguais).
+- Altura dos 9 cartões e da janela do carrossel: de 480 para 544 px. A seção inteira cresce os mesmos 64 px, e os controles e a seção seguinte descem junto.
+
+Régua
+- Barra acesa: no computador, de 249,231 px (fim da semana 3) para 166,154 px (fim da semana 2: duas semanas de 83,077 px); no celular, de 179,446 para 119,631 px (duas semanas de 59,815 px). Continua fixa: não acompanha o carrossel.
+- O rótulo "Fase 1 · Ponto de partida" é mais comprido que o antigo (no computador, 135,7 px no lugar de 84,1) e continua acima do bloco, inteiro, sem reticências. Nenhuma medida da régua mudou por causa dele: ele fica 4 px acima do bloco da Fase 1 (3 px no celular) e 28 px abaixo do filtro por peça (33 px no celular), e termina 30 px à esquerda de onde começa o bloco da Fase 3 (22 px no celular).
+
+Cartão 08
+- Nenhuma medida mudou: a largura máxima da linha da fase continua em 140 px, como o pedido 18 deixou. Com "Encerramento", que é mais comprido, a quebra passa a ser "Encerramento · 3ª" e "Sessão de Comando" (era "Fechamento · 3ª Sessão" e "de Comando"). A linha continua em duas, alinhada à direita. Folga do texto até o número "08", medida na tela: 89 px no computador, 35 px no celular de 375 e 33 px no de 360. Antes, com "Fechamento", eram 68 px no computador e 16 px no celular de 375.
+
+Cartão 01
+- Nenhuma medida mudou: "Fase 1 · Ponto de partida" cabe em uma linha, a 80 px do número "01" no computador e a 30 px no celular.
+
+### O que acompanha, sem aparecer
+
+- **Os estados do carrossel.** As duas listas de estados passaram de dez para nove ("01" a "09"); as setas, o avanço sozinho (a cada 4 segundos no computador e 5 no celular) e o arrastar com o dedo no celular dão a volta do 09 para o 01.
+- **O destaque no computador.** No computador, o estado N do carrossel põe a borda de destaque no cartão N-1 (já era assim; pergunta 18.2.7), e o estado "01" a punha no último cartão, que era o do GSAAS. Agora o último é o das Sessões de Comando, e é ele que recebe o destaque no estado "01", fora da tela, como o do GSAAS ficava. Antes, o cartão das Sessões recebia o destaque no estado "10", que deixou de existir.
+- **Nomes internos.** O nome invisível do bloco da régua acompanhou o rótulo: "Fase · Análise" virou "Fase · Ponto de partida" (2 cópias).
+- **O que sobra no programa e nunca aparece.** A palavra "GSAAS" não existe mais no programa (eram 18). "Agentes de IA" sobra 7 vezes, todas na demonstração do computador e nenhuma à vista: é o nome de um estado que não acontece mais, em seis listas de condição do menu e na definição do próprio estado. Também sobram os identificadores do estado "10" do carrossel, que nunca é usado. Ficam também quatro variáveis de imagem definidas e sem uso (os ícones do cartão do GSAAS e da tela dos agentes); as imagens não aparecem nem são pedidas pela página, e os arquivos continuam em pagina/a/. Tirar esses restos pediria mexer em centenas de pontos do programa, sem mudar nada na página.
+- **O indicador de telas da demonstração no celular.** No celular, embaixo da janela da demonstração, o indicador tem seis bolinhas fixas (a primeira acesa), que não acompanham a tela aberta em nenhum perfil. Já era assim. No computador, a sexta bolinha saiu com a tela dos agentes, porque lá é uma bolinha por tela; no celular ficaram as seis, para cinco telas, porque o indicador é desenho fixo e o pedido não o lista (pergunta 20.2.10, na resposta do pedido).
+
+### As chamadas que não levavam ao quiz
+
+Em quatro lugares o programa da página desenha a chamada como um bloco com o nome interno "Botão/Primário", e não como botão de verdade. O do cabeçalho no celular leva ao quiz desde a versão 3. Os outros três continuavam como vieram: a chamada do topo da página, no celular, só rolava a tela até o cartão da oferta; a do cartão da oferta (seção 08), no computador e no celular, não fazia nada. Agora o programa do fim do index.html leva ao quiz o clique em qualquer bloco com esse nome, desde que o texto comece por "Fazer a Análise" ou "Faça uma Análise", com as utm do endereço e o id_sessao, do mesmo jeito que os botões (pergunta 18.2.6, aprovada na #119). O clique é pego antes do programa da página: no topo do celular, a tela não rola mais. Nada mudou em assets/ por isto, e nenhum outro elemento mudou de comportamento: no programa, todo bloco ou botão com esse nome tem um desses dois textos, e nada mais na página tem.
+
+Conferido com clique de verdade (toque, no celular) num navegador sem tela, em 1440, 375 e 360: as 10 chamadas de cada largura levam a /quiz/ com as utm e o id_sessao. São o "Fazer a Análise" do cabeçalho e nove "Faça uma Análise Estratégica do seu Sistema de Vendas": no topo (seção 01), na seção "Por que a venda fica cara" (a segunda, sem número no nome interno), nas seções 03, 04, 05, 06 e 07, no cartão da oferta (seção 08) e no FAQ (seção 09).
+
+### O que não mudou
+
+- A visita continua indo ao banco como landing-page-02, versão 1, que é a linha do catálogo.
+- Tudo o que o pedido 18 pôs na página e este pedido não manda mudar: o título da seção, as outras três fases da régua, os losangos, a legenda, os cartões 02 a 07, o cartão das Sessões de Comando e a resposta de "É mais uma mentoria?". Conferido texto por texto contra a lista do ensaio: as contagens de antes e de depois são iguais, salvo "Painel de Safras", que perde uma cópia invisível, a da condição da bolinha que saiu da demonstração.
+- No computador, a altura dos cartões (480 px) e o corte de 20 px à esquerda do primeiro cartão visível nos dois últimos estados (pergunta 18.3.4): era o cartão 08, nos estados "09" e "10"; agora é o 07, nos estados "08" e "09", porque a trilha continua parando 20 px depois do começo dele. O cartão das Sessões de Comando aparece inteiro, e depois dele não sobra cartão vazio nem espaço.
+- O filtro por peça e o arrastar com o mouse no computador, que não fazem nada, e o contador defasado do computador (pergunta 18.2.7); a régua do celular, que não mostra a semana 13 (pergunta 18.2.5). Ficam para a revisão de UX (pedido 19).
+- A peça "Inteligência Artificial", uma das sete do filtro por peça e chip dos cartões 01, 03, 05 e 08: é peça do método, não o GSAAS nem agente, e ficou como estava.
+
+### Cabeçalho deste documento
+
+Versão 4. depende_de ganha decisoes 9 (no lugar de decisoes 8). status, aprovado_por e desatualizado ficam como estão.
+
 ## Prints
+
+**Os oito prints abaixo são da versão 3 e ficaram velhos com a versão 4** (ainda mostram o cartão do GSAAS, os rótulos antigos, o contador até 10, os cartões de 480 px no celular e a barra da régua até a semana 3). Serão refeitos, com os mesmos nomes, na parte 20.3 do pedido 20, que acrescenta os prints do fim do carrossel, da demonstração do produto, do cartão da oferta e do topo da página.
 
 Em prints/, tirados em 13/11/2026 (pedido 18, parte 18.3) do site montado, num navegador sem tela, com o aviso de cookies já recusado e sem dado de pessoa. Fazem parte da v3 (o pedido 18 pede a landing-page-02 v3 no index.md depois dos prints; pergunta 18.3.6 da resposta do pedido). Cada imagem é um recorte da janela, na largura inteira, com 2 pixels por ponto (o print de 1440 tem 2880 de largura); a altura é a da parte fotografada, menor que a da janela. O cabeçalho da página fica preso no topo da janela e aparece no topo de cada print. Os da régua e do FAQ são mais altos que a janela de costume (900 no computador, 812 no celular): foram tirados numa janela mais alta, com a mesma largura, para a parte inteira caber numa imagem só. As perguntas citadas estão em prompts/18-como-funciona-landing-02-resposta.md.
 
@@ -133,12 +227,12 @@ Em prints/, tirados em 13/11/2026 (pedido 18, parte 18.3) do site montado, num n
 | faq-respostas-1440.png | 1440 por 1200 | O FAQ no computador, com "É mais uma mentoria?" e "Quem me atende depois que eu assinar?" abertas, com as respostas novas |
 | faq-respostas-375.png | 375 por 1320 | O FAQ no celular, com as duas respostas novas abertas |
 
-Os prints mostram a página do repositório, não a que está no ar: a v3 ainda não foi publicada.
+Os prints mostram a página do repositório na versão 3, não a que está no ar: a v3 não foi publicada, e a v4 também não.
 
 ## Como funciona no protótipo
 
 - **Endereço.** A página fica na raiz do site (/). Os caminhos dela começam na raiz (/assets/, /a/, /fontes/), então ela não funciona em outra pasta nem aberta direto do arquivo.
-- **Botões.** O "Fazer a Análise" do cabeçalho (no computador e, desde a v3, no celular) e os botões "Faça uma Análise Estratégica do seu Sistema de Vendas" levam a /quiz/ com as utm do endereço (as que existirem) e o código de sessão da visita, no parâmetro id_sessao (10.5). Antes, eles só rolavam a página. Ficam de fora dois lugares em que o programa da página desenha a chamada como bloco, não como botão, e que continuam como vieram: a chamada do cartão da oferta (seção 08), no computador e no celular, que não faz nada ao clique; e a chamada do topo da página no celular, que só rola a tela até o cartão da oferta.
+- **Botões.** O "Fazer a Análise" do cabeçalho e as nove chamadas "Faça uma Análise Estratégica do seu Sistema de Vendas" levam a /quiz/ com as utm do endereço (as que existirem) e o código de sessão da visita, no parâmetro id_sessao (10.5). Antes, elas só rolavam a página. Vale para as chamadas que o programa da página desenha como botão e, também, para as que ele desenha como bloco: a do cabeçalho no celular (desde a v3) e, desde a v4, a do topo da página no celular e a do cartão da oferta (seção 08), no computador e no celular. Não sobra chamada que não leve ao quiz: são 10 em cada largura (lista em "O que mudou na versão 4").
 - **Visita.** Ao abrir, a página manda a visita ao garçom (POST /api/evento) como entrega landing-page-02, versão 1, sem dado de pessoa (18.5). O banco só aceita a visita depois da linha nova do catálogo (dados/banco/catalogo-prototipo.sql, v3). Sem ela, a visita é recusada e o resto funciona igual.
 - **Montagem.** entregas/prototipo-funil-01/montar-site.mjs copia index.html, assets/ e a/ para a raiz do site, e a Geist para /fontes/.
 

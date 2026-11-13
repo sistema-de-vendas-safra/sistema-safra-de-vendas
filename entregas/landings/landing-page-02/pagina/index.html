@@ -5,7 +5,7 @@
 <!--
 Landing-page-02 · página de vendas do Sistema de Vendas Safra (id landing-page-02, versão 1, rascunho; cabeçalho completo no README.md da pasta acima).
 Feita fora do sistema (React e Vite) e trazida do zip safra-pagina-vendas-git-preview-klyver.vercel.app, capturado em 12/11/2026.
-O estilo (assets/) e as imagens (a/) estão como vieram; o programa (assets/) tem as mudanças listadas no README.md (versões 2 e 3).
+O estilo (assets/) e as imagens (a/) estão como vieram; o programa (assets/) tem as mudanças listadas no README.md (versões 2, 3 e 4).
 Este arquivo é o index.html original com três mudanças:
 a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa do fim,
 que registra a visita e leva os botões de Análise ao quiz.
@@ -37,10 +37,13 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
    Etiquetas: entrega landing-page-02, versão 1, que precisa da linha no catálogo (dados/banco/catalogo-prototipo.sql v3).
    Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /quiz/ com as utm presentes e o mesmo
    código, no parâmetro id_sessao (10.5). O clique é pego antes do programa da página, que antes só rolava a tela.
-   No celular, o "Fazer a Análise" do cabeçalho não é um botão de verdade: é um bloco com o nome interno "Botão/Primário",
-   dentro do cabeçalho (.hdr). Desde a versão 3 (decisão #118), o clique nele também leva ao quiz, do mesmo jeito.
-   Fora do cabeçalho, os blocos com esse nome continuam como estavam: o do topo da página, no celular, rola a tela até
-   o cartão da oferta; o do cartão da oferta não faz nada.
+   Em quatro lugares o programa da página desenha a chamada como um bloco com o nome interno "Botão/Primário", não como
+   botão de verdade: o "Fazer a Análise" do cabeçalho, no celular (levado ao quiz desde a versão 3, decisão #118);
+   a chamada do topo da página, no celular, que antes só rolava a tela até o cartão da oferta; e a chamada do cartão
+   da oferta, no computador e no celular, que antes não fazia nada. Desde a versão 4 (decisão #119), o clique em qualquer
+   bloco com esse nome leva ao quiz do mesmo jeito que os botões, desde que o texto dele comece por uma das duas chamadas.
+   Nenhum outro elemento muda: as setas, o filtro, o FAQ, o menu da demonstração e o aviso de cookies não têm
+   esse nome nem esse texto.
    Os acentos do texto dos botões estão escritos como á, ç e é, para não depender da leitura do arquivo. */
 (function () {
   var ETIQUETAS = { funil: 'funil-01', entrega: 'landing-page-02', versao_entrega: 1 };
@@ -84,7 +87,7 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
   document.addEventListener('click', function (e) {
     var alvo = e.target && e.target.closest ? e.target : null;
     if (!alvo) return;
-    var botao = alvo.closest('button') || alvo.closest('.hdr [data-name="Botão/Primário"]');
+    var botao = alvo.closest('button') || alvo.closest('[data-name="Botão/Primário"]');
     if (!botao || !CHAMADAS.test(botao.textContent.replace(/\s+/g, ' ').trim())) return;
     e.preventDefault();
     e.stopPropagation();
