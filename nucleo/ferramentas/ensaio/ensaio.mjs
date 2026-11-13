@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 8 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 9 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -22,6 +22,8 @@
 //      pedido fora de 127.0.0.1; a conferência da landing que estava fora do repositório (34.17).
 //      (v8; #118) No programa da landing-page-02 v3: nenhum texto antigo da seção "Como funciona" e do FAQ,
 //      e todo texto novo com as cópias certas, na versão do computador e na do celular.
+//      (v9; #119) No programa da landing-page-02 v4: "GSAAS" em lugar nenhum; nenhum texto que o pedido 20 trocou; as duas
+//      respostas do FAQ do pedido 20 nas duas cópias; e o contador do carrossel de "01 / 09" a "09 / 09" nas duas versões.
 //   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
 //   8. Casos de erro: chaves no lugar errado, pacote sem consentimento, clique sem fim do quiz,
 //      a mesma pessoa enviando duas vezes ao mesmo tempo.
@@ -29,10 +31,15 @@
 //      de 127.0.0.1, na landing e no quiz; com "Aceitar" na landing, num contexto que responde 404 ao Google, o gtm.js
 //      do GTM-T6L4QTB8 é o primeiro e único pedido para fora, a pagina_limpa sai sem o id_sessao, e a escolha passa
 //      para o quiz, que abre sem o aviso e já pede o gtm.js; no banco, a visita e o início com a mesma sessão.
-//  10. (v8; #118) A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta, em 1440, 375 e 360: o título, a
+//  10. (v8; #118) A seção "Como funciona" e o FAQ da landing-page-02 na página aberta, em 1440, 375 e 360: o título, a
 //      régua, os oito cartões, o cartão das Sessões de Comando sem número, o controle do carrossel e as duas respostas; nenhum
 //      texto antigo; e o "Fazer a Análise" do cabeçalho, que no celular é um bloco, levando ao quiz com as utm e o id_sessao.
-//  11. Fechamento: conferir.sql de novo e registros sem dado pessoal.
+//      (v9) Três textos esperados acompanham o pedido 20: o rótulo da Fase 1, a linha do cartão 08 e uma resposta do FAQ.
+//  11. (v9; #119) A landing-page-02 v4 na página aberta, em 1440, 375 e 360: o carrossel com 9 cartões e o contador dando a
+//      volta de "01 / 09" a "09 / 09"; nenhum chip cortado em nenhum cartão; a barra acesa da régua no fim da semana 2; as
+//      duas respostas do FAQ do pedido 20; os dois rótulos novos, sem os antigos; cada item do menu da demonstração abrindo
+//      a sua tela, nos dois perfis; "GSAAS" em nenhum texto à vista; e as chamadas do topo e do cartão da oferta levando ao quiz.
+//  12. Fechamento: conferir.sql de novo e registros sem dado pessoal.
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -145,22 +152,25 @@ const FAIXA_B = Object.assign({}, EXEMPLO, {
 // v8 (pedido 18, parte 18.3; decisão #118; landing-page-02 v3): a seção "Como funciona" e duas respostas do FAQ.
 // Os textos novos são os aprovados pelo Otávio em 13/11/2026 (prompts/18-como-funciona-landing-02.md, "Os textos aprovados"),
 // escritos aqui só para conferir a página: quem manda é o pedido. Os antigos são os que a página tinha e não pode mais ter.
+// v9 (pedido 20; decisão #119; landing-page-02 v4): três textos daqui mudaram por decisão do Otávio de 13/11/2026 e acompanham:
+// o rótulo da Fase 1 (na régua e no cartão 01), a linha da fase do cartão 08 e a resposta de "Quem me atende depois que eu
+// assinar?". Valem como estão em prompts/20-gsaas-fora-da-landing.md, "Os textos aprovados". Os de antes estão em LANDING_V4.antigos.
 const LANDING_V3 = {
   antigos: ['Mentoria 1:1', 'semanas 3, 7 e 13', '9 entregas', '45 dias', 'gerente de safra', 'Fase 4 · Entrega', 'Semana 12', 'Semanas 6 a 13', 'Semanas 5 a 13'],
   // o título vem em três pedaços no programa: o do meio, "máxima eficácia", é o que fica em verde
   titulo: ['Em 15 dias o sistema está instalado. Nos 90, a gente capacita o seu time a operar com ', 'máxima eficácia', '.'],
-  fases: ['Fase 1 · Análise', 'Fase 2 · Preparo do solo', 'Fase 3 · Colheita', 'Fase 4 · Plantio · em paralelo'],
+  fases: ['Fase 1 · Ponto de partida', 'Fase 2 · Preparo do solo', 'Fase 3 · Colheita', 'Fase 4 · Plantio · em paralelo'],   // v9: era 'Fase 1 · Análise'
   legenda: 'Sessões de Comando com o Junior Neves: duas no começo e uma no fim',
   // número · rótulo da semana · linha da fase · título do cartão (o título não mudou; serve para achar o cartão na página)
   cartoes: [
-    ['01', 'Semana 1', 'Fase 1 · Análise', 'Análise Estratégica das Safras'],
+    ['01', 'Semana 1', 'Fase 1 · Ponto de partida', 'Análise Estratégica das Safras'],   // v9: era 'Fase 1 · Análise'
     ['02', 'Semanas 1 e 2', 'Fase 2 · Preparo do solo', 'Implementação da Infraestrutura'],
     ['03', 'Até o dia 15', 'Fase 2 · Preparo do solo', 'Playbook de Comunicação Persuasiva'],
     ['04', 'Semanas 3 a 13', 'Fase 3 · Colheita', 'Recuperação de Ativos'],
     ['05', 'Até o dia 15', 'Fase 2 · Preparo do solo', 'Painel de Safras'],
     ['06', 'Semanas 3 a 13', 'Fase 4 · Plantio', 'Treinamento para Otimização da Conversão'],
     ['07', 'Semanas 1 e 2', 'Fase 2 · Preparo do solo', 'Playbook da Gestão de Vendas por Safra'],
-    ['08', 'Semana 13', 'Fechamento · 3ª Sessão de Comando', 'Relatório de Produtividade']
+    ['08', 'Semana 13', 'Encerramento · 3ª Sessão de Comando', 'Relatório de Produtividade']   // v9: era 'Fechamento · 3ª Sessão de Comando'
   ],
   descricao06: 'A parte teórica sai nos primeiros 15 dias. Da semana 3 em diante, call semanal em grupo, com análise das calls do seu time.',
   // o cartão das Sessões de Comando (o antigo 09), sem número; cada linha vem em dois pedaços: a semana, em negrito, e o resto
@@ -172,10 +182,39 @@ const LANDING_V3 = {
   controle: 'Arraste para ver as 8 entregas',   // só existe no computador
   faq: [
     ['É mais uma mentoria?', 'Não. São 8 entregas de implementação, dentro da sua operação: CRM, painel, régua de contato e playbooks. O Junior conduz as Sessões de Comando, e o seu time executa.'],
-    ['Quem me atende depois que eu assinar?', 'O Junior, nas três Sessões de Comando com você e o seu Head Comercial: duas no começo e uma no fim. Da semana 3 em diante, o Junior e o Euclides conduzem a call semanal em grupo, e o seu time tem um grupo de WhatsApp com a nossa equipe para as dúvidas do dia a dia.']
+    // v9: a resposta sai sem os nomes de quem conduz a call em grupo (#119)
+    ['Quem me atende depois que eu assinar?', 'O Junior, nas três Sessões de Comando com você e o seu Head Comercial: duas no começo e uma no fim. Da semana 3 em diante, o seu time participa da call semanal em grupo e tem um grupo de WhatsApp com a nossa equipe para as dúvidas do dia a dia.']
   ],
   // os dois únicos lugares em que a página pode dizer "mentoria" (#53)
   mentoriaQuePode: ['É mais uma mentoria?', 'não mais um curso ou mentoria']
+};
+// v9 (pedido 20, parte 20.3; decisão #119; landing-page-02 v4): o GSAAS fora da página, as duas respostas do FAQ, os dois rótulos,
+// o carrossel com 9 cartões e a demonstração do produto sem a tela dos agentes de IA. Os textos novos são os aprovados pelo Otávio
+// em 13/11/2026 (prompts/20-gsaas-fora-da-landing.md, "Os textos aprovados"), escritos aqui só para conferir a página: quem manda
+// é o pedido. Os que saíram e os antigos são os que a página tinha e não pode mais ter.
+const LANDING_V4 = {
+  // o que saiu com o GSAAS: o cartão do carrossel, a tela dos agentes de IA da demonstração e a menção no FAQ
+  gsaas: ['GSAAS', 'Gestão de Safra as a Service', 'Depois dos 90 dias · opcional', 'Do relatório, a próxima safra já começa lida', 'Agentes trabalhando agora', 'Os agentes entram no'],
+  // o item do menu e a tela que saíram da demonstração. No programa sobram 7 vezes este nome, em condições que nunca acontecem
+  // (pergunta 20.2.6): por isso, no programa, a conferência procura o nome só como texto, como item e como tela.
+  agentes: 'Agentes de IA',
+  // os textos que o pedido 20 trocou: os dois rótulos e um pedaço de cada resposta antiga do FAQ
+  antigos: ['Fase 1 · Análise', 'Fechamento · 3ª Sessão de Comando', 'o Junior e o Euclides conduzem a call semanal em grupo', 'Quem quiser continuar tem'],
+  // os dois rótulos novos (são os mesmos textos de LANDING_V3.fases[0] e de LANDING_V3.cartoes[7])
+  rotulos: [LANDING_V3.fases[0], LANDING_V3.cartoes[7][2]],
+  // as duas respostas do FAQ que o pedido 20 trocou; a primeira é a mesma de LANDING_V3.faq[1]
+  faq: [
+    LANDING_V3.faq[1],
+    ['E depois dos 90 dias?', 'Os playbooks e o treinamento ficam com o seu time. O sistema fica por escrito, para rodar sem a gente.']
+  ],
+  perguntas: 6,   // as perguntas do FAQ
+  cartoes: 9,     // as 8 entregas e o das Sessões de Comando, que é o último; o contador vai de "01 / 09" a "09 / 09"
+  // o menu da demonstração do produto, por perfil, na ordem em que aparece. No celular, o menu mostra os itens de quem gere o
+  // time também no perfil do vendedor (já era assim; pergunta 20.2.3): lá, o ensaio aceita qualquer uma das duas listas.
+  menu: {
+    'Para quem gere o time': ['Painel de Safras', 'Onde a safra trava', 'Nunca disseram não', 'Reunião de safra', 'Avaliação de calls'],
+    'Para o vendedor': ['Contatos de hoje', 'Relógio do lead', 'Roteiro de cada tentativa', 'Histórico do lead', 'Feedback das calls']
+  }
 };
 // Quantas cópias de cada texto novo o programa tem de ter: [na versão do computador, na do celular, nas definições dos cartões].
 // O título, os textos da régua e o controle só existem nas versões da seção; os dos cartões, também nas definições (escura e clara).
@@ -787,6 +826,26 @@ async function principal() {
     conferir(faqErradas.length === 0, 'landing · programa: as duas respostas novas do FAQ, cada uma logo depois da sua pergunta, nas duas cópias (a do computador e a do celular)' +
       (faqErradas.length ? ', mas não em: ' + faqErradas.join(' | ') : '') + ' (v8)');
   }
+  // v9 (#119; landing-page-02 v4): no programa montado, "GSAAS" em lugar nenhum, nem o que saiu com ele; nenhum texto que o pedido 20
+  // trocou; as duas respostas do FAQ do pedido 20 nas duas cópias; e o contador do carrossel com 9 estados nas duas versões da seção.
+  // Os dois rótulos novos já são conferidos acima, cópia a cópia, porque estão em LANDING_V3. Na página aberta, a seção 11 confere de novo.
+  {
+    const V = LANDING_V4;
+    const doGsaas = [...V.gsaas, 'children:"' + V.agentes + '"', '"data-name":"Item · ' + V.agentes + '"', '"data-name":"Tela ativa · ' + V.agentes + '"'].filter(t => jsLanding.includes(t));
+    conferir(doGsaas.length === 0, 'landing · programa: "GSAAS" não aparece em lugar nenhum, nem o cartão do GSAAS, nem o item e a tela "' + V.agentes + '" da demonstração (' + V.gsaas.join(' | ') + ')' +
+      (doGsaas.length ? ', mas sobrou: ' + doGsaas.join(' | ') : '') + ' (v9; landing-page-02 v4)');
+    const sobras = V.antigos.filter(t => jsLanding.includes(t));
+    conferir(sobras.length === 0, 'landing · programa: nenhum texto que o pedido 20 trocou (' + V.antigos.join(' | ') + ')' + (sobras.length ? ', mas sobrou: ' + sobras.join(' | ') : '') + ' (v9)');
+    const faqErradas = V.faq.filter(([p, r]) => quantas(jsLanding, 'pergunta:"' + p + '",resposta:"' + r + '"') !== 2 || quantas(jsLanding, 'pergunta:"' + p + '"') !== 2).map(([p]) => p);
+    conferir(faqErradas.length === 0, 'landing · programa: as duas respostas do FAQ do pedido 20 ("' + V.faq[0][0] + '" e "' + V.faq[1][0] + '"), cada uma logo depois da sua pergunta, nas duas cópias (a do computador e a do celular)' +
+      (faqErradas.length ? ', mas não em: ' + faqErradas.join(' | ') : '') + ' (v9)');
+    const versoes = versoesDaSecao(jsLanding), nn = (k) => String(k).padStart(2, '0');
+    const contadores = Array.from({ length: V.cartoes }, (_, k) => '"' + nn(k + 1) + ' / ' + nn(V.cartoes) + '"');
+    const semContador = versoes ? [['computador', 'a versão do computador'], ['celular', 'a versão do celular']]
+      .filter(([nome]) => !contadores.every(t => quantas(versoes[nome], t) === 1) || (versoes[nome].match(/"\d\d \/ \d\d"/g) || []).length !== V.cartoes).map(([, onde]) => onde) : ['a seção não foi achada no programa'];
+    conferir(semContador.length === 0, 'landing · programa: o contador do carrossel tem ' + V.cartoes + ' estados, de ' + contadores[0] + ' a ' + contadores[V.cartoes - 1] + ', uma vez cada e nenhum outro, na versão do computador e na do celular' +
+      (semContador.length ? ', mas não em: ' + semContador.join(' | ') : '') + ' (v9)');
+  }
   const htmlQuiz = readFileSync(join(SITE, 'quiz', 'index.html'), 'utf8');
   conferir(!htmlQuiz.includes('{bloqueado:true') && htmlQuiz.includes("const POLITICA = {endereco:'/politica-de-privacidade/'}"),
     'quiz: nenhum fato bloqueado na página (nome da Análise e da agência vindos da ficha) e os links da política para /politica-de-privacidade/ (v7; #117)');
@@ -1209,28 +1268,30 @@ async function principal() {
       'banco · com "Aceitar": a visita da landing e o início do quiz gravados com a mesma sessão, sem pessoa, nas três larguras (' + tipos.join(' | ') + ')');
   }
 
-  // ═══ 10. A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta (v8; #118; prompts/18-como-funciona-landing-02.md, 18.3) ═══
+  // ═══ 10. A seção "Como funciona" e o FAQ da landing-page-02 na página aberta (v8; #118; prompts/18-como-funciona-landing-02.md, 18.3) ═══
   // O que a seção 6 confere no programa, aqui na página servida pelo workerd, nas três larguras: em 1440 aparece a versão do
   // computador; em 375 e 360, a do celular. Os textos são comparados sem olhar maiúsculas, porque a página escreve alguns rótulos em
   // caixa alta. Vem depois da planilha (7), como a 9, pela margem de 1 minuto. Não grava pessoa: só visitas e inícios do quiz.
-  secao('10. A seção "Como funciona" e o FAQ da landing-page-02 v3 na página aberta (#118)');
+  // v9: os textos esperados são os de hoje (landing-page-02 v4), com os três que o pedido 20 trocou; o que ele acrescenta está na seção 11.
+  secao('10. A seção "Como funciona" e o FAQ da landing-page-02 na página aberta (#118; desde a v9, com os textos da #119)');
+  // v9: os três ajudantes abaixo saíram de dentro do bloco da seção 10, sem mudança, para a seção 11 usar os mesmos
+  const min = (t) => t.toLocaleLowerCase('pt-BR').replace(/\s+/g, ' ').trim();
+  const mas = (lista) => lista.length ? ', mas faltou: ' + lista.join(' | ') : '';
+  // Clica o botão e diz se a ida foi a /quiz/ com as utm e o id_sessao no formato do banco (pelo pedido de navegação)
+  const levaAoQuiz = async (page, botao) => {
+    const idas = [];
+    page.on('request', rq => { if (rq.isNavigationRequest()) idas.push(rq.url()); });
+    const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 10000 }).catch(() => null);
+    await botao.click({ timeout: 10000 }).catch(() => {});
+    await page.waitForURL(/\/quiz\//, { timeout: 10000 }).catch(() => {});
+    await inicio;
+    const u = idas.map(x => new URL(x)).find(x => x.pathname === '/quiz/');
+    return !!u && new URL(page.url()).pathname === '/quiz/' && u.searchParams.get('utm_source') === 'bio' && u.searchParams.get('utm_campaign') === 'funil-01' &&
+      /^sessao-[a-z0-9-]{1,60}$/.test(u.searchParams.get('id_sessao') || '');
+  };
   {
     const T = LANDING_V3, S = T.sessoes;
-    const min = (t) => t.toLocaleLowerCase('pt-BR').replace(/\s+/g, ' ').trim();
     const temSeq = (linhas, seq) => { const s = seq.map(min); return linhas.some((_, i) => s.every((t, k) => linhas[i + k] === t)); };
-    const mas = (lista) => lista.length ? ', mas faltou: ' + lista.join(' | ') : '';
-    // Clica o botão e diz se a ida foi a /quiz/ com as utm e o id_sessao no formato do banco (pelo pedido de navegação)
-    const levaAoQuiz = async (page, botao) => {
-      const idas = [];
-      page.on('request', rq => { if (rq.isNavigationRequest()) idas.push(rq.url()); });
-      const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 10000 }).catch(() => null);
-      await botao.click({ timeout: 10000 }).catch(() => {});
-      await page.waitForURL(/\/quiz\//, { timeout: 10000 }).catch(() => {});
-      await inicio;
-      const u = idas.map(x => new URL(x)).find(x => x.pathname === '/quiz/');
-      return !!u && new URL(page.url()).pathname === '/quiz/' && u.searchParams.get('utm_source') === 'bio' && u.searchParams.get('utm_campaign') === 'funil-01' &&
-        /^sessao-[a-z0-9-]{1,60}$/.test(u.searchParams.get('id_sessao') || '');
-    };
     for (const largura of [1440, 375, 360]) {
       const rotulo = 'como funciona ' + largura, celular = largura < 900;
       const ctx = await novoContexto(largura);
@@ -1295,8 +1356,181 @@ async function principal() {
     }
   }
 
-  // ═══ 11. Fechamento ═══
-  secao('11. Fechamento');
+  // ═══ 11. A landing-page-02 v4 na página aberta (v9; #119; prompts/20-gsaas-fora-da-landing.md, 20.3) ═══
+  // O que o pedido 20 mudou, na página servida pelo workerd, nas três larguras: em 1440 aparece a versão do computador; em 375 e 360,
+  // a do celular. Uma página por largura para o carrossel, a régua, o FAQ e a demonstração, e uma página nova para cada chamada.
+  // Um clique numa seta do carrossel segura o avanço sozinho dele por 8 segundos (10 no celular), e um clique na demonstração segura
+  // o dela por 12: por isso o ensaio clica primeiro e lê depois. Não grava pessoa: só visitas e inícios do quiz.
+  secao('11. A landing-page-02 v4 na página aberta: sem o GSAAS, com o carrossel de 9 cartões, a régua, o FAQ, a demonstração e as chamadas (#119)');
+  {
+    const V = LANDING_V4, GESTOR = Object.keys(V.menu)[0], nn = (k) => String(k).padStart(2, '0');
+    for (const largura of [1440, 375, 360]) {
+      const rotulo = 'landing v4 ' + largura, celular = largura < 900, M = celular ? 'M · ' : '';
+      const SECAO5 = '[data-name="' + M + '05 · Os 90 dias (carrossel)"]', DEMO = '[data-name="' + M + '06 · Painel de Safras"]';
+      const ctx = await novoContexto(largura);
+      try {
+        const page = await ctx.newPage();
+        page.on('console', m => consoleTexto.push(m.text()));
+        const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+        await page.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
+        await visita;
+        await page.evaluate(() => document.fonts.ready);
+        // Todo texto à vista, em cada leitura, para a conferência do "GSAAS" e a dos textos trocados, no fim
+        const vistos = [];
+        const guardarPagina = async () => vistos.push(min(await page.evaluate(() => document.body.innerText)));
+        await guardarPagina();
+
+        // A barra acesa da régua: o fim dela contra o fim da semana 2, que é o meio entre os rótulos S2 e S3. Lida antes e depois de o
+        // carrossel dar a volta, porque a barra é fixa.
+        const lerBarra = () => page.evaluate((sel) => {
+          const regua = document.querySelector(sel + ' [data-name="Régua dos 90 dias"]'), prog = regua && regua.querySelector('[data-name="progresso do carrossel"]');
+          if (!prog) return null;
+          const centro = (t) => { const p = [...regua.querySelectorAll('p')].find(x => x.textContent.trim() === t); if (!p) return NaN; const b = p.getBoundingClientRect(); return (b.left + b.right) / 2; };
+          const s2 = centro('S2'), s3 = centro('S3'), b = prog.getBoundingClientRect();
+          return { sobra: b.right - (s2 + s3) / 2, semana: s3 - s2, largura: b.width };
+        }, SECAO5);
+        const barras = [await lerBarra()];
+
+        // O carrossel: os cartões da trilha, o contador e os chips de cada cartão contra a borda do cartão, que corta o que passa dela
+        const lerCarrossel = () => page.evaluate((sel) => {
+          const s = document.querySelector(sel), trilha = s && s.querySelector('[data-name="Trilha de cartões"]');
+          if (!trilha) return null;
+          const cartoes = [...trilha.children].map(c => getComputedStyle(c).display === 'contents' && c.firstElementChild ? c.firstElementChild : c);
+          const cortados = [], semChip = [];
+          let chips = 0;
+          cartoes.forEach((c, k) => {
+            const r = c.getBoundingClientRect(), doCartao = [...c.querySelectorAll('[data-name="Chip/Peça"]')];
+            if (!doCartao.length) semChip.push(k + 1);
+            chips += doCartao.length;
+            for (const ch of doCartao) {
+              const b = ch.getBoundingClientRect();
+              if (b.height < 1 || b.bottom > r.bottom + 0.5 || b.top < r.top - 0.5 || b.right > r.right + 0.5 || b.left < r.left - 0.5)
+                cortados.push('cartão ' + (k + 1) + ', "' + ch.textContent.trim() + '" (passa ' + Math.round(Math.max(b.bottom - r.bottom, r.top - b.top, b.right - r.right, r.left - b.left)) + ' px)');
+            }
+          });
+          return { cartoes: cartoes.length, chips, cortados, semChip, contador: [...s.querySelectorAll('p')].map(p => p.textContent.trim()).filter(t => /^\d\d \/ \d\d$/.test(t)).join(' e '), texto: s.innerText };
+        }, SECAO5);
+        const seta = celular ? page.locator(SECAO5 + ' [data-name="Seta · avançar"]') : page.locator(SECAO5 + ' [data-name="Setas"] button').nth(1);
+        const estados = [];
+        await seta.click({ timeout: 10000 }).catch(() => {});   // o primeiro clique segura o avanço sozinho
+        for (let k = 0; k <= V.cartoes; k++) {
+          await page.waitForTimeout(250);
+          estados.push(await lerCarrossel() || { cartoes: 0, chips: 0, cortados: [], semChip: [], contador: 'sem carrossel', texto: '' });
+          if (k < V.cartoes) await seta.click({ timeout: 10000 }).catch(() => {});
+        }
+        for (const e of estados) vistos.push(min(e.texto));
+        barras.push(await lerBarra());
+        // de um estado para o seguinte o contador soma um e, depois do último, volta ao primeiro; com um clique por cartão, fecha a volta
+        const numero = (e) => { const m = /^(\d\d) \/ (\d\d)$/.exec(e.contador); return m && m[2] === nn(V.cartoes) ? Number(m[1]) : NaN; };
+        const sequencia = estados.map(e => e.contador);
+        const emOrdem = estados.every((e, k) => numero(e) >= 1 && numero(e) <= V.cartoes && (k === 0 || numero(e) === numero(estados[k - 1]) % V.cartoes + 1));
+        conferir(emOrdem && estados.every(e => e.cartoes === V.cartoes) && sequencia.includes(nn(V.cartoes) + ' / ' + nn(V.cartoes)),
+          rotulo + ' · o carrossel tem ' + V.cartoes + ' cartões em todos os estados, e o contador, seta a seta, dá a volta de "01 / ' + nn(V.cartoes) + '" a "' + nn(V.cartoes) + ' / ' + nn(V.cartoes) +
+          '" e de volta ao começo (' + sequencia.map(t => t.slice(0, 2)).join(' > ') + '; cartões na trilha: ' + [...new Set(estados.map(e => e.cartoes))].join(' e ') + ')');
+        const cortados = [...new Set(estados.flatMap(e => e.cortados))], semChip = [...new Set(estados.flatMap(e => e.semChip))];
+        conferir(cortados.length === 0 && semChip.length === 0 && estados.every(e => e.cartoes > 0),
+          rotulo + ' · nenhum chip cortado em nenhum cartão do carrossel, em nenhum estado (' + [...new Set(estados.map(e => e.chips))].join(' e ') + ' chips em ' + [...new Set(estados.map(e => e.cartoes))].join(' e ') + ' cartões, cada um inteiro dentro do seu cartão)' +
+          (cortados.length ? ', mas: ' + cortados.join(' | ') : '') + (semChip.length ? ', mas sem chip: cartão ' + semChip.join(', ') : ''));
+        conferir(barras.every(b => b && Math.abs(b.sobra) <= 1 && b.semana > 10) && Math.abs(barras[0].largura - barras[1].largura) < 0.01,
+          rotulo + ' · a barra acesa da régua termina no fim da semana 2, o meio entre S2 e S3, e não se mexe com o carrossel (' +
+          barras.map(b => b ? 'passa ' + b.sobra.toFixed(2).replace('.', ',') + ' px, com semanas de ' + b.semana.toFixed(1).replace('.', ',') + ' px' : 'régua não achada').join('; depois da volta: ') + ')');
+
+        // O FAQ com as seis respostas abertas (a primeira já vem aberta; as outras abrem com um clique; a aberta mostra o sinal de menos)
+        const perguntas = page.locator('[data-name="' + M + '09 · Perguntas frequentes"] [data-name="Perguntas (clique para abrir)"] button');
+        const nPerguntas = await perguntas.count();
+        for (let k = 0; k < nPerguntas; k++) {
+          const b = perguntas.nth(k);
+          if (!(await b.innerText({ timeout: 5000 }).catch(() => '')).includes('−')) { await b.click({ timeout: 5000 }).catch(() => {}); await page.waitForTimeout(200); }
+        }
+        const abertas = (await perguntas.evaluateAll(bs => bs.map(b => b.innerText))).map(min);
+        const faq = V.faq.filter(([p, r]) => !abertas.some(t => t.includes(min(p)) && t.includes(min(r)))).map(([p]) => '"' + p + '"');
+        conferir(faq.length === 0 && nPerguntas === V.perguntas && abertas.every(t => t.includes('−')),
+          rotulo + ' · FAQ: as ' + V.perguntas + ' perguntas abertas, e "' + V.faq[0][0] + '" e "' + V.faq[1][0] + '" com as respostas do pedido 20' + mas(faq) +
+          (nPerguntas === V.perguntas && abertas.every(t => t.includes('−')) ? '' : ', mas abriram ' + abertas.filter(t => t.includes('−')).length + ' de ' + nPerguntas + ' perguntas'));
+        await guardarPagina();
+
+        // A demonstração do produto: nos dois perfis, cada item do menu abre a tela de mesmo nome, com o item aceso e um conteúdo
+        // diferente do das outras telas. O perfil ativo é um bloco; o outro, um botão. O item aceso leva data-on="1" no celular
+        // e, no computador, é um bloco no lugar do botão.
+        const lerDemo = () => page.evaluate((sel) => {
+          const d = document.querySelector(sel);
+          if (!d) return null;
+          const vis = (e) => e.getClientRects().length > 0;
+          const itens = [...d.querySelectorAll('[data-name^="Item · "]')].filter(vis), telas = [...d.querySelectorAll('[data-name^="Tela ativa · "]')].filter(vis);
+          const tela = telas[telas.length - 1];
+          return { itens: itens.map(e => e.getAttribute('data-name').slice(7)),
+            acesos: itens.filter(e => e.getAttribute('data-on') === '1' || (!e.hasAttribute('data-on') && e.tagName !== 'BUTTON')).map(e => e.getAttribute('data-name').slice(7)),
+            tela: tela ? tela.getAttribute('data-name').slice(13) : null, conteudo: tela ? tela.innerText.replace(/\s+/g, ' ').trim() : '', texto: d.innerText };
+        }, DEMO);
+        const demoErradas = [], telasAbertas = new Set(), primeiras = [];
+        let telasCertas = 0;
+        for (const perfil of Object.keys(V.menu)) {
+          const trocar = page.locator(DEMO + ' button[data-name="Perfil · ' + perfil + '"]:visible');
+          const trocou = await trocar.count() > 0;
+          if (trocou) { await trocar.first().click({ timeout: 5000 }).catch(() => {}); await page.waitForTimeout(300); }
+          const inicio = await lerDemo();
+          const itens = inicio ? inicio.itens : [];
+          // A troca de perfil abre a primeira tela do perfil. No celular, o menu do perfil do vendedor mostra os itens de quem
+          // gere o time (pergunta 20.2.3), e as telas do vendedor não têm item: esta é a única conferência delas no celular.
+          if (trocou) {
+            if (inicio && inicio.tela === V.menu[perfil][0] && inicio.conteudo.length > 50) { primeiras.push(perfil); telasAbertas.add(inicio.tela); }
+            else demoErradas.push('a troca para o perfil "' + perfil + '" abriu a tela ' + (inicio && inicio.tela || 'nenhuma') + ', e não "' + V.menu[perfil][0] + '"');
+          }
+          const listas = celular ? [V.menu[perfil], V.menu[GESTOR]] : [V.menu[perfil]];
+          if (!listas.some(l => l.join(' | ') === itens.join(' | ')) || itens.includes(V.agentes)) demoErradas.push('no perfil "' + perfil + '", o menu tem: ' + (itens.join(', ') || 'nada'));
+          const conteudos = new Set();
+          for (const nome of [...itens.slice(1), ...itens.slice(0, 1)]) {
+            await page.locator(DEMO + ' [data-name="Item · ' + nome + '"]:visible').first().click({ timeout: 5000 }).catch(() => {});
+            await page.waitForTimeout(250);
+            const e = await lerDemo() || { tela: null, acesos: [], conteudo: '', texto: '' };
+            vistos.push(min(e.texto));
+            if (e.tela === nome && e.acesos.join(' | ') === nome && e.conteudo.length > 50 && !conteudos.has(e.conteudo)) { telasCertas++; telasAbertas.add(nome); }
+            else demoErradas.push('"' + perfil + '" > "' + nome + '": tela ' + (e.tela || 'nenhuma') + ', aceso ' + (e.acesos.join(', ') || 'nenhum') + (conteudos.has(e.conteudo) ? ', com o conteúdo de outra tela' : ''));
+            conteudos.add(e.conteudo);
+          }
+        }
+        const telasEsperadas = Object.values(V.menu).reduce((t, l) => t + l.length, 0);
+        conferir(demoErradas.length === 0 && telasCertas === telasEsperadas,
+          rotulo + ' · demonstração do produto: nos dois perfis, o menu com os 5 itens, sem "' + V.agentes + '", a troca de perfil abre a primeira tela do perfil, e cada item do menu abre a sua tela, com o item aceso (' +
+          telasCertas + ' de ' + telasEsperadas + ' cliques no menu; ' + telasAbertas.size + ' telas diferentes abertas' +
+          (celular ? ': no celular, o menu mostra os itens de quem gere o time nos dois perfis, e do perfil do vendedor só a primeira tela é conferida' : '') + ')' +
+          (demoErradas.length ? ', mas: ' + demoErradas.join(' | ') : ''));
+
+        // Os dois rótulos novos à vista, e nenhum texto que o pedido 20 trocou, em nenhuma leitura
+        const secaoVista = vistos[1] || '';   // a seção do carrossel, no primeiro estado lido
+        const faltamRotulos = V.rotulos.filter(t => !secaoVista.includes(min(t)));
+        const antigos = V.antigos.filter(t => vistos.some(v => v.includes(min(t))));
+        conferir(faltamRotulos.length === 0 && quantas(secaoVista, min(V.rotulos[0])) === 2 && antigos.length === 0,
+          rotulo + ' · os dois rótulos novos à vista ("' + V.rotulos[0] + '", na régua e no cartão 01, e "' + V.rotulos[1] + '", no cartão 08), e nenhum texto que o pedido 20 trocou' +
+          mas(faltamRotulos) + (antigos.length ? ', mas sobrou: ' + antigos.join(' | ') : ''));
+        // "GSAAS" em nenhum texto à vista: a página como abre, cada estado do carrossel, a página com o FAQ aberto e cada tela da demonstração
+        const comGsaas = [...V.gsaas, V.agentes].filter(t => vistos.some(v => v.includes(min(t))));
+        conferir(comGsaas.length === 0 && vistos.length === 2 + (V.cartoes + 1) + telasEsperadas && vistos.every(v => v.length > 100),
+          rotulo + ' · "GSAAS" não aparece em nenhum texto à vista, nem "' + V.agentes + '": a página como abre e com as ' + V.perguntas + ' respostas do FAQ abertas, os ' + V.cartoes +
+          ' estados do carrossel e os ' + telasEsperadas + ' cliques no menu da demonstração (' + vistos.length + ' leituras)' + (comGsaas.length ? ', mas apareceu: ' + comGsaas.join(' | ') : ''));
+
+        // As duas chamadas que a v4 consertou (18.2.6): a do topo da página e a do cartão da oferta, cada uma numa página nova.
+        // No computador, a do topo é um botão e a do cartão da oferta, um bloco; no celular, as duas são blocos.
+        for (const [nome, seletor] of [['a chamada do topo da página', '[data-name^="' + M + '01 · Hero"] [data-name="Botão/Primário"]:visible'],
+          ['a chamada do cartão da oferta', '[data-name="Cartão da oferta (âncora dos botões)"] [data-name="Botão/Primário"]:visible']]) {
+          const pagina = await ctx.newPage();
+          pagina.on('console', m => consoleTexto.push(m.text()));
+          const visitaDaChamada = pagina.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+          await pagina.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
+          await visitaDaChamada;
+          const chamada = pagina.locator(seletor, { hasText: BOTAO_GRANDE }).first();
+          const feitio = await chamada.evaluate(b => b.tagName === 'BUTTON' ? 'um botão' : 'um bloco, não um botão', null, { timeout: 5000 }).catch(() => 'não achada');
+          conferir(await levaAoQuiz(pagina, chamada), rotulo + ' · ' + nome + ' ("' + BOTAO_GRANDE + '...", ' + feitio + ') leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+          await pagina.close();
+        }
+      } finally {
+        await ctx.close();
+      }
+    }
+  }
+
+  // ═══ 12. Fechamento ═══
+  secao('12. Fechamento');
   await rodarConferir('no fim');
   conferir(JSON.stringify(await fotografiaDeAntes(naFila, db)) === JSON.stringify(fotografiaDeAntesInicial),
     'os dados de antes da migração continuam iguais no fim do ensaio');
