@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -14,19 +14,21 @@ depende_de:
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
-    versao: 4
+    versao: 5
   - id: planta-do-banco
     versao: 4
   - id: funil-01
     versao: 3
   - id: lacunas
-    versao: 6
+    versao: 7
   - id: garcom
     versao: 4
   - id: decisoes
-    versao: 5
+    versao: 7
   - id: landing-page-02
-    versao: 1
+    versao: 2
+  - id: politica-de-privacidade
+    versao: 4
 desatualizado: true
 ---
 
@@ -72,6 +74,17 @@ No topo do script, quatro objetos concentram o que se ajusta:
 **Texto.** Como está (7.5, #110), salvo a caixa de aceite e a linha da cópia no relatório, que depende dela (M21). A fala 2 do plano de 90 dias continua sem o percentual, como na v2: a volta dele está em aberto (pergunta 31.3; pergunta 34.1). A nota do "Tenho interesse" é a do lado do lead score ("Anotado. Seu interesse fica registrado com o seu diagnóstico."), que já estava na página, porque vale o corte mais restritivo e ela não promete ligação (13.7; pergunta 31.14).
 
 **Visual.** O do mockup, em conflito (conflito-18), salvo a abertura, que desde a v4 tem o cabeçalho e o botão da landing-page-02 (abaixo). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
+
+## O que mudou na versão 5
+
+Respostas do Otávio aos "a definir" do funil, 13/11/2026 (base/decisoes.md, #117).
+
+- **Nome público da Análise:** "Análise Estratégica do Sistema de Vendas", em FATOS, vindo de ficha-de-fatos#analise-nome-publico (decidido). Aparece no título da aba, na etiqueta da abertura, nas pílulas e nos relatórios, no lugar de "[a definir: nome público da Análise]".
+- **Nome da agência:** "Triad", em FATOS, vindo de ficha-de-fatos#nome-agencia (pendente do Júnior e do Euclides; vale para o protótipo). Aparece no cabeçalho do quiz, nos relatórios e no rodapé, no lugar de "[a definir: nome da agência]".
+- **Política de privacidade:** na abertura e na tela do contato, "política de privacidade" passa a ser um link para /politica-de-privacidade/, a página da política no site do protótipo, que abre numa aba nova para o diagnóstico não se perder. No texto aceito que vai ao banco, a frase passa a "Tudo explicado na política de privacidade.", que é o que a pessoa vê.
+- **Continuam "a definir":** o critério de qualificação (conflito-16, no rodapé dos relatórios) e o número do WhatsApp.
+- A copy (quiz-01-copy v2) ainda marca os dois nomes como bloqueados: a atualização dela fica proposta, como manda a cascata.
+- depende_de: ficha-de-fatos 5, lacunas 7, decisoes 7, landing-page-02 2 e politica-de-privacidade 4.
 
 ## O que mudou na versão 4
 

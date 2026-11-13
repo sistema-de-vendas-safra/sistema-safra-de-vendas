@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -17,23 +17,25 @@ depende_de:
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
-    versao: 4
+    versao: 5
   - id: planta-do-banco
     versao: 4
   - id: funil-01
     versao: 3
   - id: lacunas
-    versao: 6
+    versao: 7
   - id: garcom
     versao: 4
   - id: decisoes
-    versao: 5
+    versao: 7
   - id: landing-page-02
-    versao: 1
+    versao: 2
+  - id: politica-de-privacidade
+    versao: 4
 desatualizado: true
 ---
 Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html.
-Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104) e, na v4 (pedido do Otavio, 12/11/2026), a capa (C1 a C11), que saiu do funil, e o botao da abertura, agora "Fazer a Analise". Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
+Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104) e, na v4 (pedido do Otavio, 12/11/2026), a capa (C1 a C11), que saiu do funil, e o botao da abertura, agora "Fazer a Analise"; e, na v5 (#117, 13/11/2026), o nome publico da Analise e o nome da agencia vindos da ficha de fatos, e "politica de privacidade" como link para a pagina da politica (/politica-de-privacidade/, numa aba nova). Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
 Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-page-02 (logo do Safra e "Fazer a Analise"). No computador, so o relatorio de exemplo rola; no celular, o texto vem antes do relatorio e o botao fica fixo no rodape quando o da pagina sai da tela.
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 -->
@@ -188,6 +190,8 @@ body[data-largura="sala"] .progresso__fill{background:var(--tinta);box-shadow:no
 .abertura__meta li{display:inline-flex;align-items:center;gap:8px}
 .abertura__meta svg{flex:none;width:16px;height:16px}
 .abertura__nota{margin:18px 0 0;max-width:34em;font-size:.88rem;line-height:1.5;color:var(--ardosia)}
+/* link da política de privacidade (v5, #117): a cor do texto, sublinhado */
+.abertura__nota a,.consentimento a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 body[data-largura="abertura"] .abertura{padding-top:clamp(24px,6vh,64px)}
 @media (min-width:900px){
   .abertura{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
@@ -750,14 +754,14 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 'use strict';
 
 /* ··· FATOS: os fatos da ficha que esta página usa, num lugar só ···
-   Fonte: base/ficha-de-fatos.md, versao 4. Cada linha leva o id do campo da ficha.
+   Fonte: base/ficha-de-fatos.md, versao 5. Cada linha leva o id do campo da ficha.
    Campo em conflito na ficha: bloqueado:true, e a página mostra o aviso visível "[a definir: ...]" no lugar do valor.
    Mudou a ficha? Mude aqui, e só aqui. */
 const FATOS = {
-  // ficha-de-fatos#analise-nome-publico · em conflito, bloqueado (conflito-02)
-  analise_nome_publico: {bloqueado:true, rotulo:'nome público da Análise'},
-  // ficha-de-fatos#nome-agencia · em conflito, bloqueado (conflito-07)
-  nome_agencia: {bloqueado:true, rotulo:'nome da agência'},
+  // ficha-de-fatos#analise-nome-publico · decidido (#117, 13/11/2026; antes em conflito, conflito-02)
+  analise_nome_publico: {valor:'Análise Estratégica do Sistema de Vendas'},
+  // ficha-de-fatos#nome-agencia · pendente-aprovacao do Júnior e do Euclides (#117, 13/11/2026; conflito-07); vale para o protótipo
+  nome_agencia: {valor:'Triad'},
   // ficha-de-fatos#grafia-junior · decidido
   grafia_junior: {valor:'Junior Neves'},
   // ficha-de-fatos#analise-gratuidade · decidido. Texto na forma da landing (pergunta 9.3), sem o número de ficha-de-fatos#analises-gratuitas (copy, M6 e M20)
@@ -773,7 +777,10 @@ const FATOS = {
 };
 const fato = (k, parte) => { const f = FATOS[k]; return f.bloqueado ? '[a definir: ' + f.rotulo + ']' : f[parte || 'valor']; };
 // Dados que ainda não existem (copy, "a definir")
-const A_DEFINIR = {whatsapp:'[a definir: número do WhatsApp]', politica:'[a definir: link da política de privacidade]'};
+const A_DEFINIR = {whatsapp:'[a definir: número do WhatsApp]'};
+// A política de privacidade, publicada no site do protótipo (#117): o link abre numa aba nova, para o diagnóstico não se perder
+const POLITICA = {endereco:'/politica-de-privacidade/'};
+const LINK_POLITICA = '<a href="' + POLITICA.endereco + '" target="_blank" rel="noopener">política de privacidade</a>';
 
 /* ··· LEAD SCORE: a regra de base/lead-score.md, versao 3 (pendente-aprovacao), num lugar só ···
    Para ajustar pontos, faixas ou eliminatórios, mude só este objeto. As respostas entre aspas são as opções do quiz, letra por letra.
@@ -1139,7 +1146,7 @@ function telaAbertura(){
     '<p class="abertura__lede">Diagnóstico completo das 4 etapas do funil de vendas: <strong>pré-qualificação</strong>, <strong>agendamento</strong>, <strong>comparecimento</strong> e <strong>fechamento</strong>.</p>' +
     '<ul class="abertura__meta"><li>' + ICO.relogio + '8 minutos</li><li>' + ICO.ok + fato('analise_gratuidade') + '</li></ul>' +
     botaoSafra('Fazer a Análise', 'btn-safra--grande', 'botaoAbertura') +
-    '<p class="abertura__nota">Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: política de privacidade ' + A_DEFINIR.politica + '.</p></div></section>';
+    '<p class="abertura__nota">Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: ' + LINK_POLITICA + '.</p></div></section>';
 }
 /* ··· Conversa: o que o Junior fala antes e depois de cada pergunta ··· */
 function depois(id){
@@ -1259,7 +1266,7 @@ const CORPO = {
     return '<div class="cartao-form recuo"><form class="form" id="form" novalidate>' +
       '<div class="campo"><label for="nome">Seu nome</label><input id="nome" autocomplete="name" placeholder="Como podemos chamar você" value="' + esc(c.nome) + '"></div>' +
       // Consentimento (M16; #104): antes dos campos de e-mail e WhatsApp (#110), uma caixa só, que já vem marcada
-      '<div class="consentimento" id="consentimento"><p class="dica">' + CONSENTIMENTO.texto + ' Tudo explicado na política de privacidade ' + A_DEFINIR.politica + '.</p>' +
+      '<div class="consentimento" id="consentimento"><p class="dica">' + CONSENTIMENTO.texto + ' Tudo explicado na ' + LINK_POLITICA + '.</p>' +
       '<p class="dica"><label><input type="checkbox" id="consAceite"' + (R.consentimento.aceite ? ' checked' : '') + '> ' + CONSENTIMENTO.caixa + '</label></p>' +
       '<p class="dica" id="consAviso" role="status"' + (temConsentimento() ? ' hidden' : '') + '>' + CONSENTIMENTO.aviso + '</p></div>' +
       '<div class="campo"><label for="email">E-mail</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@empresa.com.br" value="' + esc(c.email) + '"><p class="dica" id="emailDica" aria-live="polite"></p></div>' +
@@ -1642,7 +1649,7 @@ const CONSENTIMENTO = {
 };
 const temConsentimento = () => !!R.consentimento.aceite;
 // O texto exato que a pessoa aceitou (planta, consentimento_texto): o combinado, a frase da política e a caixa
-const textoConsentimento = () => [CONSENTIMENTO.texto, 'Tudo explicado na política de privacidade ' + A_DEFINIR.politica + '.', CONSENTIMENTO.caixa].join(' ');
+const textoConsentimento = () => [CONSENTIMENTO.texto, 'Tudo explicado na política de privacidade.', CONSENTIMENTO.caixa].join(' ');
 
 /* ··· Critério do fim (ver CRITERIO_DO_FIM no topo) ··· */
 const qualificadoPeloLeadScore = () => ['a', 'b'].indexOf(calcularLeadScore().faixa) > -1;

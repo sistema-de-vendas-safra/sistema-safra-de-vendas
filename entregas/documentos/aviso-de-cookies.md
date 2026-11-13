@@ -1,14 +1,14 @@
 ---
 id: aviso-de-cookies
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: politica-de-privacidade
-    versao: 3
+    versao: 4
   - id: decisoes
-    versao: 6
+    versao: 7
 desatualizado: true
 ---
 
@@ -24,7 +24,7 @@ desatualizado: true
 
 **Status.** Rascunho: o texto é do Claude, para o Otávio aprovar ("O texto do aviso é rascunho até o Otávio aprovar", prompts/17-medicao-google.md; #116). Desatualizado porque a política, de que depende, está marcada (nucleo/regras/versionamento.md v3, 11.1).
 
-**Como ler o bloco.** A montagem do protótipo lê o texto do bloco `aviso` abaixo. Uma chave por linha, no formato `chave: valor`, com o valor numa linha só e sem aspas. As chaves são fixas: titulo, texto, aceitar, recusar, politica e reabrir. Mudar o texto é mudar aqui, subir a versão e montar o site de novo. `{{a definir: ...}}` é dado que ainda não existe; na página, aparece como o texto visível "[a definir: ...]", como no quiz. A chave termina no primeiro dois-pontos seguido de espaço; o resto da linha é o valor, mesmo com outros dois-pontos. O `texto` cita o link "Cookies": se o valor de `reabrir` mudar, o `texto` muda junto.
+**Como ler o bloco.** A montagem do protótipo lê o texto do bloco `aviso` abaixo. Uma chave por linha, no formato `chave: valor`, com o valor numa linha só e sem aspas. As chaves são fixas: titulo, texto, aceitar, recusar, politica e reabrir. Mudar o texto é mudar aqui, subir a versão e montar o site de novo. Um link vai no formato `[texto](/caminho/)`, só para um endereço do próprio site, começando por "/"; na página, ele abre numa aba nova (desde a v2, a política, em /politica-de-privacidade/; #117). `{{a definir: ...}}` é dado que ainda não existe; na página, aparece como o texto visível "[a definir: ...]", como no quiz. A chave termina no primeiro dois-pontos seguido de espaço; o resto da linha é o valor, mesmo com outros dois-pontos. O `texto` cita o link "Cookies": se o valor de `reabrir` mudar, o `texto` muda junto.
 
 ## Texto do aviso
 
@@ -33,9 +33,13 @@ titulo: Cookies e medição
 texto: A gente quer medir como este site é usado, com o Google Analytics, do Google. Ele usa cookies e só entra se você aceitar. Se você recusar, nada muda na página. Dá para mudar a escolha depois, no link Cookies, no fim da página.
 aceitar: Aceitar
 recusar: Recusar
-politica: Como a gente cuida dos seus dados: política de privacidade {{a definir: link da politica de privacidade}}.
+politica: Como a gente cuida dos seus dados: [política de privacidade](/politica-de-privacidade/).
 reabrir: Cookies
 ```
+
+## O que mudou na versão 2
+
+Respostas do Otávio aos "a definir" do funil, 13/11/2026 (base/decisoes.md, #117): a política de privacidade saiu do rascunho e ganhou página no protótipo. A linha `politica` passa a ter o link para ela, no lugar de "{{a definir: link da politica de privacidade}}", e "política" ganha o acento que faltava. O resto do texto não mudou. depende_de: politica-de-privacidade 4 e decisoes 7.
 
 ## Fontes
 

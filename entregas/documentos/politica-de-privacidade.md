@@ -1,9 +1,9 @@
 ---
 id: politica-de-privacidade
-versao: 3
-status: rascunho
+versao: 4
+status: pendente-aprovacao
 aprovado_por:
-  otavio: pendente
+  otavio: 2026-11-13
   junior: pendente
   euclides: pendente
 depende_de:
@@ -12,6 +12,8 @@ depende_de:
   - id: quiz-01-copy
     versao: 2
   - id: quiz-01-pagina
+    versao: 5
+  - id: landing-page-02
     versao: 2
   - id: landing-page-01-copy
     versao: 4
@@ -24,27 +26,29 @@ depende_de:
   - id: regra-seguranca
     versao: 3
   - id: lacunas
-    versao: 6
+    versao: 7
   - id: provas-e-conformidade
     versao: 4
   - id: ficha-de-fatos
-    versao: 4
+    versao: 5
   - id: decisoes
-    versao: 6
+    versao: 7
 desatualizado: true
 ---
 
-# Política de privacidade · rascunho
+# Política de privacidade
 
 ## Para a equipe (sai antes de publicar)
 
-**Status.** Rascunho. Serve ao funil-01, pendente do Júnior e do Euclides (#90), e ao quiz-01, que é do Júnior: por isso os três estão em aprovado_por.
+**Status.** Pendente de aprovação do Júnior e do Euclides. O Otávio tirou a política do rascunho e aprovou a versão 4 em 13/11/2026 (#117). Ela serve ao funil-01, pendente do Júnior e do Euclides (#90), e ao quiz-01, que é do Júnior: por isso os dois continuam em aprovado_por.
 
 Revisão jurídica fica com a empresa que assina a política, fora do sistema (decisão do Otávio, 09/11/2026, 16.4; base/decisoes.md, #103). Os pontos levantados na 16.4 (o aceite e a ordem da fila, a nutrição, a revisão da nota, a transferência para fora do Brasil e o aviso de incidente) continuam no texto como estavam.
 
-**Desatualizado.** Na versão 2 (etapa 31), todas as bases apontam para as versões em vigor. Continua marcada porque se apoia em `quiz-01-pagina`, que só muda nas etapas 33 e 34, e em documentos marcados por cadeia dela (`quiz-01-copy`, `landing-page-01-copy`, `funil-01-planilha-sdr`, `funil-01-roteiros-sdr`) (nucleo/regras/versionamento.md v3, 11.1). O texto já descreve a página do quiz como ela fica na etapa 34 (caixa única e fontes servidas junto com a página); a página de hoje ainda tem as duas caixas e carrega as fontes de fora.
+**Desatualizado.** Na versão 2 (etapa 31), todas as bases apontam para as versões em vigor. Continua marcada porque se apoia em `quiz-01-pagina`, que só muda nas etapas 33 e 34, e em documentos marcados por cadeia dela (`quiz-01-copy`, `landing-page-01-copy`, `funil-01-planilha-sdr`, `funil-01-roteiros-sdr`) (nucleo/regras/versionamento.md v3, 11.1). Desde a versão 4, declara as páginas em vigor, quiz-01-pagina 5 e landing-page-02 2, que o texto descreve (caixa única, fontes servidas junto com a página; correção 34.16).
 
 **Versão 3 (pedido 17, 17.1, 12/11/2026).** Medição com o Google (decisão do Otávio, 12/11/2026; base/decisoes.md, #116): o item 7 foi reescrito, o Google entrou na lista do item 6 e os itens 2 e 3 ganharam uma frase cada, para continuarem verdadeiros. Em depende_de, só decisoes subiu (para 6); as outras bases ficam nas versões da v2, e o documento continua marcado. A linha do Google no item 6 não depende do conflito-17. Antes de ir ao ar com a medição ligada, conferir no Google Analytics: os eventos ligados além dos automáticos do item 7, o compartilhamento de dados da conta (a frase do item 6 sobre outras empresas usarem os dados para si depende dele) e que nenhum campo enviado ao Google leve o código da visita (log.md, Pendências).
+
+**Versão 4 (13/11/2026, #117).** O Otávio tirou a política do rascunho: aprovada por ele, ela vai a pendente de aprovação do Júnior e do Euclides. Fica publicada como página do protótipo, em /politica-de-privacidade/, para onde apontam os links do quiz e do aviso de cookies. A página é montada a partir da seção "Texto para o lead" (entregas/prototipo-funil-01/montar-site.mjs): os `{{a definir: ...}}` aparecem como "[a definir: ...]", como no quiz; o marcador do conflito-17 não aparece, e a tabela do item 6 mostra os nomes ainda sem decisão como "[a definir]"; o prazo do item 8 vem da ficha de fatos (ficha-de-fatos#prazo-de-guarda). Esta seção "Para a equipe" e as "Fontes" não vão para a página. O texto para o lead não mudou; os dados que faltam (quem assina, CNPJ, encarregado, contato, data de publicação, os prazos e os nomes dos serviços) continuam a definir, e a revisão jurídica continua com a empresa que assina (#103). Correção de forma 34.16 aplicada (páginas em vigor declaradas em depende_de).
 
 **O que muda na operação, fora do texto para o lead.** Quem retira o aceite depois de entrar na planilha do SDR: o Otávio apaga a linha à mão, até existir o caminho automático, que entra com a volta do status (21.10, #114). A planilha do SDR fica no Drive do Safra, como exceção registrada à regra 4 de segurança, com acesso só do Otávio e de quem liga (nucleo/regras/seguranca.md v3, regra 4; 5.4, #114). O caminho de apagamento no fim do prazo de guarda é pendência com prazo (#106; log.md, Pendências).
 

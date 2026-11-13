@@ -614,15 +614,20 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(semDadoNoConsole(t), rotulo + ' · rodada inteira: console sem dado de pessoa');
     await t.ctx.close();
 
-    // M5. Teclado: o Tab chega aos dois botões do aviso, com o foco visível, e o Enter funciona
+    // M5. Teclado: o Tab passa pelo link da política (v11; #117) e chega aos dois botões do aviso, com o foco visível, e o Enter funciona
     t = await abrir(browser, largura, PAGINA, [201], 201);
     await naTela(t.page, 'abertura');
+    const LINKS = medicao.LINKS_DO_AVISO;
+    const fl = [];
+    for (let k = 0; k < LINKS.length; k++) { await t.page.keyboard.press('Tab'); fl.push(await focoNoAviso(t.page)); }
+    conferir(LINKS.length === 1 && LINKS[0].endereco === '/politica-de-privacidade/' && fl.every((f, k) => f.dentro && f.texto === LINKS[k].texto && f.visivel),
+      rotulo + ' · teclado: antes dos botões, o Tab passa pelo link "' + (LINKS[0] && LINKS[0].texto) + '" do aviso, com o foco visível (' + fl.map(f => f.texto).join(', ') + ')');
     await t.page.keyboard.press('Tab');
     const f1 = await focoNoAviso(t.page);
     await t.page.keyboard.press('Tab');
     const f2 = await focoNoAviso(t.page);
     conferir(f1.dentro && f1.texto === T.aceitar && f1.visivel && f2.dentro && f2.texto === T.recusar && f2.visivel,
-      rotulo + ' · teclado: o primeiro Tab chega ao "' + T.aceitar + '" e o segundo ao "' + T.recusar + '", com o foco visível (' + f1.texto + ', ' + f2.texto + ')');
+      rotulo + ' · teclado: depois do link, um Tab chega ao "' + T.aceitar + '" e o seguinte ao "' + T.recusar + '", com o foco visível (' + f1.texto + ', ' + f2.texto + ')');
     await t.page.keyboard.press('Enter');
     await t.page.waitForTimeout(300);
     m = await lerMedicao(t.page);
@@ -635,6 +640,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.waitForTimeout(300);
     const re = await t.page.evaluate(() => { const a = document.getElementById('aviso-cookies'); return a && { primeiro: document.body.firstElementChild === a, foco: document.activeElement === a, topo: Math.round(a.getBoundingClientRect().top) }; });
     conferir(re && re.primeiro && re.foco && re.topo === 0, rotulo + ' · o link "' + T.reabrir + '" reabre o aviso no topo e leva o foco a ele' + (re ? ' (topo ' + re.topo + ')' : ''));
+    for (let k = 0; k < LINKS.length; k++) await t.page.keyboard.press('Tab');   // o link da política, antes dos botões
     await t.page.keyboard.press('Tab');
     const f3 = await focoNoAviso(t.page);
     pedido = pedidoAoGoogle(t.page);

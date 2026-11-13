@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 10
+versao: 11
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,27 +8,27 @@ depende_de:
   - id: garcom
     versao: 4
   - id: quiz-01-pagina
-    versao: 3
+    versao: 5
   - id: landing-page-02
-    versao: 1
+    versao: 2
   - id: banco-rascunho
     versao: 4
   - id: decisoes
-    versao: 6
+    versao: 7
   - id: regra-seguranca
     versao: 3
   - id: lacunas
-    versao: 6
+    versao: 7
   - id: aviso-de-cookies
-    versao: 1
+    versao: 2
   - id: politica-de-privacidade
-    versao: 3
+    versao: 4
 desatualizado: true
 ---
 
 # Protótipo do funil-01 · site de teste
 
-O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. A v7 e a v8 só registram as publicações de 12/11/2026 das 10h14 e das 11h40 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"). **No ar desde 12/11/2026, 16h16** (Current Version ID a82e93cc-82cd-45c5-b2fa-c78d557cef32), com a v9 desta pasta: a landing-page-02 em /, o quiz-01 abrindo na abertura (quiz-01-pagina v4) e a medição nas duas páginas; a v10 só registra essa publicação (pedido 17, parte 17.3). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
+O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. A v7 e a v8 só registram as publicações de 12/11/2026 das 10h14 e das 11h40 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"). **No ar desde 12/11/2026, 16h16** (Current Version ID a82e93cc-82cd-45c5-b2fa-c78d557cef32), com a v9 desta pasta: a landing-page-02 em /, o quiz-01 abrindo na abertura (quiz-01-pagina v4) e a medição nas duas páginas; a v10 só registra essa publicação (pedido 17, parte 17.3). A v11 (13/11/2026, #117), ainda não publicada, monta a página da política de privacidade em /politica-de-privacidade/ (pagina-politica.mjs), com o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2 (com o link da política). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 
 **Para ligar:** LIGAR.md, nesta pasta, é o passo a passo do Otávio para o dia de ligar o protótipo (push, Supabase, Cloudflare, planilha, teste com leads de mentira, o que fazer se der errado e como desligar).
 
@@ -86,6 +86,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 | montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro) |
 | medicao.mjs | (v9) O bloco da medição que a montagem acrescenta em cada HTML: o consentimento padrão do Google com tudo negado, o aviso de cookies (texto de entregas/documentos/aviso-de-cookies.md) e o carregador do Google Tag Manager, que só roda depois do "Aceitar". Node, sem dependências. O teste do quiz usa o mesmo módulo |
 | medicao.json | (v9) O lugar único do código do contêiner do Tag Manager (GTM-T6L4QTB8, que não é segredo) e do nome da chave em que o navegador guarda a escolha (safra_cookies_v1) |
+| pagina-politica.mjs | (v11; #117) Monta a página da política de privacidade, /politica-de-privacidade/, a partir da seção "Texto para o lead" de entregas/documentos/politica-de-privacidade.md: os `{{a definir}}` aparecem como "[a definir: ...]", o marcador do conflito-17 não aparece, os fatos da ficha (o prazo de guarda) entram com o valor da ficha, e a seção "Para a equipe" e as "Fontes" ficam de fora. Recusa a política em rascunho. A montagem acrescenta o bloco da medição como nas outras páginas |
 | prints/ | Prints das duas páginas montadas em 375 e 1440 pixels |
 | site/ | A pasta montada. Fica fora do Git (.gitignore) e é refeita a cada montagem |
 
@@ -95,6 +96,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 |---|---|---|
 | / | Landing-page-02, a página de vendas (v6) | entregas/landings/landing-page-02/pagina/ (index.html, assets/ com o programa e o estilo, a/ com as imagens) |
 | /quiz/ | Quiz-01 | entregas/quizzes/quiz-01/pagina/ (index.html, poster-junior.jpg) |
+| /politica-de-privacidade/ | A política de privacidade (v11; #117), para onde vão os links do quiz e do aviso de cookies, numa aba nova | entregas/documentos/politica-de-privacidade.md, seção "Texto para o lead", por pagina-politica.mjs |
 | /fontes/ e /quiz/fontes/ | As fontes da landing-page-02 (Geist) e do quiz (Inter, Space Grotesk, Permanent Marker), com a licença de cada uma | nucleo/ferramentas/fontes/node_modules/ (pacotes @fontsource, lista em fontes.json) |
 | POST /api/fim-quiz | Porta pública do garçom: o quiz manda o pacote do fim | entregas/garcom/garcom.mjs |
 | POST /api/evento | Porta pública do garçom: a visita da landing, o início do quiz e o clique do fim, sem dado de pessoa (garçom v4) | entregas/garcom/garcom.mjs |

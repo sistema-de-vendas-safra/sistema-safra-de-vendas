@@ -1,9 +1,9 @@
 ---
 id: ficha-de-fatos
-versao: 4
+versao: 5
 status: decidido
 aprovado_por:
-  otavio: 2026-11-09
+  otavio: 2026-11-13
 depende_de: []
 desatualizado: false
 ---
@@ -250,14 +250,15 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 ## Análise (a porta de entrada)
 
 ### analise-nome-publico
-- **Em conflito · bloqueado para entrega até a decisão.**
-- **Valores concorrentes:**
+- **Valor:** Análise Estratégica do Sistema de Vendas.
+- **Fonte:** decisão do Otávio, 13/11/2026 (#117).
+- **Valores que concorriam (histórico):**
   - "Análise Estratégica do seu Comercial", ou "do seu Sistema de Vendas" (#66; CTX §3, §6, §13; Doc Mestre online).
   - "Análise Estratégica das Safras, na versão da call" (Ficha do Serviço online, "Porta de entrada"; Oferta online; One pager online). É também o nome da entrega 1.
   - Botão "Faça uma Análise Estratégica do seu Sistema de Vendas" (landing, decidido pelo Otávio).
   - "Diagnóstico de vendas" e o selo "Teste gratuito" (quiz).
-- **Status:** em conflito (nome).
-- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público continua em conflito (Otávio, 08/11/2026). A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise: o nome público da Análise continua a definir.
+- **Status:** decidido (otavio: 2026-11-13, #117). O conflito-02 é do Otávio; o Júnior e o Euclides ficam sabendo pela pauta de aprovação.
+- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público ficou em conflito de 08/11 a 13/11/2026 (Otávio, 08/11/2026; #117). A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise: o nome público da Análise continua a definir.
 
 ### analise-valor
 - **Valor:** R$ 497 por Análise, cobrado depois das análises gratuitas de ficha-de-fatos#analises-gratuitas.
@@ -498,13 +499,14 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 ## Nome e assinatura
 
 ### nome-agencia
-- **Em conflito · bloqueado para entrega até a decisão.**
-- **Valores concorrentes:**
+- **Valor:** Triad.
+- **Fonte:** decisão do Otávio, 13/11/2026 (#117).
+- **Valores que concorriam (histórico):**
   - "Triad H.", nome provisório (#89, pendente de aprovação do Júnior e do Euclides; CTX §1, §6).
   - "Triad" e "© 2026 Triad Marketing USA LLC" (rodapé do quiz).
   - "TRIAD MKT" no logo (Doc Mestre online, "Nome da Triad em revisão").
   - Proposta de assinar a página e os criativos por "Junior Neves e pela IASV Safra, sem a marca da agência, até o nome sair" (Doc Mestre online).
-- **Status:** em conflito · bloqueado para entrega até a decisão; o nome provisório depende de #89 (pendente-aprovacao).
+- **Status:** pendente-aprovacao (otavio: 2026-11-13, #117; junior: pendente; euclides: pendente). O conflito-07 é do Júnior e do Euclides; até a aprovação, o nome vale para o protótipo e para os rascunhos, como a #89 valia.
 
 ### grafia-junior
 - **Valor:** "Junior Neves" em público; "Júnior" no texto corrido.

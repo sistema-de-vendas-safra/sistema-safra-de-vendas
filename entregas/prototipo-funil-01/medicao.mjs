@@ -74,9 +74,19 @@ export const VERSAO_DO_AVISO = LIDO.versao;
 const escapar = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 // O texto como aparece na página: {{a definir: X}} vira "[a definir: X]"
 const comoNaPagina = t => t.replace(/\{\{a definir:\s*([^{}]*?)\s*\}\}/g, '[a definir: $1]');
-// O texto visível do aviso, para os testes compararem com a página
-export const TEXTO_DO_AVISO = Object.fromEntries(CHAVES.map(c => [c, comoNaPagina(LIDO.aviso[c])]));
-const H = Object.fromEntries(CHAVES.map(c => [c, escapar(TEXTO_DO_AVISO[c])]));
+// Link do documento, no formato [texto](/caminho/): só para um endereço do próprio site (v11, #117: a política)
+const LINK = /\[([^\[\]]+)\]\(([^()\s]*)\)/g;
+const CAMINHO_DO_SITE = /^\/[a-z0-9][a-z0-9\-\/]*$/;
+for (const c of CHAVES) for (const m of LIDO.aviso[c].matchAll(LINK)) {
+  if (!CAMINHO_DO_SITE.test(m[2])) throw new Error(DOC_AVISO + ': link para fora do site no bloco aviso (' + c + ': ' + m[2] + ')');
+}
+// O texto visível do aviso (sem o endereço dos links), para os testes compararem com a página
+export const TEXTO_DO_AVISO = Object.fromEntries(CHAVES.map(c => [c, comoNaPagina(LIDO.aviso[c]).replace(LINK, '$1')]));
+// Os links do aviso, para os testes conferirem o endereço
+export const LINKS_DO_AVISO = CHAVES.flatMap(c => [...LIDO.aviso[c].matchAll(LINK)].map(m => ({ chave: c, texto: m[1], endereco: m[2] })));
+// No HTML, o link abre numa aba nova, para quem está no meio do diagnóstico não perder nada
+const H = Object.fromEntries(CHAVES.map(c => [c, escapar(comoNaPagina(LIDO.aviso[c])).replace(LINK,
+  (_, texto, caminho) => '<a class="aviso-cookies__link" href="' + caminho + '" target="_blank" rel="noopener">' + texto + '</a>')]));
 
 // ··· O bloco ···
 const ESTILO = `
@@ -89,6 +99,9 @@ const ESTILO = `
 .aviso-cookies .aviso-cookies__titulo{margin:0 0 4px;padding:0;color:#e5ece7;font-size:15px;font-weight:600;line-height:1.35}
 .aviso-cookies .aviso-cookies__frase{margin:0;padding:0;color:#cdd6d1;font-size:14px;line-height:1.5}
 .aviso-cookies .aviso-cookies__politica{margin:6px 0 0;padding:0;color:#cdd6d1;font-size:13px;line-height:1.45}
+.aviso-cookies .aviso-cookies__link{color:#e5ece7;text-decoration:underline;text-underline-offset:2px}
+.aviso-cookies .aviso-cookies__link:hover{color:#8bd6b1}
+.aviso-cookies .aviso-cookies__link:focus-visible{outline:2px solid #8bd6b1;outline-offset:2px;border-radius:2px}
 .aviso-cookies .aviso-cookies__botoes{display:flex;flex:0 0 auto;gap:12px;margin:0;padding:0}
 .aviso-cookies .aviso-cookies__botao{-webkit-appearance:none;appearance:none;display:inline-flex;align-items:center;justify-content:center;flex:1 1 0;min-width:132px;min-height:44px;margin:0;padding:10px 20px;border:1px solid #8bd6b1;border-radius:12px;background:transparent;background-image:none;box-shadow:none;color:#e5ece7;font-family:inherit;font-size:15px;font-style:normal;font-weight:600;line-height:1.2;letter-spacing:normal;text-align:center;text-decoration:none;text-transform:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .aviso-cookies .aviso-cookies__botao:hover{background:rgba(139,214,177,.12)}

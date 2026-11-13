@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -16,21 +16,23 @@ depende_de:
   - id: garcom
     versao: 4
   - id: prototipo-funil-01
-    versao: 9
+    versao: 11
   - id: quiz-01-pagina
-    versao: 4
+    versao: 5
   - id: landing-page-02
-    versao: 1
+    versao: 2
   - id: planilha-sdr-funil-01
     versao: 2
   - id: lead-score
     versao: 3
   - id: decisoes
-    versao: 6
+    versao: 7
   - id: regra-seguranca
     versao: 3
   - id: aviso-de-cookies
-    versao: 1
+    versao: 2
+  - id: politica-de-privacidade
+    versao: 4
 desatualizado: true
 ---
 
@@ -49,6 +51,8 @@ Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de 
 **O que muda na versão 5 (12/11/2026, quiz-01-pagina v4).** O quiz abre direto na abertura, sem a capa: o ensaio entra no quiz pelo botão "Fazer a Análise" da abertura, sem o clique no cartão da capa, e confere na abertura a Inter, a Space Grotesk e a Geist (a do cabeçalho e do botão da landing-page-02, agora também no quiz). O resto não mudou.
 
 **O que muda na versão 6 (12/11/2026, pedido 17, parte 17.2; decisão #116; prototipo-funil-01 v9).** O site montado já leva, em / e em /quiz/, o bloco da medição: o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (entregas/prototipo-funil-01/README.md, "Medição"). As pessoas de teste da seção 6 continuam sem tocar no aviso, e tudo o que passava continua passando. Seção nova, a 9 ("Medição no site montado"), com as provas que só o ensaio faz, de ponta a ponta no workerd, em 375, 360 (com 640 de altura) e 1440: sem escolha e com "Recusar", nenhum pedido para fora de 127.0.0.1, na landing e no quiz; o aviso no topo, em fluxo normal, sem cobrir o "Fazer a Análise" do topo nem o botão grande da landing; "Recusar" pelo teclado, com o foco indo depois ao primeiro botão ou link desenhado na landing, nunca ao body; com "Aceitar" na landing, num contexto próprio que responde 404 a www.googletagmanager.com (como o Google, enquanto o contêiner não é publicado) sem tirar a trava de rede do resto, o pedido ao gtm.js do GTM-T6L4QTB8 é o primeiro e único para fora; a pagina_limpa e o endereço da barra saem sem o id_sessao (a landing aberta com um id_sessao no endereço, como quem volta do quiz); a escolha passa da landing para o quiz: clicando o botão da landing, o quiz abre sem o aviso e já pede o gtm.js, e o início do quiz leva o id_sessao que veio da landing, com o endereço, a pagina_limpa e a origem_limpa sem ele; no banco, a visita e o início do quiz da mesma sessão, sem pessoa. A seção vem depois da planilha (7) e dos casos de erro (8), para não atrasar a primeira busca da planilha, que conta com a margem de 1 minuto (21.6); o fechamento passa a ser a seção 10. A conferência "navegador · páginas: nenhum pedido para fora de 127.0.0.1" continua valendo para todos os contextos que não aceitaram; nos que aceitaram, o gtm.js é anotado à parte e conferido na seção 9, e qualquer outro pedido para fora continua contando nela. No celular, o "Fazer a Análise" do topo da landing-page-02 não é um `<button>` (o programa da landing o desenha como um bloco com data-name "Botão/Primário"): o ensaio confere que o aviso não o cobre por esse bloco e, no celular, vai ao quiz pelo botão grande, como a pessoa da seção 6 em 375.
+
+**O que muda na versão 7 (13/11/2026, #117).** Três conferências novas, com o site da v11 do protótipo: /politica-de-privacidade/ abre (200) só com o texto para o lead, sem marcador {{...}}, sem anotação da equipe e com o aviso de cookies; o programa da landing-page-02 v2 não tem as perguntas 6 e 7 do FAQ nem nenhum "a definir"; o quiz-01 v5 não tem fato bloqueado e aponta a política para /politica-de-privacidade/. Duas mudaram: o título do quiz passa a ser o nome público da Análise (ficha-de-fatos#analise-nome-publico), e o "Recusar" pelo teclado na landing passa pelo link da política do aviso antes dos botões.
 
 ## Um comando só
 
@@ -120,6 +124,8 @@ O ensaio confere em três lugares que nada sai da máquina:
 Nas duas rodadas finais, o vigia externo (lsof a cada meio segundo nos processos do wrangler, do workerd, do Chromium e do ensaio; script fora do repositório) não viu nenhuma conexão fora de 127.0.0.1.
 
 ## Resultado do ensaio
+
+**v7 (13/11/2026).** Rodado inteiro, do zero, com o wrangler dev, numa máquina Linux na nuvem: **173 de 173**, em 81 segundos. São as 170 da v6 mais as três novas da v7 (a política, a landing sem as perguntas 6 e 7, o quiz sem fato bloqueado); duas da v6 mudaram de expectativa (o título do quiz e o Tab a mais no aviso).
 
 **v6 (12/11/2026, pedido 17, parte 17.2).** Rodado inteiro, do zero (a pasta site/ apagada antes), com o wrangler dev, numa máquina Linux na nuvem: **170 de 170**, em 86 e 87 segundos, em duas rodadas seguidas. São as 142 da v5, todas de pé, mais 28 da seção 9: 9 por largura, em 375, 360 e 1440, e a do banco. Numa rodada anterior, com a seção da medição logo depois da 6, quatro conferências da planilha caíram (a primeira busca já trazia o lead A, porque a seção nova atrasou a busca além da margem de 1 minuto, 21.6); a seção foi para depois dos casos de erro, e tudo passou. Prova de que a seção nova pega o erro, rodada com a versão anterior da seção (167 conferências, sem a do foco): com o carregador do Tag Manager forçado a rodar antes do "Aceitar" (mudança de propósito em entregas/prototipo-funil-01/medicao.mjs, desfeita pelo Git), **16 FALHOU**: nas três larguras, "Recusar" sem nada do Google, "sem escolha e com Recusar: nenhum pedido para fora", "Aceitar: o gtm.js primeiro e único", a pagina_limpa e o endereço limpos na landing e no quiz; e a de antes, no fechamento, "navegador · páginas: nenhum pedido para fora de 127.0.0.1". A conferência do netlog continuou certa, porque o pedido ao Google é parado dentro do navegador. No celular, o primeiro botão da landing depois do aviso, para onde o foco vai depois da escolha pelo teclado, é um botão sem rótulo a mais de 5 mil pixels do topo: o "Fazer a Análise" do cabeçalho, no celular, não é um botão. Saída da seção nova e do fechamento (segunda rodada):
 

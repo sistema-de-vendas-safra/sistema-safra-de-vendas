@@ -1,14 +1,14 @@
 ---
 id: lacunas
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: ficha-de-fatos
-    versao: 4
-  - id: decisoes
     versao: 5
+  - id: decisoes
+    versao: 7
 desatualizado: true
 ---
 
@@ -260,7 +260,8 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio (#59 a #62 são dele); o Doc Mestre online põe o valor entre as decisões do Júnior e do Euclides (decisão 4), então o plano aprovado recomenda levar aos dois.
 - **O que destrava:** a seção da Análise, o cartão da oferta e o passo 3 da landing-page-01; a fala final e o nome do quiz-01.
 - **Resolvido em parte (#92, 08/11/2026):** a Análise passa a ser o diagnóstico do quiz (ficha-de-fatos#analise-conteudo); valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas); a reunião com o Júnior é a conversa de venda, sem preço. O Júnior e o Euclides devem ser informados na pauta de aprovação.
-- **Continua em aberto:** o nome público (ficha-de-fatos#analise-nome-publico) e o que a #92 não define sobre a reunião com o Júnior: a duração (ficha-de-fatos#analise-duracao) e quem conduz (ficha-de-fatos#analise-quem-conduz).
+- **Resolvido em parte (#117, 13/11/2026):** o nome público é o de ficha-de-fatos#analise-nome-publico, decidido pelo Otávio.
+- **Continua em aberto:** o que a #92 não define sobre a reunião com o Júnior: a duração (ficha-de-fatos#analise-duracao) e quem conduz (ficha-de-fatos#analise-quem-conduz).
 - **Resolvido em parte (#107, 09/11/2026):** a conversa de venda com o Júnior passa a ser a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração em ficha-de-fatos#duracao-call-de-venda e o condutor em ficha-de-fatos#quem-faz-a-reuniao; nela fica a demonstração com os números do cliente (4.5, #114). Os campos ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha, com observação que aponta para a #107 (prompts/11-fila-perguntas.md, 30.6). Continua em aberto o nome público da Análise (ficha-de-fatos#analise-nome-publico; 30.1).
 - **Ver também:** lacuna-11, conflito-04.
 
@@ -304,6 +305,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **O que é:** o nome da agência e a assinatura das peças variam entre as fontes; o DS diz "Euclides Vieira e Júnior Neves formam a Triad".
 - **Valores e fontes:** ficha-de-fatos#nome-agencia, ficha-de-fatos#grafia-junior; #89; DS (pagina-documentacao.html).
 - **Quem decide:** o Júnior e o Euclides.
+- **Decidido pelo Otávio, pendente dos dois (#117, 13/11/2026):** o nome é o de ficha-de-fatos#nome-agencia, pendente-aprovacao do Júnior e do Euclides; vale para o protótipo e os rascunhos até a aprovação. A assinatura das peças continua com eles.
 - **O que destrava:** o rodapé do quiz-01 e a assinatura da landing-page-01 e dos criativos.
 - **Ver também:** lacuna-07, lacuna-19.
 

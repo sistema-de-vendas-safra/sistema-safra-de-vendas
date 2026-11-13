@@ -1,10 +1,12 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 9 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 11 · rascunho · otavio: pendente (ver README.md desta pasta)
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
 // O que faz (decisão #101; v6, 12/11/2026: a landing-page-02 no lugar das duas variantes da landing-page-01):
 //   /            landing-page-02 (index.html, com o programa em assets/ e as imagens em a/, na raiz do site)
 //   /quiz/       página do quiz-01 (index.html, poster-junior.jpg)
+//   /politica-de-privacidade/   a política de privacidade (v11; #117), montada por pagina-politica.mjs a partir do
+//                texto para o lead de entregas/documentos/politica-de-privacidade.md (os links do quiz e do aviso vão para ela)
 //   fontes/      ao lado de cada página que usa fonte própria (/fontes/ da landing-page-02 e /quiz/fontes/), os arquivos
 //                de fonte de licença livre instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json
 //                daquela pasta) e a licença de cada um. Nada vem do Google nem de outro terceiro (10.7; v4, etapa 34).
@@ -31,6 +33,7 @@ import { mkdirSync, rmSync, readFileSync, writeFileSync, copyFileSync, cpSync, e
 import { dirname, join, relative, resolve, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { acrescentarMedicao, MARCA_INICIO, MARCA_FIM, CARREGADOR_GTM, CODIGO_GTM, CHAVE_ESCOLHA, VERSAO_DO_AVISO } from './medicao.mjs';
+import { montarPaginaPolitica, CAMINHO_DA_POLITICA } from './pagina-politica.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = resolve(AQUI, '../..');
@@ -128,6 +131,17 @@ for (const item of MAPA) {
     relatorio.push(posix.join(item.para, pasta) + '/ (cópia da pasta inteira)');
   }
 }
+// A política de privacidade (v11; #117): página montada do texto para o lead, com a medição como as outras
+try {
+  const pol = montarPaginaPolitica();
+  let html = pol.html;
+  for (const [fn, nome] of [[garantirCharset, 'charset'], [h => garantirNoindex(h, CAMINHO_DA_POLITICA), 'noindex'], [h => garantirViewport(h, CAMINHO_DA_POLITICA), 'viewport']]) html = fn(html).html;
+  html = acrescentarMedicao(html);
+  mkdirSync(join(SITE, dirname(CAMINHO_DA_POLITICA)), { recursive: true });
+  writeFileSync(join(SITE, CAMINHO_DA_POLITICA), html);
+  paginasComMedicao.push(CAMINHO_DA_POLITICA);
+  relatorio.push(CAMINHO_DA_POLITICA + ' (montada da política de privacidade v' + pol.versao + ', ' + pol.status + ', só o texto para o lead; aviso de cookies e Tag Manager acrescentados)');
+} catch (e) { problema(CAMINHO_DA_POLITICA + ': ' + e.message); }
 relatorio.push('medição (v9; #116): aviso de cookies (texto do aviso-de-cookies v' + VERSAO_DO_AVISO + ') e Google Tag Manager ' + CODIGO_GTM +
   ', que só carrega depois do "Aceitar"; o navegador guarda só a escolha (' + CHAVE_ESCOLHA + '); em ' + (paginasComMedicao.join(' e ') || 'nenhuma página'));
 
@@ -271,8 +285,8 @@ for (const arquivo of arquivosDoSite) {
     if (!arquivosDoSite.includes(img.slice(1))) problema(arquivo + ': "' + img + '" não existe no site montado');
   }
 }
-// As duas páginas do mapa de rotas existem
-for (const p of ['index.html', 'quiz/index.html']) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
+// As páginas do mapa de rotas existem (v11: e a política)
+for (const p of ['index.html', 'quiz/index.html', CAMINHO_DA_POLITICA]) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
 
 // ··· 3. Resultado ···
 console.log('Site montado em ' + relative(RAIZ, SITE) + '/');

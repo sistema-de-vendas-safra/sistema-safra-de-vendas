@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 6 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 7 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -39,7 +39,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { createInterface } from 'node:readline';
 import { randomBytes } from 'node:crypto';
-import { readFileSync, writeFileSync, copyFileSync, mkdtempSync, rmSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, copyFileSync, mkdtempSync, rmSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, normalize, extname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -691,8 +691,20 @@ async function principal() {
   conferir(q1.endereco.pathname === '/quiz/' && q1.endereco.searchParams.get('utm_source') === 'bio' && q1.endereco.searchParams.get('utm_campaign') === 'funil-01' && /^sessao-[a-z0-9-]{1,60}$/.test(q1.sessao || ''),
     'landing: o botão do topo ("' + BOTAO_DO_TOPO + '") leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
   conferir(q1.inicio === 201, 'quiz: o início do quiz foi gravado ao abrir (POST /api/evento, ' + q1.inicio + ')');
-  conferir(q1.noQuiz.modo === 'CSS1Compat' && q1.noQuiz.charset === 'UTF-8' && q1.noQuiz.titulo.includes('público') && q1.noQuiz.titulo.includes('Análise') && !/Ã|Â/.test(q1.noQuiz.titulo),
-    'quiz: modo padrão (' + q1.noQuiz.modo + '; 09.1), lido como UTF-8, título com os acentos certos');
+  conferir(q1.noQuiz.modo === 'CSS1Compat' && q1.noQuiz.charset === 'UTF-8' && q1.noQuiz.titulo === 'Análise Estratégica do Sistema de Vendas' && !/Ã|Â/.test(q1.noQuiz.titulo),
+    'quiz: modo padrão (' + q1.noQuiz.modo + '; 09.1), lido como UTF-8, título com os acentos certos (v7: o nome público da Análise, ficha-de-fatos#analise-nome-publico; ' + q1.noQuiz.titulo + ')');
+  // v7 (#117): a página da política, servida pelo garçom; a landing sem as perguntas 6 e 7 do FAQ; nenhum fato bloqueado no quiz
+  const rPol = await fetch(BASE + '/politica-de-privacidade/');
+  const tPol = await rPol.text();
+  conferir(rPol.status === 200 && tPol.includes('<h1>Política de privacidade</h1>') && tPol.includes('### ') === false && !tPol.includes('Para a equipe') &&
+    !/\{\{|BLOQUEADO|conflito-17|ficha-de-fatos#/.test(tPol) && tPol.includes('<!-- medicao: inicio -->'),
+    'política: /politica-de-privacidade/ abre (200) só com o texto para o lead, sem marcador {{...}}, sem anotação da equipe e com o aviso de cookies (v7; #117)');
+  const jsLanding = readdirSync(join(SITE, 'assets')).filter(a => a.endsWith('.js')).map(a => readFileSync(join(SITE, 'assets', a), 'utf8')).join('');
+  conferir(!jsLanding.includes('Por que só 10 vagas?') && !jsLanding.includes('Posso parcelar?') && !/a definir/i.test(jsLanding),
+    'landing: sem as perguntas 6 e 7 do FAQ e sem nenhum "a definir" (v7; landing-page-02 v2)');
+  const htmlQuiz = readFileSync(join(SITE, 'quiz', 'index.html'), 'utf8');
+  conferir(!htmlQuiz.includes('{bloqueado:true') && htmlQuiz.includes("const POLITICA = {endereco:'/politica-de-privacidade/'}"),
+    'quiz: nenhum fato bloqueado na página (nome da Análise e da agência vindos da ficha) e os links da política para /politica-de-privacidade/ (v7; #117)');
   // v5: o quiz abre na abertura, com o cabeçalho e o botão da landing-page-02 (Geist); a letra de mão (Permanent Marker) fica para o relatório
   conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Geist carregadas de /quiz/fontes/ na abertura (' + q1.noQuiz.fontes.join(', ') + ')');
   conferir(q1.caixaMarcada && q1.caixas === 1, 'quiz: uma caixa de aceite só, já marcada (13.4)');
@@ -1022,6 +1034,7 @@ async function principal() {
         // chega ao "Aceitar", o segundo ao "Recusar"; depois do Enter, o foco vai ao primeiro botão ou link desenhado na landing
         // depois do aviso, nunca ao body
         await page.evaluate(() => { window.scrollTo({ top: 0, behavior: 'instant' }); document.getElementById('aviso-cookies').focus(); });
+        for (let k = 0; k < MEDICAO.LINKS_DO_AVISO.length; k++) await page.keyboard.press('Tab');   // v7: o link da política vem antes dos botões
         await page.keyboard.press('Tab');
         await page.keyboard.press('Tab');
         const noRecusar = await page.evaluate(() => (document.activeElement.textContent || '').trim());
