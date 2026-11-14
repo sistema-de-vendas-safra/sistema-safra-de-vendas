@@ -1,13 +1,13 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 11 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 14 · rascunho · otavio: pendente (ver README.md desta pasta)
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
 // O que faz (decisão #101; v6, 12/11/2026: a landing-page-02 no lugar das duas variantes da landing-page-01):
 //   /            landing-page-02 (index.html, com o programa em assets/ e as imagens em a/, na raiz do site)
-//   /quiz/       página do quiz-01 (index.html, poster-junior.jpg)
+//   /analise/    página do quiz-01 (index.html, poster-junior.jpg); até a v13 era /quiz/ (v14; decisão #120)
 //   /politica-de-privacidade/   a política de privacidade (v11; #117), montada por pagina-politica.mjs a partir do
 //                texto para o lead de entregas/documentos/politica-de-privacidade.md (os links do quiz e do aviso vão para ela)
-//   fontes/      ao lado de cada página que usa fonte própria (/fontes/ da landing-page-02 e /quiz/fontes/), os arquivos
+//   fontes/      ao lado de cada página que usa fonte própria (/fontes/ da landing-page-02 e /analise/fontes/), os arquivos
 //                de fonte de licença livre instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json
 //                daquela pasta) e a licença de cada um. Nada vem do Google nem de outro terceiro (10.7; v4, etapa 34).
 //   /api/...     não é arquivo: é o garçom (entregas/garcom/garcom.mjs), pela configuração wrangler.toml
@@ -15,7 +15,7 @@
 // Nos HTML montados (nunca nas entregas), acrescenta <meta charset="utf-8"> como primeiríssima linha quando
 // não houver nos primeiros 1024 bytes (o quiz; v3, pedido 09), <meta name="robots" content="noindex, nofollow">
 // quando não houver e a meta viewport (width=device-width) quando não houver. A landing-page-02 já leva ao quiz
-// por /quiz/ e não muda na montagem.
+// por /analise/ e não muda na montagem.
 // v9 (pedido 17, 17.2; decisão #116): acrescenta também, logo depois da meta charset, o bloco da medição de medicao.mjs
 // (entre <!-- medicao: inicio --> e <!-- medicao: fim -->): o consentimento padrão do Google com tudo negado, o aviso de
 // cookies com o texto de entregas/documentos/aviso-de-cookies.md e o carregador do Google Tag Manager, que só roda depois
@@ -58,10 +58,10 @@ const temCharsetNoInicio = html => /<meta\s+charset=["']?utf-8["']?\s*\/?>/i.tes
 // O que vai para onde. Só estes arquivos e pastas entram no site (README.md e prints ficam no repositório).
 const MAPA = [
   { de: LANDING, para: '', arquivos: ['index.html'], pastas: ['assets', 'a'], fontes: 'landing-02' },
-  { de: QUIZ, para: 'quiz', arquivos: ['index.html', 'poster-junior.jpg'], fontes: 'quiz' }
+  { de: QUIZ, para: 'analise', arquivos: ['index.html', 'poster-junior.jpg'], fontes: 'quiz' }
 ];
 // Arquivos que o programa da página carrega sem estar num atributo src ou href
-const CARREGADOS_PELO_PROGRAMA = { 'quiz/index.html': ['poster-junior.jpg'] };
+const CARREGADOS_PELO_PROGRAMA = { 'analise/index.html': ['poster-junior.jpg'] };
 
 const problemas = [];
 const problema = t => problemas.push(t);
@@ -285,8 +285,9 @@ for (const arquivo of arquivosDoSite) {
     if (!arquivosDoSite.includes(img.slice(1))) problema(arquivo + ': "' + img + '" não existe no site montado');
   }
 }
-// As páginas do mapa de rotas existem (v11: e a política)
-for (const p of ['index.html', 'quiz/index.html', CAMINHO_DA_POLITICA]) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
+// As páginas do mapa de rotas existem (v11: e a política; v14: o quiz em analise/, e nada em quiz/)
+for (const p of ['index.html', 'analise/index.html', CAMINHO_DA_POLITICA]) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
+if (arquivosDoSite.some(a => a.startsWith('quiz/'))) problema('sobrou a pasta quiz/ no site montado (o quiz fica em analise/; #120)');
 
 // ··· 3. Resultado ···
 console.log('Site montado em ' + relative(RAIZ, SITE) + '/');

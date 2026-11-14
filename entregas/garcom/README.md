@@ -1,18 +1,18 @@
 ---
 id: garcom
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: banco-rascunho
-    versao: 3
+    versao: 4
   - id: banco-migracao-001
     versao: 1
   - id: planta-do-banco
     versao: 4
   - id: decisoes
-    versao: 5
+    versao: 10
   - id: funil-01
     versao: 3
   - id: funil-01-planilha-sdr
@@ -20,13 +20,13 @@ depende_de:
   - id: regra-seguranca
     versao: 3
   - id: lacunas
-    versao: 6
+    versao: 7
 desatualizado: true
 ---
 
 # Garçom · rascunho
 
-A função que fica entre as páginas do protótipo e o banco (funis/funil-01/funil.md, "Caminho do dado", passos 2 e 5), escrita como um Cloudflare Worker em JavaScript, sem dependências externas. **Publicada pela primeira vez em 09/11/2026, na v2, no Worker do protótipo, ligada ao banco de teste, só com leads de teste (#102). A v3 e a v4 ainda não foram publicadas** (o Otávio publica pelo roteiro da etapa 35). A v4 só funciona por inteiro depois da migração 001 rodar no Supabase (dados/banco/migracoes/001-v3.sql): antes dela, a porta nova /api/evento responde `servico indisponivel`, e o resto continua igual.
+A função que fica entre as páginas do protótipo e o banco (funis/funil-01/funil.md, "Caminho do dado", passos 2 e 5), escrita como um Cloudflare Worker em JavaScript, sem dependências externas. **Publicada pela primeira vez em 09/11/2026, na v2, no Worker do protótipo, ligada ao banco de teste, só com leads de teste (#102). A v4 está no ar desde 09/11/2026, 19h16** (publicada pelo Otávio pelo roteiro da etapa 35; entregas/prototipo-funil-01/README.md, "Publicações"; até a v4 deste documento, esta frase ainda dizia que a v3 e a v4 não tinham sido publicadas). A v4 só funciona por inteiro depois da migração 001 rodar no Supabase (dados/banco/migracoes/001-v3.sql): antes dela, a porta nova /api/evento responde `servico indisponivel`, e o resto continua igual. **A v5 (decisão #120: o endereço novo e o quiz em /analise/) não foi publicada:** vai ao ar só pelo roteiro entregas/prototipo-funil-01/APLICAR-21.md, que nasce na parte 21.3 do pedido 21, depois de a zona gotriad.com.br estar ativa na Cloudflare.
 
 **Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia em documentos marcados (banco-rascunho, banco-migracao-001 e funil-01-planilha-sdr; regra 11.1). O formato dos pacotes vem da planta (dados/planta/planta.md); desde a v4 o garçom não declara mais a página do quiz, que é quem o chama (23.11).
 
@@ -38,8 +38,19 @@ A função que fica entre as páginas do protótipo e o banco (funis/funil-01/fu
 
 | Arquivo | O que é |
 |---|---|
-| garcom.mjs | O Worker: as três portas em /api/ (duas públicas e a privada), os arquivos do protótipo pelo binding de assets e as funções `conferirPacote`, `conferirEvento`, `lerCursor` e `chaveConfere` |
+| garcom.mjs | O Worker: as três portas em /api/ (duas públicas e a privada), os arquivos do protótipo pelo binding de assets, as funções `conferirPacote`, `conferirEvento`, `lerCursor` e `chaveConfere` e, desde a v5, os redirecionamentos do endereço antigo e do caminho antigo do quiz (`caminhoNovo`) |
 | teste/testar-garcom.mjs | Teste local, com um fetch falso que só registra o que seria chamado e um ASSETS falso |
+
+## O que mudou da versão 4 para a 5
+
+Pedido 21 (prompts/21-dominio-e-caminho-da-analise.md, parte 21.2), 14/11/2026. Decisão do Otávio, 13/11/2026 (base/decisoes.md, #120): o funil vai para https://svsafra.gotriad.com.br e o quiz, para /analise/. Os pontos 1 a 4 da leitura do mentor na #120 são o que este código faz. Nada publicado.
+
+- **No endereço antigo, pedido de página leva ao endereço novo** (302, temporário, porque ainda é protótipo): mesmo caminho, com /quiz virando /analise, e a consulta (tudo depois do `?`) inteira. "Pedido de página" é tudo o que não é /api/. O endereço antigo chega pela variável comum nova `ENDERECO_ANTIGO`; o novo é o da `ORIGEM_PERMITIDA`. Sem a variável, com ela vazia ou ilegível, ou com ela igual ao endereço novo, nenhum pedido muda de endereço: é assim que o teste local e o ensaio continuam valendo.
+- **No endereço novo, /quiz e /quiz/ levam a /analise/** (302), com a consulta inteira. O prefixo é trocado: /quiz/qualquer-coisa leva a /analise/qualquer-coisa. /analise sem a barra final já funcionava pelo binding de assets e não ganhou código (seção "Endereço antigo e caminho novo").
+- **As rotas /api/ nunca são redirecionadas**, em nenhum dos dois endereços: um POST redirecionado se perde, e a planilha do SDR chama a porta privada pelo endereço antigo. A porta privada responde igual nos dois. As portas públicas continuam com a mesma regra de origem, sem mudança de código: como a `ORIGEM_PERMITIDA` passa a ser o endereço novo (entregas/prototipo-funil-01/wrangler.toml), a origem nova é aceita e a antiga, recusada.
+- **noindex em toda resposta, inclusive nos redirecionamentos novos**, que saem sem corpo e com `Cache-Control: no-store`. Nenhum cabeçalho de CORS novo.
+- **Sem laço:** só o endereço antigo leva ao novo; no novo, nada volta ao antigo, e /analise/ não é redirecionado.
+- O resto da v4 continua igual: as conferências dos pacotes, a porta privada, o charset e o registro sem dado pessoal. depende_de fica em dia: decisoes 10 (a #120), banco-rascunho 4 (a v4 do banco foi correção de forma, só comentários do esquema.sql e a documentação do catálogo; as funções que o garçom chama não mudaram) e lacunas 7 (o conflito-17, que este código cita, não mudou da v6 para a v7). Continua desatualizado, pelas bases marcadas.
 
 ## O que mudou da versão 3 para a 4
 
@@ -79,6 +90,8 @@ Decisões #100 e #101 (base/decisoes.md) e o banco v2 (dados/banco/README.md).
 | POST /api/evento | A landing (visita) e a página do quiz (início do quiz e clique no fim), no navegador, a partir da etapa 34 | Porta pública (v4): confere o evento, sem pessoa e sem aceite, e grava pela função `registrar_evento` com a chave publicável |
 | GET /api/planilha/leads-novos | O Apps Script da planilha do SDR (etapa 24) | Porta privada: só com a CHAVE_PLANILHA; devolve os leads novos pela função `leads_para_planilha` com a chave secreta |
 | Outra rota em /api/ | Ninguém | 404 `{"ok":false,"erro":"nao encontrado"}`, sem detalhe |
+| Página pedida pelo endereço antigo (v5) | O navegador de quem ainda tem o endereço antigo | 302 para o endereço novo, no mesmo caminho, com /quiz virando /analise e a consulta inteira |
+| /quiz, /quiz/ e /quiz/qualquer-coisa, no endereço novo (v5) | O navegador de quem ainda tem o caminho antigo | 302 para /analise/, /analise/ e /analise/qualquer-coisa, com a consulta inteira |
 | Todo o resto | O navegador | Arquivos do protótipo, pelo binding de assets (`env.ASSETS.fetch`), com o cabeçalho noindex acrescentado. Sem ASSETS (no teste), 404 simples |
 
 ## Porta pública · POST /api/fim-quiz
@@ -155,6 +168,19 @@ Tudo o que não é /api/ vai para `env.ASSETS.fetch(request)`, o binding de asse
 
 **Para a etapa 23:** a configuração do Worker precisa rodar o garçom antes dos arquivos em todo pedido (`run_worker_first = true` no bloco de assets). Sem isso, a Cloudflare entrega os arquivos direto, sem passar pelo garçom, e eles saem sem o cabeçalho noindex (só com a meta da página).
 
+## Endereço antigo e caminho novo (v5)
+
+Decisão #120. Depois das rotas /api/ e antes dos arquivos, o garçom olha o nome do endereço (o host, sem a porta) e o caminho do pedido:
+
+1. **Endereço antigo.** Se o nome do endereço do pedido é o da variável `ENDERECO_ANTIGO`, a resposta é 302 com `Location` igual a `ORIGEM_PERMITIDA` mais o caminho mais a consulta. O caminho é o mesmo, salvo /quiz, que vira /analise (abaixo). Vale para qualquer página, arquivo ou método que não seja /api/. A comparação não diferencia maiúsculas e ignora a porta. O `#` do endereço não chega ao servidor: é o navegador que o guarda no redirecionamento (conferido num navegador sem tela).
+2. **Caminho antigo do quiz.** No endereço novo (e em qualquer outro nome que não seja o antigo), /quiz e /quiz/ dão 302 para /analise/, e /quiz/qualquer-coisa, para /analise/qualquer-coisa, com a consulta inteira e `Location` relativo (começa por /analise, então nunca sai do site). /quizzes, /quiz-01 e /QUIZ/ não são o caminho antigo e seguem para os arquivos.
+3. **/analise sem a barra final.** Não tem código aqui. O binding de assets da Cloudflare, no modo padrão (`html_handling` em `auto-trailing-slash`, que o wrangler.toml não muda), responde 307 para /analise/ com a consulta inteira, e o garçom acrescenta o noindex como em qualquer arquivo. Conferido no `wrangler dev --local` (4.158.0) em 14/11/2026: `/analise?a=1&b=2` dá 307 com `Location: /analise/?a=1&b=2`. Documentação: "HTML handling" (developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/, atualizada em 23/04/2026).
+4. **Quando nada muda de endereço.** Sem `ENDERECO_ANTIGO`, com ela vazia, com um valor que não é endereço (tem de ser como a `ORIGEM_PERMITIDA`, com `https://` na frente), com ela igual ao endereço novo ou sem `ORIGEM_PERMITIDA`: o item 1 não acontece. O item 2 vale sempre.
+5. **As rotas /api/ ficam de fora**, nos dois endereços. No endereço antigo, a porta privada responde como no novo (a planilha do SDR chama por ele até ser apontada para o novo, passo do Otávio), e as portas públicas aplicam a mesma regra de origem: só a origem nova passa. Depois da publicação, nenhuma página é servida pelo endereço antigo. A exceção é a hora da troca: quem já estava com o quiz aberto no endereço antigo manda a origem antiga, é recusado (403) e vê o aviso de falha do quiz. Por isso a publicação é para uma hora sem teste em andamento (roteiro APLICAR-21). Uma página do endereço novo que chamasse o antigo seria barrada pelo próprio navegador, porque o garçom não manda cabeçalho de CORS nem atende o pré-voo.
+6. **As respostas.** 302, sem corpo, com `Location`, `Cache-Control: no-store` e `X-Robots-Tag: noindex`. O garçom não registra nada no console por redirecionamento.
+
+Em dois saltos, no pior caso: quem pede /analise (sem a barra) pelo endereço antigo recebe 302 para o endereço novo em /analise e, lá, 307 para /analise/.
+
 ## Segredos e variáveis
 
 Só os nomes aparecem no código. Os valores dos segredos moram nas variáveis secretas do Worker safra-prototipo-funil-01 (o cofre) e nunca entram no repositório nem passam por arquivo da máquina ou pelo chat (conexoes.md; nucleo/regras/seguranca.md):
@@ -165,9 +191,10 @@ Só os nomes aparecem no código. Os valores dos segredos moram nas variáveis s
 | SUPABASE_CHAVE_SECRETA | Segredo | Chave secreta nova do Supabase (papel service_role), que só executa `leads_para_planilha` | Só a porta privada |
 | CHAVE_PLANILHA | Segredo | Abre a porta privada; não é chave do Supabase. Mora também nas propriedades do script da planilha. Pelo menos 32 caracteres | Só a porta privada |
 | SUPABASE_URL | Variável comum | Endereço do projeto no Supabase (não é segredo; conexoes.md) | As três portas |
-| ORIGEM_PERMITIDA | Variável comum | O próprio endereço do protótipo, sem barra no fim (exemplo: https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev; conexoes.md, linha da Cloudflare). Se vier com barra no fim, o garçom ignora a barra | As duas portas públicas |
+| ORIGEM_PERMITIDA | Variável comum | O próprio endereço do protótipo, sem barra no fim. Desde a v5, o endereço novo: https://svsafra.gotriad.com.br (#120; até a v4, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev; conexoes.md, linha da Cloudflare). Se vier com barra no fim, o garçom ignora a barra | As duas portas públicas e, desde a v5, o destino do redirecionamento do endereço antigo |
+| ENDERECO_ANTIGO | Variável comum (v5) | O endereço antigo do protótipo, no mesmo formato da de cima: https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. Só o nome do endereço é comparado. Sem ela, nenhum pedido muda de endereço | Só o redirecionamento das páginas |
 
-Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável.
+Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável. Nenhum segredo novo na v5: a variável nova é comum e fica em [vars] do wrangler.toml.
 
 ## O que falta para funcionar
 
@@ -179,6 +206,7 @@ Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável.
 6. **Antes de tráfego real:** proteção contra robô (Turnstile) e limite de pedidos da Cloudflare (Rate Limiting) (log.md, Pendências).
 7. **Decisão do conflito-17** (Júnior e Euclides) e aprovação do Otávio.
 8. **Para a v4:** a migração 001 rodada no Supabase antes de publicar (dados/banco/README.md, "Como aplicar"); a linha da landing no catálogo, sem a qual toda visita volta recusada (pergunta 32.4); a landing e o quiz mandando os eventos para /api/evento (etapa 34); a lista do clique respondida (31.15).
+9. **Para a v5:** a zona gotriad.com.br ativa na conta da Cloudflare e a publicação pelo roteiro entregas/prototipo-funil-01/APLICAR-21.md (parte 21.3 do pedido 21); depois, a planilha do SDR apontada para o endereço novo, passo do Otávio (log.md, Pendências, "Domínio do funil (#120)").
 
 ## Como testar localmente, sem serviço real
 
@@ -186,9 +214,9 @@ Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável.
 node entregas/garcom/teste/testar-garcom.mjs
 ```
 
-Precisa só do Node (18 ou mais novo), sem instalar nada. O teste importa o handler de garcom.mjs e troca o `fetch` por um falso, que só registra o que seria chamado e recusa qualquer endereço que não seja o de mentira; os arquivos vêm de um ASSETS falso. Os valores do ambiente são de mentira, e os endereços ficam num domínio `.invalid`, que não existe. A porta pública usa o pacote do exemplo do README do quiz-01 (entregas/quizzes/quiz-01/pagina/README.md, dados fictícios), lido do próprio README, que já o traz marcado como lead de teste (nome com TESTE na frente, e-mail @teste.invalid; #102), e casos inválidos. A porta /api/evento (v4) usa uma visita, um início do quiz e um clique de mentira, no formato da planta, com uma sessão fictícia, e repete para cada um os casos de recusa (origem, método, tamanho, formato, dado de pessoa, cada etiqueta ausente) e de aceite (utm vazia e fora da lista). A porta privada usa dois leads de mentira com a mesma marca. O teste captura o console e confere que nenhum nome, e-mail, telefone, id_pessoa, cursor ou chave de teste aparece no registro do garçom, que nenhuma resposta vaza detalhe interno, que toda resposta leva noindex e nenhuma leva cabeçalho de CORS (v4), e que HTML, CSS e JavaScript sem charset saem com charset utf-8, com o corpo intacto (v3). O caminho do Workers para a comparação de tempo constante (`crypto.subtle.timingSafeEqual`) é conferido com um timingSafeEqual de mentira, feito com o do próprio Node.
+Precisa só do Node (18 ou mais novo), sem instalar nada. O teste importa o handler de garcom.mjs e troca o `fetch` por um falso, que só registra o que seria chamado e recusa qualquer endereço que não seja o de mentira; os arquivos vêm de um ASSETS falso. Os valores do ambiente são de mentira, e os endereços ficam num domínio `.invalid`, que não existe. A porta pública usa o pacote do exemplo do README do quiz-01 (entregas/quizzes/quiz-01/pagina/README.md, dados fictícios), lido do próprio README, que já o traz marcado como lead de teste (nome com TESTE na frente, e-mail @teste.invalid; #102), e casos inválidos. A porta /api/evento (v4) usa uma visita, um início do quiz e um clique de mentira, no formato da planta, com uma sessão fictícia, e repete para cada um os casos de recusa (origem, método, tamanho, formato, dado de pessoa, cada etiqueta ausente) e de aceite (utm vazia e fora da lista). A porta privada usa dois leads de mentira com a mesma marca. O teste captura o console e confere que nenhum nome, e-mail, telefone, id_pessoa, cursor ou chave de teste aparece no registro do garçom, que nenhuma resposta vaza detalhe interno, que toda resposta leva noindex e nenhuma leva cabeçalho de CORS (v4), e que HTML, CSS e JavaScript sem charset saem com charset utf-8, com o corpo intacto (v3). O caminho do Workers para a comparação de tempo constante (`crypto.subtle.timingSafeEqual`) é conferido com um timingSafeEqual de mentira, feito com o do próprio Node. O endereço antigo e o caminho novo (v5) usam dois endereços de mentira, o novo (o da `ORIGEM_PERMITIDA` do teste) e o antigo (`ENDERECO_ANTIGO`), e conferem: no antigo, cada página leva ao novo por 302, no mesmo caminho, com /quiz virando /analise, a consulta inteira (com parâmetro repetido, vazio, acento codificado e "+"), sem corpo e com noindex; a comparação do nome sem diferenciar maiúsculas e sem a porta; a porta privada respondendo no antigo e no novo; as duas portas públicas sem redirecionamento em nenhum dos dois, com a origem nova aceita e a antiga recusada; no novo, /quiz e /quiz/ levando a /analise/ com a consulta, e os caminhos parecidos (/quizzes/, /quiz-01/, /QUIZ/) seguindo para os arquivos; sem a variável do endereço antigo (ou com ela vazia, ilegível ou igual ao novo), nada mudando de endereço; e, seguindo o `Location`, um salto só até a página, sem laço.
 
-### Resultado do teste (09/11/2026, v4)
+### Resultado do teste (14/11/2026, v5)
 
 ```
 Resumo por grupo (a saída inteira, linha a linha, sai ao rodar o comando acima):
@@ -211,6 +239,13 @@ Resumo por grupo (a saída inteira, linha a linha, sai ao rodar o comando acima)
   porta privada (planilha) ............. 62  chave e cofre; timingSafeEqual; método; cursor e limite;
                                             respostas do banco fora do formato
   rotas e arquivos ..................... 22  rotas /api/ desconhecidas; ASSETS; noindex; charset utf-8
+  endereço antigo e caminho novo (v5) . 107  no endereço antigo, página leva ao novo por 302, no mesmo caminho,
+                                            com /quiz virando /analise e a consulta inteira (36); as rotas
+                                            /api/ nunca redirecionadas, a porta privada nos dois endereços, a
+                                            origem nova aceita e a antiga recusada (21); no endereço novo,
+                                            /quiz e /quiz/ levam a /analise/, e o resto segue para os arquivos
+                                            (29); sem a variável do endereço antigo, nada muda de endereço
+                                            (18); sem laço, um salto só (3)
   conferências gerais ................... 5  noindex em toda resposta; nenhuma com CORS; chave secreta nunca
                                             nas portas públicas; registro sem dado pessoal, cursor nem
                                             segredo
@@ -229,15 +264,27 @@ O que seria pedido pela porta privada (fetch falso):
   endereço: {SUPABASE_URL}/rest/v1/rpc/leads_para_planilha
   método: POST · cabeçalhos: Content-Type, Accept, apikey · corpo: apos_gravado_em, apos_id_pessoa, quantos
 
-Tudo certo: 253 de 253 conferências passaram
+Tudo certo: 360 de 360 conferências passaram
 ```
+
+Eram 253 de 253 na v4 (09/11/2026); as 107 novas são as do grupo "endereço antigo e caminho novo" (quatro delas vieram da revisão independente: o nome do endereço antigo com ponto no fim e a ORIGEM_PERMITIDA que não é texto).
 
 O teste não cobre o banco: o fetch falso não executa as funções. A recusa do clique sem fim do quiz é simulada (o banco responde 400); a conferência de verdade de `registrar_evento` está em dados/banco/testar-migracao.mjs (PGlite), e a chamada de verdade às três funções, com cada chave, fica para o ensaio geral (etapa 35) e para o teste do Otávio no roteiro da etapa 35.
 
+**Mudança de caminho na v5 (#120):** 14 conferências da v4 usavam /quiz/ como exemplo de página servida pelos arquivos (a página que vai para o ASSETS e ganha noindex, as dez do charset, a do arquivo sem Content-Type, a do ASSETS com falha e a lista de pedidos que o ASSETS recebeu). Na v5, /quiz/ é redirecionado; essas 14 passaram a pedir /analise/, onde o quiz mora, com o mesmo valor esperado de antes. /quiz/ ganhou conferências próprias no grupo novo. Nenhuma conferência saiu, e as outras 239 da v4 não mudaram.
+
 **Mudança de expectativa na v4 (22.2):** até a v3, o caso "pré-voo do navegador (OPTIONS)" esperava 204 e uma segunda conferência esperava `Access-Control-Allow-Origin` igual à própria origem. Na v4 o pré-voo saiu: o caso passa a esperar 405 com `Allow: POST` e nenhum cabeçalho de CORS, e entra o OPTIONS de outra origem (403). O caso "tipo proposto, ainda não ligado (interesse_pos_relatorio)" continua esperando 422 em /api/fim-quiz, agora com o nome "clique no fim do quiz pela porta do fim do quiz", porque o clique foi ligado só em /api/evento. Os outros 131 casos da v3 continuam com a mesma expectativa.
 
-**Dry-run do Worker** (09/11/2026, wrangler 4.158.0, sem login e sem publicar; entregas/prototipo-funil-01/README.md, "Como conferir com o dry-run"): o Worker monta com o garçom v4, 18,10 KiB (5,27 KiB comprimido; eram 15,91 KiB na v2), 9 arquivos do site e as mesmas ligações (ASSETS, SUPABASE_URL, ORIGEM_PERMITIDA).
+**Dry-run do Worker** (09/11/2026, wrangler 4.158.0, sem login e sem publicar; entregas/prototipo-funil-01/README.md, "Como conferir com o dry-run"): o Worker monta com o garçom v4, 18,10 KiB (5,27 KiB comprimido; eram 15,91 KiB na v2), 9 arquivos do site e as mesmas ligações (ASSETS, SUPABASE_URL, ORIGEM_PERMITIDA). **Com o garçom v5** (14/11/2026, wrangler 4.158.0, do mesmo jeito): 19,21 KiB (5,60 KiB comprimido), 384 arquivos lidos da pasta do site e quatro ligações (ASSETS, SUPABASE_URL, ORIGEM_PERMITIDA e ENDERECO_ANTIGO).
+
+### Como testar o endereço antigo no wrangler dev local (v5)
+
+Descoberto rodando o `wrangler dev --local` (4.158.0) em 14/11/2026, com a configuração copiada para uma pasta temporária fora do repositório e segredos de mentira, como o ensaio faz:
+
+- **Sem o bloco `[[routes]]` na cópia da configuração,** o garçom enxerga como nome do endereço o que vier no cabeçalho Host do pedido. Então `curl -H "Host: safra-prototipo-funil-01.sistemadevendassafra.workers.dev" "http://127.0.0.1:PORTA/quiz/?utm_source=bio"` devolve 302 para o endereço novo em /analise/?utm_source=bio, e o mesmo pedido em /api/planilha/leads-novos devolve 401 (sem a chave), não 302. No Node, `http.request` com o cabeçalho Host funciona; o `fetch` do Node ignora o Host e não serve para isto. Num navegador sem tela, o nome antigo pode ser mapeado para 127.0.0.1 (no Chromium, `--host-resolver-rules`), e a página aberta por `http://nome-antigo:PORTA/` é levada ao endereço novo.
+- **Com o bloco `[[routes]]` na cópia,** o wrangler dev entrega ao garçom sempre o nome da rota (svsafra.gotriad.com.br), qualquer que seja o Host do pedido, e troca por `http://svsafra.gotriad.com.br` o Origin e o Referer que tiverem o nome do próprio servidor local. Com isso o endereço antigo não dá para simular, e um POST da página local à porta pública chega com uma origem que não é a `ORIGEM_PERMITIDA` local e é recusado (403). Para ensaiar em 127.0.0.1, a cópia temporária da configuração precisa ir sem o bloco `[[routes]]`.
+- Nos dois casos o endereço chega com `http://`, porque o servidor local não tem certificado; na Cloudflare, chega com `https://`.
 
 ## Perguntas
 
-prompts/07-fila-perguntas.md, 18.1 a 18.10; prompts/08-fila-perguntas.md, Etapa 22; prompts/11-fila-perguntas.md, Etapa 33.
+prompts/07-fila-perguntas.md, 18.1 a 18.10; prompts/08-fila-perguntas.md, Etapa 22; prompts/11-fila-perguntas.md, Etapa 33. Da v5: log.md, entrada da 21.2 (14/11/2026), "Perguntas para o Otávio".

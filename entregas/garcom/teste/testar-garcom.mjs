@@ -1,4 +1,4 @@
-// Teste local do garçom v4 · não toca nenhum serviço real
+// Teste local do garçom v5 · não toca nenhum serviço real
 // Rodar da raiz do repositório:  node entregas/garcom/teste/testar-garcom.mjs
 //
 // Importa o handler de entregas/garcom/garcom.mjs e o chama nas quatro partes do Worker:
@@ -7,7 +7,10 @@
 //   · porta pública POST /api/evento (v4), com a visita, o início do quiz e o clique no fim do
 //     quiz no formato da planta (dados/planta/planta.md v4) e casos inválidos;
 //   · porta privada GET /api/planilha/leads-novos, com chave, cursor e limite;
-//   · arquivos do protótipo, com um ASSETS falso.
+//   · arquivos do protótipo, com um ASSETS falso;
+//   · endereço antigo e caminho novo (v5; decisão #120): no endereço antigo, a página leva (302) ao
+//     novo, com /quiz virando /analise e a consulta inteira; no novo, /quiz leva a /analise/; as rotas
+//     /api/ nunca são redirecionadas; sem a variável do endereço antigo, nada muda de endereço.
 // O fetch é falso: só registra o que seria chamado e nunca sai da máquina.
 // Os valores do env são de mentira e não apontam para lugar nenhum (domínio .invalid).
 // Leads de teste com nome começando por TESTE e e-mail @teste.invalid (decisão #102).
@@ -15,7 +18,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import garcom, { comCharset } from '../garcom.mjs';
+import garcom, { comCharset, caminhoNovo } from '../garcom.mjs';
 
 const aqui = dirname(fileURLToPath(import.meta.url));
 const raiz = join(aqui, '..', '..', '..');
@@ -500,7 +503,8 @@ await caso('rota /api sozinha', pedido({ metodo: 'GET', tipo: null, caminho: '/a
 await caso('rota /api/fim-quiz/ com barra no fim', pedido({ corpo: copia(), caminho: '/api/fim-quiz/' }), 404, 0);
 { pedidosAosArquivos = [];
   const env = { ...ENV, ASSETS };
-  for (const caminho of ['/', '/b/', '/quiz/']) {
+  // v5 (#120): o quiz mora em /analise/; /quiz/ agora é redirecionado e tem os seus casos mais abaixo
+  for (const caminho of ['/', '/b/', '/analise/']) {
     chamadas = [];
     const r = await garcom.fetch(new Request(ORIGEM + caminho), env);
     const texto = await r.text();
@@ -509,7 +513,7 @@ await caso('rota /api/fim-quiz/ com barra no fim', pedido({ corpo: copia(), cami
     if (r.headers.get('X-Robots-Tag') !== 'noindex') semNoindex.push('arquivo ' + caminho);
     marcar(ok, 'arquivo ' + caminho + ' vai para ASSETS e ganha noindex, mantendo os outros cabeçalhos (status ' + r.status + ')');
   }
-  marcar(JSON.stringify(pedidosAosArquivos) === JSON.stringify(['/', '/b/', '/quiz/']), 'ASSETS recebeu só os pedidos de arquivo, nunca os de /api/'); }
+  marcar(JSON.stringify(pedidosAosArquivos) === JSON.stringify(['/', '/b/', '/analise/']), 'ASSETS recebeu só os pedidos de arquivo, nunca os de /api/'); }
 { chamadas = [];
   pedidosAosArquivos = [];
   const r = await garcom.fetch(pedido({ corpo: copia() }), { ...ENV, ASSETS });
@@ -535,20 +539,140 @@ await caso('rota /api/fim-quiz/ com barra no fim', pedido({ corpo: copia(), cami
     ['application/json', 'application/json']
   ];
   for (const [veio, esperado] of casos) {
-    const r = await garcom.fetch(new Request(ORIGEM + '/quiz/'), { ...ENV, ASSETS: assetsCom(veio) });
+    const r = await garcom.fetch(new Request(ORIGEM + '/analise/'), { ...ENV, ASSETS: assetsCom(veio) });
     const bytes = new Uint8Array(await r.arrayBuffer());
     const corpoIgual = new TextDecoder('utf-8').decode(bytes) === ACENTOS;
     if (r.headers.get('X-Robots-Tag') !== 'noindex') semNoindex.push('charset ' + veio);
     marcar(r.status === 200 && r.headers.get('Content-Type') === esperado && corpoIgual,
       'arquivo com Content-Type "' + veio + '" sai como "' + r.headers.get('Content-Type') + '", corpo com acentos intacto');
   }
-  const r = await garcom.fetch(new Request(ORIGEM + '/quiz/'), { ...ENV, ASSETS: assetsCom(null) });
+  const r = await garcom.fetch(new Request(ORIGEM + '/analise/'), { ...ENV, ASSETS: assetsCom(null) });
   marcar(r.status === 200 && r.headers.get('Content-Type') === null, 'arquivo sem Content-Type continua sem (o garçom não inventa tipo)');
   marcar(comCharset('text/html;') === 'text/html; charset=utf-8' && comCharset('text/css ') === 'text/css; charset=utf-8' && comCharset('') === '' && comCharset(null) === null,
     'comCharset: ";" ou espaço no fim, vazio e nulo');
 }
 await caso('arquivo sem ASSETS (teste): 404 simples', new Request(ORIGEM + '/'), 404, 0);
-await caso('ASSETS com falha: 502 simples', new Request(ORIGEM + '/quiz/'), 502, 0, { env: { ...ENV, ASSETS: { fetch: async () => { throw new Error('falha de mentira'); } } } });
+await caso('ASSETS com falha: 502 simples', new Request(ORIGEM + '/analise/'), 502, 0, { env: { ...ENV, ASSETS: { fetch: async () => { throw new Error('falha de mentira'); } } } });
+
+// ════════ Endereço antigo e caminho novo (v5; decisão #120) ════════
+// O endereço novo é o da ORIGEM_PERMITIDA; o antigo chega pela variável ENDERECO_ANTIGO. Os dois são
+// de mentira (domínio .invalid). Nenhum caso daqui chama o banco, salvo os da porta privada e os
+// da porta pública aceita.
+
+const ANTIGO = 'https://antigo.exemplo.invalid';
+const ENV_V5 = { ...ENV, ASSETS, ENDERECO_ANTIGO: ANTIGO };
+const UTM = '?utm_source=bio&utm_campaign=funil-01&id_sessao=sessao-teste-0001';
+// Um pedido que tem de ser levado (302) ao destino, sem pedir arquivo e sem corpo
+async function leva(nome, req, destino, env = ENV_V5) {
+  pedidosAosArquivos = [];
+  const { r, texto } = await caso(nome, req, 302, 0, { env });
+  marcar(r.headers.get('Location') === destino && pedidosAosArquivos.length === 0 && texto === '' && r.headers.get('Cache-Control') === 'no-store',
+    nome + ': Location ' + String(r.headers.get('Location')).replace(ORIGEM, '{endereço novo}') + ', sem pedir arquivo, sem corpo e sem guardar');
+}
+// Um pedido de página que tem de ir para os arquivos, sem redirecionar
+async function ficaNosArquivos(nome, req, caminhoEsperado, env = ENV_V5) {
+  pedidosAosArquivos = [];
+  const { r } = await caso(nome, req, 200, 0, { env });
+  marcar(r.headers.get('Location') === null && JSON.stringify(pedidosAosArquivos) === JSON.stringify([caminhoEsperado]),
+    nome + ': sem Location, e o ASSETS recebeu ' + JSON.stringify(pedidosAosArquivos));
+}
+
+// 24. No endereço antigo, pedido de página leva ao novo, no mesmo caminho, com a consulta inteira
+await leva('endereço antigo: / leva ao novo', new Request(ANTIGO + '/'), ORIGEM + '/');
+await leva('endereço antigo: / com as utm e o id_sessao', new Request(ANTIGO + '/' + UTM), ORIGEM + '/' + UTM);
+await leva('endereço antigo: /quiz/ com as utm e o id_sessao vira /analise/', new Request(ANTIGO + '/quiz/' + UTM), ORIGEM + '/analise/' + UTM);
+await leva('endereço antigo: /quiz sem a barra vira /analise/', new Request(ANTIGO + '/quiz'), ORIGEM + '/analise/');
+await leva('endereço antigo: /quiz/fontes/arquivo vira /analise/fontes/arquivo', new Request(ANTIGO + '/quiz/fontes/inter.woff2?v=1'), ORIGEM + '/analise/fontes/inter.woff2?v=1');
+await leva('endereço antigo: /analise/ com consulta', new Request(ANTIGO + '/analise/?a=1&b=2'), ORIGEM + '/analise/?a=1&b=2');
+await leva('endereço antigo: /politica-de-privacidade/', new Request(ANTIGO + '/politica-de-privacidade/'), ORIGEM + '/politica-de-privacidade/');
+await leva('endereço antigo: arquivo do programa (/assets/...)', new Request(ANTIGO + '/assets/index.js'), ORIGEM + '/assets/index.js');
+await leva('endereço antigo: caminho que não existe', new Request(ANTIGO + '/nao-existe'), ORIGEM + '/nao-existe');
+{ const consulta = '?a=1&b=2&c=%C3%A1+x&vazio=&a=3&utm_source=bio';
+  await leva('endereço antigo: consulta com repetido, vazio, acento codificado e "+", preservada inteira', new Request(ANTIGO + '/quiz/' + consulta), ORIGEM + '/analise/' + consulta); }
+await leva('endereço antigo com maiúsculas no pedido e na variável', new Request('https://ANTIGO.Exemplo.INVALID/quiz/?a=1'), ORIGEM + '/analise/?a=1',
+  { ...ENV_V5, ENDERECO_ANTIGO: 'https://Antigo.EXEMPLO.invalid' });
+await leva('endereço antigo com porta no pedido (como no wrangler dev local)', new Request('http://antigo.exemplo.invalid:8787/quiz/?a=1'), ORIGEM + '/analise/?a=1');
+await leva('endereço antigo com ponto no fim do nome', new Request('https://antigo.exemplo.invalid./quiz/?a=1'), ORIGEM + '/analise/?a=1');
+await ficaNosArquivos('ORIGEM_PERMITIDA que não é texto: a página abre, sem exceção', new Request(ORIGEM + '/analise/'), '/analise/', { ...ENV_V5, ORIGEM_PERMITIDA: 12345 });
+await leva('ENDERECO_ANTIGO com barra no fim', new Request(ANTIGO + '/quiz/'), ORIGEM + '/analise/', { ...ENV_V5, ENDERECO_ANTIGO: ANTIGO + '/' });
+await leva('ORIGEM_PERMITIDA com barra no fim: o destino não ganha barra dobrada', new Request(ANTIGO + '/quiz/?a=1'), ORIGEM + '/analise/?a=1', { ...ENV_V5, ORIGEM_PERMITIDA: ORIGEM + '/' });
+await leva('endereço antigo: página pedida por POST também é levada', new Request(ANTIGO + '/', { method: 'POST', body: 'a=1' }), ORIGEM + '/');
+await leva('endereço antigo: página pedida por HEAD também é levada', new Request(ANTIGO + '/quiz/', { method: 'HEAD' }), ORIGEM + '/analise/');
+
+// 25. As rotas /api/ nunca são redirecionadas, em nenhum dos dois endereços
+const pedidoEm = (base, caminho, { metodo = 'POST', origem = ORIGEM, corpo } = {}) => {
+  const cabecalhos = { 'Content-Type': 'application/json' };
+  if (origem) cabecalhos.Origin = origem;
+  return new Request(base + caminho, { method: metodo, headers: cabecalhos, body: corpo === undefined ? undefined : JSON.stringify(corpo) });
+};
+const planilhaEm = (base, chave) => new Request(base + '/api/planilha/leads-novos', { headers: chave ? { 'X-Chave-Planilha': chave } : {} });
+respostaDoBanco = { status: 200, corpo: LEADS_FALSOS };
+{ const { r, texto } = await caso('endereço antigo: /api/planilha responde com a chave (a planilha do SDR chama por ele)', planilhaEm(ANTIGO, CHAVE_PLANILHA), 200, 1, { env: ENV_V5, podeTerLeads: true });
+  marcar(r.headers.get('Location') === null && JSON.parse(texto).leads.length === 2, 'endereço antigo: /api/planilha devolve os leads, sem Location'); }
+await caso('endereço antigo: /api/planilha sem a chave dá 401, não 302', planilhaEm(ANTIGO, null), 401, 0, { env: ENV_V5 });
+{ const { r, texto } = await caso('endereço novo, com a variável do antigo: /api/planilha responde com a chave', planilhaEm(ORIGEM, CHAVE_PLANILHA), 200, 1, { env: ENV_V5, podeTerLeads: true });
+  marcar(r.headers.get('Location') === null && JSON.parse(texto).leads.length === 2, 'endereço novo: /api/planilha devolve os leads, sem Location'); }
+await caso('endereço novo, com a variável do antigo: /api/planilha sem a chave dá 401', planilhaEm(ORIGEM, null), 401, 0, { env: ENV_V5 });
+respostaDoBanco = { status: 204 };
+for (const [rota, corpo] of [['/api/fim-quiz', copia], ['/api/evento', () => evento('visita')]]) {
+  // origem nova aceita, nos dois endereços; origem antiga recusada, nos dois; nunca 302
+  await caso('endereço novo: ' + rota + ' com a origem nova é aceito', pedidoEm(ORIGEM, rota, { corpo: corpo() }), 201, 1, { env: ENV_V5 });
+  await caso('endereço novo: ' + rota + ' com a origem antiga é recusado', pedidoEm(ORIGEM, rota, { origem: ANTIGO, corpo: corpo() }), 403, 0, { env: ENV_V5 });
+  await caso('endereço antigo: ' + rota + ' com a origem antiga é recusado, não redirecionado', pedidoEm(ANTIGO, rota, { origem: ANTIGO, corpo: corpo() }), 403, 0, { env: ENV_V5 });
+  await caso('endereço antigo: ' + rota + ' com a origem nova responde como no novo, sem redirecionar', pedidoEm(ANTIGO, rota, { corpo: corpo() }), 201, 1, { env: ENV_V5 });
+  await caso('endereço antigo: ' + rota + ' sem origem é recusado, não redirecionado', pedidoEm(ANTIGO, rota, { origem: null, corpo: corpo() }), 403, 0, { env: ENV_V5 });
+  await caso('endereço antigo: GET em ' + rota + ' dá 405, não 302', new Request(ANTIGO + rota, { headers: { Origin: ORIGEM } }), 405, 0, { env: ENV_V5 });
+}
+await caso('endereço antigo: rota /api/ desconhecida dá 404, não 302', new Request(ANTIGO + '/api/outra-coisa'), 404, 0, { env: ENV_V5 });
+await caso('endereço antigo: /api sozinha dá 404, não 302', new Request(ANTIGO + '/api'), 404, 0, { env: ENV_V5 });
+await caso('endereço antigo: /api/quiz dá 404, não 302', new Request(ANTIGO + '/api/quiz/'), 404, 0, { env: ENV_V5 });
+
+// 26. No endereço novo, /quiz e /quiz/ levam a /analise/, com a consulta inteira; o resto não muda
+await leva('endereço novo: /quiz leva a /analise/', new Request(ORIGEM + '/quiz'), '/analise/');
+await leva('endereço novo: /quiz/ leva a /analise/', new Request(ORIGEM + '/quiz/'), '/analise/');
+await leva('endereço novo: /quiz/?a=1&b=2 leva a /analise/?a=1&b=2', new Request(ORIGEM + '/quiz/?a=1&b=2'), '/analise/?a=1&b=2');
+await leva('endereço novo: /quiz com as utm e o id_sessao', new Request(ORIGEM + '/quiz' + UTM), '/analise/' + UTM);
+await leva('endereço novo: /quiz/poster-junior.jpg leva a /analise/poster-junior.jpg (o prefixo é trocado)', new Request(ORIGEM + '/quiz/poster-junior.jpg'), '/analise/poster-junior.jpg');
+await leva('endereço novo: /quiz//outro.exemplo.invalid não sai do site', new Request(ORIGEM + '/quiz//outro.exemplo.invalid'), '/analise//outro.exemplo.invalid');
+await ficaNosArquivos('endereço novo: /analise/ com consulta vai para os arquivos', new Request(ORIGEM + '/analise/?a=1&b=2'), '/analise/');
+await ficaNosArquivos('endereço novo: /analise sem a barra vai para os arquivos (o binding de assets acerta a barra)', new Request(ORIGEM + '/analise?a=1'), '/analise');
+await ficaNosArquivos('endereço novo: / vai para os arquivos', new Request(ORIGEM + '/' + UTM), '/');
+for (const caminho of ['/quizzes/', '/quiz-01/', '/QUIZ/', '/a/quiz/', '/quiz.html']) {
+  await ficaNosArquivos('endereço novo: ' + caminho + ' não é o caminho antigo do quiz', new Request(ORIGEM + caminho), caminho);
+}
+marcar(caminhoNovo('/quiz') === '/analise/' && caminhoNovo('/quiz/') === '/analise/' && caminhoNovo('/quiz/a/b') === '/analise/a/b'
+  && caminhoNovo('/') === '/' && caminhoNovo('/analise/') === '/analise/' && caminhoNovo('/analise') === '/analise' && caminhoNovo('/quizzes') === '/quizzes',
+  'caminhoNovo: /quiz, /quiz/ e /quiz/a/b trocam o prefixo; os outros caminhos ficam como vieram');
+
+// 27. Sem a variável do endereço antigo (ou com ela igual ao novo, vazia ou ilegível), nada muda de endereço
+const ENV_SEM_ANTIGO = { ...ENV, ASSETS };
+await ficaNosArquivos('sem ENDERECO_ANTIGO: página pedida pelo nome antigo não é levada a lugar nenhum', new Request(ANTIGO + '/' + UTM), '/', ENV_SEM_ANTIGO);
+await leva('sem ENDERECO_ANTIGO: /quiz/ pelo nome antigo só troca o caminho, no mesmo endereço', new Request(ANTIGO + '/quiz/?a=1'), '/analise/?a=1', ENV_SEM_ANTIGO);
+await ficaNosArquivos('ENDERECO_ANTIGO vazio: nada muda de endereço', new Request(ANTIGO + '/'), '/', { ...ENV_V5, ENDERECO_ANTIGO: '' });
+await ficaNosArquivos('ENDERECO_ANTIGO que não é endereço: nada muda de endereço', new Request(ANTIGO + '/'), '/', { ...ENV_V5, ENDERECO_ANTIGO: 'antigo.exemplo.invalid' });
+await ficaNosArquivos('ENDERECO_ANTIGO igual ao endereço novo: nada muda de endereço (sem laço)', new Request(ORIGEM + '/'), '/', { ...ENV_V5, ENDERECO_ANTIGO: ORIGEM });
+await ficaNosArquivos('ENDERECO_ANTIGO igual ao novo, com maiúsculas e barra: nada muda de endereço', new Request(ORIGEM + '/analise/'), '/analise/', { ...ENV_V5, ENDERECO_ANTIGO: ORIGEM.toUpperCase().replace('HTTPS', 'https') + '/' });
+await ficaNosArquivos('sem ORIGEM_PERMITIDA: a página do nome antigo não tem para onde ser levada', new Request(ANTIGO + '/'), '/', { ...ENV_V5, ORIGEM_PERMITIDA: '' });
+await ficaNosArquivos('endereço novo, com a variável do antigo: a página não é levada ao antigo', new Request(ORIGEM + '/politica-de-privacidade/'), '/politica-de-privacidade/');
+await ficaNosArquivos('outro nome qualquer (o 127.0.0.1 do ensaio), com a variável do antigo: página servida', new Request('http://127.0.0.1:8787/analise/?a=1'), '/analise/');
+
+// 28. Sem laço: seguindo o Location, um salto só, e a chegada é uma página (200)
+async function seguir(inicio, env = ENV_V5) {
+  let endereco = inicio, saltos = 0, r;
+  for (;;) {
+    r = await garcom.fetch(new Request(endereco), env);
+    if (r.status !== 302 || saltos > 5) break;
+    endereco = new URL(r.headers.get('Location'), endereco).href;
+    saltos++;
+  }
+  return { endereco, saltos, status: r.status };
+}
+{ const a = await seguir(ANTIGO + '/quiz' + UTM);
+  marcar(a.saltos === 1 && a.status === 200 && a.endereco === ORIGEM + '/analise/' + UTM, 'sem laço: do endereço antigo em /quiz ao novo em /analise/ num salto só, com a consulta inteira (' + a.saltos + ' salto, status ' + a.status + ')');
+  const b = await seguir(ORIGEM + '/quiz/' + UTM);
+  marcar(b.saltos === 1 && b.status === 200 && b.endereco === ORIGEM + '/analise/' + UTM, 'sem laço: no endereço novo, de /quiz/ a /analise/ num salto só (' + b.saltos + ' salto, status ' + b.status + ')');
+  const c = await seguir(ANTIGO + '/');
+  marcar(c.saltos === 1 && c.status === 200 && c.endereco === ORIGEM + '/', 'sem laço: do endereço antigo em / ao novo em / num salto só (' + c.saltos + ' salto, status ' + c.status + ')'); }
 
 // ════════ Conferências gerais ════════
 

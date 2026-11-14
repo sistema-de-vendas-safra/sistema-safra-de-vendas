@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-11
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -43,6 +43,8 @@ O passo a passo para o Otávio levar ao protótipo que já está no ar o que as 
 **Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (a migração, o banco, o garçom, as páginas, a planilha e o protótipo; regra 11.1). Tudo o que está aqui foi ensaiado na máquina, sem serviço real: o ensaio geral (nucleo/ferramentas/ensaio/, v4) roda a migração duas vezes sobre dados como os de hoje, o catálogo, o garçom v4, as páginas e a planilha v2, e deu 145 de 145, duas vezes.
 
 **A ordem importa.** O banco antes de tudo: o garçom v4 chama a função nova do banco (registrar_evento), que só existe depois da migração (33.4), e as páginas novas mandam o quiz-01 versão 2 e a landing-page-02 versão 1, que só existem depois do catálogo (34.4). Publicar antes deixa a visita, o início e o fim do quiz novo recusados. Nada se grava errado, mas o teste não fecha.
+
+**Versão 3 (14/11/2026; pedido 21, parte 21.2; decisão #120).** Só um aviso no alto do passo 4.3: não se publica mais por ele; a publicação é pelo roteiro APLICAR-21.md. O resto do roteiro não mudou e continua ensinando o endereço antigo e o caminho /quiz/, que era o que valia quando foi escrito.
 
 **Versão 2 (12/11/2026).** A página antes do quiz agora é a landing-page-02, a página de vendas, em /, no lugar das variantes A e B da landing-page-01; o /b/ saiu do site. Mudaram: a parte 1 (puxar os commits que o Claude mandou direto ao GitHub), o 2.6 (quatro linhas no catálogo), o 4.3 (a mensagem do montador e o que aparece em /), a parte 6 (os três testes entram por / e pelos botões novos) e o 6.5 (a visita como landing-page-02).
 
@@ -274,6 +276,8 @@ nucleo/ferramentas/prototipo/node_modules/.bin/wrangler whoami
 **Tempo:** 30 s.
 
 ### 4.3 · Montar e publicar, num comando só
+
+**Desde 14/11/2026 (pedido 21, decisão #120), não publicar por este passo.** O wrangler.toml passou a ligar o endereço novo, svsafra.gotriad.com.br. Publicar antes de a zona gotriad.com.br estar ativa na Cloudflare derruba o site: o Worker novo vai ao ar antes de o endereço novo existir, e o endereço antigo passa a levar a ele. A publicação é só pelo roteiro APLICAR-21.md, nesta pasta.
 
 O mesmo comando do LIGAR.md (fim do passo 3.7): monta o site a partir das entregas e, só se a montagem der certo, publica.
 

@@ -1,7 +1,7 @@
 // Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v4), sem rede de verdade.
 // Uso: node nucleo/ferramentas/prints/testar-quiz-01.js
-// A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /quiz/ (como no site
-// do protótipo), com as fontes em /quiz/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
+// A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /analise/ (como no site
+// do protótipo, desde a decisão #120; antes, em /quiz/), com as fontes em /analise/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
 // Os POST para /api/fim-quiz e /api/evento são interceptados pelo navegador sem tela e respondidos aqui:
 // nada sai para o garçom nem para o Supabase. Cada pacote recebido passa pelas mesmas conferências do
 // garçom v4 (conferirPacote e conferirEvento, importadas de entregas/garcom/garcom.mjs).
@@ -55,16 +55,16 @@ const FORMATO_SESSAO = /^sessao-[a-z0-9-]{1,60}$/;
 // nada disto pode aparecer no console da página
 const DADO_PESSOAL = /TESTE|teste\.invalid|90000|pacote fim_quiz|"pessoa"/;
 
-// Servidorzinho só para o teste: serve a pasta da página em /quiz/ e as fontes da lista em /quiz/fontes/, nada mais
+// Servidorzinho só para o teste: serve a pasta da página em /analise/ e as fontes da lista em /analise/fontes/, nada mais
 const TIPOS = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
 function servir() {
   const srv = http.createServer((req, res) => {
     const u = new URL(req.url, 'http://127.0.0.1');
     let arq = null;
-    const fonte = u.pathname.startsWith('/quiz/fontes/') && LISTA_FONTES.find(f => '/quiz/fontes/' + f.arquivo === u.pathname);
+    const fonte = u.pathname.startsWith('/analise/fontes/') && LISTA_FONTES.find(f => '/analise/fontes/' + f.arquivo === u.pathname);
     if (fonte) arq = path.join(FONTES, 'node_modules', fonte.pacote, 'files', fonte.arquivo);
     else {
-      const nome = u.pathname === '/quiz/' ? 'index.html' : u.pathname.startsWith('/quiz/') ? u.pathname.slice(6) : null;
+      const nome = u.pathname === '/analise/' ? 'index.html' : u.pathname.startsWith('/analise/') ? u.pathname.slice(9) : null;
       arq = nome && path.join(PASTA, path.normalize(nome));
       if (arq && !arq.startsWith(PASTA)) arq = null;
     }
@@ -202,7 +202,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
   fs.mkdirSync(PRINTS, { recursive: true });
   const srv = await servir();
   BASE = 'http://127.0.0.1:' + srv.address().port + '/';
-  const PAGINA = BASE + 'quiz/' + BUSCA;
+  const PAGINA = BASE + 'analise/' + BUSCA;
   const browser = await chromium.launch({ executablePath: acharChromium() });
 
   // A barra fixa do rodapé (só no celular) aparece se, e só se, o botão da abertura está fora da tela ou sob o cabeçalho
@@ -292,7 +292,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(doTipo(t, 'interesse_pos_relatorio').length === 0, 'exemplo: nenhum clique mandado sem clique');
     conferir(semDadoNoConsole(t), 'exemplo: console sem o pacote e sem dado de pessoa');
     conferir(t.externas.length === 0, 'exemplo: nenhuma requisição para outro endereço' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
-    conferir(LISTA_FONTES.filter(f => !f.arquivo.startsWith('permanent-marker')).every(f => t.pedidos.includes(BASE + 'quiz/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /quiz/fontes/, junto com a página (10.7; a de mão só no relatório)');
+    conferir(LISTA_FONTES.filter(f => !f.arquivo.startsWith('permanent-marker')).every(f => t.pedidos.includes(BASE + 'analise/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /analise/fontes/, junto com a página (10.7; a de mão só no relatório)');
     if (largura === 1440) console.log('  pacote do exemplo: ' + JSON.stringify(p) + '\n  início do quiz: ' + JSON.stringify(ini[0] && ini[0].pacote));
     await t.ctx.close();
 
@@ -564,7 +564,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(m.escolha === medicao.ESCOLHAS.aceitar && m.guardados === 1 && !m.aviso, rotulo + ' · Aceitar: guarda só "aceito" e o aviso some');
     const limpa = m.camada.find(x => x && 'pagina_limpa' in x);
     const camadaTexto = JSON.stringify(m.camada);
-    conferir(limpa && limpa.pagina_limpa === BASE + 'quiz/' + BUSCA && !camadaTexto.includes('id_sessao') && !camadaTexto.includes(SESSAO_TESTE),
+    conferir(limpa && limpa.pagina_limpa === BASE + 'analise/' + BUSCA && !camadaTexto.includes('id_sessao') && !camadaTexto.includes(SESSAO_TESTE),
       rotulo + ' · Aceitar: pagina_limpa sem o id_sessao e sem o # (' + (limpa && limpa.pagina_limpa.replace(BASE, '/')) + '); nada da camada de dados tem o código da visita');
     conferir(limpa && limpa.origem_limpa === BASE + '?utm_source=bio', rotulo + ' · Aceitar: origem_limpa sem o id_sessao da página de origem (' + (limpa && limpa.origem_limpa.replace(BASE, '/')) + ')');
     conferir(end.searchParams.get('id_sessao') === null && end.searchParams.get('utm_source') === 'bio' && end.searchParams.get('utm_campaign') === 'funil-01' && end.hash === '#abertura',

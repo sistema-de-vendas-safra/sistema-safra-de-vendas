@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-ligar
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -37,6 +37,8 @@ desatualizado: true
 ---
 
 # Roteiro para ligar o protótipo do funil-01
+
+**Versão 6 (14/11/2026; pedido 21, parte 21.2; decisão #120).** Só um aviso no alto do passo 3.7: não se publica mais por ele; a publicação é pelo roteiro APLICAR-21.md, nesta pasta. O resto do roteiro não mudou e continua ensinando o endereço antigo e o caminho /quiz/, que era o que valia quando foi escrito.
 
 O passo a passo para o Otávio ligar amanhã o site de teste do funil-01: o banco no Supabase, o site e o garçom na Cloudflare e a planilha do SDR no Google. **Tempo total estimado: cerca de 58 minutos** (partes 1 a 5), menos de uma hora. As partes 6 e 7 só entram se algo der errado ou na hora de desligar.
 
@@ -346,6 +348,8 @@ node entregas/prototipo-funil-01/montar-site.mjs
 **Tempo:** 30 s.
 
 ### 3.7 · Publicar o Worker
+
+**Desde 14/11/2026 (pedido 21, decisão #120), não publicar por este passo nem pelo comando único logo abaixo.** O wrangler.toml passou a ligar o endereço novo, svsafra.gotriad.com.br. Publicar antes de a zona gotriad.com.br estar ativa na Cloudflare derruba o site: o Worker novo vai ao ar antes de o endereço novo existir, e o endereço antigo passa a levar a ele. A publicação é só pelo roteiro APLICAR-21.md, nesta pasta.
 
 **Faça:** rode:
 

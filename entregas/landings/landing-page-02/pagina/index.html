@@ -35,7 +35,7 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
    Manda a visita ao garçom (POST /api/evento, mesma origem) sem esperar a resposta: se falhar, a visita se perde,
    sem aviso e sem nova tentativa. As utm vão como vieram no endereço, ou vazias (10.8). Aberta do arquivo, não manda nada.
    Etiquetas: entrega landing-page-02, versão 1, que precisa da linha no catálogo (dados/banco/catalogo-prototipo.sql v3).
-   Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /quiz/ com as utm presentes e o mesmo
+   Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /analise/ com as utm presentes e o mesmo
    código, no parâmetro id_sessao (10.5). O clique é pego antes do programa da página, que antes só rolava a tela.
    Em quatro lugares o programa da página desenha a chamada como um bloco com o nome interno "Botão/Primário", não como
    botão de verdade: o "Fazer a Análise" do cabeçalho, no celular (levado ao quiz desde a versão 3, decisão #118);
@@ -48,7 +48,7 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
 (function () {
   var ETIQUETAS = { funil: 'funil-01', entrega: 'landing-page-02', versao_entrega: 1 };
   var ROTA_EVENTO = '/api/evento';
-  var DESTINO_QUIZ = '/quiz/';
+  var DESTINO_QUIZ = '/analise/';
   var CHAMADAS = /^(Fazer a Análise|Faça uma Análise)/;
   function novaSessao() {
     var letras = '';

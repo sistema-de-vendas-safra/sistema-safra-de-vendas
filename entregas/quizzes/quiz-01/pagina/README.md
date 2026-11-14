@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -75,6 +75,10 @@ No topo do script, quatro objetos concentram o que se ajusta:
 
 **Visual.** O do mockup, em conflito (conflito-18), salvo a abertura, que desde a v4 tem o cabeçalho e o botão da landing-page-02 (abaixo). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
 
+## O que mudou na versão 6
+
+Decisão do Otávio, 13/11/2026 (base/decisoes.md, #120; pedido 21, parte 21.2). **Só este README: o arquivo da página não mudou.** No site do protótipo, o quiz passa a ser montado em /analise/ no lugar de /quiz/, e o teste (nucleo/ferramentas/prints/testar-quiz-01.js) passa a servir a pasta em /analise/. As frases de "Como abrir" e de "Como testar" acompanham. As saídas de exemplo mais abaixo são registro de rodadas anteriores e ainda mostram /quiz/fontes/. Os caminhos que a página usa são relativos (as fontes e a imagem) ou pela raiz (/politica-de-privacidade/, /api/fim-quiz e /api/evento), e continuam valendo. O cabeçalho de comentário do index.html continua dizendo a versão em que o arquivo foi mexido pela última vez.
+
 ## O que mudou na versão 5
 
 Respostas do Otávio aos "a definir" do funil, 13/11/2026 (base/decisoes.md, #117).
@@ -118,7 +122,7 @@ Etapa 23 (prompts/08-fila-da-madrugada.md; #101 e #102). Só o envio: `enviarPac
 
 Abrir entregas/quizzes/quiz-01/pagina/index.html no navegador: tudo funciona para revisão, só sem gravar e com a letra do sistema (as fontes só existem no site montado). Para ver as etiquetas, abrir com o endereço terminado em `?utm_source=bio&utm_campaign=funil-01`. O pacote não aparece no console; para ver o pacote, rodar o teste abaixo, que mostra o do exemplo.
 
-No site do protótipo (entregas/prototipo-funil-01/), o quiz fica em /quiz/, com as fontes em /quiz/fontes/, e envia ao garçom em /api/fim-quiz e /api/evento.
+No site do protótipo (entregas/prototipo-funil-01/), o quiz fica em /analise/, com as fontes em /analise/fontes/ (desde a decisão #120; até 14/11/2026, em /quiz/, que passa a levar a /analise/), e envia ao garçom em /api/fim-quiz e /api/evento.
 
 O botão "Telas", no canto, é do protótipo: pula direto para qualquer tela, para revisão.
 
@@ -128,7 +132,7 @@ O botão "Telas", no canto, é do protótipo: pula direto para qualquer tela, pa
 node nucleo/ferramentas/prints/testar-quiz-01.js
 ```
 
-Usa o playwright-core de nucleo/ferramentas/prints/ e as fontes de nucleo/ferramentas/fontes/ (`npm install` nas duas pastas; veja nucleo/ferramentas/README.md). Serve esta pasta em /quiz/ e as fontes em /quiz/fontes/ num servidorzinho em 127.0.0.1, só durante o teste, e intercepta no navegador sem tela os POST para /api/fim-quiz e /api/evento, respondendo no lugar do garçom: nada sai para o garçom nem para o Supabase. Cada pacote passa pelas conferências do próprio garçom v4 (`conferirPacote` e `conferirEvento`, importadas de entregas/garcom/garcom.mjs). Em 375 e 1440 pixels:
+Usa o playwright-core de nucleo/ferramentas/prints/ e as fontes de nucleo/ferramentas/fontes/ (`npm install` nas duas pastas; veja nucleo/ferramentas/README.md). Serve esta pasta em /analise/ e as fontes em /analise/fontes/ num servidorzinho em 127.0.0.1, só durante o teste, e intercepta no navegador sem tela os POST para /api/fim-quiz e /api/evento, respondendo no lugar do garçom: nada sai para o garçom nem para o Supabase. Cada pacote passa pelas conferências do próprio garçom v4 (`conferirPacote` e `conferirEvento`, importadas de entregas/garcom/garcom.mjs). Em 375 e 1440 pixels:
 
 1. exemplo de base/lead-score.md (faturamento de R$ 500 mil a R$ 1,5 milhão, venda média de R$ 10 mil, 2 ou 3 vendedores, 200 leads, CRM em dia, dono, dinheiro na mesa de 4 vezes o custo mensal, tentativas "1 ou 2" e sobra "Alguns"), com a caixa marcada como vem: modo padrão (doctype), fontes carregadas de /quiz/fontes/, início do quiz ao abrir, campos de número vazios e valor médio obrigatório, caixa única marcada, um POST em /api/fim-quiz com total 96, faixa a, versão 2, lead score 3, os dois consentimentos iguais e a mesma sessão do início;
 2. eliminatório (faturamento "Menos de R$ 50 mil") com a sessão vinda da landing no endereço: faixa eliminatorio com a nota 81, o clique em "Tenho interesse" só depois do fim gravado, a nota do lado do lead score e "Agora não" uma vez só;

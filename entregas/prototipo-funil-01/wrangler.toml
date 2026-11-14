@@ -1,13 +1,21 @@
 # Worker do protótipo do funil-01 · configuração da Cloudflare. RASCUNHO; publicado no protótipo em 09/11/2026, só com leads de teste.
-# id: prototipo-funil-01 · versao 4 · rascunho · otavio: pendente (ver README.md desta pasta)
+# id: prototipo-funil-01 · versao 14 · rascunho · otavio: pendente (ver README.md desta pasta)
 #
 # Um Worker só para o protótipo (decisão #101): serve a landing-page-02 em / (desde 12/11/2026, no lugar
-# das variantes A e B da landing-page-01), o quiz em /quiz/ e o garçom em /api/ (entregas/garcom/garcom.mjs),
-# no mesmo endereço.
+# das variantes A e B da landing-page-01), o quiz em /analise/ (v14, decisão #120; até a v13, em /quiz/) e o
+# garçom em /api/ (entregas/garcom/garcom.mjs), no mesmo endereço.
+# Dois endereços (v14; #120): o novo, https://svsafra.gotriad.com.br (o Custom Domain, abaixo), e o antigo, o do
+# workers.dev, que continua ligado: nele, o garçom leva as páginas (302) ao novo, e a porta privada da planilha
+# continua respondendo.
+# NÃO PUBLICAR com este arquivo antes de a zona gotriad.com.br estar ativa na conta da Cloudflare do Safra. O wrangler
+# primeiro põe o Worker novo no ar e só depois liga o Custom Domain (wrangler 4.158.0, lido no código em 14/11/2026).
+# Se a ligação do domínio falhar, o comando termina com erro, mas o Worker novo já está no ar e não volta sozinho: o
+# endereço antigo passa a levar a um endereço que não existe, e o site cai até alguém voltar a versão anterior.
+# Publicar é só pelo roteiro APLICAR-21.md desta pasta (parte 21.3 do pedido 21).
 # Os arquivos vêm da pasta montada por montar-site.mjs (site/, fora do Git).
 #
-# Sem id de conta (account_id) e sem nenhum segredo neste arquivo. Publicar é só pelo roteiro da
-# etapa 26 (LIGAR.md), depois do login do wrangler feito pelo Otávio.
+# Sem id de conta (account_id), sem id de zona (zone_id) e sem nenhum segredo neste arquivo. A primeira
+# publicação foi pelo roteiro da etapa 26 (LIGAR.md), depois do login do wrangler feito pelo Otávio.
 #
 # Segredos: só pelo nome, nunca aqui. Entram pelo painel da Cloudflare ou pelo comando de segredo
 # do wrangler, com o valor copiado direto do painel do serviço (roteiro da etapa 26):
@@ -18,9 +26,22 @@
 name = "safra-prototipo-funil-01"
 main = "../garcom/garcom.mjs"
 compatibility_date = "2026-11-04"
+# O endereço do workers.dev continua ligado, e isto tem de ficar escrito: com uma rota no arquivo, o wrangler
+# entende workers_dev como false quando a linha falta (documentação da Cloudflare, lida em 14/11/2026; README.md).
 workers_dev = true
-# Um endereço só (decisão #101): sem os links de prévia por versão
+# Sem os links de prévia por versão (decisão #101): os endereços são só os dois de cima
 preview_urls = false
+
+# Custom Domain (v14; decisão #120): o endereço novo do protótipo, como a documentação da Cloudflare manda
+# (uma rota com custom_domain = true; README.md, "O endereço novo"). A Cloudflare cria o registro de DNS e o
+# certificado. Pede a zona gotriad.com.br ativa na conta e nenhum registro CNAME já existente em svsafra.
+# Fora de um terminal interativo (como no Claude Code online), o wrangler manda substituir, sem perguntar, um
+# registro de DNS que já exista em svsafra (lido no código do 4.158.0): conferir no painel, antes, que svsafra
+# não tem registro nenhum.
+# As rotas deste arquivo passam por cima das do painel a cada publicação.
+[[routes]]
+pattern = "svsafra.gotriad.com.br"
+custom_domain = true
 
 [assets]
 directory = "./site"
@@ -32,4 +53,7 @@ run_worker_first = true
 # Variáveis comuns: não são segredo (conexoes.md).
 [vars]
 SUPABASE_URL = "https://bvrvdlhpralmzizobsvu.supabase.co"
-ORIGEM_PERMITIDA = "https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev"
+# O endereço novo (v14; #120): só ele passa na porta pública do garçom (mesma origem)
+ORIGEM_PERMITIDA = "https://svsafra.gotriad.com.br"
+# O endereço antigo (v14; #120): nele, o garçom leva as páginas ao novo; as rotas /api/ não são redirecionadas
+ENDERECO_ANTIGO = "https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev"

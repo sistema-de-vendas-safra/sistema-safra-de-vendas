@@ -1,6 +1,6 @@
 ---
 id: aviso-de-cookies
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -18,7 +18,7 @@ desatualizado: true
 
 **Para que serve.** Pedir a quem visita a escolha entre aceitar e recusar a medição com o Google Analytics, antes de qualquer coisa do Google carregar (decisão do Otávio, 12/11/2026; base/decisoes.md, #116). Até o "Aceitar", a página não guarda nada no navegador e não fala com ninguém de fora; depois da escolha, a página guarda só a escolha (com o aceite, o Google Analytics grava os cookies dele, como diz a política). O que fica guardado, o que o Google Analytics registra e como mudar a escolha estão na política (`politica-de-privacidade` v3, item 7); este documento tem só o texto do aviso.
 
-**Onde aparece.** No protótipo do funil-01, no topo de / (landing-page-02) e de /quiz/, sem cobrir nada: nem o botão "Fazer a Análise" nem a barra fixa do rodapé do quiz no celular. Entra pela montagem do site (entregas/prototipo-funil-01/montar-site.mjs, parte 17.2 do pedido 17), nunca nas entregas. Aparece enquanto não há escolha guardada; com a escolha guardada, não aparece de novo, também na outra página. O link discreto do fim da página (chave `reabrir`) abre o aviso de novo para mudar a escolha.
+**Onde aparece.** No protótipo do funil-01, no topo de / (landing-page-02), de /analise/ (o quiz; até 14/11/2026, em /quiz/; #120) e da página da política, sem cobrir nada: nem o botão "Fazer a Análise" nem a barra fixa do rodapé do quiz no celular. Entra pela montagem do site (entregas/prototipo-funil-01/montar-site.mjs, parte 17.2 do pedido 17), nunca nas entregas. Aparece enquanto não há escolha guardada; com a escolha guardada, não aparece de novo, também na outra página. O link discreto do fim da página (chave `reabrir`) abre o aviso de novo para mudar a escolha.
 
 **Regras do aviso** (#116; prompts/17-medicao-google.md): "Aceitar" e "Recusar" com o mesmo peso visual; nada do Google antes do "Aceitar"; o consentimento de anúncio fica sempre negado; o código da visita (id_sessao) não vai ao Google.
 
@@ -36,6 +36,10 @@ recusar: Recusar
 politica: Como a gente cuida dos seus dados: [política de privacidade](/politica-de-privacidade/).
 reabrir: Cookies
 ```
+
+## O que mudou na versão 3
+
+Decisão do Otávio, 13/11/2026 (base/decisoes.md, #120; pedido 21, parte 21.2). Só a frase "Onde aparece": o quiz passa de /quiz/ a /analise/ no site do protótipo, e a página da política, onde o aviso também aparece desde a v11 do protótipo, entra na lista. O texto do aviso não mudou.
 
 ## O que mudou na versão 2
 

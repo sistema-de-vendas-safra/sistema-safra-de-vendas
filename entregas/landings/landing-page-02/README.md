@@ -1,6 +1,6 @@
 ---
 id: landing-page-02
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,13 +8,13 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: garcom
-    versao: 4
+    versao: 5
   - id: planta-do-banco
     versao: 4
   - id: banco-catalogo-prototipo
     versao: 3
   - id: decisoes
-    versao: 9
+    versao: 10
 desatualizado: true
 ---
 
@@ -210,6 +210,28 @@ Conferido com clique de verdade (toque, no celular) num navegador sem tela, em 1
 
 Versão 4. depende_de ganha decisoes 9 (no lugar de decisoes 8). status, aprovado_por e desatualizado ficam como estão.
 
+## O que mudou na versão 5
+
+Decisão do Otávio, 13/11/2026 (base/decisoes.md, #120; prompts/21-dominio-e-caminho-da-analise.md, parte 21.2), feita em 14/11/2026: no site do protótipo, o quiz sai de /quiz/ e vai para /analise/. **Só o caminho das chamadas mudou.** Nada publicado: no ar, a página continua a v4, levando a /quiz/.
+
+**Onde mudou.** No programa do fim de pagina/index.html, duas linhas: a constante `DESTINO_QUIZ`, de `'/quiz/'` para `'/analise/'`, e o comentário que a descreve. Todas as chamadas usam essa constante, então as 10 de cada largura passam a levar a /analise/, com as utm do endereço e o id_sessao, como antes.
+
+**O programa empacotado não mudou.** assets/index-BSwcbsoR.js não cita /quiz (contagem: 0) e tem o mesmo SHA-256 da v4 (cc58b5ed504179b548c2fef3cfd1ceafc8878260d2676d822d0107405fe4d060). O estilo e as imagens também não mudaram.
+
+**Nenhum texto visível mudou.** O caminho só aparece no endereço da barra depois do clique.
+
+Conferido num navegador sem tela, em 1440, com o site montado servido pelo garçom v5 no `wrangler dev --local`: a chamada "Fazer a Análise" leva a /analise/ com utm_source, utm_campaign e id_sessao, sem passar por /quiz, e o quiz abre. As 10 chamadas de cada largura, clicadas uma a uma, ficam para o ensaio, que acompanha na parte 21.3 do pedido.
+
+### O que não mudou
+
+- A visita continua indo ao banco como landing-page-02, versão 1, que é a linha do catálogo.
+- Quem ainda chegar a /quiz/ (um link antigo, a página no ar antes da publicação) é levado a /analise/ pelo garçom v5, com a consulta inteira (entregas/garcom/README.md, "Endereço antigo e caminho novo").
+- Os 16 prints da v4 continuam valendo: a página desenhada é a mesma.
+
+### Cabeçalho deste documento
+
+Versão 5. depende_de passa a citar garcom 5 (no lugar de garcom 4) e decisoes 10 (no lugar de decisoes 9). status, aprovado_por e desatualizado ficam como estão.
+
 ## Prints
 
 Em prints/, 16 imagens, tiradas em 13/11/2026 (pedido 20, parte 20.3) do site montado, num navegador sem tela, com o aviso de cookies já recusado e sem dado de pessoa. **São da versão 4.** Os oito do pedido 18, que eram da v3 e ficaram velhos, foram refeitos com os mesmos nomes; os outros oito são novos. Entraram na v4 sem subir a versão de novo, porque o Fechamento da 20.3 do pedido pede o index.md com "a versão nova da landing-page-02", que é a v4 da 20.2; a página e o programa não mudaram na 20.3 (pergunta 20.3.1 da resposta do pedido, igual à 18.3.6).
@@ -240,7 +262,7 @@ As fotos e os nomes que aparecem nos prints (o Júnior e o Euclides, no topo, e 
 ## Como funciona no protótipo
 
 - **Endereço.** A página fica na raiz do site (/). Os caminhos dela começam na raiz (/assets/, /a/, /fontes/), então ela não funciona em outra pasta nem aberta direto do arquivo.
-- **Botões.** O "Fazer a Análise" do cabeçalho e as nove chamadas "Faça uma Análise Estratégica do seu Sistema de Vendas" levam a /quiz/ com as utm do endereço (as que existirem) e o código de sessão da visita, no parâmetro id_sessao (10.5). Antes, elas só rolavam a página. Vale para as chamadas que o programa da página desenha como botão e, também, para as que ele desenha como bloco: a do cabeçalho no celular (desde a v3) e, desde a v4, a do topo da página no celular e a do cartão da oferta (seção 08), no computador e no celular. Não sobra chamada que não leve ao quiz: são 10 em cada largura (lista em "O que mudou na versão 4").
+- **Botões.** O "Fazer a Análise" do cabeçalho e as nove chamadas "Faça uma Análise Estratégica do seu Sistema de Vendas" levam a /analise/ (v5; #120; até a v4, a /quiz/) com as utm do endereço (as que existirem) e o código de sessão da visita, no parâmetro id_sessao (10.5). Antes, elas só rolavam a página. Vale para as chamadas que o programa da página desenha como botão e, também, para as que ele desenha como bloco: a do cabeçalho no celular (desde a v3) e, desde a v4, a do topo da página no celular e a do cartão da oferta (seção 08), no computador e no celular. Não sobra chamada que não leve ao quiz: são 10 em cada largura (lista em "O que mudou na versão 4").
 - **Visita.** Ao abrir, a página manda a visita ao garçom (POST /api/evento) como entrega landing-page-02, versão 1, sem dado de pessoa (18.5). O banco só aceita a visita depois da linha nova do catálogo (dados/banco/catalogo-prototipo.sql, v3). Sem ela, a visita é recusada e o resto funciona igual.
 - **Montagem.** entregas/prototipo-funil-01/montar-site.mjs copia index.html, assets/ e a/ para a raiz do site, e a Geist para /fontes/.
 

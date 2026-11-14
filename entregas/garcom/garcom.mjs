@@ -1,7 +1,8 @@
 // Garçom do funil-01 · Cloudflare Worker, sem dependências externas
-// id: garcom · versao 4 · rascunho · otavio: pendente
+// id: garcom · versao 5 · rascunho · otavio: pendente
 // Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com
-// leads de teste; a v3 e a v4 ainda não.
+// leads de teste, e a v4, no mesmo dia, às 19h16 (README do protótipo, "Publicações"). A v5
+// (decisão #120) só vai ao ar pelo roteiro APLICAR-21.
 // O formato dos pacotes é o da planta do banco (dados/planta/planta.md v4; 23.11).
 //
 // Um Worker só para o protótipo (decisão #101): safra-prototipo-funil-01 serve as páginas e o
@@ -19,7 +20,13 @@
 //   GET  /api/planilha/leads-novos   porta privada: só com o cabeçalho X-Chave-Planilha certo;
 //                                    devolve os leads novos da planilha do SDR pela função
 //                                    leads_para_planilha, com a chave secreta (papel service_role; #100)
-//   todo o resto                     arquivos do protótipo, pelo binding de assets (env.ASSETS)
+//   todo o resto                     pedido de página. v5 (#120): no endereço antigo (env.ENDERECO_ANTIGO),
+//                                    leva (302) ao endereço novo (env.ORIGEM_PERMITIDA), no mesmo
+//                                    caminho, com /quiz virando /analise e a consulta inteira; no
+//                                    endereço novo, /quiz e /quiz/ levam (302) a /analise/; o resto
+//                                    são os arquivos do protótipo, pelo binding de assets (env.ASSETS)
+// As rotas /api/ nunca são redirecionadas, em nenhum endereço: um POST redirecionado se perde, e a
+// planilha do SDR chama a porta privada pelo endereço antigo (#120, ponto 3).
 //
 // Toda resposta leva X-Robots-Tag: noindex (#101). Nenhuma leva cabeçalho de CORS, e o pré-voo
 // (OPTIONS) não é atendido: na mesma origem o navegador não precisa dele (v4; 22.2).
@@ -31,7 +38,9 @@
 //   env.CHAVE_PLANILHA             abre a porta privada; mora também nas propriedades do script da planilha
 // Variáveis comuns, que não são segredo:
 //   env.SUPABASE_URL               endereço do projeto no Supabase
-//   env.ORIGEM_PERMITIDA           o próprio endereço do protótipo (mesma origem)
+//   env.ORIGEM_PERMITIDA           o próprio endereço do protótipo (mesma origem); desde a v5, o endereço novo
+//   env.ENDERECO_ANTIGO            v5: o endereço antigo do protótipo, de onde as páginas levam ao novo.
+//                                  Sem ela, ou com ela igual ao endereço novo, nenhum pedido muda de endereço
 //
 // Destino dos contatos em conflito (conflito-17): este código segue o lado 2 (banco e planilha
 // da #90). Bloqueado para entrega até a decisão.
@@ -63,6 +72,29 @@ const CHAVE_PLANILHA_MINIMO = 32;  // segredo mais curto que isto no cofre não 
 const ROTA_FIM_QUIZ = '/api/fim-quiz';
 const ROTA_EVENTO = '/api/evento';   // a planta não dá o nome da rota (33.1)
 const ROTA_PLANILHA = '/api/planilha/leads-novos';
+
+// ··· Endereço e caminho novos (v5; decisão #120) ···
+// O quiz saiu de /quiz/ e foi para /analise/. O prefixo é trocado: /quiz e /quiz/ viram /analise/, e
+// /quiz/qualquer-coisa vira /analise/qualquer-coisa. Qualquer outro caminho fica como veio.
+const CAMINHO_ANTIGO_DO_QUIZ = '/quiz';
+const CAMINHO_DO_QUIZ = '/analise';
+export function caminhoNovo(caminho) {
+  if (caminho === CAMINHO_ANTIGO_DO_QUIZ) return CAMINHO_DO_QUIZ + '/';
+  if (caminho.startsWith(CAMINHO_ANTIGO_DO_QUIZ + '/')) return CAMINHO_DO_QUIZ + caminho.slice(CAMINHO_ANTIGO_DO_QUIZ.length);
+  return caminho;
+}
+// O nome do endereço (o host, sem a porta) de uma variável como ORIGEM_PERMITIDA, em minúsculas, que é
+// como new URL o devolve. Variável ausente, vazia ou que não é endereço: ''.
+function nomeDoEndereco(valor) {
+  try { return new URL(valor).hostname; } catch { return ''; }
+}
+// Redirecionamento temporário (302, porque ainda é protótipo; #120), com noindex e sem CORS
+function levar(destino) {
+  return new Response(null, {
+    status: 302,
+    headers: { Location: destino, 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' }
+  });
+}
 
 // ··· Campos aceitos: nada além disto entra ···
 const CAMPOS_PESSOA = [
@@ -554,6 +586,20 @@ export default {
       registrar('api: rota-desconhecida');
       return responder(404, NAO_ENCONTRADO);
     }
+    // v5 (#120): daqui para baixo, pedido de página. As rotas /api/ já foram atendidas acima.
+    const novo = caminhoNovo(caminho);
+    // No endereço antigo, a página leva ao endereço novo, no mesmo caminho, com a consulta inteira.
+    // Só com as duas variáveis no lugar e de nomes diferentes: no endereço novo, nada volta ao antigo.
+    const origemNova = String(env.ORIGEM_PERMITIDA || '').replace(/\/+$/, '');
+    const antigo = nomeDoEndereco(env.ENDERECO_ANTIGO);
+    const nomeNovo = nomeDoEndereco(origemNova);
+    // o nome do pedido sem o ponto final que um nome completo pode trazer ("nome.workers.dev.")
+    const nomeDoPedido = url.hostname.replace(/\.$/, '');
+    if (antigo && nomeNovo && antigo !== nomeNovo && nomeDoPedido === antigo) {
+      return levar(origemNova + novo + url.search);
+    }
+    // No endereço novo, /quiz e /quiz/ levam a /analise/, com a consulta inteira
+    if (novo !== caminho) return levar(novo + url.search);
     return arquivos(request, env);
   }
 };
