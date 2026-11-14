@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 9 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 10 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -13,8 +13,9 @@
 //   2. Migração 001 (v3) duas vezes sobre esses dados: os dados não mudam; conferir.sql 18 de 18;
 //      permissões de verdade trocando de papel (SET ROLE), com a porta nova registrar_evento.
 //   3. Supabase de mentira em 127.0.0.1 (supabase-de-mentira.mjs): chave de mentira vira papel.
-//   4. Site montado (montar-site.mjs) e o garçom v4 no wrangler dev --local, com a configuração do
-//      protótipo copiada para uma pasta temporária e só SUPABASE_URL e ORIGEM_PERMITIDA trocadas.
+//   4. Site montado (montar-site.mjs) e o garçom (v5) no wrangler dev --local, com a configuração do
+//      protótipo copiada para uma pasta temporária, com SUPABASE_URL e ORIGEM_PERMITIDA trocadas e, desde a v10,
+//      sem o bloco do Custom Domain e com um endereço antigo de mentira no lugar do de verdade.
 //   5. Sem as linhas novas do catálogo, o fim do quiz novo, a visita e o início do quiz são
 //      recusados; depois, dados/banco/catalogo-prototipo.sql (v3) duas vezes.
 //   6. Landing (a landing-page-02 em /, v4) e quiz num navegador sem tela: visita, início do quiz, fim do quiz e clique no fim;
@@ -39,7 +40,14 @@
 //      volta de "01 / 09" a "09 / 09"; nenhum chip cortado em nenhum cartão; a barra acesa da régua no fim da semana 2; as
 //      duas respostas do FAQ do pedido 20; os dois rótulos novos, sem os antigos; cada item do menu da demonstração abrindo
 //      a sua tela, nos dois perfis; "GSAAS" em nenhum texto à vista; e as chamadas do topo e do cartão da oferta levando ao quiz.
-//  12. Fechamento: conferir.sql de novo e registros sem dado pessoal.
+//  12. (v10; #120) O endereço e o caminho novos: /quiz e /quiz/ levam (302) a /analise/ com a consulta inteira, e /analise sem a
+//      barra funciona; um pedido de página com o nome do endereço antigo é levado (302) ao novo, no mesmo caminho; a porta pública
+//      aceita a origem nova e recusa a antiga; a porta privada responde igual com os dois nomes, e a planilha do SDR puxa os leads
+//      pelo antigo; noindex em toda resposta, inclusive nos redirecionamentos; os links da política e do aviso de cookies abrem;
+//      as 10 chamadas da landing, clicadas uma a uma em 1440, 375 e 360, pedem direto /analise/ com as cinco utm e o id_sessao;
+//      quem abre um link antigo chega à página no endereço novo; e o quiz vai da abertura ao fim em /analise/, nos três desfechos.
+//      Desde a v10, as idas da landing ao quiz das seções 6, 10 e 11 também têm de ser diretas, sem passar por /quiz.
+//  13. Fechamento: conferir.sql de novo e registros sem dado pessoal.
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -114,6 +122,8 @@ const PESSOA_DESMARCADA = { nome: 'TESTE Davi Ensaio', email: 'davi.ensaio@teste
 const PESSOA_SEM_CATALOGO = { nome: 'TESTE Sem Catalogo', email: 'sem.catalogo@teste.invalid', telefone: '+55 (00) 90000-0003' };
 const PESSOA_SEM_CONSENTIMENTO = { nome: 'TESTE Sem Consentimento', email: 'sem.consentimento@teste.invalid', telefone: '+55 (00) 90000-0004' };
 const PESSOA_DUPLA = { nome: 'TESTE Envio Duplo', email: 'envio.duplo@teste.invalid', telefone: '+55 (00) 90000-0005' };
+// v10: a pessoa do envio com a origem do endereço antigo, que tem de ser recusado antes do banco
+const PESSOA_ORIGEM_ANTIGA = { nome: 'TESTE Origem Antiga', email: 'origem.antiga@teste.invalid', telefone: '+55 (00) 90000-0009' };
 // Os dados de antes da migração, gravados pelas portas do v2 (como os do teste de 09/11, prompts/10-prototipo-ligado.md).
 // A linha que imita a do Otávio só imita o formato dela (faixa a, nota 86, utm stories, os dois aceites); nada dela é real.
 const ANTES = {
@@ -244,6 +254,19 @@ function versoesDaSecao(js) {
 }
 const quantas = (texto, pedaco) => texto.split(pedaco).length - 1;
 
+// v10 (pedido 21, parte 21.3; decisão #120): o quiz saiu de /quiz/ e foi para /analise/, e o protótipo ganhou um endereço novo.
+// No ensaio, o endereço novo é o local (http://127.0.0.1:porta, a ORIGEM_PERMITIDA da cópia da configuração), e o antigo é um nome
+// de mentira, que não existe em lugar nenhum (.invalid): ele entra na cópia da configuração no lugar do endereço do workers.dev,
+// e o garçom o reconhece pelo nome que vem no pedido (o cabeçalho Host). Nada sai de 127.0.0.1.
+const NOME_ANTIGO = 'endereco-antigo.ensaio.invalid';
+const ENDERECO_ANTIGO = 'https://' + NOME_ANTIGO;
+// Uma consulta com várias chaves, as cinco utm, o id_sessao, uma chave repetida e valores com caractere codificado (acento, espaço,
+// + e &), para conferir que os redirecionamentos levam a consulta inteira, letra por letra
+const SESSAO_DO_LINK = 'sessao-ensaio-link-antigo-01';
+const CONSULTA = 'utm_source=bio&utm_medium=cpc&utm_campaign=funil-01&utm_content=an%C3%BAncio%201&utm_term=a%2Bb%26c&id_sessao=' + SESSAO_DO_LINK + '&x=1&x=2';
+// As cinco utm que a landing passa adiante, com um valor que precisa de codificação
+const CINCO_UTM = { utm_source: 'bio', utm_medium: 'cpc', utm_campaign: 'funil-01', utm_content: 'anúncio 1', utm_term: 'a+b&c' };
+
 const COLUNAS_PLANILHA = ['id_pessoa', 'nome', 'telefone', 'email', 'empresa', 'consentimento_whatsapp', 'consentimento_email',
   'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
   'estagio', 'estado', 'data_volta', 'canal', 'contato_em', 'reuniao_em', 'produto'];
@@ -300,6 +323,13 @@ function portaLivre() {
   });
 }
 const esperar = (ms) => new Promise(ok => setTimeout(ok, ms));
+// v10: o wrangler do ensaio nunca recebe credencial da Cloudflare, mesmo que o ambiente tenha uma (o token de publicar pela nuvem):
+// ele só roda o `dev --local`, que não precisa de conta. Os valores não são lidos nem mostrados; as variáveis só deixam de passar.
+function semCredencialDaCloudflare(ambiente) {
+  const limpo = { ...ambiente };
+  for (const nome of Object.keys(limpo)) if (/^(CLOUDFLARE|CF)_(API_TOKEN|API_KEY|EMAIL|ACCOUNT_ID)$/.test(nome)) delete limpo[nome];
+  return limpo;
+}
 
 async function principal() {
   const inicio = Date.now();
@@ -500,10 +530,10 @@ async function principal() {
   secao('4. Site montado e garçom rodando localmente');
   let montou = true, saidaMontador = '';
   try { saidaMontador = execFileSync(process.execPath, [join(PROTOTIPO, 'montar-site.mjs')], { cwd: RAIZ, stdio: 'pipe' }).toString(); } catch { montou = false; }
-  conferir(montou && existsSync(join(SITE, 'quiz/index.html')) && /nenhuma página pede arquivo a outro endereço/.test(saidaMontador),
+  conferir(montou && existsSync(join(SITE, 'analise/index.html')) && /nenhuma página pede arquivo a outro endereço/.test(saidaMontador),
     'montar-site.mjs: site montado em entregas/prototipo-funil-01/site/ (fora do Git), sem nenhuma página pedindo arquivo a outro endereço');
   const LISTA_FONTES = JSON.parse(readFileSync(join(RAIZ, 'nucleo/ferramentas/fontes/fontes.json'), 'utf8'));
-  const arquivosDeFonte = [...LISTA_FONTES.quiz.map(f => 'quiz/fontes/' + f.arquivo), ...LISTA_FONTES['landing-02'].map(f => 'fontes/' + f.arquivo)];
+  const arquivosDeFonte = [...LISTA_FONTES.quiz.map(f => 'analise/fontes/' + f.arquivo), ...LISTA_FONTES['landing-02'].map(f => 'fontes/' + f.arquivo)];
   conferir(arquivosDeFonte.every(a => existsSync(join(SITE, a))), 'as fontes estão no site montado, ao lado das páginas (' + arquivosDeFonte.length + ' arquivos; 10.7)');
 
   const temp = mkdtempSync(join(tmpdir(), 'ensaio-safra-'));
@@ -514,25 +544,34 @@ async function principal() {
   const registroDeRede = join(temp, 'rede-de-fora.txt');
   let modo = SEM_WRANGLER ? 'node' : 'wrangler';
 
+  // A configuração do protótipo, como está no repositório. O endereço antigo de verdade só é lido daqui para servir de valor do
+  // cabeçalho Origin na seção 12 (a origem que uma aba antiga mandaria); nenhum pedido é feito a ele.
+  const original = readFileSync(join(PROTOTIPO, 'wrangler.toml'), 'utf8');
+  const ORIGEM_ANTIGA_DE_VERDADE = (original.match(/^ENDERECO_ANTIGO = "(https:\/\/[^"\/]+)"$/m) || [])[1] || '';
   if (modo === 'wrangler') {
-    // A configuração do protótipo, copiada para a pasta temporária, com só quatro trocas:
-    // os caminhos ficam absolutos (main e assets), e as duas variáveis comuns apontam para cá.
-    const original = readFileSync(join(PROTOTIPO, 'wrangler.toml'), 'utf8');
+    // A configuração do protótipo, copiada para a pasta temporária, com seis mudanças: os caminhos ficam absolutos (main e assets),
+    // as duas variáveis comuns apontam para cá e, desde a v10 (#120), a ENDERECO_ANTIGO vira o endereço de mentira do ensaio e o
+    // bloco do Custom Domain sai. Com o bloco [[routes]], o wrangler dev entrega ao garçom sempre o nome da rota, qualquer que
+    // seja o nome pedido, e troca o Origin da página local por esse nome: os envios do navegador dariam 403, e o endereço antigo
+    // não daria para ensaiar (entregas/garcom/README.md, "Como testar o endereço antigo no wrangler dev local").
     const trocas = [
       [/^main = "\.\.\/garcom\/garcom\.mjs"$/m, 'main = ' + JSON.stringify(join(RAIZ, 'entregas/garcom/garcom.mjs'))],
       [/^directory = "\.\/site"$/m, 'directory = ' + JSON.stringify(SITE)],
       [/^SUPABASE_URL = ".*"$/m, 'SUPABASE_URL = ' + JSON.stringify(URL_SUPABASE)],
-      [/^ORIGEM_PERMITIDA = ".*"$/m, 'ORIGEM_PERMITIDA = ' + JSON.stringify(BASE)]
+      [/^ORIGEM_PERMITIDA = ".*"$/m, 'ORIGEM_PERMITIDA = ' + JSON.stringify(BASE)],
+      [/^ENDERECO_ANTIGO = ".*"$/m, 'ENDERECO_ANTIGO = ' + JSON.stringify(ENDERECO_ANTIGO)],
+      [/^\[\[routes\]\]\npattern = "[^"\n]*"\ncustom_domain = true\n/m, '']
     ];
     let config = original, trocou = 0;
     for (const [de, para] of trocas) if (de.test(config)) { config = config.replace(de, para); trocou++; }
-    const semEnderecoReal = !/supabase\.co|workers\.dev/.test(config.replace(/^#.*$/gm, ''));
-    conferir(trocou === 4 && semEnderecoReal, 'configuração temporária fora do repositório: só main, assets, SUPABASE_URL e ORIGEM_PERMITIDA trocados; nenhum endereço real');
+    const semComentario = config.replace(/^#.*$/gm, '');
+    const semEnderecoReal = !/supabase\.co|workers\.dev|gotriad/.test(semComentario) && !/^\s*\[\[?routes?\]?\]|^\s*routes?\s*=|custom_domain/m.test(semComentario);
+    conferir(trocou === 6 && semEnderecoReal && !!ORIGEM_ANTIGA_DE_VERDADE, 'configuração temporária fora do repositório: só main, assets, SUPABASE_URL, ORIGEM_PERMITIDA e ENDERECO_ANTIGO trocados e o bloco do Custom Domain tirado (v10); nenhum endereço real e nenhuma rota');
     writeFileSync(join(temp, 'wrangler.toml'), config);
     // Os três segredos, de mentira, num arquivo da pasta temporária (nunca no repositório)
     writeFileSync(join(temp, 'segredos-de-mentira.env'),
       'SUPABASE_CHAVE_PUBLICAVEL=' + CHAVE_PUBLICAVEL + '\nSUPABASE_CHAVE_SECRETA=' + CHAVE_SECRETA + '\nCHAVE_PLANILHA=' + CHAVE_PLANILHA + '\n');
-    if (!(trocou === 4 && semEnderecoReal)) throw new Error('configuração temporária fora do esperado; o wrangler não foi ligado');
+    if (!(trocou === 6 && semEnderecoReal)) throw new Error('configuração temporária fora do esperado; o wrangler não foi ligado');
 
     // A trava de rede (rede-so-local.cjs), copiada para a pasta temporária (sem espaço no caminho, para o NODE_OPTIONS):
     // todo pedido do wrangler para fora da máquina é recusado e anotado. E os quatro avisos que o wrangler entende para
@@ -544,7 +583,7 @@ async function principal() {
       '--persist-to', join(temp, 'estado'), '--env-file', join(temp, 'segredos-de-mentira.env'),
       '--show-interactive-dev-session=false', '--log-level', 'log'], {
       cwd: temp, detached: true, stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, WRANGLER_SEND_METRICS: 'false', DO_NOT_TRACK: '1', WRANGLER_HIDE_BANNER: 'true', CLOUDFLARE_CF_FETCH_ENABLED: 'false',
+      env: { ...semCredencialDaCloudflare(process.env), WRANGLER_SEND_METRICS: 'false', DO_NOT_TRACK: '1', WRANGLER_HIDE_BANNER: 'true', CLOUDFLARE_CF_FETCH_ENABLED: 'false',
         WRANGLER_LOG_PATH: join(temp, 'registros'), NO_COLOR: '1', CI: '1',
         NODE_OPTIONS: ((process.env.NODE_OPTIONS || '') + ' --require ' + join(temp, 'rede-so-local.cjs')).trim(), ENSAIO_REDE_REGISTRO: registroDeRede }
     });
@@ -583,14 +622,15 @@ async function principal() {
         return new Response(readFileSync(arq), { status: 200, headers: { 'Content-Type': TIPOS[extname(arq)] || 'application/octet-stream' } });
       }
     };
-    const env = { ASSETS, SUPABASE_URL: URL_SUPABASE, ORIGEM_PERMITIDA: BASE,
+    // v10: o contorno passa a ENDERECO_ANTIGO de mentira e monta o pedido com o nome que veio no cabeçalho Host, como o workerd
+    const env = { ASSETS, SUPABASE_URL: URL_SUPABASE, ORIGEM_PERMITIDA: BASE, ENDERECO_ANTIGO,
       SUPABASE_CHAVE_PUBLICAVEL: CHAVE_PUBLICAVEL, SUPABASE_CHAVE_SECRETA: CHAVE_SECRETA, CHAVE_PLANILHA: CHAVE_PLANILHA };
     const logOriginal = console.log;
     const srv = http.createServer(async (req, res) => {
       const partes = [];
       for await (const p of req) partes.push(p);
       const corpo = partes.length ? Buffer.concat(partes) : undefined;
-      const pedido = new Request(BASE + req.url, { method: req.method, headers: req.headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : corpo });
+      const pedido = new Request('http://' + (req.headers.host || '127.0.0.1:' + portaGarcom) + req.url, { method: req.method, headers: req.headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : corpo });
       console.log = (...a) => saidaGarcom.push(a.join(' ') + '\n');
       let resposta;
       try { resposta = await garcom.fetch(pedido, env); } finally { console.log = logOriginal; }
@@ -608,7 +648,7 @@ async function principal() {
     console.log('  avisos do wrangler: ' + (avisos.length ? avisos.join(' | ') : 'nenhum'));
   }
 
-  for (const [caminho, rotulo] of [['/', 'landing-page-02'], ['/quiz/', 'quiz']]) {
+  for (const [caminho, rotulo] of [['/', 'landing-page-02'], ['/analise/', 'quiz']]) {
     const x = await fetch(BASE + caminho);
     const html = await x.text();
     conferir(x.status === 200 && x.headers.get('x-robots-tag') === 'noindex' && /<meta\s+name="robots"[^>]*noindex/.test(html),
@@ -697,12 +737,24 @@ async function principal() {
   const ALTURA = { 375: 812, 360: 640, 1440: 900 };
   // google (v6; #116): só no contexto que vai aceitar o aviso de cookies. O pedido a www.googletagmanager.com é anotado nessa
   // lista e respondido aqui com 404, como o Google responde enquanto o contêiner não é publicado, sem sair da máquina.
-  async function novoContexto(largura, { eventoForaDoAr = false, google = null } = {}) {
+  // ponte (v10; #120): só no contexto que abre uma página pelo endereço antigo. É o endereço local da ponte da seção 12, que
+  // repassa o pedido ao garçom com o nome do endereço antigo; fica em 127.0.0.1, como o resto.
+  // v10: toda resposta do garçom vista pelas páginas é anotada, com o status e o noindex, para a conferência da seção 12.
+  const respostasDoGarcom = [];
+  // os pedidos de navegação que o próprio ensaio segura e responde (seção 12, as chamadas): não são resposta do garçom
+  const seguradasPeloEnsaio = new WeakSet();
+  async function novoContexto(largura, { eventoForaDoAr = false, google = null, ponte = null } = {}) {
     const ctx = await navegador.newContext({ viewport: { width: largura, height: ALTURA[largura] || 900 }, reducedMotion: 'reduce' });
+    ctx.on('response', (rr) => {
+      const end = rr.url();
+      if (seguradasPeloEnsaio.has(rr.request())) return;
+      if (end.startsWith(BASE + '/') || (ponte && end.startsWith(ponte + '/')))
+        respostasDoGarcom.push({ status: rr.status(), noindex: rr.headers()['x-robots-tag'] === 'noindex', caminho: new URL(end).pathname, antigo: !end.startsWith(BASE + '/') });
+    });
     // Só 127.0.0.1: qualquer outro endereço é anotado e bloqueado (desde a v3, nada deve tentar sair; 10.7)
     await ctx.route('**/*', (rota) => {
       const end = rota.request().url();
-      if (end.startsWith(BASE + '/') || end.startsWith('data:')) {
+      if (end.startsWith(BASE + '/') || end.startsWith('data:') || (ponte && end.startsWith(ponte + '/'))) {
         if (eventoForaDoAr && end === BASE + '/api/evento') return rota.abort();
         return rota.continue();
       }
@@ -724,26 +776,58 @@ async function principal() {
   // Os botões da landing-page-02 que levam ao quiz (v4): o do topo e o grande, que se repete pela página
   const BOTAO_DO_TOPO = 'Fazer a Análise', BOTAO_GRANDE = 'Faça uma Análise Estratégica';
   const botaoDaLanding = (page, texto) => page.locator('button:visible', { hasText: texto }).first();
+  // v10 (#120): a ida da landing ao quiz é direta quando o primeiro pedido de navegação depois do clique já é /analise/ e nenhum
+  // passa por /quiz (o caminho antigo, que o garçom ainda leva a /analise/: uma chamada que apontasse para ele também chegaria)
+  const idaDireta = (idas) => idas.length > 0 && new URL(idas[0]).pathname === '/analise/' && !idas.some(u => /^\/quiz(\/|$)/.test(new URL(u).pathname));
+  // v10: clica um link que abre numa aba nova e diz para onde ele aponta, aonde chegou e o título da página que abriu
+  const abrirLink = async (ctx, link) => {
+    const href = await link.getAttribute('href', { timeout: 5000 }).catch(() => null);
+    const espera = ctx.waitForEvent('page', { timeout: 10000 }).catch(() => null);
+    await link.click({ timeout: 5000 }).catch(() => {});
+    const nova = await espera;
+    if (!nova) return { href, endereco: null, titulo: null };
+    await nova.waitForLoadState('domcontentloaded').catch(() => {});
+    const titulo = await nova.locator('h1').first().textContent({ timeout: 5000 }).catch(() => null);
+    const endereco = nova.url();
+    await nova.close().catch(() => {});
+    return { href, endereco, titulo: titulo && titulo.trim() };
+  };
+  const ehAPolitica = (l) => !!l && l.href === '/politica-de-privacidade/' && l.endereco === BASE + '/politica-de-privacidade/' && l.titulo === 'Política de privacidade';
+  // v10: se a landing não levar ao quiz, ou o quiz parar no meio, a pessoa volta com o que deu para colher e as conferências dela
+  // saem FALHOU, em vez de o ensaio parar no meio (até a v9, parava com erro). As telas por onde o quiz passou ficam anotadas com o
+  // caminho da página em cada uma, e os dois links da política do quiz (o da abertura e o da tela do contato) são clicados.
   async function fazerQuiz({ landing, busca, respostas, pessoa, largura, telaFinal, desmarcar = false, clique = null, botao = BOTAO_GRANDE }) {
     const ctx = await novoContexto(largura);
     const page = await ctx.newPage();
-    const api = [];
+    const api = [], idas = [], telas = [];
+    const SEM_LEITURA = { charset: '', modo: '', titulo: '', fontes: [] };
+    const r = { endereco: new URL(BASE + landing + busca), sessao: null, visita: null, inicio: null, fim: null, clique: null, aviso: false, caixaMarcada: false, caixas: 0,
+      naLanding: SEM_LEITURA, noQuiz: SEM_LEITURA, api, telaFinal: 'não chegou ao fim', telas, direto: false, politica: {}, erro: null };
     page.on('console', m => consoleTexto.push(m.text()));
     page.on('response', rr => { const e = new URL(rr.url()); if (rr.url().startsWith(BASE + '/api/')) api.push({ rota: e.pathname, tipo: tipoDoPedido(rr.request()), status: rr.status() }); });
     try {
-      const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 });
+      const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 }).catch(() => null);
       await page.goto(BASE + landing + busca);
       const rv = await visita;
-      const naLanding = await lerPagina(page);
-      const inicioQuiz = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 });
+      r.visita = rv && rv.status();
+      r.naLanding = await lerPagina(page);
+      const inicioQuiz = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
+      page.on('request', rq => { if (rq.isNavigationRequest() && rq.frame() === page.mainFrame()) idas.push(rq.url()); });
       await botaoDaLanding(page, botao).click();
-      await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 });
+      await page.waitForURL(/\/analise\/\?/, { timeout: 15000 });
       const ri = await inicioQuiz;
-      const endereco = new URL(page.url());
-      const noQuiz = await lerPagina(page);
-      const naTela = (id) => page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
+      r.inicio = ri && ri.status();
+      r.direto = idaDireta(idas);
+      r.endereco = new URL(page.url());
+      r.sessao = r.endereco.searchParams.get('id_sessao');
+      r.noQuiz = await lerPagina(page);
+      const naTela = async (id) => {
+        await page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
+        telas.push([id, new URL(page.url()).pathname]);
+      };
       const opcao = (v) => page.locator('[data-corpo] .opcao[data-valor="' + v + '"]').click();
       await naTela('abertura'); // v5: o quiz abre na abertura (a capa saiu do funil, quiz-01-pagina v4)
+      r.politica.abertura = await abrirLink(ctx, page.locator('.abertura__nota a').first());
       await page.locator('.abertura__copy [data-acao="proximo"]').click();
       await naTela('nome'); await page.fill('#nomeIn', pessoa.nome.split(' ')[1]); await page.click('#seguir');
       await naTela('ramo'); await opcao(respostas.ramo);
@@ -762,32 +846,38 @@ async function principal() {
       await naTela('causa2'); await opcao(respostas.causa2);
       await naTela('causa3'); await opcao(respostas.causa3);
       await naTela('contato');
+      r.politica.contato = await abrirLink(ctx, page.locator('#consentimento a').first());
       await page.fill('#nome', pessoa.nome);
       await page.fill('#email', pessoa.email);
       await page.fill('#tel', pessoa.tel);
       // A caixa única (13.4) já vem marcada
-      const caixaMarcada = await page.locator('#consAceite').isChecked();
-      const caixas = await page.locator('input[type="checkbox"]').count();
+      r.caixaMarcada = await page.locator('#consAceite').isChecked();
+      r.caixas = await page.locator('input[type="checkbox"]').count();
       if (desmarcar) await page.uncheck('#consAceite');
-      const fim = desmarcar ? null : page.waitForResponse(rr => rr.url() === BASE + '/api/fim-quiz' && rr.request().method() === 'POST', { timeout: 15000 });
+      const fim = desmarcar ? null : page.waitForResponse(rr => rr.url() === BASE + '/api/fim-quiz' && rr.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
       await page.click('#enviar');
       const rf = fim ? await fim : null;
+      r.fim = rf && rf.status();
       // Espera a tela do fim, qualquer que seja; a conferência diz se foi a esperada (assim um corte errado vira FALHOU, não erro)
       await page.waitForFunction(() => /^#(plano|relatorio(-nao|-saudavel|-saudavel-nao)?)$/.test(location.hash), null, { timeout: 15000 });
-      const chegou = await page.evaluate(() => location.hash);
-      let rc = null;
-      if (clique && chegou === '#' + telaFinal) {
-        const doClique = desmarcar ? null : page.waitForResponse(ehEvento('interesse_pos_relatorio'), { timeout: 15000 });
+      r.telaFinal = await page.evaluate(() => location.hash);
+      telas.push([r.telaFinal.slice(1), new URL(page.url()).pathname]);
+      if (clique && r.telaFinal === '#' + telaFinal) {
+        const doClique = desmarcar ? null : page.waitForResponse(ehEvento('interesse_pos_relatorio'), { timeout: 15000 }).catch(() => null);
         await page.locator('[data-acao="' + clique + '"]').first().click();
-        rc = doClique ? await doClique : null;
+        const rc = doClique ? await doClique : null;
+        r.clique = rc && rc.status();
       }
       await page.waitForTimeout(desmarcar ? 1000 : 300);
-      const aviso = await page.locator('#avisoEnvio').isVisible();
-      return { endereco, sessao: endereco.searchParams.get('id_sessao'), visita: rv.status(), inicio: ri.status(), fim: rf && rf.status(),
-        clique: rc && rc.status(), aviso, caixaMarcada, caixas, naLanding, noQuiz, api, telaFinal: chegou };
+      r.aviso = await page.locator('#avisoEnvio').isVisible();
+    } catch (e) {
+      r.erro = String(e && e.message || e).split('\n')[0];
+      informar('a pessoa de teste que ia para a tela ' + telaFinal + ', em ' + largura + ', não chegou ao fim do quiz: parou ' + (telas.length ? 'na tela ' + telas[telas.length - 1][0] : 'antes do quiz') +
+        ' (' + r.erro.replace(/127\.0\.0\.1:\d+/g, '127.0.0.1:(porta)').slice(0, 160) + ')');
     } finally {
       await ctx.close();
     }
+    return r;
   }
 
   // Lead 1: landing-page-02 pelo botão do topo, utm bio, 1440, o exemplo do lead score (96, faixa a), caixa marcada
@@ -795,8 +885,8 @@ async function principal() {
   conferir(q1.visita === 201, 'landing: a visita foi gravada (POST /api/evento, ' + q1.visita + ')');
   conferir(q1.naLanding.modo === 'CSS1Compat' && q1.naLanding.charset === 'UTF-8', 'landing: modo padrão (' + q1.naLanding.modo + ') e UTF-8 (34.13)');
   conferir(LISTA_FONTES['landing-02'].length === 0 || q1.naLanding.fontes.includes('Geist'), 'landing: Geist carregada de /fontes/, sem o Google (' + q1.naLanding.fontes.join(', ') + ')');
-  conferir(q1.endereco.pathname === '/quiz/' && q1.endereco.searchParams.get('utm_source') === 'bio' && q1.endereco.searchParams.get('utm_campaign') === 'funil-01' && /^sessao-[a-z0-9-]{1,60}$/.test(q1.sessao || ''),
-    'landing: o botão do topo ("' + BOTAO_DO_TOPO + '") leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+  conferir(q1.direto && q1.endereco.pathname === '/analise/' && q1.endereco.searchParams.get('utm_source') === 'bio' && q1.endereco.searchParams.get('utm_campaign') === 'funil-01' && /^sessao-[a-z0-9-]{1,60}$/.test(q1.sessao || ''),
+    'landing: o botão do topo ("' + BOTAO_DO_TOPO + '") leva a /analise/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
   conferir(q1.inicio === 201, 'quiz: o início do quiz foi gravado ao abrir (POST /api/evento, ' + q1.inicio + ')');
   conferir(q1.noQuiz.modo === 'CSS1Compat' && q1.noQuiz.charset === 'UTF-8' && q1.noQuiz.titulo === 'Análise Estratégica do Sistema de Vendas' && !/Ã|Â/.test(q1.noQuiz.titulo),
     'quiz: modo padrão (' + q1.noQuiz.modo + '; 09.1), lido como UTF-8, título com os acentos certos (v7: o nome público da Análise, ficha-de-fatos#analise-nome-publico; ' + q1.noQuiz.titulo + ')');
@@ -846,18 +936,18 @@ async function principal() {
     conferir(semContador.length === 0, 'landing · programa: o contador do carrossel tem ' + V.cartoes + ' estados, de ' + contadores[0] + ' a ' + contadores[V.cartoes - 1] + ', uma vez cada e nenhum outro, na versão do computador e na do celular' +
       (semContador.length ? ', mas não em: ' + semContador.join(' | ') : '') + ' (v9)');
   }
-  const htmlQuiz = readFileSync(join(SITE, 'quiz', 'index.html'), 'utf8');
+  const htmlQuiz = readFileSync(join(SITE, 'analise', 'index.html'), 'utf8');
   conferir(!htmlQuiz.includes('{bloqueado:true') && htmlQuiz.includes("const POLITICA = {endereco:'/politica-de-privacidade/'}"),
     'quiz: nenhum fato bloqueado na página (nome da Análise e da agência vindos da ficha) e os links da política para /politica-de-privacidade/ (v7; #117)');
   // v5: o quiz abre na abertura, com o cabeçalho e o botão da landing-page-02 (Geist); a letra de mão (Permanent Marker) fica para o relatório
-  conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Geist carregadas de /quiz/fontes/ na abertura (' + q1.noQuiz.fontes.join(', ') + ')');
+  conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Geist carregadas de /analise/fontes/ na abertura (' + q1.noQuiz.fontes.join(', ') + ')');
   conferir(q1.caixaMarcada && q1.caixas === 1, 'quiz: uma caixa de aceite só, já marcada (13.4)');
   conferir(q1.fim === 201 && !q1.aviso && q1.telaFinal === '#plano', 'lead A: POST /api/fim-quiz gravado (' + q1.fim + '), tela do plano, sem aviso de falha');
 
   // Lead 2: landing-page-02 pelo botão grande, utm stories, 375, eliminatório, caixa marcada, clique "Tenho interesse"
   const q2 = await fazerQuiz({ landing: '/', busca: '?utm_source=stories&utm_campaign=funil-01', respostas: ELIMINATORIO, pessoa: PESSOA_ELIM, largura: 375, telaFinal: 'relatorio-nao', clique: 'interesse' });
   conferir(q2.visita === 201 && q2.naLanding.modo === 'CSS1Compat', 'landing em 375: a visita foi gravada (' + q2.visita + ') e a página está no modo padrão (' + q2.naLanding.modo + ')');
-  conferir(q2.endereco.pathname === '/quiz/' && q2.endereco.searchParams.get('utm_source') === 'stories', 'landing em 375: o botão grande ("' + BOTAO_GRANDE + '...") leva a /quiz/ com utm_source=stories');
+  conferir(q2.direto && q2.endereco.pathname === '/analise/' && q2.endereco.searchParams.get('utm_source') === 'stories', 'landing em 375: o botão grande ("' + BOTAO_GRANDE + '...") leva a /analise/ com utm_source=stories');
   conferir(q2.fim === 201 && !q2.aviso && q2.telaFinal === '#relatorio-nao', 'eliminatório: POST /api/fim-quiz gravado (' + q2.fim + '), tela do relatório de não qualificado, sem aviso de falha');
   conferir(q2.clique === 201, 'eliminatório: o clique "Tenho interesse" foi gravado (POST /api/evento, ' + q2.clique + ')');
 
@@ -884,10 +974,10 @@ async function principal() {
     page.on('console', m => consoleTexto.push(m.text()));
     await page.goto(BASE + '/?utm_source=bio');
     await botaoDaLanding(page, BOTAO_GRANDE).click();
-    await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 }).catch(() => {});
+    await page.waitForURL(/\/analise\/\?/, { timeout: 15000 }).catch(() => {});
     const ida = new URL(page.url());
-    conferir(ida.pathname === '/quiz/' && ida.searchParams.get('utm_source') === 'bio' && /^sessao-[a-z0-9-]{1,60}$/.test(ida.searchParams.get('id_sessao') || '') && !ida.searchParams.has('utm_campaign'),
-      'landing com /api/evento fora do ar: o botão continua levando a /quiz/ com a utm presente e a sessão (10.10)');
+    conferir(ida.pathname === '/analise/' && ida.searchParams.get('utm_source') === 'bio' && /^sessao-[a-z0-9-]{1,60}$/.test(ida.searchParams.get('id_sessao') || '') && !ida.searchParams.has('utm_campaign'),
+      'landing com /api/evento fora do ar: o botão continua levando a /analise/ com a utm presente e a sessão (10.10)');
     await ctx.close();
     // Aberta direto do arquivo, para revisão: não manda nada (sem rota de bloqueio: só se anota)
     const ctx2 = await navegador.newContext();
@@ -966,10 +1056,11 @@ async function principal() {
 
   // ═══ 7. Planilha do SDR ═══
   secao('7. Planilha do SDR (Codigo.gs v2 com o Google de mentira) pela porta privada');
-  function abrirPlanilha(chave) {
+  // v10: a porta é a do garçom ou, na seção 12, a da ponte do endereço antigo
+  function abrirPlanilha(chave, porta = portaGarcom) {
     const proc = spawn(process.execPath, [join(AQUI, 'planilha-no-ensaio.mjs')], {
       cwd: AQUI, stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env, ENSAIO_PORTA_GARCOM: String(portaGarcom), ENSAIO_CHAVE_PLANILHA: chave }
+      env: { ...process.env, ENSAIO_PORTA_GARCOM: String(porta), ENSAIO_CHAVE_PLANILHA: chave }
     });
     const linhas = createInterface({ input: proc.stdout });
     const esperando = [];
@@ -1199,7 +1290,7 @@ async function principal() {
         // v8: se o botão não levar ao quiz, a conferência abaixo sai FALHOU, em vez de o ensaio parar no meio
         const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
         await ctaDoTopo(page).click();
-        const chegou = await page.waitForURL(/\/quiz\/\?/, { timeout: 15000 }).then(() => true, () => false);
+        const chegou = await page.waitForURL(/\/analise\/\?/, { timeout: 15000 }).then(() => true, () => false);
         await inicio;
         await page.waitForTimeout(500);
         conferir(chegou && semNada && escolha === 'recusado' && !(await temAviso(page)) && !doGtm(await camadaDe(page)) && (await lerEscolha(page)) === 'recusado',
@@ -1238,11 +1329,11 @@ async function principal() {
         const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
         pedido = pedidoAoGoogle(page);
         await ctaDoTopo(page).click();
-        await page.waitForURL(/\/quiz\//, { timeout: 15000 }).catch(() => {});
+        await page.waitForURL(/\/analise\//, { timeout: 15000 }).catch(() => {});
         const ri = await inicio;
         await pedido;
         await page.waitForTimeout(400);
-        const paraOQuiz = idas.map(u => new URL(u)).find(u => u.pathname === '/quiz/');
+        const paraOQuiz = idas.map(u => new URL(u)).find(u => u.pathname === '/analise/');
         const sessaoDaIda = paraOQuiz ? paraOQuiz.searchParams.get('id_sessao') : null;
         let sessaoDoInicio = null;
         try { sessaoDoInicio = JSON.parse(ri.request().postData()).evento.id_sessao; } catch { /* fica vazio */ }
@@ -1252,7 +1343,7 @@ async function principal() {
         conferir(!(await temAviso(page)) && (await lerEscolha(page)) === 'aceito' && google.length === 2 && google[1] === GTM && fora.length === foraAntes && soAnalise(camQ),
           rotulo + ' · a escolha passa da landing para o quiz: clicando o botão da landing ("' + ida + '"), o quiz abre sem o aviso e já pede o gtm.js, só ao Google');
         conferir(/^sessao-[a-z0-9-]{1,60}$/.test(sessaoDaIda || '') && sessaoDoInicio === sessaoDaIda && !endQ.searchParams.has('id_sessao') && endQ.searchParams.get('utm_source') === 'bio' &&
-          limpaQ && limpaQ.pagina_limpa === BASE + '/quiz/?utm_source=bio&utm_campaign=funil-01' && limpaQ.origem_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01',
+          limpaQ && limpaQ.pagina_limpa === BASE + '/analise/?utm_source=bio&utm_campaign=funil-01' && limpaQ.origem_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01',
           rotulo + ' · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (' + endQ.search + endQ.hash + ')');
         if (sessaoDaIda) sessoesAceitas.push(sessaoDaIda);
       } finally {
@@ -1277,16 +1368,17 @@ async function principal() {
   // v9: os três ajudantes abaixo saíram de dentro do bloco da seção 10, sem mudança, para a seção 11 usar os mesmos
   const min = (t) => t.toLocaleLowerCase('pt-BR').replace(/\s+/g, ' ').trim();
   const mas = (lista) => lista.length ? ', mas faltou: ' + lista.join(' | ') : '';
-  // Clica o botão e diz se a ida foi a /quiz/ com as utm e o id_sessao no formato do banco (pelo pedido de navegação)
+  // Clica o botão e diz se a ida foi a /analise/ com as utm e o id_sessao no formato do banco (pelo pedido de navegação).
+  // v10 (#120): a ida tem de ser direta, sem passar por /quiz (idaDireta, na seção 6).
   const levaAoQuiz = async (page, botao) => {
     const idas = [];
-    page.on('request', rq => { if (rq.isNavigationRequest()) idas.push(rq.url()); });
+    page.on('request', rq => { if (rq.isNavigationRequest() && rq.frame() === page.mainFrame()) idas.push(rq.url()); });
     const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 10000 }).catch(() => null);
     await botao.click({ timeout: 10000 }).catch(() => {});
-    await page.waitForURL(/\/quiz\//, { timeout: 10000 }).catch(() => {});
+    await page.waitForURL(/\/analise\//, { timeout: 10000 }).catch(() => {});
     await inicio;
-    const u = idas.map(x => new URL(x)).find(x => x.pathname === '/quiz/');
-    return !!u && new URL(page.url()).pathname === '/quiz/' && u.searchParams.get('utm_source') === 'bio' && u.searchParams.get('utm_campaign') === 'funil-01' &&
+    const u = idas.map(x => new URL(x)).find(x => x.pathname === '/analise/');
+    return !!u && idaDireta(idas) && new URL(page.url()).pathname === '/analise/' && u.searchParams.get('utm_source') === 'bio' && u.searchParams.get('utm_campaign') === 'funil-01' &&
       /^sessao-[a-z0-9-]{1,60}$/.test(u.searchParams.get('id_sessao') || '');
   };
   {
@@ -1343,13 +1435,13 @@ async function principal() {
         // O "Fazer a Análise" do cabeçalho: um botão no computador, um bloco no celular; e o botão grande, numa página nova
         const doTopo = ctaDoTopo(page);
         const feitio = await doTopo.evaluate(b => b.tagName === 'BUTTON' ? 'um botão' : 'um bloco, não um botão', null, { timeout: 5000 }).catch(() => 'não achado');
-        conferir(await levaAoQuiz(page, doTopo), rotulo + ' · o "' + BOTAO_DO_TOPO + '" do cabeçalho (' + feitio + ') leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+        conferir(await levaAoQuiz(page, doTopo), rotulo + ' · o "' + BOTAO_DO_TOPO + '" do cabeçalho (' + feitio + ') leva a /analise/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
         const page2 = await ctx.newPage();
         page2.on('console', m => consoleTexto.push(m.text()));
         const visita2 = page2.waitForResponse(ehEvento('visita'), { timeout: 15000 });
         await page2.goto(BASE + '/?utm_source=bio&utm_campaign=funil-01');
         await visita2;
-        conferir(await levaAoQuiz(page2, botaoDaLanding(page2, BOTAO_GRANDE)), rotulo + ' · o botão grande ("' + BOTAO_GRANDE + '...") leva a /quiz/ com as utm e o id_sessao no formato do banco');
+        conferir(await levaAoQuiz(page2, botaoDaLanding(page2, BOTAO_GRANDE)), rotulo + ' · o botão grande ("' + BOTAO_GRANDE + '...") leva a /analise/ com as utm e o id_sessao no formato do banco');
       } finally {
         await ctx.close();
       }
@@ -1520,7 +1612,7 @@ async function principal() {
           await visitaDaChamada;
           const chamada = pagina.locator(seletor, { hasText: BOTAO_GRANDE }).first();
           const feitio = await chamada.evaluate(b => b.tagName === 'BUTTON' ? 'um botão' : 'um bloco, não um botão', null, { timeout: 5000 }).catch(() => 'não achada');
-          conferir(await levaAoQuiz(pagina, chamada), rotulo + ' · ' + nome + ' ("' + BOTAO_GRANDE + '...", ' + feitio + ') leva a /quiz/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
+          conferir(await levaAoQuiz(pagina, chamada), rotulo + ' · ' + nome + ' ("' + BOTAO_GRANDE + '...", ' + feitio + ') leva a /analise/ com utm_source=bio, utm_campaign=funil-01 e id_sessao no formato do banco');
           await pagina.close();
         }
       } finally {
@@ -1529,8 +1621,306 @@ async function principal() {
     }
   }
 
-  // ═══ 12. Fechamento ═══
-  secao('12. Fechamento');
+  // ═══ 12. O endereço e o caminho novos (v10; #120; prompts/21-dominio-e-caminho-da-analise.md, 21.3) ═══
+  // O que o pedido 21 mudou, com o garçom v5 no workerd. O endereço novo é o local (BASE, a ORIGEM_PERMITIDA do ensaio); o antigo é o
+  // nome de mentira NOME_ANTIGO, que a cópia da configuração traz como ENDERECO_ANTIGO. Os pedidos pelo endereço antigo passam pela
+  // ponte: um servidor em 127.0.0.1 que repassa cada pedido ao garçom com o nome antigo no cabeçalho Host, como o DNS faria com o
+  // endereço de verdade, e devolve a resposta como veio, sem seguir redirecionamento. Nenhum redirecionamento é seguido para fora de
+  // 127.0.0.1: o ensaio só segue um Location que comece pelo endereço local. Vem depois da planilha (7), como a 9, a 10 e a 11.
+  // Grava no banco só visitas e inícios do quiz, sem pessoa; nenhuma pessoa e nenhum fim do quiz novos.
+  secao('12. O endereço e o caminho novos: /quiz levando a /analise/, o endereço antigo levando ao novo, as portas, o noindex, os links e as chamadas (#120)');
+  {
+    const ponte = http.createServer((req, res) => {
+      const ida = http.request({ host: '127.0.0.1', port: portaGarcom, method: req.method, path: req.url, headers: { ...req.headers, host: NOME_ANTIGO } },
+        (volta) => { res.writeHead(volta.statusCode, volta.rawHeaders); volta.pipe(res); });
+      ida.on('error', () => { res.writeHead(502); res.end(); });
+      req.pipe(ida);
+    });
+    await new Promise(ok => ponte.listen(0, '127.0.0.1', ok));
+    limpezas.push(() => new Promise(ok => { ponte.closeAllConnections?.(); ponte.close(() => ok()); }));
+    const ANTIGO = 'http://127.0.0.1:' + ponte.address().port;
+    informar('endereço novo: o local do ensaio; endereço antigo: ' + ENDERECO_ANTIGO + ', um nome de mentira, pedido pela ponte em 127.0.0.1:(porta livre)');
+
+    // Todo pedido desta seção feito pelo Node, sem seguir redirecionamento, anotado para a conferência do noindex
+    const vistas = [];
+    const pedir = async (base, caminho, { metodo = 'GET', cabecalhos = {}, corpo } = {}) => {
+      const resp = await fetch(base + caminho, { method: metodo, headers: cabecalhos, body: corpo === undefined ? undefined : JSON.stringify(corpo), redirect: 'manual' });
+      const visto = { status: resp.status, local: resp.headers.get('location'), noindex: resp.headers.get('x-robots-tag') === 'noindex',
+        cors: [...resp.headers.keys()].some(k => k.toLowerCase().startsWith('access-control-')), texto: await resp.text() };
+      vistas.push(visto);
+      return visto;
+    };
+    // Só segue um Location que fique no endereço local; qualquer outro não é seguido e a conferência falha
+    const seguir = async (visto) => {
+      const local = visto.local || '';
+      if (local.startsWith('/')) return pedir(BASE, local);
+      if (local.startsWith(BASE + '/')) return pedir(BASE, local.slice(BASE.length));
+      return { status: 0, local: null, noindex: false, cors: false, texto: '' };
+    };
+    const semPorta = (t) => String(t || 'sem Location').split(BASE).join('(endereço novo)');
+    const Q = '?' + CONSULTA, PARES = new URLSearchParams(CONSULTA);
+    // guarda: a consulta de teste tem 8 pares (as cinco utm, o id_sessao e uma chave repetida) e dois valores com caractere codificado
+    const consultaBoa = [...PARES].length === 8 && ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].every(k => PARES.has(k)) && PARES.get('utm_content') === 'anúncio 1' &&
+      PARES.get('utm_term') === 'a+b&c' && PARES.getAll('x').join() === '1,2' && PARES.get('id_sessao') === SESSAO_DO_LINK;
+
+    // ··· /quiz e /quiz/ levam a /analise/; /analise sem a barra funciona ···
+    const quizDireto = await pedir(BASE, '/analise/');
+    // a página do quiz como a montagem a deixou (htmlQuiz, lido da pasta montada na seção 6)
+    const ehOQuiz = (visto) => visto.status === 200 && visto.noindex && visto.texto === quizDireto.texto && visto.texto === htmlQuiz && htmlQuiz.length > 10000;
+    for (const [caminho, status, nome] of [['/quiz/', 302, 'o caminho antigo do quiz'], ['/quiz', 302, 'o caminho antigo do quiz, sem a barra'], ['/analise', 307, '/analise sem a barra']]) {
+      const ida = await pedir(BASE, caminho + Q), chegada = await seguir(ida);
+      conferir(consultaBoa && ida.status === status && ida.local === '/analise/' + Q && ida.noindex && !ida.cors && ehOQuiz(chegada),
+        'endereço novo · GET ' + caminho + ' com a consulta (' + nome + '): ' + status + ' para /analise/ com a consulta inteira, letra por letra (8 pares: as cinco utm, o id_sessao, uma chave repetida e dois valores com ' +
+        'caractere codificado), com noindex e sem CORS; seguindo, o quiz abre (200) (' +
+        ida.status + ' para ' + semPorta(ida.local) + '; depois ' + chegada.status + ')');
+    }
+
+    // ··· Um pedido de página com o nome do endereço antigo é levado ao novo, no mesmo caminho ···
+    const levado = async (caminho, destino) => {
+      const ida = await pedir(ANTIGO, caminho + Q), chegada = await seguir(ida), direto = await pedir(BASE, destino);
+      const certo = consultaBoa && ida.status === 302 && ida.local === BASE + destino + Q && ida.local.startsWith(BASE + '/') && ida.noindex && !ida.cors && ida.texto === '';
+      return { ida, chegada, direto, certo, mesmaPagina: chegada.status === direto.status && chegada.noindex && chegada.texto === direto.texto };
+    };
+    // a página esperada em cada destino é o arquivo da pasta montada (a landing e o quiz) ou a política lida na seção 6
+    for (const [caminho, destino, nome, pagina] of [['/', '/', 'a landing', indexDaLanding], ['/politica-de-privacidade/', '/politica-de-privacidade/', 'a política', tPol],
+      ['/quiz/', '/analise/', 'o quiz, com /quiz virando /analise', htmlQuiz]]) {
+      const l = await levado(caminho, destino);
+      conferir(l.certo && l.mesmaPagina && l.chegada.status === 200 && l.chegada.texto === pagina && pagina.length > 1000,
+        'endereço antigo · GET ' + caminho + ' com a consulta (' + nome + '): 302, sem corpo, com noindex e sem CORS, e o Location começa pelo endereço novo e leva a ' + destino +
+        ' com a consulta inteira; seguindo, abre (200) a mesma página que o endereço novo serve (' + l.ida.status + ' para ' + semPorta(l.ida.local) + '; depois ' + l.chegada.status + ')');
+    }
+    {
+      // Os outros caminhos: o mesmo caminho no endereço novo, exista ou não a página lá; só /quiz muda
+      const outros = [['/quiz', '/analise/'], ['/analise/', '/analise/'], ['/analise', '/analise'], [programaDaLanding, programaDaLanding],
+        ['/quiz/poster-junior.jpg', '/analise/poster-junior.jpg'], ['/nao-existe', '/nao-existe']];
+      const errados = [];
+      for (const [caminho, destino] of outros) {
+        const ida = await pedir(ANTIGO, caminho + Q);
+        if (!(ida.status === 302 && ida.local === BASE + destino + Q && ida.noindex && !ida.cors)) errados.push(caminho + ': ' + ida.status + ' para ' + semPorta(ida.local));
+      }
+      conferir(errados.length === 0, 'endereço antigo · os outros caminhos (' + outros.map(o => o[0]).join(', ') + '): 302 para o mesmo caminho no endereço novo, com /quiz virando /analise, a consulta inteira e noindex' +
+        (errados.length ? ', mas: ' + errados.join(' | ') : ''));
+    }
+
+    // ··· A porta pública aceita a origem nova e recusa a antiga ···
+    const post = (base, rota, origem, corpo) => pedir(base, rota, { metodo: 'POST', cabecalhos: { 'Content-Type': 'application/json', Origin: origem }, corpo });
+    {
+      // As origens que uma aba aberta no endereço antigo mandaria: a do nome de mentira (com https e com http) e a do endereço antigo
+      // de verdade, lida do wrangler.toml só para ser o valor do cabeçalho. Em cada rota, pelo endereço novo e pelo antigo.
+      const origens = [ENDERECO_ANTIGO, 'http://' + NOME_ANTIGO, ORIGEM_ANTIGA_DE_VERDADE];
+      const chamadasAntes = supabase.registro.length, recusas = [];
+      for (const base of [BASE, ANTIGO]) for (const origem of origens) {
+        recusas.push(await post(base, '/api/evento', origem, eventoDeTeste('visita')));
+        recusas.push(await post(base, '/api/fim-quiz', origem, pacoteDeTeste(PESSOA_ORIGEM_ANTIGA)));
+      }
+      const semPessoa = (await linhaPessoa(PESSOA_ORIGEM_ANTIGA.email)).length === 0;
+      conferir(origens.every(o => /^https?:\/\/[^/]+$/.test(o)) && new Set(origens).size === 3 && recusas.length === 12 &&
+        recusas.every(v => v.status === 403 && v.noindex && !v.cors && !v.local) && supabase.registro.length === chamadasAntes && semPessoa,
+        'porta pública · a origem do endereço antigo é recusada: 403 na visita e no fim do quiz, com as três origens antigas (o nome de mentira com https e com http, e o endereço antigo de verdade, só como texto do cabeçalho), ' +
+        'pedidas pelo endereço novo e pelo antigo; o banco nem é chamado e nenhuma pessoa entra (' + recusas.map(v => v.status).join(', ') + ')');
+      const sessaoPeloNovo = novaSessao(), sessaoPeloAntigo = novaSessao();
+      const aceitas = [await post(BASE, '/api/evento', BASE, eventoDeTeste('visita', { sessao: sessaoPeloNovo })), await post(ANTIGO, '/api/evento', BASE, eventoDeTeste('visita', { sessao: sessaoPeloAntigo }))];
+      const gravadas = [await eventosDaSessao(sessaoPeloNovo), await eventosDaSessao(sessaoPeloAntigo)];
+      conferir(aceitas.every(v => v.status === 201 && v.noindex && !v.cors && !v.local) && gravadas.every(g => g.length === 1 && g[0].tipo === 'visita' && g[0].id_pessoa === null),
+        'porta pública · a origem nova (a ORIGEM_PERMITIDA) é aceita: a visita é gravada (201), pedida pelo endereço novo e também pelo antigo, onde a rota /api/ não é redirecionada (' + aceitas.map(v => v.status).join(', ') + ')');
+    }
+
+    // ··· A porta privada responde com os dois nomes ···
+    const privada = (base, chave) => pedir(base, '/api/planilha/leads-novos', { cabecalhos: chave === undefined ? {} : { 'X-Chave-Planilha': chave } });
+    const idsDe = (visto) => { try { return [...new Set(JSON.parse(visto.texto).leads.map(l => l.id_pessoa))]; } catch { return []; } };
+    {
+      const peloNovo = await privada(BASE, CHAVE_PLANILHA), peloAntigo = await privada(ANTIGO, CHAVE_PLANILHA);
+      conferir(peloNovo.status === 200 && peloAntigo.status === 200 && !peloNovo.local && !peloAntigo.local && peloNovo.noindex && peloAntigo.noindex &&
+        idsDe(peloNovo).length >= 5 && peloAntigo.texto === peloNovo.texto,
+        'porta privada · com a chave de mentira da planilha: a mesma resposta pelo endereço novo e pelo antigo (200, o mesmo corpo, ' + idsDe(peloNovo).length + ' leads), nunca um redirecionamento (' + peloNovo.status + ' e ' + peloAntigo.status + ')');
+      const negadas = [];
+      for (const base of [BASE, ANTIGO]) for (const chave of [undefined, CHAVE_PLANILHA_ERRADA, CHAVE_PUBLICAVEL]) negadas.push(await privada(base, chave));
+      conferir(negadas.length === 6 && negadas.every(v => v.status === 401 && v.texto === '{"ok":false,"erro":"nao autorizado"}' && !v.local && v.noindex && !v.cors),
+        'porta privada · sem chave, com a chave errada e com a publicável no lugar: 401 sem detalhe nos dois endereços, nunca um redirecionamento (' + negadas.map(v => v.status).join(', ') + ')');
+      // A planilha do SDR de verdade (Codigo.gs com o Google de mentira), apontada para o endereço antigo, como fica até o Otávio
+      // trocar a GARCOM_URL (#120, ponto 3). O Apps Script não segue redirecionamento: um 302 aqui seria "erro-garcom".
+      const planilhaPeloAntigo = abrirPlanilha(CHAVE_PLANILHA, ponte.address().port);
+      const instalou = await planilhaPeloAntigo.pedir('instalar');
+      const buscou = await planilhaPeloAntigo.pedir('buscar');
+      const estado = (await planilhaPeloAntigo.pedir('estado')).resultado || { linhas: [], registros: [] };
+      await planilhaPeloAntigo.sair();
+      const depois = await privada(BASE, CHAVE_PLANILHA);
+      const naPlanilha = estado.linhas.map(l => l[0]).join();
+      conferir(instalou.ok && buscou.ok && buscou.resultado.situacao === 'ok' && buscou.resultado.codigo === 200 && estado.linhas.length >= 5 &&
+        (naPlanilha === idsDe(peloNovo).join() || naPlanilha === idsDe(depois).join()) && estado.registros.every(t => !DADO_PESSOAL.test(t) && !SEGREDOS.some(sg => t.includes(sg))),
+        'porta privada · a planilha do SDR (Codigo.gs com o Google de mentira) apontada para o endereço antigo continua puxando: 200, ' + estado.linhas.length +
+        ' leads na aba, os mesmos e na mesma ordem dos que o endereço novo devolve, sem dado pessoal no registro (' + (buscou.ok ? buscou.resultado.situacao + ', ' + buscou.resultado.codigo : buscou.erro) + ')');
+    }
+
+    // ··· O noindex em tudo o que foi pedido nesta seção, inclusive nos redirecionamentos ···
+    {
+      const naoAchada = await pedir(BASE, '/nao-existe');
+      const porStatus = {};
+      for (const v of vistas) porStatus[v.status] = (porStatus[v.status] || 0) + 1;
+      const redirecionamentos = vistas.filter(v => v.status >= 300 && v.status < 400);
+      conferir(naoAchada.status === 404 && vistas.every(v => v.noindex) && redirecionamentos.length === 12 && redirecionamentos.every(v => v.local) &&
+        [200, 201, 302, 307, 401, 403, 404].every(st => porStatus[st] > 0) && vistas.every(v => !v.cors),
+        'noindex · X-Robots-Tag: noindex em todas as ' + vistas.length + ' respostas pedidas nesta seção, e nenhuma com cabeçalho de CORS: os ' + redirecionamentos.length +
+        ' redirecionamentos (o 302 de /quiz e de /quiz/, o 307 de /analise sem a barra e os 302 do endereço antigo), as páginas, as portas e o 404 (' +
+        Object.keys(porStatus).sort().map(st => porStatus[st] + ' com ' + st).join(', ') + ')');
+    }
+
+    // ··· No navegador: os links do aviso de cookies e da política ···
+    // O link do aviso abre numa aba nova (medicao.mjs); os dois links da política dentro do quiz foram clicados pelas cinco pessoas da seção 6.
+    for (const largura of [1440, 375]) {
+      const ctx = await novoContexto(largura);
+      try {
+        for (const [caminho, nome] of [['/', 'na landing'], ['/analise/', 'no quiz']]) {
+          const page = await ctx.newPage();
+          page.on('console', m => consoleTexto.push(m.text()));
+          const abriu = await page.goto(BASE + caminho + '?utm_source=bio&utm_campaign=funil-01').catch(() => null);
+          const links = page.locator('#aviso-cookies a.aviso-cookies__link');
+          const quantos = await links.count();
+          const idas = [];
+          for (let k = 0; k < quantos; k++) idas.push(await abrirLink(ctx, links.nth(k)));
+          conferir(!!abriu && abriu.status() === 200 && new URL(page.url()).pathname === caminho && quantos === MEDICAO.LINKS_DO_AVISO.length && quantos > 0 && idas.every(ehAPolitica) &&
+            MEDICAO.LINKS_DO_AVISO.every(l => l.endereco === '/politica-de-privacidade/'),
+            'links ' + largura + ' · ' + nome + ' (' + caminho + '): o link do aviso de cookies aponta para /politica-de-privacidade/ e, clicado, abre a política numa aba nova, no endereço novo (' +
+            (idas.map(l => (l.endereco || 'não abriu').replace(BASE, '') + ', "' + (l.titulo || 'sem título') + '"').join('; ') || 'nenhum link no aviso') + ')');
+          await page.close();
+        }
+      } finally {
+        await ctx.close();
+      }
+    }
+    {
+      const pessoas = [q1, q2, q3, q4, q5];
+      const semLink = pessoas.flatMap((q, k) => ['abertura', 'contato'].filter(onde => !ehAPolitica(q.politica[onde])).map(onde => 'pessoa ' + (k + 1) + ', ' + onde + ': ' +
+        ((q.politica[onde] || {}).endereco || 'não abriu').replace(BASE, '')));
+      conferir(semLink.length === 0, 'links · dentro do quiz, em /analise/: o link da política da abertura e o da tela do contato apontam para /politica-de-privacidade/ e, clicados, abrem a política numa aba nova, ' +
+        'nas cinco pessoas da seção 6 (10 cliques, em 1440 e em 375)' + (semLink.length ? ', mas: ' + semLink.join(' | ') : ''));
+    }
+
+    // ··· No navegador: as chamadas da landing, uma a uma ···
+    // Todas as chamadas à vista (os botões e os blocos "Botão/Primário" cujo texto começa por "Fazer a Análise" ou "Faça uma Análise",
+    // a mesma regra do programa do fim da landing), com as cinco utm no endereço. Uma carga da página por largura: o pedido de
+    // navegação que cada clique dispara é segurado pelo ensaio (respondido com 204, que deixa a página onde está) e lido. Assim as
+    // 10 chamadas são clicadas na mesma página, sem 30 cargas da landing. A ida inteira, com o quiz abrindo e o início gravado, é
+    // conferida nas chamadas das seções 6, 9, 10 e 11.
+    const CHAMADAS_POR_LARGURA = 10;
+    for (const largura of [1440, 375, 360]) {
+      const ctx = await novoContexto(largura);
+      try {
+        const page = await ctx.newPage();
+        page.on('console', m => consoleTexto.push(m.text()));
+        const pedidas = [];
+        await page.route('**/*', (rota) => {
+          const rq = rota.request();
+          if (rq.isNavigationRequest() && rq.frame() === page.mainFrame() && rq.url().startsWith(BASE + '/') && new URL(rq.url()).pathname !== '/') {
+            pedidas.push(rq.url());
+            seguradasPeloEnsaio.add(rq);
+            return rota.fulfill({ status: 204, body: '' });
+          }
+          return rota.fallback();
+        });
+        const visita = page.waitForResponse(ehEvento('visita'), { timeout: 15000 }).catch(() => null);
+        await page.goto(BASE + '/?' + new URLSearchParams(CINCO_UTM).toString());
+        await visita;
+        await page.evaluate(() => document.fonts.ready);
+        const lista = await page.evaluateHandle(() => {
+          const regra = /^(Fazer a Análise|Faça uma Análise)/;
+          const todas = [...document.querySelectorAll('button, [data-name="Botão/Primário"]')].filter(e => e.getClientRects().length > 0 && regra.test(e.textContent.replace(/\s+/g, ' ').trim()));
+          return todas.filter(e => !todas.some(outra => outra !== e && outra.contains(e)));
+        });
+        const total = await lista.evaluate(l => l.length);
+        const erradas = [], textos = [];
+        let certas = 0;
+        for (let k = 0; k < total; k++) {
+          const chamada = (await lista.evaluateHandle((l, i) => l[i], k)).asElement();
+          const texto = chamada ? await chamada.evaluate(e => e.textContent.replace(/\s+/g, ' ').trim()) : 'não achada';
+          textos.push(texto);
+          pedidas.length = 0;
+          if (chamada) await chamada.click({ timeout: 10000 }).catch(() => {});
+          for (let espera = 0; espera < 50 && !pedidas.length; espera++) await page.waitForTimeout(100);
+          await page.waitForTimeout(100);
+          const ida = pedidas.length ? new URL(pedidas[0]) : null;
+          const comAsUtm = !!ida && Object.entries(CINCO_UTM).every(([nome, valor]) => ida.searchParams.get(nome) === valor) && /^sessao-[a-z0-9-]{1,60}$/.test(ida.searchParams.get('id_sessao') || '') &&
+            [...ida.searchParams.keys()].length === 6;
+          if (pedidas.length === 1 && ida.pathname === '/analise/' && comAsUtm && new URL(page.url()).pathname === '/') certas++;
+          else erradas.push((k + 1) + 'ª ("' + texto.slice(0, 28) + '..."): ' + (ida ? 'pediu ' + ida.pathname + ida.search.slice(0, 60) : 'não pediu página nenhuma') + (pedidas.length > 1 ? ', ' + pedidas.length + ' pedidos' : ''));
+        }
+        const doTopo = textos.filter(t => t === BOTAO_DO_TOPO).length, grandes = textos.filter(t => t.startsWith(BOTAO_GRANDE)).length;
+        conferir(total === CHAMADAS_POR_LARGURA && certas === total && doTopo === 1 && grandes === CHAMADAS_POR_LARGURA - 1,
+          'chamadas ' + largura + ' · as ' + CHAMADAS_POR_LARGURA + ' chamadas à vista na landing (o "' + BOTAO_DO_TOPO + '" do cabeçalho e as nove "' + BOTAO_GRANDE + '..."), clicadas uma a uma, pedem direto /analise/, ' +
+          'e não /quiz/, com as cinco utm do endereço (uma com acento e espaço, outra com + e &) e o id_sessao no formato do banco (' + certas + ' de ' + total + '; ' + doTopo + ' do cabeçalho e ' + grandes + ' das outras)' +
+          (erradas.length ? ', mas: ' + erradas.join(' | ') : ''));
+      } finally {
+        await ctx.close();
+      }
+    }
+
+    // ··· No navegador: quem abre o endereço antigo ···
+    {
+      const ctx = await novoContexto(1440, { ponte: ANTIGO });
+      try {
+        // Um link antigo do quiz: o endereço antigo, em /quiz/, com a consulta inteira
+        const page = await ctx.newPage();
+        page.on('console', m => consoleTexto.push(m.text()));
+        const idas = [];
+        page.on('request', rq => { if (rq.isNavigationRequest() && rq.frame() === page.mainFrame()) idas.push(rq.url()); });
+        const inicio = page.waitForResponse(ehEvento('inicio_quiz'), { timeout: 15000 }).catch(() => null);
+        await page.goto(ANTIGO + '/quiz/' + Q).catch(() => {});
+        const ri = await inicio;
+        await page.waitForFunction(() => location.hash === '#abertura', null, { timeout: 10000 }).catch(() => {});
+        const chegou = new URL(page.url()), titulo = await page.title();
+        const daSessao = await eventosDaSessao(SESSAO_DO_LINK);
+        conferir(idas.length === 2 && idas[0] === ANTIGO + '/quiz/' + Q && idas[1] === BASE + '/analise/' + Q && chegou.origin === BASE && chegou.pathname === '/analise/' && chegou.search === Q &&
+          chegou.hash === '#abertura' && titulo === 'Análise Estratégica do Sistema de Vendas' && !!ri && ri.status() === 201 && daSessao.map(e => e.tipo).join() === 'inicio_quiz' && daSessao[0].utm_source === 'bio',
+          'navegador · um link antigo do quiz (o endereço antigo, em /quiz/, com a consulta inteira) chega num salto só ao quiz no endereço novo, em /analise/, com a consulta inteira, e o início do quiz é gravado (' +
+          (ri ? ri.status() : 'sem resposta') + ') com o id_sessao e a utm do link (' + idas.length + ' pedidos de navegação; chegou em ' + chegou.pathname + chegou.hash + ')');
+        await page.close();
+        // Um link antigo da landing: a página abre no endereço novo, a visita é gravada com a utm, e a chamada leva a /analise/
+        const page2 = await ctx.newPage();
+        page2.on('console', m => consoleTexto.push(m.text()));
+        const visita = page2.waitForResponse(ehEvento('visita'), { timeout: 15000 }).catch(() => null);
+        await page2.goto(ANTIGO + '/?utm_source=bio&utm_campaign=funil-01').catch(() => {});
+        const rv = await visita;
+        let utmDaVisita = null;
+        try { utmDaVisita = JSON.parse(rv.request().postData()).evento.utm_source; } catch { /* fica vazio */ }
+        const naLanding = page2.url();
+        const levou = await levaAoQuiz(page2, ctaDoTopo(page2));
+        conferir(naLanding === BASE + '/?utm_source=bio&utm_campaign=funil-01' && !!rv && rv.status() === 201 && utmDaVisita === 'bio' && levou,
+          'navegador · um link antigo da landing (o endereço antigo, em /, com as utm) abre a landing no endereço novo, com as utm; a visita é gravada (' + (rv ? rv.status() : 'sem resposta') +
+          ') com a utm do link, e o "' + BOTAO_DO_TOPO + '" leva direto a /analise/ com as utm e o id_sessao');
+      } finally {
+        await ctx.close();
+      }
+    }
+
+    // ··· O quiz do começo ao fim em /analise/, nos três desfechos (as cinco pessoas da seção 6) ···
+    {
+      const TELAS = ['abertura', 'nome', 'ramo', 'faturamento', 'vendedores', 'quem-marca', 'valor-medio', 'origem', 'crm', 'cargo', 'lembra', 'numeros', 'causa', 'causa2', 'causa3', 'contato'];
+      const pessoas = [['o lead A', q1, 'plano'], ['o eliminatório', q2, 'relatorio-nao'], ['a faixa c do corte', q3, 'relatorio-nao'], ['a faixa b', q4, 'relatorio-saudavel'], ['a caixa desmarcada', q5, 'relatorio-saudavel']];
+      const erradas = pessoas.filter(([, q, fim]) => q.telas.map(t => t[0]).join() !== [...TELAS, fim].join() || !q.telas.every(t => t[1] === '/analise/') || q.endereco.pathname !== '/analise/')
+        .map(([nome, q]) => nome + ': ' + (q.telas.length ? q.telas.length + ' telas, a última ' + q.telas[q.telas.length - 1].join(' em ') : 'não entrou no quiz'));
+      const desfechos = [...new Set(pessoas.map(([, q]) => q.telaFinal))].sort();
+      const telasVistas = pessoas.reduce((t, [, q]) => t + q.telas.length, 0);
+      conferir(erradas.length === 0 && desfechos.join() === '#plano,#relatorio-nao,#relatorio-saudavel' && telasVistas === pessoas.length * (TELAS.length + 1),
+        'quiz em /analise/ · do começo ao fim nos três desfechos: a oferta do plano (o lead A), o relatório de quem não se qualifica (o eliminatório e a faixa c do corte) e o relatório do funil saudável ' +
+        '(a faixa b e a caixa desmarcada); nas cinco pessoas, as ' + (TELAS.length + 1) + ' telas na ordem, da abertura ao fim, e em todas o caminho da página é /analise/ (' + telasVistas + ' telas; desfechos: ' + desfechos.join(', ') + ')' +
+        (erradas.length ? ', mas: ' + erradas.join(' | ') : ''));
+    }
+
+    // ··· O noindex em tudo o que as páginas receberam do garçom, do começo ao fim do ensaio ···
+    {
+      const semNoindex = respostasDoGarcom.filter(v => !v.noindex);
+      const redirecionamentos = respostasDoGarcom.filter(v => v.status >= 300 && v.status < 400);
+      const doAntigo = respostasDoGarcom.filter(v => v.antigo);
+      conferir(respostasDoGarcom.length > 500 && semNoindex.length === 0 && doAntigo.length === 2 && doAntigo.every(v => v.status === 302) && redirecionamentos.length === 2,
+        'noindex · no navegador, X-Robots-Tag: noindex em todas as respostas do garçom que as páginas receberam, do começo ao fim do ensaio (as páginas, os arquivos, as rotas /api/ e os ' + redirecionamentos.length +
+        ' redirecionamentos do endereço antigo); nenhuma página passou por outro redirecionamento' +
+        (semNoindex.length ? ', mas sem noindex: ' + [...new Set(semNoindex.map(v => v.status + ' ' + v.caminho))].slice(0, 5).join(' | ') : ''));
+      informar('respostas do garçom vistas pelas páginas: ' + respostasDoGarcom.length + ' (' + redirecionamentos.length + ' redirecionamentos, os dois do endereço antigo)');
+    }
+  }
+
+  // ═══ 13. Fechamento ═══
+  secao('13. Fechamento');
   await rodarConferir('no fim');
   conferir(JSON.stringify(await fotografiaDeAntes(naFila, db)) === JSON.stringify(fotografiaDeAntesInicial),
     'os dados de antes da migração continuam iguais no fim do ensaio');
