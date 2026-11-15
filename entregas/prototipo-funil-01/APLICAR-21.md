@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-21
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -33,6 +33,8 @@ desatualizado: true
 O passo a passo para pôr no ar o que o pedido 21 preparou (decisão #120; prompts/21-dominio-e-caminho-da-analise.md): o funil em https://svsafra.gotriad.com.br, com a landing em / e o quiz em /analise/. O endereço antigo, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev, não morre: quem abrir uma página nele é levado à mesma página no endereço novo. No mesmo padrão do LIGAR.md e do APLICAR-11.md: uma ação por passo, o porquê, **Faça**, **Deu certo se** e **Se der errado**.
 
 **Status.** Rascunho, pendente do Otávio. Nasce desatualizado, porque se apoia em documentos marcados (o protótipo, o garçom, as páginas, a planilha e o ensaio; regra 11.1). O programa foi ensaiado na máquina, sem serviço real: o ensaio geral (nucleo/ferramentas/ensaio/, v10) deu 255 de 255, em três rodadas. **Nada deste roteiro foi feito numa conta de verdade:** o Claude não entra no painel da Cloudflare, não publicou nada e não abriu o site no ar.
+
+**Versão 3 (15/11/2026).** Correção de forma: no passo 4.1, o nome novo da planilha, "Planilha do SDR funil-01" (o Otávio tirou o "TESTE" do nome). Nada mais mudou.
 
 > **Publicar antes de o domínio estar ativo derruba o site.**
 >
@@ -303,7 +305,7 @@ Nada aqui tem pressa: com a publicação feita, o funil já funciona no endereç
 
 A planilha pede os leads ao garçom pelo endereço antigo. A porta dela continua respondendo nos dois endereços, então nada quebra enquanto você não trocar (#120, ponto 3).
 
-**Faça**, na planilha "TESTE planilha do SDR funil-01" (o caminho é o do LIGAR.md, passos 4.2 e 4.5):
+**Faça**, na planilha "Planilha do SDR funil-01" (o nome dela desde 15/11/2026; até ali, "TESTE planilha do SDR funil-01"; o caminho é o do LIGAR.md, passos 4.2 e 4.5):
 
 1. No menu da planilha, **Extensões**, **Apps Script**.
 2. No editor, **Configurações do projeto** (a engrenagem, à esquerda), desça até **Propriedades do script** e clique em **Editar propriedades do script**.

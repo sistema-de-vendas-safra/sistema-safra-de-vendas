@@ -1,5 +1,5 @@
 -- Esquema do banco do funil-01 (Postgres, no Supabase)
--- id: banco-rascunho · versao 4 · rascunho · otavio: pendente
+-- id: banco-rascunho · versao 5 · rascunho · otavio: pendente
 -- depende_de: planta-do-banco v3, decisoes v4, funil-01 v2, lead-score v2, funil-01-planilha-sdr v1,
 --             ficha-de-fatos v3, regra-seguranca v2, lacunas v5
 --   (as versões acima são as que o SQL deste arquivo segue; ele não mudou da versão 2)
@@ -7,13 +7,15 @@
 -- ESTE ARQUIVO É O ESQUEMA v2 E NÃO MUDA (21.11). A versão 3 do banco é este arquivo mais a
 -- migração dados/banco/migracoes/001-v3.sql, que roda por cima, sem apagar nada (etapa 32).
 -- A versão 3 deste arquivo só acrescenta este aviso; a 4 só acompanha o README (catálogo, etapa 34);
--- nenhuma linha de SQL mudou. Ordem:
+-- a 5 só põe a migração 002 na ordem (planilha do SDR v3, 15/11/2026); nenhuma linha de SQL mudou.
+-- Ordem:
 --   1. este arquivo (já rodado no projeto do Safra, que já tem dados);
---   2. migracoes/001-v3.sql;
---   3. conferir.sql (v2), que confere o banco depois da migração.
--- Rodar este arquivo de novo num banco que já tem a migração desfaz parte dela (refaz a função
+--   2. migracoes/001-v3.sql (já rodada em 09/11/2026);
+--   3. migracoes/002-respostas-na-planilha.sql (a coluna respostas na função da planilha);
+--   4. conferir.sql (v3), que confere o banco depois das migrações.
+-- Rodar este arquivo de novo num banco que já tem as migrações desfaz parte delas (refaz a função
 -- da planilha e as permissões do jeito v2, e a porta registrar_evento perde a permissão): se isso
--- acontecer, rode a migração de novo logo depois. Os comentários "PROPOSTA" e "reservada" abaixo
+-- acontecer, rode a 001 e a 002 de novo logo depois. Os comentários "PROPOSTA" e "reservada" abaixo
 -- (interesse_pos_relatorio, nutricao, produto) foram ligados pela migração. Ver dados/banco/README.md.
 --
 -- RASCUNHO. Ver dados/banco/README.md. Nada daqui está no ar, e nenhum dado é real.

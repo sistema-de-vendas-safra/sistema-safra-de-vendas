@@ -1,5 +1,8 @@
 // Teste local de Codigo.gs (planilha do SDR do funil-01), sem Google e sem rede.
-// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v2, rascunho; ver README.md).
+// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v3, rascunho; ver README.md).
+// v3: os casos da aba respostas (a segunda aba, com as respostas completas do quiz) estão no fim,
+// em "aba respostas". Os casos de antes continuam; só o de "instalar duas vezes" passou a contar
+// as duas abas.
 //
 //   node entregas/planilha-sdr-funil-01/teste/testar-planilha.mjs
 //
@@ -18,6 +21,34 @@ const COLUNAS = ['id_pessoa', 'nome', 'telefone', 'email', 'empresa', 'consentim
   'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
   'estagio', 'estado', 'data_volta', 'canal', 'contato_em', 'reuniao_em', 'produto'];
 const COL = Object.fromEntries(COLUNAS.map((c, i) => [c, i + 1]));
+const COLUNAS_RESPOSTAS = ['id_pessoa', 'nome', 'entrou_em', 'lead_score_faixa', 'lead_score_nota',
+  'ramo', 'faturamento', 'vendedores', 'quem marca a conversa', 'valor médio da venda',
+  'origem dos leads', 'CRM', 'cargo', 'lembra dos números',
+  'leads por mês', 'pré-qualificados', 'agendados', 'conversas realizadas', 'vendas fechadas',
+  'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato',
+  'outras respostas'];
+const CR = Object.fromEntries(COLUNAS_RESPOSTAS.map((c, i) => [c, i + 1]));
+
+// Respostas no formato de respostasDoQuiz() da página (entregas/quizzes/quiz-01/pagina/index.html), de mentira
+const RESP_NUMEROS = {
+  ramo: 'Serviços para empresas', faturamento: 'R$ 150 mil a R$ 500 mil', vendedores: '2 ou 3',
+  'quem-marca': 'Sim. O vendedor faz tudo', 'valor-medio': 'R$ 15.000',
+  origem: ['Anúncios pagos (Meta, Google)', 'Indicação de clientes'], crm: 'Sim, mas pouca gente atualiza',
+  cargo: 'Dono(a) ou sócio(a)', lembra: 'Sim',
+  numeros: [
+    { linha: 'Leads por mês', valor: '1.200', unidade: 'nº' },
+    { linha: 'Pré-qualificados', valor: '50', unidade: '%' },
+    { linha: 'Agendados', valor: '300', unidade: 'nº' },
+    { linha: 'Conversas realizadas', valor: '12,5', unidade: '%' },
+    { linha: 'Vendas fechadas', valor: '40', unidade: 'nº' }
+  ],
+  causa: 'No mesmo dia', causa2: 'Depende do vendedor', causa3: 'Alguns'
+};
+const RESP_CHUTE = {
+  ramo: 'Outro', faturamento: 'R$ 500 mil a R$ 1,5 milhão', vendedores: '1', 'quem-marca': 'Depende do vendedor',
+  'valor-medio': 'R$ 8.000', origem: ['Prospecção ativa'], crm: 'Usamos planilha', cargo: 'Gestor(a) de vendas',
+  lembra: 'Não', chute: 'Menos de 75%', causa: 'Em até 10 minutos', causa2: '6 ou mais, com roteiro definido', causa3: 'Não'
+};
 
 // ··· leads de mentira ···
 function horario(n) {
@@ -178,7 +209,7 @@ await caso('instalar duas vezes (e três): continua um gatilho só, aba e linhas
   igual(m.estado.gatilhos.length, 1, 'gatilhos');
   igual([r2.aba, r2.gatilho, r3.gatilho], ['mantida', 'mantido', 'mantido'], 'resultado');
   igual(JSON.stringify([...m.aba().celulas]), antes, 'células');
-  igual(m.estado.abas.length, 1, 'abas');
+  igual(m.estado.abas.map(a => a.nome), ['fila', 'respostas'], 'abas (v3: a fila e a respostas)');
   guardarRegistros(m);
   return 'gatilhos 1; células iguais';
 });
@@ -651,6 +682,222 @@ await caso('urlFetch síncrono por HTTP local: a busca inteira contra um servido
     http.fechar();
     await servidor.terminate();
   }
+});
+
+
+// ························· aba respostas (v3) ·························
+const abaR = (m) => m.estado.abas.find(a => a.nome === 'respostas');
+
+await caso('aba respostas · instalar: as duas abas na ordem (fila 1ª, respostas 2ª), mesmo com outra aba antes', () => {
+  const m = montar({ instalar: false });
+  m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet().insertSheet('Página1');
+  const r = m.gs.instalar();
+  igual(m.estado.abas.map(a => a.nome), ['fila', 'respostas', 'Página1'], 'ordem das abas');
+  igual([r.aba, r.aba_respostas, r.gatilho], ['criada', 'criada', 'criado'], 'resultado');
+  igual([m.aba().getIndex(), abaR(m).getIndex()], [1, 2], 'posições');
+  guardarRegistros(m);
+  return 'fila 1, respostas 2, Página1 3';
+});
+
+await caso('aba respostas · instalar: os 24 cabeçalhos na ordem do quiz, primeira linha congelada, texto simples só nas colunas de texto, sem lista', () => {
+  const m = montar();
+  const aba = abaR(m);
+  igual(aba.linha(1, 24), COLUNAS_RESPOSTAS, 'cabeçalho');
+  igual(aba.getFrozenRows(), 1, 'congelada');
+  igual(linhasDeDados(aba), 0, 'linhas');
+  const comTexto = ['nome', 'ramo', 'faturamento', 'vendedores', 'quem marca a conversa', 'origem dos leads', 'CRM', 'cargo',
+    'lembra dos números', 'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato', 'outras respostas'];
+  for (const c of COLUNAS_RESPOSTAS) {
+    const f = aba.formatos.filter(x => x.coluna === CR[c]);
+    if (comTexto.includes(c)) igual(f.map(x => [x.formato, x.linha, x.linhas]), [['@', 2, aba.getMaxRows() - 1]], 'formato de ' + c);
+    else igual(f.length, 0, 'formato inesperado em ' + c);
+  }
+  igual(aba.validacoes.length, 0, 'validações');
+  guardarRegistros(m);
+  return '24 colunas; 14 com @; números sem formato';
+});
+
+await caso('aba respostas · primeira busca: os mesmos leads da fila, na mesma ordem, na mesma rodada, numa escrita só', () => {
+  const base = [lead(1, { respostas: RESP_NUMEROS }), lead(2, { respostas: RESP_CHUTE }), lead(3, { respostas: RESP_NUMEROS })];
+  const m = montar({ base });
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.acrescentadas, r.respostas_acrescentadas, m.estado.chamadas.length], [3, 3, 1], 'resultado');
+  igual([2, 3, 4].map(n => abaR(m).valor(n, 1)), [2, 3, 4].map(n => m.aba().valor(n, 1)), 'mesmas pessoas, mesma ordem');
+  igual(abaR(m).escritas.filter(e => e.quem === 'script' && e.linha > 1).map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[2, 1, 3, 24]], 'escritas');
+  certo(m.estado.registros.some(t => /respostas: 3 linha\(s\) nova\(s\)/.test(t)), 'registro sem a contagem da aba respostas');
+  guardarRegistros(m);
+  return 'fila 3, respostas 3, uma chamada';
+});
+
+await caso('aba respostas · a linha com cada coluna (modo números): lista com "; ", números como número, porcentagem como texto', () => {
+  const m = montar({ base: [lead(1, { respostas: RESP_NUMEROS })] });
+  m.gs.buscarLeadsNovos();
+  const aba = abaR(m);
+  igual(aba.linha(2, 24), [lead(1).id_pessoa, 'TESTE Pessoa 1', '2026-11-08 09:00:01', 'a', 96,
+    'Serviços para empresas', 'R$ 150 mil a R$ 500 mil', '2 ou 3', 'Sim. O vendedor faz tudo', 15000,
+    'Anúncios pagos (Meta, Google); Indicação de clientes', 'Sim, mas pouca gente atualiza', 'Dono(a) ou sócio(a)', 'Sim',
+    1200, '50%', 300, '12,5%', 40, '', 'No mesmo dia', 'Depende do vendedor', 'Alguns', ''], 'linha');
+  igual([aba.celula(2, CR['pré-qualificados']).texto, aba.celula(2, CR['conversas realizadas']).texto], [true, true], 'porcentagem como texto');
+  igual(['leads por mês', 'agendados', 'vendas fechadas', 'valor médio da venda', 'lead_score_nota'].map(c => typeof aba.valor(2, CR[c])), ['number', 'number', 'number', 'number', 'number'], 'números');
+  guardarRegistros(m);
+  return 'leads 1200, pré-qualificados 50%, valor médio 15000';
+});
+
+await caso('aba respostas · a linha no modo chute: o chute na coluna dele, os números do funil vazios', () => {
+  const m = montar({ base: [lead(2, { respostas: RESP_CHUTE })] });
+  m.gs.buscarLeadsNovos();
+  const l = abaR(m).linha(2, 24);
+  igual(l.slice(3, 24), ['b', 55, 'Outro', 'R$ 500 mil a R$ 1,5 milhão', '1', 'Depende do vendedor', 8000, 'Prospecção ativa',
+    'Usamos planilha', 'Gestor(a) de vendas', 'Não', '', '', '', '', '', 'Menos de 75%', 'Em até 10 minutos',
+    '6 ou mais, com roteiro definido', 'Não', ''], 'linha');
+  guardarRegistros(m);
+  return 'chute Menos de 75%; vendedores "1" como texto';
+});
+
+await caso('aba respostas · resposta sem coluna vai para "outras respostas" e não quebra a rodada', () => {
+  const estranhas = {
+    ramo: 'Outro', 'pergunta-nova': 'Sim', 'lista-nova': ['x', 'y'], objeto: { a: 1 }, numero: 7, vazia: null, vazio: '',
+    numeros: [{ linha: 'Leads por mês', valor: '10', unidade: 'nº' }, { linha: 'Linha nova', valor: '3', unidade: 'nº' }, 'solto'],
+    constructor: 'x', crm: ['Usamos planilha', 'Sim, e o time atualiza todo dia']
+  };
+  const m = montar({ base: [lead(1, { respostas: estranhas }), lead(2, { respostas: 'texto solto' }), lead(3, { respostas: [1, 2] })] });
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.situacao, r.acrescentadas, r.respostas_acrescentadas], ['ok', 3, 3], 'resultado');
+  const aba = abaR(m);
+  igual(aba.valor(2, CR['outras respostas']),
+    'pergunta-nova: Sim; lista-nova: x, y; objeto: {"a":1}; numero: 7; numeros: {"linha":"Linha nova","valor":"3","unidade":"nº"}; numeros: solto; constructor: x', 'outras respostas');
+  igual([aba.valor(2, CR.ramo), aba.valor(2, CR['leads por mês']), aba.valor(2, CR.CRM)], ['Outro', 10, 'Usamos planilha; Sim, e o time atualiza todo dia'], 'as que têm coluna');
+  igual([aba.valor(3, CR['outras respostas']), aba.valor(4, CR['outras respostas'])], ['texto solto', '1, 2'], 'respostas que não são objeto');
+  guardarRegistros(m);
+  return '7 respostas sem coluna numa célula; a rodada inteira entrou';
+});
+
+await caso('aba respostas · sem a coluna respostas (migração 002 não rodada): a linha entra com o que houver, as respostas vazias, sem erro', () => {
+  const m = montar({ base: [lead(1), lead(2, { respostas: null })] });
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.situacao, r.acrescentadas, r.respostas_acrescentadas], ['ok', 2, 2], 'resultado');
+  igual(abaR(m).linha(2, 24), [lead(1).id_pessoa, 'TESTE Pessoa 1', '2026-11-08 09:00:01', 'a', 96, ...Array(19).fill('')], 'linha 1');
+  igual(abaR(m).linha(3, 24).slice(5), Array(19).fill(''), 'linha 2');
+  igual(m.aba().linha(2, 16), (() => { const x = montar({ base: [lead(1)] }); x.gs.buscarLeadsNovos(); return x.aba().linha(2, 16); })(), 'fila igual à de sempre');
+  guardarRegistros(m);
+  return 'linhas 2; 19 colunas de respostas vazias';
+});
+
+await caso('aba respostas · sem duplicar: segunda busca e cursor perdido não repetem na aba respostas', () => {
+  const m = montar({ base: leads(1, 3).map(l => ({ ...l, respostas: RESP_NUMEROS })) });
+  m.gs.buscarLeadsNovos();
+  let r = m.gs.buscarLeadsNovos();
+  igual([r.acrescentadas, r.respostas_acrescentadas], [0, 0], 'segunda busca');
+  delete m.estado.propriedades.CURSOR_GRAVADO_EM;
+  delete m.estado.propriedades.CURSOR_ID_PESSOA;
+  r = m.gs.buscarLeadsNovos();
+  igual([r.acrescentadas, r.respostas_acrescentadas, r.repetidas, linhasDeDados(abaR(m))], [0, 0, 3, 3], 'cursor perdido');
+  trocarBase(m, leads(1, 5).map(l => ({ ...l, respostas: RESP_NUMEROS })));
+  r = m.gs.buscarLeadsNovos();
+  igual([r.respostas_acrescentadas, [2, 3, 4, 5, 6].map(n => abaR(m).valor(n, 1))], [2, leads(1, 5).map(l => l.id_pessoa)], 'novos no fim');
+  guardarRegistros(m);
+  return 'respostas 3, depois 5, sem repetir';
+});
+
+await caso('aba respostas · recriar as duas abas (renomear as antigas e instalar): o cursor sai e as duas recebem tudo de novo', () => {
+  const m = montar({ base: leads(1, 3).map(l => ({ ...l, respostas: RESP_NUMEROS })) });
+  m.gs.buscarLeadsNovos();
+  const planilha = m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet();
+  planilha.renomearAba('fila', 'fila antiga');
+  planilha.renomearAba('respostas', 'respostas antiga');
+  const r = m.gs.instalar();
+  igual([r.aba, r.aba_respostas], ['criada', 'criada'], 'abas');
+  igual(cursorSalvo(m), [null, null], 'cursor apagado');
+  igual(m.estado.abas.map(a => a.nome), ['fila', 'respostas', 'fila antiga', 'respostas antiga'], 'ordem');
+  // a base mudou (como depois do SQL de limpeza): a busca traz o que o banco tem hoje
+  trocarBase(m, [lead(2, { respostas: RESP_NUMEROS }), lead(4, { respostas: RESP_CHUTE })]);
+  const b = m.gs.buscarLeadsNovos();
+  igual([b.acrescentadas, b.respostas_acrescentadas], [2, 2], 'busca');
+  igual([[2, 3].map(n => m.aba().valor(n, 1)), [2, 3].map(n => abaR(m).valor(n, 1))], [[lead(2).id_pessoa, lead(4).id_pessoa], [lead(2).id_pessoa, lead(4).id_pessoa]], 'as duas com tudo do banco');
+  igual([linhasDeDados(m.estado.abas[2]), linhasDeDados(m.estado.abas[3])], [3, 3], 'antigas intactas');
+  guardarRegistros(m);
+  return 'fila 2 e respostas 2 com o banco de hoje; antigas com 3';
+});
+
+await caso('aba respostas · apagar as duas abas e instalar: as duas nascem de novo e recebem tudo', () => {
+  const m = montar({ base: leads(1, 3) });
+  m.gs.buscarLeadsNovos();
+  const planilha = m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet();
+  planilha.insertSheet('Página1', 0);
+  planilha.apagarAba('fila');
+  planilha.apagarAba('respostas');
+  m.gs.instalar();
+  igual(m.estado.abas.map(a => a.nome), ['fila', 'respostas', 'Página1'], 'ordem');
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.acrescentadas, r.respostas_acrescentadas, linhasDeDados(m.aba()), linhasDeDados(abaR(m))], [3, 3, 3, 3], 'resultado');
+  guardarRegistros(m);
+  return 'fila 3, respostas 3';
+});
+
+await caso('aba respostas · vindo da v2 (a fila já existe com os leads, sem a aba respostas): instalar cria só a respostas, que recebe todos, e a fila não repete', () => {
+  const m = montar({ base: leads(1, 3) });
+  m.gs.buscarLeadsNovos();
+  m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet().apagarAba('respostas');
+  const antes = JSON.stringify([...m.aba().celulas]);
+  const i = m.gs.instalar();
+  igual([i.aba, i.aba_respostas, cursorSalvo(m)], ['mantida', 'criada', [null, null]], 'instalar');
+  igual(m.estado.abas.map(a => a.nome), ['fila', 'respostas'], 'ordem');
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.acrescentadas, r.respostas_acrescentadas, linhasDeDados(abaR(m))], [0, 3, 3], 'resultado');
+  igual(JSON.stringify([...m.aba().celulas]), antes, 'fila intacta');
+  guardarRegistros(m);
+  return 'fila 0 nova; respostas 3';
+});
+
+await caso('aba respostas · sem a aba respostas ou com o cabeçalho dela mexido: a busca não chama o garçom e não grava nada, nem na fila', () => {
+  const m = montar();
+  m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet().apagarAba('respostas');
+  igual([m.gs.buscar_().situacao, m.estado.chamadas.length], ['sem-aba', 0], 'sem a aba');
+  const msg = erroDe(() => m.gs.buscarLeadsNovos());
+  certo(/respostas/.test(msg), msg);
+  const m2 = montar();
+  abaR(m2).escreverAMao(1, CR.ramo, 'setor');
+  const r = m2.gs.buscar_();
+  igual([r.situacao, m2.estado.chamadas.length, linhasDeDados(m2.aba())], ['cabecalho-diferente', 0, 0], 'cabeçalho mexido');
+  guardarRegistros(m); guardarRegistros(m2);
+  return 'sem-aba e cabecalho-diferente; chamadas 0';
+});
+
+await caso('aba respostas · instalar com uma aba "respostas" de outro cabeçalho: não mexe em nada, nem cria a fila', () => {
+  const m = montar({ instalar: false });
+  const aba = m.falsos.globais.SpreadsheetApp.getActiveSpreadsheet().insertSheet('respostas');
+  aba.escreverAMao(1, 1, 'outra coisa');
+  const antes = JSON.stringify([...aba.celulas]);
+  const msg = erroDe(() => m.gs.instalar());
+  certo(/"respostas" já existe com outro cabeçalho/.test(msg), msg);
+  igual([JSON.stringify([...aba.celulas]), m.estado.abas.map(a => a.nome), m.estado.gatilhos.length], [antes, ['respostas'], 0], 'nada mudou');
+  guardarRegistros(m);
+  return 'nada mudou';
+});
+
+await caso('aba respostas · fórmula injetada pelas respostas vira texto, nada vira fórmula', () => {
+  const m = montar({ base: [lead(1, { nome: '=1+1', respostas: { ramo: '=IMPORTXML("https://x.teste.invalid";"//a")', origem: ['+1', '@x'], 'valor-medio': '=2', 'pergunta-nova': '-3', numeros: [{ linha: 'Agendados', valor: '=4', unidade: 'nº' }] } })] });
+  m.gs.buscarLeadsNovos();
+  const aba = abaR(m);
+  let formulas = 0;
+  for (const [, c] of aba.celulas) if (c.formula) formulas++;
+  igual(formulas, 0, 'fórmulas');
+  igual([aba.valor(2, CR.nome), aba.valor(2, CR.ramo), aba.valor(2, CR['origem dos leads']), aba.valor(2, CR['valor médio da venda']), aba.valor(2, CR.agendados), aba.valor(2, CR['outras respostas'])],
+    ['=1+1', '=IMPORTXML("https://x.teste.invalid";"//a")', '+1; @x', '=2', '=4', 'pergunta-nova: -3'], 'valores como texto');
+  guardarRegistros(m);
+  return 'fórmulas 0';
+});
+
+await caso('aba respostas · muitos leads: 1200 numa rodada, a aba cresce e o texto simples acompanha', () => {
+  const m = montar({ base: leads(1, 1200).map(l => ({ ...l, respostas: RESP_CHUTE })) });
+  const r = m.gs.buscarLeadsNovos();
+  const aba = abaR(m);
+  igual([r.acrescentadas, r.respostas_acrescentadas, linhasDeDados(aba)], [1200, 1200, 1200], 'resultado');
+  const f = aba.formatos.filter(x => x.coluna === CR.ramo).at(-1);
+  igual(f.linha + f.linhas - 1, aba.getMaxRows(), 'formato até a última linha');
+  igual(aba.valor(1201, 1), lead(1200).id_pessoa, 'último');
+  guardarRegistros(m);
+  return 'respostas 1200 em ' + r.voltas + ' voltas';
 });
 
 // ························· registro sem dado pessoal ·························

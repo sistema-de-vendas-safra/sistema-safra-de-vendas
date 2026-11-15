@@ -1,6 +1,8 @@
-// Teste da migração 001 (banco v2 para v3) num Postgres local, sem rede e sem serviço real (etapa 32)
+// Teste das migrações 001 (banco v2 para v3) e 002 (as respostas na planilha) e da limpeza dos leads
+// de teste num Postgres local, sem rede e sem serviço real (etapa 32; planilha do SDR v3, 15/11/2026)
 // Parte de dados/banco/ (ver README.md desta pasta, "Conferido nesta máquina"). Confere
-// dados/banco/migracoes/001-v3.sql e dados/banco/conferir.sql (v2).
+// dados/banco/migracoes/001-v3.sql, dados/banco/migracoes/002-respostas-na-planilha.sql,
+// dados/banco/conferir.sql (v3) e dados/banco/limpar-leads-de-teste.sql.
 //
 // Um comando só, da raiz do repositório:   node dados/banco/testar-migracao.mjs
 // Usa o PGlite já instalado em nucleo/ferramentas/ensaio/ (npm install lá, uma vez). Sem rede.
@@ -13,10 +15,15 @@
 //   3. Dados de teste do jeito v2 (#102: nome começando por TESTE, e-mail @teste.invalid,
 //      telefones com zeros): fins de quiz pelas portas do v2 (faixas a, b, c e eliminatório),
 //      uma visita e eventos do SDR gravados pelo dono.
-//   4. A migração duas vezes, pelo dono. Os dados não mudam (cada linha igual, antes e depois), e
+//   4. A migração 001 duas vezes, pelo dono. Os dados não mudam (cada linha igual, antes e depois), e
 //      a segunda rodada deixa o esquema igual ao da primeira (restrições, funções e permissões).
-//   5. conferir.sql v2: todas as linhas true.
-//   6. As funções novas e alteradas, trocando de papel (SET ROLE anon, service_role, authenticated).
+//      Depois, a migração 002 duas vezes, do mesmo jeito; num banco sem a 001, ela para e não muda nada.
+//   5. conferir.sql v3: todas as linhas true (só a linha 19 falsa entre a 001 e a 002).
+//   6. As funções novas e alteradas, trocando de papel (SET ROLE anon, service_role, authenticated),
+//      com a coluna respostas da função da planilha.
+//   7. A limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes: só quem tem o nome TESTE
+//      e o e-mail @teste.invalid sai, com os eventos dele; quem tem só uma das marcas, a pessoa de
+//      mentira "de verdade" e os eventos sem pessoa ficam; a trava continua ligada.
 //
 // Só valores de mentira, só na memória. Nada vai para o Supabase de verdade nem para a rede.
 
@@ -33,6 +40,8 @@ const { PGlite } = await import(pathToFileURL(doEnsaio.resolve('@electric-sql/pg
 const ler = (c) => readFileSync(join(RAIZ, c), 'utf8');
 const ESQUEMA = ler('dados/banco/esquema.sql');
 const MIGRACAO = ler('dados/banco/migracoes/001-v3.sql');
+const MIGRACAO_002 = ler('dados/banco/migracoes/002-respostas-na-planilha.sql');
+const LIMPEZA = ler('dados/banco/limpar-leads-de-teste.sql');
 const CONFERIR = ler('dados/banco/conferir.sql');
 const CATALOGO = ler('dados/banco/catalogo-prototipo.sql');
 
@@ -43,9 +52,7 @@ function conferir(ok, texto) {
 }
 const secao = (t) => console.log('\n· ' + t);
 
-const db = new PGlite();
-await db.exec(`set time zone 'UTC'`);
-await db.exec(`
+const PAPEIS_DE_MENTIRA = `
   create role anon nologin noinherit;
   create role authenticated nologin noinherit;
   create role service_role nologin noinherit bypassrls;
@@ -56,7 +63,10 @@ await db.exec(`
   alter default privileges for role dono in schema public grant all on tables to anon, authenticated, service_role;
   alter default privileges for role dono in schema public grant all on sequences to anon, authenticated, service_role;
   alter default privileges for role dono in schema public grant all on functions to anon, authenticated, service_role;
-`);
+`;
+const db = new PGlite();
+await db.exec(`set time zone 'UTC'`);
+await db.exec(PAPEIS_DE_MENTIRA);
 
 const comoDono = async (sql) => {
   await db.exec('set role dono');
@@ -70,6 +80,10 @@ const codigoComo = async (papel, sql, params) => {
   try { await comoPapel(papel, sql, params); return 'ok'; } catch (e) { return e.code || 'sem codigo'; }
 };
 const umaLinha = async (sql, params = []) => (await db.query(sql, params)).rows[0];
+// o jsonb guarda as chaves em outra ordem: compara com as chaves em ordem
+const ordenado = (v) => Array.isArray(v) ? v.map(ordenado)
+  : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map(k => [k, ordenado(v[k])])) : v;
+const mesmoJson = (a, b) => JSON.stringify(ordenado(a)) === JSON.stringify(ordenado(b));
 
 async function rodarConferir() {
   const saidas = await comoDono(CONFERIR);
@@ -155,8 +169,8 @@ console.log('INFO   · ' + versao + ', papéis anon, authenticated, service_role
   const linhas = await rodarConferir();
   const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
   const final = linhas.find(l => l.n === 99);
-  conferir(final.ok === false && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18]),
-    'conferir.sql v2 num banco só v2 avisa que falta a migração: false nas linhas ' + falsas.join(', ') + ' (' + final.encontrado + ')');
+  conferir(final.ok === false && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19]),
+    'conferir.sql v3 num banco só v2 avisa que faltam as migrações: false nas linhas ' + falsas.join(', ') + ' (' + final.encontrado + ')');
 }
 
 // ═══ 3. Dados de teste do jeito v2 ═══
@@ -209,15 +223,53 @@ for (const vez of ['primeira', 'segunda']) {
   await vazio.close();
 }
 
+{
+  // entre a 001 e a 002, o conferir.sql v3 avisa só na linha 19
+  const linhas = await rodarConferir();
+  const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+  const final = linhas.find(l => l.n === 99);
+  conferir(JSON.stringify(falsas) === '[19]' && final.encontrado === '18 de 19',
+    'conferir.sql v3 com a 001 e sem a 002: false só na linha 19 (' + final.encontrado + ')');
+}
+
+// ═══ 4b. Migração 002 duas vezes ═══
+secao('3b. Migração 002 duas vezes, sobre os dados');
+let depoisDa002 = null;
+for (const vez of ['primeira', 'segunda']) {
+  let erro = null;
+  try { await comoDono(MIGRACAO_002); } catch (e) { erro = e; }
+  conferir(!erro, 'migracoes/002-respostas-na-planilha.sql aplicada pelo dono, ' + vez + ' vez, sem erro' + (erro ? ' (' + erro.message + ')' : ''));
+  const depois = await fotografia();
+  conferir(JSON.stringify(depois) === JSON.stringify(antes),
+    vez + ' vez: os dados não mudaram (' + depois.pessoas + ' pessoas e ' + depois.eventos + ' eventos, cada linha igual)');
+  const h = await esquemaAtual();
+  if (vez === 'primeira') depoisDa002 = h;
+  else conferir(h === depoisDa002, 'segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
+}
+{
+  // a 002 recusa rodar num banco só com o esquema v2 (sem a 001), e não muda nada
+  const so2 = new PGlite();
+  await so2.exec(PAPEIS_DE_MENTIRA);
+  await so2.exec('set role dono'); await so2.exec(ESQUEMA); await so2.exec('reset role');
+  const funcaoAntes = (await so2.query(`select pg_get_function_result('public.leads_para_planilha(timestamptz, uuid, integer)'::regprocedure) as r`)).rows[0].r;
+  let erro = null;
+  try { await so2.exec(MIGRACAO_002); } catch (e) { erro = e; }
+  await so2.exec('rollback');
+  const funcaoDepois = (await so2.query(`select pg_get_function_result('public.leads_para_planilha(timestamptz, uuid, integer)'::regprocedure) as r`)).rows[0].r;
+  conferir(erro && /migração 001/.test(erro.message) && funcaoDepois === funcaoAntes && !/respostas jsonb/.test(funcaoDepois),
+    'num banco sem a migração 001, a 002 para no passo 0 e não muda a função da planilha');
+  await so2.close();
+}
+
 // ═══ 5. conferir.sql ═══
-secao('4. conferir.sql v2 depois da migração');
+secao('4. conferir.sql v3 depois das migrações');
 let totalConferir = '';
 {
   const linhas = await rodarConferir();
   for (const l of linhas.filter(l => l.n !== 99 && !l.ok)) conferir(false, 'conferir.sql ' + l.n + ' (' + l.conferencia + '): encontrado ' + l.encontrado);
   const final = linhas.find(l => l.n === 99);
   totalConferir = final.encontrado;
-  conferir(final.ok === true && final.encontrado === '18 de 18', 'conferir.sql: linha "tudo certo" = ' + final.ok + ' (' + final.encontrado + ')');
+  conferir(final.ok === true && final.encontrado === '19 de 19', 'conferir.sql: linha "tudo certo" = ' + final.ok + ' (' + final.encontrado + ')');
 }
 
 // ═══ 6. Funções, trocando de papel ═══
@@ -320,8 +372,10 @@ await db.exec(`set session_replication_role = replica;
   conferir(c5 && c5.clique_fim_quiz === 'quero-conversa', 'clique_fim_quiz: o último clique da pessoa (quero-conversa; 18.4)');
   conferir(b && b.estado === 'nutricao' && b.estagio === 'venda',
     'estado e estágio atuais com os valores novos (nutricao; venda) (21.9)');
-  conferir(leads.every(l => 'entrou_em' in l && 'cursor_gravado_em' in l) && Object.keys(leads[0]).length === 17,
-    'as 17 colunas: as 16 do v2 mais clique_fim_quiz');
+  conferir(leads.every(l => 'entrou_em' in l && 'cursor_gravado_em' in l) && Object.keys(leads[0]).length === 18 && Object.keys(leads[0]).at(-1) === 'respostas',
+    'as 18 colunas: as 16 do v2, clique_fim_quiz (001) e, no fim, respostas (002)');
+  conferir(b && mesmoJson(b.respostas, RESPOSTAS_B) && a && mesmoJson(a.respostas, RESPOSTAS_A),
+    'respostas (002): as respostas completas do quiz, iguais às que a página mandou, na faixa a e na faixa b (com a lista dos números)');
   const pagina1 = (await comoPapel('service_role', 'select * from public.leads_para_planilha(null, null, 2)')).rows;
   const ultimo = pagina1[pagina1.length - 1];
   const pagina2 = (await comoPapel('service_role', 'select * from public.leads_para_planilha($1, $2, 2)', [ultimo.cursor_gravado_em, ultimo.id_pessoa])).rows;
@@ -355,17 +409,22 @@ conferir(await sdr(`delete from public.eventos where tipo = 'visita'`) === 'P000
 conferir(await sdr(`update public.eventos set clique_fim_quiz = 'agora-nao' where tipo = 'interesse_pos_relatorio'`) === 'P0001',
   'reescrever o clique continua recusado pela trava (P0001)');
 
-// esquema.sql rodado de novo por engano: a porta nova perde a permissão; a migração de novo conserta
+// esquema.sql rodado de novo por engano: a porta nova perde a permissão; as migrações de novo consertam
 {
   const antesDeNovo = await fotografia();
   await comoDono(ESQUEMA);
-  const linhas = await rodarConferir();
-  const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
-  conferir(falsas.length > 0, 'esquema.sql rodado de novo depois da migração: conferir.sql avisa (false nas linhas ' + falsas.join(', ') + ')');
+  let linhas = await rodarConferir();
+  let falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+  conferir(falsas.length > 0, 'esquema.sql rodado de novo depois das migrações: conferir.sql avisa (false nas linhas ' + falsas.join(', ') + ')');
   await comoDono(MIGRACAO);
+  linhas = await rodarConferir();
+  falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+  conferir(JSON.stringify(falsas) === '[19]' && (await esquemaAtual()) === depoisDaPrimeira,
+    'só a 001 de novo: o esquema fica igual ao de depois da 001, e conferir.sql avisa só na linha 19 (falta a 002)');
+  await comoDono(MIGRACAO_002);
   const depois = await fotografia();
-  conferir(JSON.stringify(depois) === JSON.stringify(antesDeNovo) && (await esquemaAtual()) === depoisDaPrimeira,
-    'a migração rodada de novo deixa o esquema igual ao de antes, sem mudar nenhum dado');
+  conferir(JSON.stringify(depois) === JSON.stringify(antesDeNovo) && (await esquemaAtual()) === depoisDa002,
+    'a 002 de novo deixa o esquema igual ao de antes, sem mudar nenhum dado');
 }
 
 // e o conferir.sql no fim, de novo
@@ -373,6 +432,110 @@ conferir(await sdr(`update public.eventos set clique_fim_quiz = 'agora-nao' wher
   const linhas = await rodarConferir();
   const final = linhas.find(l => l.n === 99);
   conferir(final.ok === true, 'no fim, conferir.sql de novo: ' + final.encontrado);
+}
+
+// ═══ 7. Limpeza dos leads de teste ═══
+secao('7. Limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes');
+{
+  // Pessoas de mentira para o teste (#102 e o contrário dele; nada real): uma com só o nome TESTE,
+  // uma com só o e-mail de teste e uma "de verdade" de mentira, cada uma com a visita e o início do
+  // quiz da sessão dela (ligados pelo fim do quiz) e uma com um clique.
+  const pessoaFora = (n, nome, email, sessao) => {
+    const p = pacoteFim(n, { faixa: 'a', nota: 96, sessao, respostas: RESPOSTAS_A });
+    p.pessoa.nome = nome; p.pessoa.email = email;
+    return p;
+  };
+  const FORA = [
+    ['TESTE So O Nome', 'so.o.nome@exemplo.invalid', 'sessao-limpeza-1'],
+    ['Pessoa So O Email', 'so.o.email@teste.invalid', 'sessao-limpeza-2'],
+    ['Pessoa Exemplo Real', 'pessoa.real@exemplo.invalid', 'sessao-limpeza-3']
+  ];
+  for (let i = 0; i < FORA.length; i++) {
+    const [nome, email, sessao] = FORA[i];
+    await gravarEvento('anon', evento('visita', sessao));
+    await gravarEvento('anon', evento('inicio_quiz', sessao));
+    await gravarFim(pessoaFora(20 + i, nome, email, sessao));
+  }
+  await gravarEvento('anon', evento('interesse_pos_relatorio', 'sessao-limpeza-3', { clique_fim_quiz: 'quero-conversa' }));
+  // uma de teste com o nome em minúsculas e o e-mail em maiúsculas (as duas marcas, sem diferenciar maiúsculas)
+  {
+    const p = pessoaFora(23, 'teste minusculas', 'MAIUSCULAS@TESTE.INVALID', 'sessao-limpeza-4');
+    await gravarEvento('anon', evento('visita', 'sessao-limpeza-4'));
+    await gravarFim(p);
+  }
+  // e uma visita sem pessoa (sessão sem fim do quiz)
+  await gravarEvento('anon', evento('visita', 'sessao-limpeza-5'));
+
+  const contagem = async () => umaLinha(`
+    select (select count(*)::int from public.pessoas where nome ilike 'TESTE%' and lower(email) like '%@teste.invalid') as pessoas_teste,
+           (select count(*)::int from public.eventos e join public.pessoas p using (id_pessoa)
+             where p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid') as eventos_teste,
+           (select count(*)::int from public.pessoas where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid')) as pessoas_fora,
+           (select count(*)::int from public.eventos e join public.pessoas p using (id_pessoa)
+             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid')) as eventos_fora,
+           (select count(*)::int from public.eventos where id_pessoa is null) as sem_pessoa,
+           (select md5(coalesce(string_agg(to_jsonb(p)::text, '|' order by p.id_pessoa), '')) from public.pessoas p
+             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid')) as h_pessoas_fora,
+           (select md5(coalesce(string_agg(to_jsonb(e)::text, '|' order by e.id_evento), '')) from public.eventos e
+             where e.id_pessoa is null or e.id_pessoa in (select id_pessoa from public.pessoas
+                                                          where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid'))) as h_eventos_fora`);
+  // os fins de quiz novos passam da margem de 1 minuto da planilha (o mesmo contorno de antes)
+  await db.exec(`set session_replication_role = replica;
+    update public.eventos set gravado_em = gravado_em - interval '2 minutes' where tipo = 'fim_quiz' and gravado_em > now() - interval '1 minute';
+    set session_replication_role = origin;`);
+  const antesDaLimpeza = await contagem();
+  conferir(antesDaLimpeza.pessoas_teste === 6 && antesDaLimpeza.pessoas_fora === 3 && antesDaLimpeza.eventos_fora === 10 && antesDaLimpeza.sem_pessoa >= 2,
+    'antes da limpeza: ' + antesDaLimpeza.pessoas_teste + ' pessoas de teste com ' + antesDaLimpeza.eventos_teste + ' eventos; ' + antesDaLimpeza.pessoas_fora +
+    ' pessoas que ficam (só o nome TESTE, só o e-mail de teste, a "de verdade" de mentira) com ' + antesDaLimpeza.eventos_fora + ' eventos; ' + antesDaLimpeza.sem_pessoa + ' eventos sem pessoa');
+
+  const rodarLimpeza = async () => {
+    const saidas = await comoDono(LIMPEZA);
+    // a tabela do fim, a que o SQL Editor mostra (a última consulta com linhas; depois dela só vem o commit)
+    return saidas.filter(x => x.fields && x.fields.some(f => f.name === 'conferencia')).at(-1).rows;
+  };
+  let tabela = null, erro = null;
+  try { tabela = await rodarLimpeza(); } catch (e) { erro = e; }
+  conferir(!erro && tabela && tabela.length === 6 && tabela.every(l => l.ok === true),
+    'limpar-leads-de-teste.sql pelo dono, primeira vez: a tabela do fim com 6 linhas, todas ok' + (erro ? ' (' + erro.message + ')' : ''));
+  const porN = Object.fromEntries((tabela || []).map(l => [l.n, l]));
+  conferir(porN[1] && porN[1].antes === '6' && porN[1].depois === '0' && porN[2].antes === String(antesDaLimpeza.eventos_teste) && porN[2].depois === '0',
+    'a tabela do fim mostra o que saiu, só em números: pessoas de teste 6 para 0, eventos delas ' + (porN[2] && porN[2].antes) + ' para 0');
+  conferir(!JSON.stringify(tabela || []).match(/TESTE |teste\.invalid|exemplo\.invalid|90000/),
+    'a tabela do fim não tem nome, e-mail nem telefone');
+  const depoisDaLimpeza = await contagem();
+  conferir(depoisDaLimpeza.pessoas_teste === 0 && depoisDaLimpeza.eventos_teste === 0, 'nenhuma pessoa de teste e nenhum evento delas sobrou');
+  conferir(depoisDaLimpeza.pessoas_fora === 3 && depoisDaLimpeza.h_pessoas_fora === antesDaLimpeza.h_pessoas_fora,
+    'ficaram as 3 pessoas que não têm as duas marcas (só o nome TESTE, só o e-mail de teste e a "de verdade" de mentira), cada linha igual');
+  conferir(depoisDaLimpeza.eventos_fora === antesDaLimpeza.eventos_fora && depoisDaLimpeza.sem_pessoa === antesDaLimpeza.sem_pessoa && depoisDaLimpeza.h_eventos_fora === antesDaLimpeza.h_eventos_fora,
+    'ficaram os ' + depoisDaLimpeza.eventos_fora + ' eventos delas e os ' + depoisDaLimpeza.sem_pessoa + ' eventos sem pessoa, cada linha igual');
+  const trava = await umaLinha(`select tgenabled from pg_trigger where tgname = 'eventos_sem_mudanca'`);
+  conferir(trava.tgenabled === 'O' && await sdr(`delete from public.eventos where id_pessoa is null`) === 'P0001',
+    'depois da limpeza, a trava continua ligada: apagar evento é recusado (P0001)');
+  const leadsDepois = (await comoPapel('service_role', 'select * from public.leads_para_planilha()')).rows;
+  conferir(leadsDepois.length === 3 && leadsDepois.every(l => !(/^teste/i.test(l.nome) && /@teste\.invalid$/i.test(l.email))),
+    'leads_para_planilha depois da limpeza: só os 3 que ficaram, nenhum lead de teste (' + leadsDepois.length + ')');
+
+  erro = null;
+  try { tabela = await rodarLimpeza(); } catch (e) { erro = e; }
+  const p2 = Object.fromEntries((tabela || []).map(l => [l.n, l]));
+  conferir(!erro && tabela.every(l => l.ok === true) && p2[1].antes === '0' && p2[2].antes === '0' && JSON.stringify(await contagem()) === JSON.stringify(depoisDaLimpeza),
+    'segunda vez: não acha ninguém, não apaga nada, mostra zero, e o banco fica igual' + (erro ? ' (' + erro.message + ')' : ''));
+  const linhas = await rodarConferir();
+  conferir(linhas.find(l => l.n === 99).ok === true, 'conferir.sql depois da limpeza: ' + linhas.find(l => l.n === 99).encontrado);
+}
+{
+  // se uma conferência falhar dentro da limpeza, nada é apagado: simulado com a trava desligada antes
+  const p = pacoteFim(30, { faixa: 'a', nota: 96, sessao: 'sessao-limpeza-6', respostas: RESPOSTAS_A });
+  await gravarFim(p);
+  await comoDono('alter table public.eventos disable trigger eventos_sem_mudanca');
+  let erro = null;
+  await db.exec('set role dono');
+  try { await db.exec(LIMPEZA); } catch (e) { erro = e; }
+  await db.exec('rollback');   // a transação da limpeza ficou aberta e abortada: desfaz
+  await db.exec('reset role');
+  await comoDono('alter table public.eventos enable trigger eventos_sem_mudanca');
+  const r = await umaLinha(`select count(*)::int as n from public.pessoas where email = 'migracao30@teste.invalid'`);
+  conferir(erro && /trava/.test(erro.message) && r.n === 1, 'com a trava desligada antes, a limpeza para no passo 0 e não apaga nada');
 }
 
 await db.close();

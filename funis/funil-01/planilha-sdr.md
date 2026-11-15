@@ -1,9 +1,9 @@
 ---
 id: funil-01-planilha-sdr
-versao: 2
+versao: 3
 status: pendente-aprovacao
 aprovado_por:
-  otavio: 2026-11-09
+  otavio: pendente
   junior: pendente
   euclides: pendente
 depende_de:
@@ -29,6 +29,8 @@ depende_de:
     versao: 4
   - id: quiz-01-copy
     versao: 2
+  - id: quiz-01-pagina
+    versao: 8
 desatualizado: true
 ---
 
@@ -37,6 +39,8 @@ desatualizado: true
 O desenho da planilha de quem liga para os leads do funil-01: as colunas, o que o SDR pode mudar e o que não pode, a lista fechada de status, a ordem da fila e o que volta para o banco. Só a descrição. Nenhum dado real e nenhuma chave aparece aqui: onde cada chave mora está em conexoes.md, e as regras, em nucleo/regras/seguranca.md.
 
 **Status.** Pendente de aprovação. Serve ao funil-01, pendente do Júnior e do Euclides (#90), e usa o lead score, também pendente (#98). Segue a mesma aprovação do funil-01: o Otávio aprovou em 09/11/2026, e o Júnior e o Euclides aprovam junto com o item 1 da pauta (decisão do Otávio, 09/11/2026, 5.1 com 15.1; base/decisoes.md, #111). Enquanto isso, só serve como rascunho, avisando que pode mudar (nucleo/regras/versionamento.md).
+
+**Versão 3 (15/11/2026).** Só a aba nova **respostas**, a segunda da planilha, com as respostas completas do quiz (ver "Aba respostas", abaixo), pelo pedido do Otávio de 15/11/2026: "A planilha deve ter duas abas, a primeira resumida, como é a \"fila\" hoje e outra aba com as respostas completas." Quem entra na aba respostas são os mesmos da fila (resposta do Otávio na mesma conversa). A fila, as colunas dela, a lista fechada, a ordem e a volta para o banco não mudaram. Como é mudança de sentido, a data do Otávio voltou para pendente até ele aprovar os nomes das colunas (nucleo/regras/versionamento.md, "Forma e sentido"); o pedido é dele (log.md, entrada de 15/11/2026, pergunta 1).
 
 **Continua desatualizado.** A versão 2 aplica as decisões de 09/11/2026, mas se apoia em `quiz-01-copy`, que continua marcado por cadeia (a pauta e a página do quiz, atualizadas nas etapas 34 e seguintes); pela regra de versionamento, só sai da marca quando nenhuma base estiver marcada (11.1; #114).
 
@@ -88,12 +92,47 @@ Uma linha por lead da fila. "Banco" quer dizer que o valor vem do banco pela por
 | reuniao_em | Data e hora da Call de Direcionamento marcada (ficha-de-fatos#nome-call-de-venda) | SDR | Sim, ao marcar | Sim, ligada à pessoa |
 | produto | O que foi vendido: iasv ou essencial, lista fechada (5.3; #114) | SDR, ao marcar venda | Sim, só com valor da lista | Sim, ligado à pessoa |
 
+**A fila é a primeira aba** da planilha (o nome dela na planilha é `fila`). A segunda é a aba respostas (abaixo).
+
 **O que não tem coluna, de propósito.**
 
 - **Texto livre** (anotações, motivo da perda): nada de texto livre na planilha inteira, porque pode trazer dado pessoal que não precisa estar ali; um motivo da perda, se for útil, entra como lista fechada nova (6.5, com 15.7; #114; `planta-do-banco`, "Outros campos do evento").
 - **Origem do lead (UTM), entrega e versão:** os eventos do SDR levam esses valores pelo banco (`planta-do-banco`, "Etiquetas obrigatórias"), sem o SDR ver nem mexer.
 
 **Quem retirou o consentimento** não entra na planilha (`planta-do-banco`, "O que sai do banco"). Quem retira depois de entrar continua na aba até o Otávio apagar a linha à mão, quando registrar a retirada; o caminho automático entra junto com a volta do status (21.10; #114). **Quem aceitou a caixa única** pode ser contatado por WhatsApp, por ligação no número do WhatsApp e por e-mail (#105); ver `funil-01-roteiros-sdr`, "Antes de qualquer contato".
+
+---
+
+## Aba respostas
+
+**Proposta** (versão 3; os nomes das colunas são escolha provisória, log.md, entrada de 15/11/2026). A segunda aba da planilha, `respostas`: as respostas completas do quiz de cada lead da fila, para quem liga conhecer a empresa antes do contato sem abrir o banco. Uma linha por lead, para **as mesmas pessoas da fila** (faixas A e B, com o aceite do WhatsApp, sem consentimento retirado), na mesma rodada em que a linha entra na fila. As respostas são as do **primeiro** fim de quiz da pessoa nas faixas A ou B, o mesmo que dá a nota e o entrou_em da fila; quem refaz o quiz não muda a linha (21.5). Tudo vem do banco; **o SDR não edita nada** nesta aba, e nada dela volta para o banco.
+
+| Coluna | O que guarda | Pergunta do quiz (`quiz-01-pagina`) |
+|---|---|---|
+| id_pessoa | O mesmo código da fila, que liga as duas abas | (do banco) |
+| nome | O mesmo nome da fila | (do banco) |
+| entrou_em | A mesma data e hora da fila | (do banco) |
+| lead_score_faixa | a ou b, como na fila | (do banco) |
+| lead_score_nota | A nota, como na fila | (do banco) |
+| ramo | O ramo da empresa | Em que ramo sua empresa atua? |
+| faturamento | O faturamento por mês | Quanto a empresa fatura por mês, em média? |
+| vendedores | Quantos vendedores conduzem a conversa de venda | Quantos vendedores conduzem conversas de venda com clientes? |
+| quem marca a conversa | Se quem marca é quem vende | Quem marca as conversas de venda é a mesma pessoa que vende? |
+| valor médio da venda | O valor, como número (R$ 15.000 vira 15000) | Qual o valor médio de uma venda? |
+| origem dos leads | As origens marcadas, separadas por "; " | De onde vêm os seus leads? |
+| CRM | O uso do CRM | Vocês usam um CRM para acompanhar os clientes? |
+| cargo | O cargo de quem respondeu | Qual é o seu cargo? |
+| lembra dos números | Sim (números) ou Não (chute) | Você lembra, mais ou menos, dos números do seu funil? |
+| leads por mês, pré-qualificados, agendados, conversas realizadas, vendas fechadas | Os cinco números do funil, cada um na sua coluna: em quantidade, como número; em porcentagem, como texto com o sinal ("50%"); vazios no modo chute | Os números do funil, linha por linha |
+| chute de comparecimento | O chute de quantos agendados vêm para a conversa; vazio no modo números | Se fosse chutar, quantos dos agendados vêm para a conversa de venda? |
+| causa · primeiro contato | Em quanto tempo o lead recebe o primeiro contato | Em quanto tempo o lead recebe o primeiro contato? |
+| causa · tentativas | Quantas tentativas antes de desistir | Quantas vezes vocês tentam falar com o lead antes de desistir? |
+| causa · lead sem contato | Se sobra lead sem contato no fim do dia | No fim do dia, sobra lead sem contato? |
+| outras respostas | Qualquer resposta que o quiz venha a mandar e que não tem coluna aqui, como "chave: valor; ..." | (nenhuma hoje) |
+
+**Regras da aba.** O que a pessoa não respondeu fica vazio. Nada de texto livre: as respostas do quiz são opções e números, e "outras respostas" só existe para uma pergunta nova não se perder nem quebrar a planilha (a pergunta nova ganha coluna numa versão seguinte). Os nomes das perguntas do quiz não entram na planilha: o nome curto da coluna basta.
+
+**Dado pessoal.** As respostas, ligadas à pessoa, são dado pessoal (nucleo/regras/seguranca.md, regra 4). Ficam na planilha do SDR pela exceção registrada da regra 4, com o mesmo acesso da fila; ver a pergunta 2 da entrada de 15/11/2026 no log.md sobre a exceção e a política de privacidade, que hoje diz que quem liga vê "só o necessário" (`politica-de-privacidade`, item 5).
 
 ---
 
@@ -226,5 +265,6 @@ Cada evento leva também id_pessoa, gravado_por = volta-do-status e as etiquetas
 - dados/planta/planta.md (v4): "Quem grava e quem lê", "Gaveta eventos", "O que sai do banco".
 - base/metodo.md (v4), "As seis regras" e "Detalhes das regras de estado"; base/ficha-de-fatos.md (v4), quem-agenda, nome-call-de-venda; base/decisoes.md (v5), #67, #90, #95, #98, #100, #104, #105, #111, #114; base/lacunas.md (v6), conflito-16, conflito-17; base/provas-e-conformidade.md (v4), "LGPD"; GLOSSARY.md (v4), verbetes Estado e Funil-01.
 - entregas/quizzes/quiz-01/copy.md (v2), seção 10; nucleo/regras/seguranca.md (v3), regra 4; conexoes.md.
+- entregas/quizzes/quiz-01/pagina/index.html (`quiz-01-pagina` v8): as perguntas e o pacote do fim do quiz (respostasDoQuiz), para a aba respostas (v3).
 - prompts/11-decisoes-de-09-11.md; prompts/11-respostas.md.
 - prompts/05-fila-perguntas.md, 5.2 a 5.4 e 6.4 a 6.6; prompts/06-para-o-otavio.md; prompts/07-fila-da-noite.md, "Etapa 15".

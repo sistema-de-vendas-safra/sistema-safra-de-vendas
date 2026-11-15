@@ -1,6 +1,6 @@
 ---
 id: banco-rascunho
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -14,7 +14,7 @@ depende_de:
   - id: lead-score
     versao: 3
   - id: funil-01-planilha-sdr
-    versao: 2
+    versao: 3
   - id: ficha-de-fatos
     versao: 4
   - id: regra-seguranca
@@ -26,11 +26,17 @@ desatualizado: true
 
 # Banco · rascunho
 
-O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.md, para o projeto sistema-de-vendas-safra do Supabase (decisão #99; conexoes.md). O esquema v2 já roda no projeto do Safra, com o protótipo ligado e dados de teste (#102; log.md, pedido 10). **A migração da versão 3 ainda não foi executada no Supabase:** foi conferida só numa cópia local do Postgres, sem serviço real (ver "Conferido nesta máquina"). Nenhum dado deste repositório é real.
+O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.md, para o projeto sistema-de-vendas-safra do Supabase (decisão #99; conexoes.md). O esquema v2 já roda no projeto do Safra, com o protótipo ligado e dados de teste (#102; log.md, pedido 10). A migração da versão 3 (001) rodou no Supabase em 09/11/2026, pelo Otávio, com o conferir.sql v2 dando 18 de 18 (APLICAR-11, parte 2; prompts/14-estado-para-o-mentor.md, "APLICAR-11, em 09/11/2026"). **A migração 002 e o SQL de limpeza dos leads de teste ainda não foram executados no Supabase:** foram conferidos só numa cópia local do Postgres, sem serviço real (ver "Conferido nesta máquina"). Nenhum dado deste repositório é real.
 
 **Status.** Rascunho, pendente do Otávio. Continua desatualizado, porque se apoia na planilha do SDR (funil-01-planilha-sdr v2), marcada por cadeia (regra 11.1).
 
 **Versão 3 (etapa 32, 09/11/2026).** O banco com dados não é refeito: o esquema v2 (esquema.sql) fica como está e a versão 3 entra por uma **migração** (migracoes/001-v3.sql), que roda por cima, sem apagar nada, e pode rodar de novo (21.11; prompts/11-decisoes-de-09-11.md, etapa 32). Ver "O que muda na versão 3".
+
+**Versão 5 (15/11/2026, planilha do SDR v3).** Pelo pedido do Otávio de 15/11/2026 (duas abas na planilha, a fila e as respostas completas; limpar a planilha e o banco). Entram dois arquivos de SQL e um muda:
+- **migracoes/002-respostas-na-planilha.sql** (banco-migracao-002 v1): a função da planilha devolve, no fim, a coluna `respostas` (jsonb), com as respostas completas do quiz, para a aba respostas da planilha do SDR v3. Ver "O que muda com a migração 002".
+- **limpar-leads-de-teste.sql** (banco-limpar-leads-de-teste v1): apaga do banco só os leads de teste (nome começando por TESTE **e** e-mail terminado em @teste.invalid) e os eventos ligados a eles. Ver "A limpeza dos leads de teste".
+- **conferir.sql v3**: a linha 19, da migração 002 (19 linhas de conferência, mais a 99).
+- esquema.sql continua o esquema v2: só o aviso do topo ganha a 002 na ordem (21.11).
 
 **Versão 4 (etapa 34, 09/11/2026).** Só documentação: catalogo-prototipo.sql (v2) ganhou as linhas da landing-page-01 versão 1 e do quiz-01 versão 2, que as páginas da etapa 34 mandam (32.4). Nenhuma linha de SQL do esquema nem da migração mudou.
 
@@ -41,10 +47,12 @@ O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.
 | Arquivo | O que é |
 |---|---|
 | esquema.sql | O esquema v2: as tabelas, as restrições, as duas funções das portas do garçom, a visão do painel, a contagem das análises gratuitas e as fechaduras, em Postgres para o Supabase. Comentários em português. Já rodou no projeto do Safra; o SQL não muda (21.11). A versão 3 do arquivo só ganhou o aviso do topo, com a ordem dos arquivos |
-| migracoes/001-v3.sql | A migração do banco v2 para o v3, sobre os dados que já existem, sem apagar nada e numa transação só. Pode rodar de novo e dá o mesmo resultado. Ver "O que muda na versão 3" |
-| conferir.sql | Uma consulta só de leitura que confere, linha por linha, se o banco ficou como devia depois da migração: tabelas, RLS, quem pode o quê, funções, trava, índices, visões e o que a migração pôs. Cada linha diz o esperado e dá ok verdadeiro ou falso |
+| migracoes/001-v3.sql | A migração do banco v2 para o v3, sobre os dados que já existem, sem apagar nada e numa transação só. Pode rodar de novo e dá o mesmo resultado. Ver "O que muda na versão 3". Rodou no Supabase em 09/11/2026 |
+| migracoes/002-respostas-na-planilha.sql | A migração das respostas completas na função da planilha (v5 deste rascunho). Só troca a função e refaz as fechaduras, numa transação só; pode rodar de novo. Ver "O que muda com a migração 002" |
+| limpar-leads-de-teste.sql | Apaga do banco só os leads de teste e os eventos ligados a eles, numa transação só, conferindo antes do commit. **Não dá para desfazer.** Ver "A limpeza dos leads de teste" |
+| conferir.sql | Uma consulta só de leitura que confere, linha por linha, se o banco ficou como devia depois das migrações: tabelas, RLS, quem pode o quê, funções, trava, índices, visões e o que as migrações puseram. Cada linha diz o esperado e dá ok verdadeiro ou falso (v3: 19 linhas, mais a 99) |
 | catalogo-prototipo.sql | As linhas do catálogo de entregas que o protótipo precisa para o banco aceitar os eventos das páginas (23.10; 32.4): quiz-01 versão 1 (a página v2, que já gravou dados de teste), quiz-01 versão 2 (a página v3) e landing-page-01 versão 1 (a visita, igual nas duas variantes; pergunta 34.4). v2: só acrescenta, com `on conflict do nothing`; não apaga nem muda linha. Rodado depois do conferir.sql (25.3) |
-| testar-migracao.mjs | O teste local da migração, num Postgres dentro do Node (PGlite, o do ensaio), sem rede. Ver "Conferido nesta máquina" |
+| testar-migracao.mjs | O teste local das migrações 001 e 002 e da limpeza dos leads de teste, num Postgres dentro do Node (PGlite, o do ensaio), sem rede. Ver "Conferido nesta máquina" |
 
 ## O que muda na versão 3
 
@@ -62,6 +70,29 @@ Pela planta v4 (dados/planta/planta.md) e pelas decisões do Otávio de 09/11/20
 - **Fica para depois (6.6):** o papel e a chave do painel, do contador e da volta do status nascem quando cada um existir (log.md, Pendências).
 
 **Seguro com os dados que já existem.** Nenhuma tabela, coluna ou linha é apagada nem reescrita; a migração não tem DELETE, TRUNCATE nem DROP de tabela ou coluna. As listas novas só acrescentam valores às antigas, então toda linha que já passou na regra v2 passa na v3; a coluna nova nasce vazia e só é exigida no tipo novo. O Postgres confere todas as linhas ao ligar cada restrição, e a migração roda numa transação só: se algo falhar, nada muda. As restrições do v2 que mudam (lista de tipos, de estados, do produto e quem grava cada tipo) não tinham nome escrito no esquema; a migração as acha pelas colunas que olham, e não pelo nome, e põe no lugar as v3, com nome.
+
+## O que muda com a migração 002
+
+Pelo pedido do Otávio de 15/11/2026 (log.md, entrada de 15/11/2026). Tudo em migracoes/002-respostas-na-planilha.sql.
+
+- **Função da planilha v4:** `leads_para_planilha` devolve tudo o que a v3 (da 001) devolve, na mesma ordem, e mais uma coluna no fim, **respostas** (jsonb): as respostas completas do quiz, como a página mandou (o objeto `respostas` do pacote do fim do quiz), do **primeiro** fim de quiz da pessoa em faixa a ou b, o mesmo evento que já dá a nota, a faixa e entrou_em. Quem refaz o quiz não muda a linha (21.5).
+- **Quem entra não muda:** faixas a e b, aceite do WhatsApp, consentimento não retirado, margem de 1 minuto, cursor, teto de 200. respostas_a_confirmar da faixa b e o clique também não mudam.
+- **As fechaduras de novo, iguais às da 001:** anon executa registrar_fim_quiz e registrar_evento; service_role, só leads_para_planilha; nada para mais ninguém; a função continua SECURITY DEFINER, com search_path vazio.
+- **Confere antes:** se o esquema v2 ou a 001 não estiverem no banco, para no passo 0, sem mudar nada.
+- **Seguro com os dados:** só troca uma função, que não guarda dado; sem DELETE, UPDATE, TRUNCATE nem DROP de tabela ou coluna.
+- **O garçom não muda:** a porta privada repassa os leads como vêm do banco (entregas/garcom/garcom.mjs, portaPlanilha; teste do garçom 360 de 360). A planilha v2 ignora a coluna nova; a v3 escreve a aba respostas com ela. A planilha v3 com o banco ainda sem a 002 escreve a aba respostas com as colunas das respostas vazias.
+- **Se esquema.sql ou a 001 forem rodados de novo**, rodar a 002 logo depois: os dois refazem a função sem a coluna respostas (conferir.sql avisa na linha 19).
+- O número 002 foi usado aqui; a migração do aceite como histórico que a fila 13 previa como "002" (prompts/13-correcoes-e-decisoes-restantes.md, etapa 42) passa a ser a seguinte (pergunta 5 da entrada de 15/11/2026 no log.md).
+
+## A limpeza dos leads de teste
+
+dados/banco/limpar-leads-de-teste.sql, para o Otávio rodar no SQL Editor do Supabase (roteiro entregas/planilha-sdr-funil-01/APLICAR-PLANILHA-V3.md, passo 1). **Não dá para desfazer.**
+
+- **Quem sai:** só a pessoa com as duas marcas do #102 juntas, o nome começando por TESTE (sem diferenciar maiúsculas) **e** o e-mail terminado em @teste.invalid, e todos os eventos ligados a ela (o fim do quiz, o clique, a visita e o início do quiz ligados pela sessão, os do SDR). Quem tem só uma das marcas fica. A linha real do Otávio de 09/11 não tem as marcas e fica (pergunta 4 da entrada de 15/11/2026 no log.md).
+- **O que fica:** todas as outras pessoas e os eventos delas, e os eventos sem pessoa (visitas e inícios do quiz de quem não terminou o quiz, sem dado pessoal).
+- **Como:** numa transação só. Guarda quem vai sair e as contagens (só números); desliga a trava dos eventos (eventos_sem_mudanca, que não deixa apagar evento) só dentro da transação; apaga os eventos dessas pessoas e depois as pessoas (o evento aponta para a pessoa); liga a trava de novo; confere que nenhuma pessoa de teste nem evento delas sobrou, que as outras pessoas, os eventos delas e os eventos sem pessoa ficaram com o mesmo número e que a trava está ligada. Se algo não bater, dá erro e nada é apagado. No fim, uma tabela com 6 linhas (antes, depois e ok), sem nome, e-mail ou telefone.
+- **Rodar de novo:** não acha ninguém e não apaga nada.
+- Não é o caminho de apagamento do #106 (prazo de guarda, pedido de quem retira o consentimento): é a limpeza de propósito dos dados de teste que "O que falta para ir ao ar", item 3, pedia.
 
 ## O que mudou da versão 1 para a 2
 
@@ -94,7 +125,7 @@ Decisões #99 e #100 (base/decisoes.md), que respondem 18.2, 18.9 e os itens 1 a
 
 - **Quem entra:** só faixas a e b (nunca c nem eliminatorio), só quem não retirou o consentimento e, por escolha provisória, só quem aceitou WhatsApp, o caminho em que menos gente é contatada (21.4).
 - **Uma vez por pessoa:** cada pessoa entra pelo primeiro fim de quiz dela em faixa a ou b. Quem refaz o quiz não aparece de novo, e a linha que já foi não é atualizada (21.5).
-- **Colunas:** as que funis/funil-01/planilha-sdr.md marca como "Banco", na mesma ordem: id_pessoa, nome, telefone, email, empresa, consentimento_whatsapp, consentimento_email, lead_score_faixa, lead_score_nota, respostas_a_confirmar (só na faixa b: valor da venda, vendedores e, desde a v3, leads por mês e CRM; 15.4), entrou_em (a hora do servidor em que o fim do quiz foi gravado, não a do navegador; 15.3; 21.16), tentativas_feitas (15.3; 21.7), clique_fim_quiz (o último clique da pessoa no fim do quiz, desde a v3; 18.4), estagio, estado e data_volta atuais (21.9). Mais `cursor_gravado_em`, para o cursor.
+- **Colunas:** as que funis/funil-01/planilha-sdr.md marca como "Banco", na mesma ordem: id_pessoa, nome, telefone, email, empresa, consentimento_whatsapp, consentimento_email, lead_score_faixa, lead_score_nota, respostas_a_confirmar (só na faixa b: valor da venda, vendedores e, desde a v3, leads por mês e CRM; 15.4), entrou_em (a hora do servidor em que o fim do quiz foi gravado, não a do navegador; 15.3; 21.16), tentativas_feitas (15.3; 21.7), clique_fim_quiz (o último clique da pessoa no fim do quiz, desde a v3; 18.4), estagio, estado e data_volta atuais (21.9). Mais `cursor_gravado_em`, para o cursor, e, desde a migração 002, `respostas`, as respostas completas do quiz, para a aba respostas da planilha (funis/funil-01/planilha-sdr.md v3, "Aba respostas").
 - **O clique chega uma vez só:** a linha que já foi para a planilha não é atualizada (21.5). Se a pessoa clicar depois de a planilha ter lido a linha dela, o clique fica no banco e não chega à planilha (pergunta 32.3).
 - **O cursor** é o par (gravado_em do fim de quiz de entrada, id_pessoa). A função devolve, em ordem desse par, só quem vem depois do par recebido. Na primeira vez, os dois vão vazios; depois, vão o `cursor_gravado_em` e o `id_pessoa` da última linha recebida, **exatamente como vieram** (o horário tem microssegundos; arredondado, a última linha volta repetida). Gente gravada no mesmo instante é desempatada pelo id_pessoa: ninguém se perde nem se repete. Mandar só um dos dois é recusado. O horário vem com o fuso no fim ("+00:00"): quem chamar pela API com GET, com o cursor no endereço, precisa codificar o sinal de mais (%2B), senão ele vira espaço e o horário quebra. Para a etapa 22: o garçom deve mandar o cursor bem codificado (ou no corpo de um POST).
 - **Margem de 1 minuto:** só aparece quem foi gravado há mais de 1 minuto, para uma gravação que começou antes e terminou depois de uma leitura não ficar para trás do cursor (21.6).
@@ -113,11 +144,14 @@ Decisões #99 e #100 (base/decisoes.md), que respondem 18.2, 18.9 e os itens 1 a
 A ordem é sempre esta:
 
 1. **esquema.sql (v2): já rodado** no projeto do Safra. Não rodar de novo: o banco já tem dados, e rodar o esquema de novo não muda tabela que já existe (21.11). Num projeto novo e vazio, a ordem é a mesma (esquema.sql, a migração e conferir.sql) e, para o protótipo, catalogo-prototipo.sql no fim.
-2. **migracoes/001-v3.sql**, a migração.
-3. **conferir.sql (v2)**, a conferência.
-4. **catalogo-prototipo.sql (v2)**, no protótipo, antes de publicar as páginas da etapa 34: no banco que já tem a linha do quiz-01 versão 1, acrescenta só as duas linhas novas e mostra as três (conferido no PGlite: rodado duas vezes, três linhas, a data da linha antiga sem mudar).
+2. **migracoes/001-v3.sql**, a migração 001: **já rodada** no projeto do Safra, em 09/11/2026.
+3. **migracoes/002-respostas-na-planilha.sql**, a migração 002 (v5; roteiro APLICAR-PLANILHA-V3.md, passo 2).
+4. **conferir.sql (v3)**, a conferência: 19 de 19.
+5. **catalogo-prototipo.sql**, no protótipo, antes de publicar as páginas da etapa 34: no banco que já tem a linha do quiz-01 versão 1, acrescenta só as duas linhas novas e mostra as três (conferido no PGlite: rodado duas vezes, três linhas, a data da linha antiga sem mudar).
 
-Passo a passo da migração (o roteiro da etapa 35 traz a versão para o Otávio):
+A limpeza dos leads de teste (limpar-leads-de-teste.sql) não faz parte da ordem: roda quando o Otávio decidir limpar, de preferência antes da migração 002 e de recriar as abas da planilha (APLICAR-PLANILHA-V3.md, passo 1).
+
+Passo a passo da migração (o roteiro da etapa 35 traz a versão para o Otávio da 001; o APLICAR-PLANILHA-V3.md, a da 002, que é igual, com o arquivo 002):
 
 1. Entrar no Supabase com sistemadevendassafra@gmail.com e abrir o projeto **sistema-de-vendas-safra** (conexoes.md).
 2. No menu da esquerda, abrir o **SQL Editor** e criar uma consulta nova (New query).
@@ -131,7 +165,7 @@ A migração não mexe no garçom: o garçom v3, que está no ar, continua chama
 
 ## Como conferir
 
-conferir.sql devolve uma tabela com 19 linhas: as conferências de 1 a 18 e a linha 99, "tudo certo". **Deu certo quando todas as linhas têm ok = true**, e a linha 99 diz "18 de 18". Num banco só com o esquema v2, sem a migração, as linhas 4, 8 e 14 a 18 dão false, e a linha 99 diz "11 de 18": é o aviso de que falta rodar a migração. Em resumo, o esperado:
+conferir.sql (v3) devolve uma tabela com 20 linhas: as conferências de 1 a 19 e a linha 99, "tudo certo". **Deu certo quando todas as linhas têm ok = true**, e a linha 99 diz "19 de 19". Com a 001 e sem a 002, só a linha 19 dá false, e a linha 99 diz "18 de 19": é o aviso de que falta rodar a 002. Num banco só com o esquema v2, sem as migrações, as linhas 4, 8 e 14 a 19 dão false, e a linha 99 diz "11 de 19". Em resumo, o esperado:
 
 | n | Conferência | Esperado |
 |---|---|---|
@@ -153,10 +187,21 @@ conferir.sql devolve uma tabela com 19 linhas: as conferências de 1 a 18 e a li
 | 16 | listas antigas trocadas, sem sobra | eventos_estado_lista, eventos_produto_lista, eventos_quem_grava, eventos_tipo_lista |
 | 17 | valores novos nas listas | interesse_pos_relatorio, nutricao, iasv e essencial |
 | 18 | função da planilha v3 | leads_para_planilha com clique_fim_quiz e o histórico |
+| 19 | função da planilha v4 (respostas), da migração 002 | leads_para_planilha (com a coluna respostas no fim) |
 
 Se alguma linha der false, não use as chaves: anote o número da linha e o que apareceu em "encontrado" e rode a migração de novo. Se continuar false, traga a linha para o repositório.
 
 ## Conferido nesta máquina
+
+**Versão 5 (15/11/2026, planilha do SDR v3).** `node dados/banco/testar-migracao.mjs`, da raiz: **85 de 85** (antes, 64 de 64), e conferir.sql **19 de 19**. Além do que a versão 3 já conferia (abaixo, com conferir.sql v3: o banco só v2 avisa nas linhas 4, 8 e 14 a 19):
+
+- entre a 001 e a 002, conferir.sql avisa só na linha 19 ("18 de 19");
+- a migração 002 roda **duas vezes** sobre os dados: sem erro, cada linha de pessoas, eventos e entregas igual, e a segunda rodada deixa o esquema igual ao da primeira; num banco só com o esquema v2 (sem a 001), ela para no passo 0 e não muda a função;
+- com SET ROLE service_role: leads_para_planilha com as 18 colunas, a última `respostas`, igual às respostas que a página mandou, na faixa a e na faixa b (com a lista dos números);
+- esquema.sql rodado de novo: a 001 de novo deixa o esquema como depois da 001 (conferir avisa só na linha 19), e a 002 de novo deixa como antes, sem mudar dado;
+- **a limpeza** (seção 7), com dados de mentira: 6 pessoas de teste (uma com o nome em minúsculas e o e-mail em maiúsculas) e 16 eventos delas; ficam uma pessoa só com o nome TESTE, uma só com o e-mail @teste.invalid e uma "de verdade" de mentira (nome sem TESTE, e-mail @exemplo.invalid), com os 10 eventos delas, e 3 eventos sem pessoa. Na primeira vez, a tabela do fim tem 6 linhas, todas ok, só com números (pessoas de teste 6 para 0, eventos 16 para 0); as pessoas e os eventos que ficam estão iguais, linha por linha; a trava continua ligada (apagar evento continua recusado); leads_para_planilha entrega só os 3 que ficaram. Na segunda vez, não acha ninguém e não muda nada. Com a trava desligada antes, a limpeza para no passo 0 e não apaga nada.
+
+O ensaio geral (nucleo/ferramentas/ensaio/, v12) aplica as duas migrações duas vezes e roda a planilha v3: 269 de 269.
 
 **Versão 3 (09/11/2026, etapa 32).** `node dados/banco/testar-migracao.mjs`, da raiz do repositório: PGlite 0.5.15 (PostgreSQL 18.6) de nucleo/ferramentas/ensaio/, só na memória, sem rede, com os papéis de mentira do ensaio (o dono começa com as permissões padrão do pior caso). Resultado: **64 de 64**, e conferir.sql **18 de 18**. O teste:
 
@@ -170,7 +215,7 @@ Se alguma linha der false, não use as chaves: anote o número da linha e o que 
 - quem pode o quê: anon não chama a planilha nem lê tabela ou visão; service_role, authenticated e um papel qualquer não executam registrar_evento; a trava continua recusando apagar e reescrever evento;
 - esquema.sql rodado de novo depois da migração: conferir.sql avisa (false nas linhas 4 e 18), e a migração rodada de novo deixa tudo como antes, sem mudar nenhum dado.
 
-O ensaio geral (nucleo/ferramentas/ensaio/) ainda aplica só o esquema v2 e espera o conferir.sql v1 ("13 de 13"): até a etapa 35 atualizá-lo, a conferência dele dá false. Rodado com `--sem-wrangler` em 09/11/2026: 90 de 108, e os 18 FALHOU são só o conferir.sql sem a migração e as 20 colunas da planilha v2 (pergunta 32.7).
+Na época (09/11/2026), o ensaio geral ainda aplicava só o esquema v2 e esperava o conferir.sql v1 ("13 de 13"); a etapa 35 o atualizou (pergunta 32.7).
 
 **Versão 2.** Numa cópia local do Postgres que roda dentro do Node (PGlite 0.5.15, em nucleo/ferramentas/ensaio/, só a dependência, sem script ainda), com os papéis anon, authenticated e service_role criados de mentira, em 08/11/2026:
 
@@ -187,11 +232,11 @@ O ensaio geral (nucleo/ferramentas/ensaio/) ainda aplica só o esquema v2 e espe
 
 1. **Decisão do conflito-17** pelo Júnior e pelo Euclides (aprovação da #90).
 2. **Rodar a migração 001, o conferir.sql e o catalogo-prototipo.sql v2 no Supabase** (roteiro da etapa 35), com o garçom da etapa 33 e as páginas da etapa 34 para os eventos novos chegarem.
-3. **Limpar os dados de teste** (leads com e-mail @teste.invalid e nome começando por TESTE, #102) de propósito, ou recomeçar o banco do zero, e registrar como foi feito. A trava não deixa apagar evento (log.md, Pendências).
+3. **Limpar os dados de teste** (leads com e-mail @teste.invalid e nome começando por TESTE, #102) de propósito, ou recomeçar o banco do zero, e registrar como foi feito. A trava não deixa apagar evento (log.md, Pendências). Desde a v5, o limpar-leads-de-teste.sql faz isso, desligando a trava só dentro da transação; falta o Otávio rodar (APLICAR-PLANILHA-V3.md, passo 1). A linha real do Otávio de 09/11 não sai por ele.
 4. **Caminho de apagamento** (#106): o prazo de guarda está em ficha-de-fatos#prazo-de-guarda; o que se apaga, o que vira anônimo, quem faz e como fica registrado é pendência com prazo (log.md, Pendências). Até lá, nada é apagado automaticamente, e a trava dos eventos não deixa apagar nem pelo garçom (6.8; 18.10).
 5. Aprovação da planta (6.1) e deste rascunho pelo Otávio.
 6. As chaves da volta do status, do painel e do contador, cada uma com o seu papel, quando cada um existir (6.6; 18.3).
 
 ## Perguntas
 
-prompts/07-fila-perguntas.md, 18.1 a 18.11; prompts/08-fila-perguntas.md, Etapa 21; prompts/11-fila-perguntas.md, Etapas 32 e 34.
+prompts/07-fila-perguntas.md, 18.1 a 18.11; prompts/08-fila-perguntas.md, Etapa 21; prompts/11-fila-perguntas.md, Etapas 32 e 34; log.md, entrada de 15/11/2026 ("planilha do SDR v3"), perguntas 1 a 11.

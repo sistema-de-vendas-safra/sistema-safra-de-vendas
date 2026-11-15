@@ -1,12 +1,17 @@
--- Conferência do banco do funil-01, depois de esquema.sql e da migração 001 (Postgres, no Supabase)
--- id: banco-conferir · versao 2 · rascunho · otavio: pendente
--- depende_de: banco-rascunho v3, banco-migracao-001 v1, planta-do-banco v4, decisoes v5
--- desatualizado: true (banco-rascunho subiu para a versão 4, só documentação, etapa 34; banco-migracao-001 continua marcada; regra 11.1)
+-- Conferência do banco do funil-01, depois de esquema.sql e das migrações 001 e 002 (Postgres, no Supabase)
+-- id: banco-conferir · versao 3 · rascunho · otavio: pendente
+-- depende_de: banco-rascunho v5, banco-migracao-001 v1, banco-migracao-002 v1, planta-do-banco v4, decisoes v5
+-- desatualizado: true (banco-rascunho, banco-migracao-001 e banco-migracao-002 continuam marcados; regra 11.1)
+--
+-- Versão 3 (15/11/2026, planilha do SDR v3): entra a linha 19, da migração 002
+-- (dados/banco/migracoes/002-respostas-na-planilha.sql): a função da planilha devolve a coluna
+-- respostas. Num banco com a 001 e sem a 002, só a linha 19 dá false ("18 de 19"): é o aviso de
+-- que falta rodar a 002. Nada mais mudou.
 --
 -- Versão 2 (etapa 32): confere o banco v3, que é o esquema v2 (esquema.sql) mais a migração
 -- dados/banco/migracoes/001-v3.sql. Tudo o que a versão 1 conferia continua, com a porta nova
 -- (registrar_evento) nas linhas 4 e 8, e entram as linhas 14 a 18, da migração. Num banco só com o
--- esquema v2, sem a migração, as linhas 4, 8 e 14 a 18 dão false: é o aviso de que falta rodar a
+-- esquema v2, sem a migração, as linhas 4, 8 e 14 a 19 dão false: é o aviso de que falta rodar a
 -- migração.
 --
 -- SÓ LEITURA. Nada aqui grava, muda ou apaga: só olha o catálogo do banco (quais tabelas,
@@ -20,13 +25,13 @@
 --   ok           · true quando o encontrado bate com o esperado
 -- A última linha, "tudo certo", só dá true se todas as outras derem true.
 -- Se alguma der false: não use as chaves, anote qual linha e o encontrado, e rode
--- a migração de novo antes de seguir (dados/banco/README.md, "Como conferir").
+-- a migração que a linha aponta de novo antes de seguir (dados/banco/README.md, "Como conferir").
 --
 -- Rode como o papel postgres (o padrão do editor SQL). A conferência 13 olha as permissões
 -- padrão desse papel.
 
 with
--- nomes que o esquema v2 e a migração 001 criam
+-- nomes que o esquema v2 e as migrações 001 e 002 criam
 tabelas(nome) as (values ('entregas'), ('pessoas'), ('eventos'), ('investimento')),
 funcoes(nome) as (values ('registrar_fim_quiz'), ('registrar_evento'), ('leads_para_planilha')),
 
@@ -294,6 +299,21 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
                   where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
                     and pg_catalog.pg_get_function_result(p.oid) like '%clique_fim_quiz%'
                     and p.prosrc like '%''leads-por-mes''%' and p.prosrc like '%''crm''%')
+
+  -- 19. Migração 002 · a função da planilha é a v4: devolve, no fim, a coluna respostas (jsonb),
+  --     com as respostas completas do quiz, para a aba respostas da planilha do SDR v3.
+  union all
+  select 19, 'função da planilha v4 (respostas)',
+         'leads_para_planilha com a coluna respostas (jsonb) no fim',
+         coalesce((select 'leads_para_planilha ('
+                            || case when pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb)'
+                                    then 'com' else 'sem' end
+                            || ' a coluna respostas no fim)'
+                     from pg_catalog.pg_proc p
+                    where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'), 'não existe'),
+         exists (select 1 from pg_catalog.pg_proc p
+                  where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
+                    and pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb)')
 )
 
 select n, conferencia, esperado, encontrado, ok from conferencias

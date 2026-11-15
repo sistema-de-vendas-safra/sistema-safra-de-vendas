@@ -1,5 +1,7 @@
 // Falsos do Google Apps Script para rodar Codigo.gs no Node, sem Google e sem rede.
-// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v1, rascunho; ver README.md).
+// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v3, rascunho; ver README.md).
+// v3: insertSheet(nome, posição) e getIndex(), como no Google, para conferir a ordem das abas
+// (fila e respostas), e apagarAba, só para o teste.
 //
 // O que este arquivo exporta (o ensaio da etapa 25 usa os mesmos):
 //   criarFalsos({ propriedades, urlFetch })   SpreadsheetApp, PropertiesService, UrlFetchApp,
@@ -27,8 +29,9 @@ const CAMINHO_CODIGO = fileURLToPath(new URL('../Codigo.gs', import.meta.url));
 
 // ··· Planilha de mentira ···
 class AbaFalsa {
-  constructor(nome, linhas = 1000, colunas = 26) {
+  constructor(nome, linhas = 1000, colunas = 26, todas = null) {
     this.nome = nome;
+    this.todas = todas;             // a lista de abas da planilha, para getIndex
     this.maxLinhas = linhas;
     this.maxColunas = colunas;
     this.celulas = new Map();       // "linha,coluna" -> { valor, formula, texto }
@@ -38,6 +41,8 @@ class AbaFalsa {
     this.escritas = [];             // cada setValues: { linha, coluna, linhas, colunas, quem }
   }
   getName() { return this.nome; }
+  // como no Google: a posição da aba, contando de 1
+  getIndex() { return this.todas.indexOf(this) + 1; }
   getMaxRows() { return this.maxLinhas; }
   getMaxColumns() { return this.maxColunas; }
   getLastRow() {
@@ -129,15 +134,22 @@ export function criarFalsos({ propriedades = {}, urlFetch = null } = {}) {
 
   const planilhaAtiva = {
     getSheetByName: (nome) => estado.abas.find(a => a.nome === nome) || null,
-    insertSheet: (nome) => {
+    // como no Google: insertSheet(nome) põe a aba no fim; insertSheet(nome, posição) põe na
+    // posição dada, contando de 0
+    insertSheet: (nome, posicao) => {
       if (estado.abas.some(a => a.nome === nome)) throw new Error('A sheet with the name "' + nome + '" already exists.');
-      const aba = new AbaFalsa(nome);
-      estado.abas.push(aba);
+      const aba = new AbaFalsa(nome, 1000, 26, estado.abas);
+      if (posicao === undefined) estado.abas.push(aba);
+      else {
+        if (typeof posicao !== 'number' || posicao < 0 || posicao > estado.abas.length) throw new Error('falso: posição de aba inválida');
+        estado.abas.splice(posicao, 0, aba);
+      }
       return aba;
     },
     getSheets: () => estado.abas.slice(),
-    // só para o teste: imita renomear a aba na planilha
-    renomearAba: (de, para) => { estado.abas.find(a => a.nome === de).nome = para; }
+    // só para o teste: imita renomear e apagar a aba na planilha
+    renomearAba: (de, para) => { estado.abas.find(a => a.nome === de).nome = para; },
+    apagarAba: (nome) => { estado.abas.splice(estado.abas.findIndex(a => a.nome === nome), 1); }
   };
 
   const SpreadsheetApp = {

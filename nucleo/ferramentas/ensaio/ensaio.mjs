@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 11 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 12 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -10,8 +10,9 @@
 //   1. Banco v2 como está no Supabase: PGlite com os papéis do Supabase de mentira; esquema.sql
 //      duas vezes; conferir.sql v2 avisa que falta a migração; a linha do catálogo de antes
 //      (quiz-01, 1); dados de antes, de teste (#102), entre eles uma linha que imita a do Otávio.
-//   2. Migração 001 (v3) duas vezes sobre esses dados: os dados não mudam; conferir.sql 18 de 18;
-//      permissões de verdade trocando de papel (SET ROLE), com a porta nova registrar_evento.
+//   2. Migração 001 (v3) duas vezes sobre esses dados: os dados não mudam; conferir.sql avisa só na
+//      linha 19; desde a v12, a migração 002 (as respostas na planilha) duas vezes, e conferir.sql v3
+//      19 de 19; permissões de verdade trocando de papel (SET ROLE), com a porta nova registrar_evento.
 //   3. Supabase de mentira em 127.0.0.1 (supabase-de-mentira.mjs): chave de mentira vira papel.
 //   4. Site montado (montar-site.mjs) e o garçom (v5) no wrangler dev --local, com a configuração do
 //      protótipo copiada para uma pasta temporária, com SUPABASE_URL e ORIGEM_PERMITIDA trocadas e, desde a v10,
@@ -28,7 +29,8 @@
 //      (v11; quiz-01-pagina v8) O lead A termina na conversa gratuita com o Junior (#conversa, no lugar da oferta do plano de 90
 //      dias), responde "Sim, eu quero", o clique quero-conversa chega ao banco (201) e o botão "Ver meu diagnóstico" abre o
 //      relatório do qualificado, sem o bloco de chamada; no banco e na planilha, o clique do lead A.
-//   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
+//   7. A planilha do SDR (Codigo.gs v3 com o Google de mentira, em outro processo): a aba fila, com 20 colunas, e,
+//      desde a v12, a aba respostas, a segunda, com as respostas completas do lead A e da faixa b.
 //   8. Casos de erro: chaves no lugar errado, pacote sem consentimento, clique sem fim do quiz,
 //      a mesma pessoa enviando duas vezes ao mesmo tempo.
 //   9. (v6; #116) A medição no site montado, em 375, 360 e 1440: sem escolha e com "Recusar", nada para fora
@@ -274,6 +276,13 @@ const CINCO_UTM = { utm_source: 'bio', utm_medium: 'cpc', utm_campaign: 'funil-0
 const COLUNAS_PLANILHA = ['id_pessoa', 'nome', 'telefone', 'email', 'empresa', 'consentimento_whatsapp', 'consentimento_email',
   'lead_score_faixa', 'lead_score_nota', 'respostas_a_confirmar', 'entrou_em', 'tentativas_feitas', 'clique_fim_quiz',
   'estagio', 'estado', 'data_volta', 'canal', 'contato_em', 'reuniao_em', 'produto'];
+// v12: a aba respostas da planilha do SDR v3 (funis/funil-01/planilha-sdr.md v3, "Aba respostas")
+const COLUNAS_RESPOSTAS = ['id_pessoa', 'nome', 'entrou_em', 'lead_score_faixa', 'lead_score_nota',
+  'ramo', 'faturamento', 'vendedores', 'quem marca a conversa', 'valor médio da venda',
+  'origem dos leads', 'CRM', 'cargo', 'lembra dos números',
+  'leads por mês', 'pré-qualificados', 'agendados', 'conversas realizadas', 'vendas fechadas',
+  'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato',
+  'outras respostas'];
 
 const novaSessao = () => 'sessao-ensaio-' + randomBytes(4).toString('hex');
 
@@ -372,6 +381,7 @@ async function principal() {
   });
   const ESQUEMA = readFileSync(join(RAIZ, 'dados/banco/esquema.sql'), 'utf8');
   const MIGRACAO = readFileSync(join(RAIZ, 'dados/banco/migracoes/001-v3.sql'), 'utf8');
+  const MIGRACAO_002 = readFileSync(join(RAIZ, 'dados/banco/migracoes/002-respostas-na-planilha.sql'), 'utf8');
   const CONFERIR = readFileSync(join(RAIZ, 'dados/banco/conferir.sql'), 'utf8');
   const CATALOGO = readFileSync(join(RAIZ, 'dados/banco/catalogo-prototipo.sql'), 'utf8');
 
@@ -388,16 +398,16 @@ async function principal() {
       if (!l.ok) conferir(false, rotulo + ' · conferir.sql ' + l.n + ' (' + l.conferencia + '): encontrado ' + l.encontrado);
     }
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === true && final.encontrado === '18 de 18',
+    conferir(final && final.ok === true && final.encontrado === '19 de 19',
       rotulo + ' · conferir.sql: linha "tudo certo" = ' + (final && final.ok) + ' (' + (final && final.encontrado) + ')');
   }
   {
-    // Num banco só v2, o conferir.sql v2 tem de avisar que falta a migração (dados/banco/README.md, "Como conferir")
+    // Num banco só v2, o conferir.sql v3 tem de avisar que faltam as migrações (dados/banco/README.md, "Como conferir")
     const linhas = await linhasDoConferir();
     const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === false && final.encontrado === '11 de 18' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18]),
-      'antes da migração · conferir.sql avisa que falta a migração: false nas linhas ' + falsas.join(', ') + ' (' + (final && final.encontrado) + ')');
+    conferir(final && final.ok === false && final.encontrado === '11 de 19' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19]),
+      'antes das migrações · conferir.sql avisa que faltam as migrações: false nas linhas ' + falsas.join(', ') + ' (' + (final && final.encontrado) + ')');
   }
 
   // A linha do catálogo que o banco do protótipo já tem (catalogo-prototipo.sql v1, rodado em 09/11)
@@ -464,8 +474,29 @@ async function principal() {
     else conferir(h === esquemaDaPrimeira, 'segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
   }
   conferir(await contar(`select count(*) as n from public.eventos where clique_fim_quiz is not null`) === 0, 'clique_fim_quiz nasceu vazio nos eventos de antes');
+  {
+    // v12: entre a 001 e a 002, o conferir.sql v3 avisa só na linha 19 (falta a 002)
+    const linhas = await linhasDoConferir();
+    const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+    const final = linhas.find(l => l.n === 99);
+    conferir(final && final.encontrado === '18 de 19' && JSON.stringify(falsas) === '[19]',
+      'depois da 001 e antes da 002 · conferir.sql avisa só na linha 19 (' + (final && final.encontrado) + ')');
+  }
+  // v12: a migração 002 (as respostas completas na função da planilha) duas vezes, sobre os mesmos dados
+  let esquemaDa002 = null;
+  for (const vez of ['primeira', 'segunda']) {
+    let erro = null;
+    try { await comoDono(MIGRACAO_002); } catch (e) { erro = e; }
+    conferir(!erro, 'migracoes/002-respostas-na-planilha.sql aplicada pelo dono, ' + vez + ' vez, sem erro' + (erro ? ' (' + erro.message + ')' : ''));
+    const depois = await fotografia();
+    conferir(JSON.stringify(depois) === JSON.stringify(antesDaMigracao),
+      'migração 002, ' + vez + ' vez: os dados de antes não mudaram (' + depois.pessoas + ' pessoas e ' + depois.eventos + ' eventos, cada linha igual)');
+    const h = await esquemaAtual();
+    if (vez === 'primeira') esquemaDa002 = h;
+    else conferir(h === esquemaDa002, 'migração 002, segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
+  }
   fotografiaDeAntesInicial = await fotografiaDeAntes(naFila, db);
-  await rodarConferir('depois da migração');
+  await rodarConferir('depois das migrações');
 
   const TABELAS = ['entregas', 'pessoas', 'eventos', 'investimento'];
   const VISOES = ['painel_numeros', 'contagem_analises_gratuitas'];
@@ -525,8 +556,8 @@ async function principal() {
   r = await direto('/rest/v1/rpc/leads_para_planilha', { chave: CHAVE_SECRETA, corpo: {} });
   let lidos = [];
   try { lidos = JSON.parse(r.texto); } catch { /* fica vazio */ }
-  conferir(r.status === 200 && lidos.length === 3 && lidos.every(l => 'clique_fim_quiz' in l),
-    'chave secreta (service_role) chama leads_para_planilha v3: 200, os 3 leads de antes nas faixas a e b, com o campo do clique (' + r.status + ', ' + lidos.length + ')');
+  conferir(r.status === 200 && lidos.length === 3 && lidos.every(l => 'clique_fim_quiz' in l && l.respostas && typeof l.respostas === 'object'),
+    'chave secreta (service_role) chama leads_para_planilha v4: 200, os 3 leads de antes nas faixas a e b, com o campo do clique e as respostas completas (002) (' + r.status + ', ' + lidos.length + ')');
   r = await direto('/rest/v1/rpc/funcao_que_nao_existe', { chave: CHAVE_SECRETA, corpo: {} });
   conferir(r.status === 404, 'função que não existe: 404 (' + r.status + ')');
 
@@ -1083,7 +1114,7 @@ async function principal() {
     'banco: 4 pessoas novas e 4 fins de quiz novos, nada a mais');
 
   // ═══ 7. Planilha do SDR ═══
-  secao('7. Planilha do SDR (Codigo.gs v2 com o Google de mentira) pela porta privada');
+  secao('7. Planilha do SDR (Codigo.gs v3 com o Google de mentira) pela porta privada');
   // v10: a porta é a do garçom ou, na seção 12, a da ponte do endereço antigo
   function abrirPlanilha(chave, porta = portaGarcom) {
     const proc = spawn(process.execPath, [join(AQUI, 'planilha-no-ensaio.mjs')], {
@@ -1106,9 +1137,11 @@ async function principal() {
   const idsNovos = [pa.id_pessoa, (pb || VAZIO).id_pessoa];
   const planilha = abrirPlanilha(CHAVE_PLANILHA);
   let p = await planilha.pedir('instalar');
-  conferir(p.ok && p.resultado.aba === 'criada', 'instalar() numa aba nova (como depois de renomear a antiga): aba fila criada, cabeçalhos e gatilho' + (p.ok ? '' : ' (' + p.erro + ')'));
+  conferir(p.ok && p.resultado.aba === 'criada' && p.resultado.aba_respostas === 'criada', 'instalar() numa planilha sem as abas (como depois de renomear as antigas): abas fila e respostas criadas, cabeçalhos e gatilho' + (p.ok ? '' : ' (' + p.erro + ')'));
   let est = (await planilha.pedir('estado')).resultado;
-  conferir(JSON.stringify(est.cabecalho) === JSON.stringify(COLUNAS_PLANILHA), 'aba fila: as 20 colunas de planilha-sdr.md v2, na ordem, com clique_fim_quiz na 13');
+  conferir(JSON.stringify(est.cabecalho) === JSON.stringify(COLUNAS_PLANILHA), 'aba fila: as 20 colunas de planilha-sdr.md, na ordem, com clique_fim_quiz na 13');
+  conferir(JSON.stringify(est.abas) === JSON.stringify(['fila', 'respostas']) && JSON.stringify(est.cabecalho_respostas) === JSON.stringify(COLUNAS_RESPOSTAS),
+    'v12 · as duas abas na ordem (fila, respostas), e a aba respostas com as 24 colunas de planilha-sdr.md v3, na ordem');
   p = await planilha.pedir('buscar');
   est = (await planilha.pedir('estado')).resultado;
   conferir(p.ok && p.resultado.situacao === 'ok' && p.resultado.codigo === 200 && p.resultado.acrescentadas === 3 && JSON.stringify(est.linhas.map(l => l[0])) === JSON.stringify(idsDeAntes),
@@ -1157,6 +1190,22 @@ async function principal() {
   conferir(col(lb, 'lead_score_faixa') === 'b' && col(lb, 'lead_score_nota') === 68 && resB.includes('leads-por-mes: 200') && resB.includes('crm: ' + FAIXA_B.crm) && resB.includes('vendedores: 2 ou 3'),
     'linha da faixa b: nota 68, respostas a confirmar com as respostas novas leads-por-mes e crm (15.4; ' + resB + ')');
   conferir(col(lb, 'clique_fim_quiz') === 'quero-conversa', 'linha da faixa b: clique_fim_quiz quero-conversa (18.4)');
+  // v12: a aba respostas, com as mesmas pessoas da fila, na mesma ordem, e as respostas completas do quiz
+  conferir(JSON.stringify(est.linhas_respostas.map(l => l[0])) === JSON.stringify(est.linhas.map(l => l[0])),
+    'v12 · aba respostas: as mesmas ' + est.linhas_respostas.length + ' pessoas da fila, na mesma ordem, sem repetir');
+  const linhaR = (id) => est.linhas_respostas.find(l => l[0] === id) || [];
+  const esperadoR = (pessoa, faixa, nota, R) => [pessoa.nome, faixa, nota, R.ramo, R.faturamento, R.vendedores, R['quem-marca'], Number(R.ticket),
+    R.origem, R.crm, R.cargo, 'Sim', Number(R.numeros[0]), R.numeros[1] + '%', Number(R.numeros[2]), Number(R.numeros[3]), Number(R.numeros[4]),
+    '', R.causa, R.causa2, R.causa3, ''];
+  const semHorario = (l) => [l[1], ...l.slice(3)];
+  const rA = linhaR(pa.id_pessoa), rB = linhaR((pb || VAZIO).id_pessoa);
+  conferir(JSON.stringify(semHorario(rA)) === JSON.stringify(esperadoR(PESSOA_A, 'a', 96, EXEMPLO)) && rA[2] === col(la, 'entrou_em'),
+    'v12 · aba respostas, lead A: as respostas do quiz, uma por coluna (ramo a causas; valor médio ' + rA[9] + ' e os números do funil como número, pré-qualificados ' + rA[15] + ' como no quiz)');
+  conferir(JSON.stringify(semHorario(rB)) === JSON.stringify(esperadoR(PESSOA_B, 'b', 68, FAIXA_B)) && rB[2] === col(lb, 'entrou_em'),
+    'v12 · aba respostas, faixa b: as respostas do quiz, uma por coluna (faturamento ' + rB[6] + ', CRM ' + rB[11] + ', vendas fechadas ' + rB[18] + ')');
+  const rO = linhaR(idsDeAntes[0]);
+  conferir((rO[3] === 'a' && rO[4] === 86 && rO[6] === 'R$ 500 mil a R$ 1,5 milhão' && rO.slice(7, 24).every(v => v === '')),
+    'v12 · aba respostas, a linha que imita a do Otávio: só o faturamento, a única resposta gravada de antes; o resto vazio');
   conferir(col(lo, 'lead_score_faixa') === 'a' && col(lo, 'lead_score_nota') === 86 && col(lo, 'consentimento_whatsapp') === 'sim' && col(lo, 'clique_fim_quiz') === '',
     'linha que imita a do Otávio: faixa a, nota 86, consentimento sim, sem clique (dado de antes da migração)');
   const fora_da_planilha = [pe, pc].filter(Boolean).map(x => x.id_pessoa);
@@ -1164,12 +1213,13 @@ async function principal() {
     'o eliminatório, a faixa c do corte, a desmarcada e o eliminatório de antes não estão na planilha');
   p = await planilha.pedir('buscar');
   est = (await planilha.pedir('estado')).resultado;
-  conferir(p.ok && p.resultado.acrescentadas === 0 && est.linhas.length === 5, 'rodar de novo: 0 linhas novas, a aba continua com 5 leads (não duplica)');
+  conferir(p.ok && p.resultado.acrescentadas === 0 && p.resultado.respostas_acrescentadas === 0 && est.linhas.length === 5 && est.linhas_respostas.length === 5,
+    'rodar de novo: 0 linhas novas, as duas abas continuam com 5 leads (não duplica)');
   await planilha.pedir('esquecer-cursor');
   p = await planilha.pedir('buscar');
   est = (await planilha.pedir('estado')).resultado;
-  conferir(p.ok && p.resultado.acrescentadas === 0 && p.resultado.repetidas === 5 && est.linhas.length === 5 && est.tem_cursor,
-    'cursor perdido: pede desde o início, acha os 5 leads repetidos e não duplica; cursor salvo de novo');
+  conferir(p.ok && p.resultado.acrescentadas === 0 && p.resultado.repetidas === 5 && est.linhas.length === 5 && est.linhas_respostas.length === 5 && est.tem_cursor,
+    'cursor perdido: pede desde o início, acha os 5 leads repetidos nas duas abas e não duplica; cursor salvo de novo');
   conferir(est.registros.length > 0 && est.registros.every(t => !DADO_PESSOAL.test(t) && !SEGREDOS.some(s => t.includes(s)) && !t.includes(pa.id_pessoa)),
     'registro da planilha (' + est.registros.length + ' linhas) sem dado pessoal, sem id_pessoa e sem chave');
   await planilha.sair();
