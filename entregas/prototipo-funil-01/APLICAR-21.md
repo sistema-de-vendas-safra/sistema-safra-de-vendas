@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-21
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -117,11 +117,11 @@ Há três jeitos. **O recomendado é o primeiro: ligar por cliques no painel, an
 
 1. Abra **Workers & Pages**.
 2. Em **Overview**, clique no Worker **safra-prototipo-funil-01**.
-3. Vá em **Settings**, depois **Domains & Routes**, depois **Add**, depois **Custom Domain**.
+3. Vá na aba **Domains**, no alto da página do Worker (entre **Issues** e **Access**). Em **Custom Domains and Routes**, clique em **Add Domain**. (Assim estava o painel em 15/11/2026; a documentação dizia **Settings**, **Domains & Routes**, **Add**, **Custom Domain**.)
 4. Digite `svsafra.gotriad.com.br`, sem https:// e sem barra.
 5. Clique em **Add Custom Domain**.
 
-**Deu certo se:** svsafra.gotriad.com.br aparece em **Domains & Routes**, ao lado do endereço do workers.dev, que continua lá. A documentação diz que, depois disso, a Cloudflare cria o registro de DNS e emite o certificado sozinha. Ela não descreve como a tela fica depois do clique: olhe se o endereço aparece na lista.
+**Deu certo se:** svsafra.gotriad.com.br aparece na lista de **Custom Domains and Routes**, com o tipo **Production** e a zona **gotriad.com.br**, e o endereço do workers.dev continua ligado em **Worker URL**, na mesma aba (assim apareceu em 15/11/2026). A documentação diz que, depois disso, a Cloudflare cria o registro de DNS e emite o certificado sozinha. Ela não descreve como a tela fica depois do clique: olhe se o endereço aparece na lista.
 
 **Se der errado:**
 
@@ -275,7 +275,7 @@ O Claude confere tudo, pelos dois endereços. Os itens marcados com "você tamb�
 
 **O que desfazer no painel.** Para o site voltar, nada: basta a volta da versão. Só se a decisão for desistir do endereço novo por enquanto:
 
-- Tirar o Custom Domain, em **Workers & Pages**, o Worker, **Settings**, **Domains & Routes**, na linha do svsafra. A documentação não diz o nome do botão.
+- Tirar o Custom Domain, em **Workers & Pages**, o Worker, aba **Domains**, na linha do svsafra (o menu de três pontos à direita). A documentação não diz o nome da opção.
 - O certificado não some sozinho quando o Custom Domain é apagado. A documentação manda tirar à mão, em **SSL/TLS**, **Edge Certificates**, e diz que deixar o certificado lá não atrapalha nada.
 - O registro de DNS do svsafra: a documentação não diz se ele some junto. Olhe em **DNS Records** depois.
 - Avise o Claude. Com o wrangler.toml como está, a publicação seguinte ligaria o endereço de novo: o arquivo teria de mudar antes.
@@ -358,6 +358,16 @@ Até 16/11/2026, como já estava combinado (log.md, Pendências).
 **Deu certo se:** a variável não aparece mais no ambiente e o token não aparece mais na lista do painel.
 
 **Se der errado:** se não achar o token na lista, conte ao Claude o que a tela mostra, sem copiar valor nenhum.
+
+### 4.5 · Desligar o Web Analytics da Cloudflare no domínio
+
+Na conferência no ar de 15/11/2026, as páginas do endereço novo vieram com um script de estatística da própria Cloudflare (static.cloudflareinsights.com), que ela injeta sozinha nos sites do domínio. Ele carrega antes de qualquer escolha no aviso de cookies, e a política do site diz que nada vai para fora antes disso. Não está no programa do site.
+
+**Faça** (página "Web Analytics · Get started" da Cloudflare, atualizada em 17/04/2026): no painel, abra **Web Analytics**, ache o site do svsafra.gotriad.com.br (ou do gotriad.com.br) e clique em **Manage Site**. Escolha **Disable**.
+
+**Deu certo se:** o site aparece como desligado. O Claude confere no ar que o script não vem mais.
+
+**Se der errado:** se o site não estiver na lista do Web Analytics, ou a tela for outra, mande um print ao Claude.
 
 ---
 
