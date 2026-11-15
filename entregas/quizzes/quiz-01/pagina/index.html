@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 5
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -433,7 +433,6 @@ body[data-largura="abertura"] .cab-safra{display:block}
 .tel input{flex:1;min-width:0}
 .dica.is-ok{color:var(--folha)}
 .sugestao{display:inline;background:none;border:0;padding:0;font:inherit;color:var(--folha);text-decoration:underline;cursor:pointer}
-.proto-encher{justify-self:start;background:none;border:1px dashed var(--ardosia);border-radius:8px;padding:6px 10px;font-family:var(--f-dado);font-size:11.5px;color:var(--ardosia);cursor:pointer}
 
 /* ··· Montando (T20) ··· */
 .montando{max-width:440px;margin-inline:auto;padding-block:20px 8px;text-align:center}
@@ -1275,7 +1274,6 @@ const CORPO = {
       '<input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" aria-labelledby="telRot" placeholder="' + p.ph + '" value="' + esc(formatarTel(p, c.tel)) + '"></div>' +
       '<p class="dica" id="telDica" aria-live="polite"></p></div>' +
       '<div class="campo"><label for="empresa">Nome da empresa <span class="opcional">(opcional)</span></label><input id="empresa" autocomplete="organization" placeholder="Empresa Ltda." value="' + esc(c.empresa) + '"></div>' +
-      '<button type="button" class="proto-encher" data-acao="encher">protótipo · preencher exemplo</button>' +
       '</form></div>' + nav({acao:'enviar', rotulo:'Ver meu diagnóstico', id:'enviar', desligado:true});
   },
   montando: () => '<div class="montando recuo">' +
@@ -2070,10 +2068,6 @@ palco.addEventListener('click', e => {
     case 'ver-relatorio': mostrar(proximaDe('montando')); break;
     case 'tentar': mostrar('montando', {fluxo:true}); break;
     case 'aviso': { const alvo = document.getElementById(b.dataset.alvo); if (alvo) { alvo.textContent = b.dataset.aviso; alvo.hidden = false; } break; }
-    case 'encher':
-      // Dados de teste marcados (#102): no site do protótipo o envio grava de verdade no banco de teste
-      R.contato = {nome:'TESTE Marina Souza', email:'marina@teste.invalid', pais:'BR', tel:'00900000000', empresa:'TESTE Empresa Exemplo'};
-      mostrar('contato'); break;
     case 'corrigir-email':
       R.contato.email = R.contato.email.split('@')[0] + '@' + b.dataset.dominio; $('#email').value = R.contato.email; validarContato(); break;
     case 'marcar':

@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -67,13 +67,21 @@ No topo do script, quatro objetos concentram o que se ajusta:
 
 - **Início do quiz** (`inicio_quiz`; 10.6, 18.5): mandado uma vez, quando a página abre.
 - **Clique no fim** (`interesse_pos_relatorio`, com `clique_fim_quiz`; 18.4; lista proposta da 31.15): "Quero marcar uma conversa" vai como quero-conversa, "Chamar no WhatsApp" como chamar-whatsapp, "Tenho interesse" como tenho-interesse e "Agora não" como agora-nao; cada valor vai uma vez por sessão. O clique só sai **depois de o fim do quiz ter sido gravado** (o banco recusa o clique sem ele, 32.2): antes disso, fica na memória da aba e sai quando o fim do quiz gravar, inclusive pelo "Tentar de novo". Com a caixa desmarcada, nenhum clique é mandado (13.4). O "Mandar no WhatsApp" do fim do plano de 90 dias não é botão do relatório e não manda clique (pergunta 34.6).
-- **Dados de teste** (#102): o botão "protótipo · preencher exemplo" preenche TESTE Marina Souza, marina@teste.invalid e telefone com zeros, porque no site do protótipo o envio grava de verdade no banco de teste.
+- **Dados de teste** (#102): no site do protótipo o envio grava de verdade no banco de teste; o contato é sempre preenchido à mão, com nome começando por TESTE e e-mail terminado em @teste.invalid. Até a v6, um botão "protótipo · preencher exemplo" preenchia um contato de teste; ele saiu na v7.
 
 **Consentimento** (quiz-01-copy v2, seção 7 e M16; #104, #105). Uma caixa só, que já vem marcada, antes dos campos de e-mail e WhatsApp (a posição fica, #110). Texto de antes da caixa, caixa e aviso são os da copy v2, para o Otávio conferir (pergunta 31.1). O botão "Ver meu diagnóstico" libera com nome, e-mail e WhatsApp válidos, com a caixa marcada ou não. Marcada: o pacote vai ao garçom. Desmarcada: aparece o aviso "Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado.", o diagnóstico aparece na tela e nada vai ao banco nem à equipe, nem o fim do quiz nem o clique do fim (escolha provisória, pergunta 30.3). A linha da cópia no relatório segue a M21 da copy v2: com a caixa marcada, o texto do mockup ("Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp."); desmarcada, "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." (30.3; correção do revisor da etapa 34). As outras frases do quiz que falam de cópia ou contato ficam como estão, também para quem desmarca (7.5; pergunta 34.2).
 
 **Texto.** Como está (7.5, #110), salvo a caixa de aceite e a linha da cópia no relatório, que depende dela (M21). A fala 2 do plano de 90 dias continua sem o percentual, como na v2: a volta dele está em aberto (pergunta 31.3; pergunta 34.1). A nota do "Tenho interesse" é a do lado do lead score ("Anotado. Seu interesse fica registrado com o seu diagnóstico."), que já estava na página, porque vale o corte mais restritivo e ela não promete ligação (13.7; pergunta 31.14).
 
 **Visual.** O do mockup, em conflito (conflito-18), salvo a abertura, que desde a v4 tem o cabeçalho e o botão da landing-page-02 (abaixo). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
+
+## O que mudou na versão 7
+
+Pedido do Otávio, 15/11/2026, na conversa com o Claude ("Retire do quiz o \"protótipo pendente\"", com um print da tela do contato apontando o botão). Aplica, para esse botão, o que a #114 já dizia (resposta 23.3, em prompts/08-decisoes-em-uma-pagina.md: "o painel e o botão saem antes de ir ao ar").
+
+- **Saiu o botão "protótipo · preencher exemplo"** da tela do contato, com o estilo dele (.proto-encher) e o trecho do programa que ele chamava (a ação "encher", que punha um contato de teste no formulário). Nenhum outro texto, campo ou regra da tela mudou.
+- **Ficou o painel "Telas"** do protótipo (o botão no canto da tela, com a lista das telas), que a mesma resposta 23.3 também manda tirar antes de ir ao ar. O pedido apontou só o botão do contato.
+- A etiqueta que a página manda ao banco continua quiz-01, versão 2 (o catálogo não muda).
 
 ## O que mudou na versão 6
 

@@ -2,6 +2,22 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-15 · quiz-01 v7 · sem o botão "protótipo · preencher exemplo"
+
+Pedido do Otávio (15/11/2026, na conversa com o Claude): "Retire do quiz o \"protótipo pendente\"", com um print da tela do contato apontando o botão "protótipo · preencher exemplo". Aplica, para esse botão, o que a #114 já dizia (resposta 23.3: "o painel e o botão saem antes de ir ao ar"). Nenhum documento da base mudou; nada rodou no Supabase. Nada publicado: o site no ar continua na versão 70f8766c, com o botão, até a próxima publicação (a do roteiro APLICAR-21).
+
+- entregas/quizzes/quiz-01/pagina/ v6 para v7 (index.html e README.md; quiz-01-pagina), rascunho (otavio, junior e euclides: pendente), desatualizado, como estava. Motivo: pedido do Otávio, 15/11/2026. No index.html saíram três trechos e nada mais: o botão da tela do contato, o estilo dele (.proto-encher) e a ação "encher" do programa, que punha um contato de teste no formulário. Nenhum outro texto, campo ou regra da tela mudou. O README ganha "O que mudou na versão 7" e acerta o item "Dados de teste", que citava o botão.
+- Ficou: o painel "Telas" do protótipo (o botão no canto da tela, com a lista das telas), que a mesma resposta 23.3 também manda tirar antes de ir ao ar. O pedido apontou só o botão do contato (pergunta 1).
+- A etiqueta que a página manda ao banco continua quiz-01, versão 2; o catálogo não muda.
+- Testes, sem edição: o teste do quiz (nucleo/ferramentas/prints/testar-quiz-01.js), **345 de 345**; o ensaio geral (nucleo/ferramentas/ensaio/, v10), **255 de 255**. Nenhum dos dois usava o botão. Dos prints que o teste do quiz regrava, ficaram os quatro da tela do contato (contato-consentimento e contato-sem-consentimento, em 375 e 1440), que mostram a tela sem o botão; conferido a olho. Os outros voltaram ao que estava no commit, pelo Git (saem diferentes a cada rodada; pergunta 21.3.9).
+- Cascata (quiz-01-pagina 6 para 7): os sete documentos que declaram a página (o README do ensaio, a política de privacidade, a pauta de aprovação, LIGAR.md, APLICAR-11.md, APLICAR-21.md e o README do protótipo) já estavam com desatualizado: true; nenhuma marca nova.
+- Ficaram de fora, e continuam citando o botão: LIGAR.md (passo do teste, "Não use o botão...") e APLICAR-11.md (passo do teste), roteiros antigos pelos quais não se publica mais; a frase deles só ficou sem objeto.
+- index.md, na linha da página do quiz.
+
+Perguntas para o Otávio:
+
+1. **O painel "Telas" do quiz.** Dúvida: a resposta 23.3 (#114) diz que o painel "Telas" e o botão "preencher exemplo" saem antes de ir ao ar; o pedido de hoje apontou só o botão. O que foi feito: só o botão saiu; o painel continua no canto da tela, com a nota de protótipo. Recomendação: tirar o painel também antes de qualquer tráfego de verdade, num pedido curto; até lá, ele ajuda a revisar as telas de relatório. Se decidir diferente: sai agora, com o mesmo cuidado (o estilo e o programa dele), e os testes que abrem as telas de relatório pelo painel (o do quiz e a conferência no ar) passam a chegar a elas respondendo o quiz.
+
 ## 2026-11-14 · 21.3 · ensaio v10, roteiro APLICAR-21 e resposta do pedido 21
 
 Pedido: prompts/21-dominio-e-caminho-da-analise.md, parte 21.3. Decisão do Otávio, 13/11/2026 (base/decisoes.md, #120). Nada publicado; o site no ar não foi aberto nem tocado, nem pelo endereço antigo nem pelo novo; nada rodou no Supabase; nada foi mexido em conta, domínio, DNS ou painel da Cloudflare; nenhum comando do wrangler falou com a Cloudflare (só o `wrangler dev --local` do ensaio, com a rede travada em 127.0.0.1 e sem a variável do token no ambiente). Nenhum documento da base mudou. O garçom, a montagem, o wrangler.toml, as páginas e os .sql não mudaram nesta parte: no fim, os dois arquivos mexidos de propósito nas provas com o SHA-256 do commit da 21.2, f897ab9 (entregas/garcom/garcom.mjs: a9e8e400aa8fad80be59dc20149c1e1f5c9bfcb95b1041d70fab264deac61507; entregas/landings/landing-page-02/pagina/index.html: 6aa084cce2d4c01ea984ae132e15c1b6d411375fe9f298e63ba514a09d73e1ef).
