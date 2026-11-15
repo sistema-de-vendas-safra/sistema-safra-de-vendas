@@ -13,6 +13,11 @@
 // 5. Envio que falha: aviso visível, diagnóstico na tela, "Tentar de novo" reenvia o mesmo pacote;
 //    no eliminatório, o clique feito durante a falha só sai depois de o reenvio gravar (32.2).
 // 6. Aberta direto do arquivo (file://): percorre tudo e nada é enviado.
+// Conversa gratuita (quiz-01-pagina v8; pedido do Otávio, 15/11/2026): o qualificado com etapa abaixo da meta vai, depois do
+// contato, à tela "conversa" (no lugar da oferta do plano de 90 dias): as falas e as opções com o texto aprovado; "Sim, eu quero"
+// (exemplo) e "Agora não" (falha) dão cada um a sua resposta e mandam os cliques quero-conversa e agora-nao; o botão
+// "Ver meu diagnóstico" abre o relatório do qualificado sem o bloco de chamada, que pelo painel "Telas" continua lá; e nenhum
+// texto da oferta antiga sobra, nem no arquivo da página.
 // Abertura (v4): o quiz abre nela, sem a capa, com o cabeçalho e o botão "Fazer a Análise" da landing-page-02. No computador,
 // título, promessa e botão ficam parados enquanto o relatório de exemplo rola; no celular, o texto vem antes e o botão fica fixo
 // no rodapé quando o da página sai da tela. A entrada no quiz é pelo botão da abertura, pelo do cabeçalho (eliminatório) e,
@@ -51,6 +56,18 @@ const PESSOA = { nome: 'TESTE Marina', email: 'marina@teste.invalid', tel: '0090
 const SESSAO_DA_LANDING = 'sessao-landing-teste-0001';
 const CAIXA = 'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail.';
 const NOTA_LEAD_SCORE = 'Anotado. Seu interesse fica registrado com o seu diagnóstico.';
+// A conversa gratuita com o Junior (v8): os textos aprovados pelo Otávio, letra por letra, com o nome do teste (Marina)
+const CONVERSA = {
+  fala: 'Antes de abrir o seu diagnóstico, uma pergunta, Marina.',
+  pergunta: 'Quer uma conversa gratuita comigo? Eu te apresento um plano de ação de 90 dias para aumentar a eficácia do sistema de vendas da sua empresa.',
+  opcoes: ['Sim, eu quero', 'Agora não'],
+  sim: 'Fechou, Marina. Em alguns minutos alguém do meu time chama você no WhatsApp para marcar.',
+  nao: 'Tudo bem, Marina. O seu diagnóstico está pronto.',
+  botao: 'Ver meu diagnóstico'
+};
+// Textos da oferta antiga do plano de 90 dias (até a v7), que não podem sobrar
+const OFERTA_ANTIGA = ['Quer receber o seu plano de ação de 90 dias?', 'Quero ver como é', 'recado rápido', 'placeholder · vídeo', 'Envie o meu plano de ação.'];
+const RELATORIO_SEM_CHAMADA = 'Quer resolver isso junto com a nossa equipe?';
 const FORMATO_SESSAO = /^sessao-[a-z0-9-]{1,60}$/;
 // nada disto pode aparecer no console da página
 const DADO_PESSOAL = /TESTE|teste\.invalid|90000|pacote fim_quiz|"pessoa"/;
@@ -149,6 +166,24 @@ const opcao = (page, valor) => page.locator('[data-corpo] .opcao[data-valor="' +
 const print = (page, nome, largura) => largura === 360 ? Promise.resolve() : page.screenshot({ path: path.join(PRINTS, nome + '-' + largura + '.png'), fullPage: true });
 const doTipo = (t, tipo) => t.eventos.filter(e => e.pacote && e.pacote.evento && e.pacote.evento.tipo === tipo);
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
+// A conversa gratuita (v8): o que está na tela, a fala nova do Junior depois da resposta e o que sobrou da oferta antiga
+const lerConversa = page => page.evaluate(antigos => {
+  const falas = [...document.querySelectorAll('.conversa .balao--bot .fala')].map(e => e.innerText.trim());
+  const atual = document.querySelector('.conversa .balao--atual .pergunta__q');
+  const ops = [...document.querySelectorAll('[data-corpo] .opcao')].map(e => e.innerText.trim());
+  const bt = document.querySelector('[data-corpo] [data-acao="ver-diagnostico"]');
+  const eu = [...document.querySelectorAll('.conversa .balao--eu')].map(e => e.innerText.trim());
+  const texto = document.body.innerText;
+  return { falas, pergunta: atual ? atual.innerText.trim() : null, ops, botao: bt ? bt.innerText.replace(/\s+/g, ' ').trim() : null,
+    botaoSeta: !!(bt && bt.classList.contains('botao') && bt.querySelector('.seta')), foco: !!bt && document.activeElement === bt,
+    eu: eu[eu.length - 1] || '', sobras: antigos.filter(x => texto.includes(x)) };
+}, OFERTA_ANTIGA);
+const lerRelatorio = page => page.evaluate(([antigos, chamada]) => {
+  const texto = document.body.innerText;
+  return { hash: location.hash, cta: document.querySelectorAll('.relatorio .cta').length, chamada: texto.includes(chamada),
+    botoes: ['marcar', 'whats', 'agora-nao'].filter(a => document.querySelector('.relatorio [data-acao="' + a + '"]')),
+    qualificado: !!document.querySelector('.relatorio .rel-topo h1'), sobras: antigos.filter(x => texto.includes(x)) };
+}, [OFERTA_ANTIGA, RELATORIO_SEM_CHAMADA]);
 
 // Percorre da abertura até a tela de contato; devolve o que viu dos campos de número e do valor médio.
 // entrada: 'botao' (o da abertura), 'cabecalho' (o do cabeçalho da landing-page-02) ou 'barra' (o fixo no rodapé, só no celular)
@@ -215,6 +250,13 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     return { fora, aparece, celular: innerWidth < 900, botao: Math.round(b.top) + '-' + Math.round(b.bottom), visivel: Math.max(0, Math.round(Math.min(b.bottom, innerHeight) - Math.max(b.top, cab.bottom))) };
   });
 
+  // v8: no arquivo da página (o programa inteiro, não só a tela), nenhum texto da oferta antiga do plano de 90 dias
+  {
+    const fonte = fs.readFileSync(path.join(PASTA, 'index.html'), 'utf8');
+    const sobras = OFERTA_ANTIGA.concat(["'video-time'", "'plano-exemplo'", 'WHATS', 'planoVolta']).filter(x => fonte.includes(x));
+    conferir(sobras.length === 0, 'arquivo da página: nenhum texto da oferta antiga do plano de 90 dias, nem as telas plano-exemplo e video-time (' + (sobras.length ? 'sobrou: ' + sobras.join(' | ') : OFERTA_ANTIGA.join(' | ')) + ')');
+  }
+
   for (const largura of [375, 360, 1440]) {
     console.log('\n· ' + largura + ' pixels' + (largura === 360 ? ', 640 de altura' : ''));
 
@@ -229,9 +271,12 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
       return { hash: location.hash, num: document.getElementById('protoNum').textContent, capa: !!document.querySelector('[data-ir="capa"]'),
         cab: vis('#cabSafra'), topo: vis('#topo'), logo: !!document.querySelector('#cabSafra .logo-safra svg'),
         botoes: [...document.querySelectorAll('#cabSafra .btn-safra, .abertura__copy .btn-safra')].map(b => b.textContent.trim()),
-        comecar: document.body.textContent.includes('Começar diagnóstico') };
+        comecar: document.body.textContent.includes('Começar diagnóstico'),
+        telas: [...document.querySelectorAll('#protoLista [data-ir]')].map(b => b.dataset.ir + ':' + b.textContent.replace(/^\d+/, '').trim()) };
     });
-    conferir(ab.hash === '#abertura' && ab.num === '1/27' && !ab.capa, 'abertura: o quiz abre nela, sem a capa (tela 1 de 27; ' + ab.hash + ', ' + ab.num + ')');
+    conferir(ab.hash === '#abertura' && ab.num === '1/25' && !ab.capa, 'abertura: o quiz abre nela, sem a capa (tela 1 de 25; ' + ab.hash + ', ' + ab.num + ')');
+    conferir(ab.telas.includes('conversa:Conversa gratuita com o Junior') && !ab.telas.some(x => /^(plano|plano-exemplo|video-time):/.test(x)) && ab.telas.indexOf('conversa:Conversa gratuita com o Junior') === ab.telas.findIndex(x => x.startsWith('montando:')) + 1,
+      'painel "Telas" (v8): "Conversa gratuita com o Junior" logo depois de "Montando o diagnóstico", sem as telas da oferta do plano, do exemplo do plano e do vídeo do time');
     conferir(ab.cab && !ab.topo && ab.logo, 'abertura: cabeçalho da landing-page-02 com o logo do Safra, no lugar do cabeçalho do quiz');
     conferir(ab.botoes.join('|') === 'Fazer a Análise|Fazer a Análise' && !ab.comecar, 'abertura: botões do cabeçalho e da página dizem "Fazer a Análise" (' + ab.botoes.join(' | ') + ')');
     await t.page.waitForTimeout(200);
@@ -271,9 +316,14 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir((await t.page.locator('#consentimento').innerText()).includes(CAIXA), 'exemplo: texto da caixa da copy v2 (M16)');
     await print(t.page, 'contato-consentimento', largura);
     await t.page.click('#enviar');
-    await naTela(t.page, 'plano');
+    await naTela(t.page, 'conversa');
     await t.page.waitForTimeout(300);
-    await print(t.page, 'resultado-a', largura);
+    // v8: a conversa gratuita com o Junior, antes da resposta
+    let cv = await lerConversa(t.page);
+    conferir(cv.falas[cv.falas.length - 1] === CONVERSA.fala, 'conversa (v8): a fala do Junior antes da pergunta, com o nome ("' + cv.falas[cv.falas.length - 1] + '")');
+    conferir(cv.pergunta === CONVERSA.pergunta, 'conversa (v8): a pergunta com o texto aprovado ("' + cv.pergunta + '")');
+    conferir(cv.ops.join('|') === CONVERSA.opcoes.join('|') && !cv.botao, 'conversa (v8): as opções "Sim, eu quero" e "Agora não", e o botão do diagnóstico ainda não aparece (' + cv.ops.join(' | ') + ')');
+    conferir(cv.sobras.length === 0, 'conversa (v8): nenhum texto da oferta antiga do plano na tela' + (cv.sobras.length ? ' (sobrou: ' + cv.sobras.join(' | ') + ')' : ''));
     let p = t.pacotes[0], e = t.envios[0];
     conferir(t.envios.length === 1, 'exemplo: um envio para /api/fim-quiz');
     conferir(e && e.metodo === 'POST' && e.tipo === 'application/json' && e.endereco === BASE + 'api/fim-quiz', 'exemplo: POST, application/json, na mesma origem (' + (e && e.endereco.replace(BASE, '/')) + ')');
@@ -290,6 +340,31 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(p && Object.keys(p).join() === 'pessoa,evento', 'exemplo: pacote só com pessoa e evento');
     conferir(!(await t.page.locator('#avisoEnvio').isVisible()), 'exemplo: nenhum aviso de falha');
     conferir(doTipo(t, 'interesse_pos_relatorio').length === 0, 'exemplo: nenhum clique mandado sem clique');
+    // v8: "Sim, eu quero": a resposta do Junior, o clique quero-conversa e o botão que abre o relatório sem o bloco de chamada
+    await opcao(t.page, 'Sim, eu quero');
+    await t.page.locator('[data-corpo] [data-acao="ver-diagnostico"]').waitFor({ state: 'visible', timeout: 15000 });
+    await t.page.waitForTimeout(400);
+    cv = await lerConversa(t.page);
+    conferir(cv.eu === 'Sim, eu quero' && cv.falas[cv.falas.length - 1] === CONVERSA.sim && !cv.pergunta && cv.ops.length === 0,
+      'conversa (v8): "Sim, eu quero" vira a resposta da pessoa e o Junior responde "' + cv.falas[cv.falas.length - 1] + '"');
+    conferir(cv.botao === CONVERSA.botao + ' →' && cv.botaoSeta && cv.foco, 'conversa (v8): depois da resposta, o botão "Ver meu diagnóstico" com a seta, no estilo dos outros, e com o foco nele (' + cv.botao + ')');
+    let cl = doTipo(t, 'interesse_pos_relatorio');
+    conferir(cl.length === 1 && cl[0].pacote.evento.clique_fim_quiz === 'quero-conversa' && garcom.conferirEvento(cl[0].pacote) === null && cl[0].pacote.evento.id_sessao === ei.id_sessao && t.ordem.indexOf('fim:201') < t.ordem.indexOf('evento:interesse_pos_relatorio'),
+      'conversa (v8): "Sim, eu quero" manda o clique quero-conversa, uma vez, depois do fim gravado, com a mesma sessão e nas conferências do garçom v4');
+    await print(t.page, 'resultado-a', largura);
+    await t.page.click('[data-corpo] [data-acao="ver-diagnostico"]');
+    await naTela(t.page, 'relatorio');
+    await t.page.waitForTimeout(300);
+    let rl = await lerRelatorio(t.page);
+    conferir(rl.qualificado && rl.cta === 0 && !rl.chamada && rl.botoes.length === 0 && rl.sobras.length === 0,
+      'conversa (v8): "Ver meu diagnóstico" abre o relatório do qualificado (#relatorio) sem o bloco de chamada (nem "' + RELATORIO_SEM_CHAMADA + '", nem os botões dele) e sem texto da oferta antiga');
+    conferir(doTipo(t, 'interesse_pos_relatorio').length === 1, 'conversa (v8): abrir o relatório não manda clique nenhum');
+    // pelo painel "Telas", o mesmo relatório continua com o bloco de chamada
+    await t.page.click('#protoBotao');
+    await t.page.click('#protoLista [data-ir="relatorio"]');
+    await t.page.waitForTimeout(300);
+    rl = await lerRelatorio(t.page);
+    conferir(rl.hash === '#relatorio' && rl.cta === 1 && rl.chamada && rl.botoes.join() === 'marcar,whats,agora-nao', 'relatório pelo painel "Telas" (v8): continua com o bloco de chamada, como antes (' + rl.botoes.join(', ') + ')');
     conferir(semDadoNoConsole(t), 'exemplo: console sem o pacote e sem dado de pessoa');
     conferir(t.externas.length === 0, 'exemplo: nenhuma requisição para outro endereço' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
     conferir(LISTA_FONTES.filter(f => !f.arquivo.startsWith('permanent-marker')).every(f => t.pedidos.includes(BASE + 'analise/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /analise/fontes/, junto com a página (10.7; a de mão só no relatório)');
@@ -310,7 +385,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir((await t.page.locator('.rel-copia').innerText()).trim() === 'Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp.', 'eliminatório: com a caixa marcada, a linha da cópia é a do mockup (copy v2, M21)');
     await t.page.click('[data-acao="interesse"]');
     await t.page.waitForTimeout(400);
-    let cl = doTipo(t, 'interesse_pos_relatorio');
+    cl = doTipo(t, 'interesse_pos_relatorio');
     conferir(cl.length === 1 && cl[0].pacote.evento.clique_fim_quiz === 'tenho-interesse', 'eliminatório: o clique vai como interesse_pos_relatorio, tenho-interesse (18.4)');
     conferir(cl[0] && garcom.conferirEvento(cl[0].pacote) === null && cl[0].pacote.evento.id_sessao === SESSAO_DA_LANDING, 'eliminatório: o clique passa nas conferências do garçom v4, com a mesma sessão');
     conferir(t.ordem.indexOf('fim:201') > -1 && t.ordem.indexOf('fim:201') < t.ordem.indexOf('evento:interesse_pos_relatorio'), 'eliminatório: o clique só sai depois do fim do quiz gravado (32.2)');
@@ -363,17 +438,33 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await ateContato(t.page, EXEMPLO, largura, false);
     await t.page.click('#enviar');
     await t.page.locator('#avisoEnvio').waitFor({ state: 'visible', timeout: 15000 });
-    await naTela(t.page, 'plano');
+    await naTela(t.page, 'conversa');
     const aviso = (await t.page.locator('#avisoEnvio').innerText()) || '';
     conferir(await t.page.locator('#avisoEnvio').isVisible() && aviso.includes('diagnóstico continua'), 'falha: aviso visível, dizendo que o diagnóstico continua na tela');
     conferir(!/502|servico|indisponivel|erro|api|fetch/i.test(aviso), 'falha: aviso sem detalhe técnico');
-    conferir(await t.page.locator('#avisoEnvio').isVisible() && await t.page.evaluate(() => location.hash) === '#plano', 'falha: o diagnóstico continua na tela, com o aviso por cima');
+    conferir(await t.page.locator('#avisoEnvio').isVisible() && await t.page.evaluate(() => location.hash) === '#conversa', 'falha: o diagnóstico continua na tela, com o aviso por cima');
     // só a tela visível, onde o aviso fica preso no alto
     if (largura !== 360) await t.page.screenshot({ path: path.join(PRINTS, 'envio-falhou-' + largura + '.png') });
     await t.page.click('#reenviar');
     await t.page.locator('#avisoEnvio').waitFor({ state: 'hidden', timeout: 15000 });
     conferir(t.envios.length === 2, 'falha: "Tentar de novo" reenvia (2 envios)');
     conferir(JSON.stringify(t.pacotes[0]) === JSON.stringify(t.pacotes[1]), 'falha: o reenvio manda o mesmo pacote');
+    // v8: "Agora não" na conversa, depois do reenvio gravado: a resposta do não, o clique agora-nao e o relatório sem o bloco de chamada
+    await opcao(t.page, 'Agora não');
+    await t.page.locator('[data-corpo] [data-acao="ver-diagnostico"]').waitFor({ state: 'visible', timeout: 15000 });
+    await t.page.waitForTimeout(400);
+    const cn = await lerConversa(t.page);
+    conferir(cn.eu === 'Agora não' && cn.falas[cn.falas.length - 1] === CONVERSA.nao && cn.botao === CONVERSA.botao + ' →',
+      'conversa (v8): "Agora não" vira a resposta da pessoa, o Junior responde "' + cn.falas[cn.falas.length - 1] + '" e vem o botão "' + CONVERSA.botao + '"');
+    const cln = doTipo(t, 'interesse_pos_relatorio');
+    conferir(cln.length === 1 && cln[0].pacote.evento.clique_fim_quiz === 'agora-nao' && garcom.conferirEvento(cln[0].pacote) === null && t.ordem.lastIndexOf('fim:201') < t.ordem.indexOf('evento:interesse_pos_relatorio'),
+      'conversa (v8): "Agora não" manda o clique agora-nao, uma vez, depois do fim gravado pelo reenvio, nas conferências do garçom v4');
+    await t.page.click('[data-corpo] [data-acao="ver-diagnostico"]');
+    await naTela(t.page, 'relatorio');
+    await t.page.waitForTimeout(300);
+    const rn = await lerRelatorio(t.page);
+    conferir(rn.qualificado && rn.cta === 0 && !rn.chamada && rn.botoes.length === 0 && doTipo(t, 'interesse_pos_relatorio').length === 1,
+      'conversa (v8): depois do "Agora não", "Ver meu diagnóstico" abre o relatório do qualificado sem o bloco de chamada, sem mandar outro clique');
     conferir(semDadoNoConsole(t), 'falha: console sem dado de pessoa');
     await t.ctx.close();
 
@@ -396,7 +487,11 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     t = await abrir(browser, largura, ARQUIVO, [201], 201);
     await ateContato(t.page, EXEMPLO, largura, false);
     await t.page.click('#enviar');
-    await naTela(t.page, 'plano');
+    await naTela(t.page, 'conversa');
+    // v8: até o fim, pela conversa gratuita e pelo botão do diagnóstico
+    await opcao(t.page, 'Sim, eu quero');
+    await t.page.locator('[data-corpo] [data-acao="ver-diagnostico"]').click({ timeout: 15000 });
+    await naTela(t.page, 'relatorio');
     await t.page.waitForTimeout(500);
     conferir(t.envios.length === 0 && t.eventos.length === 0, 'arquivo (file://): percorre tudo e nada é enviado, nem o fim do quiz nem os eventos');
     conferir(!(await t.page.locator('#avisoEnvio').isVisible()), 'arquivo (file://): nenhum aviso de falha');

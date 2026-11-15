@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 7
+versao: 8
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -100,7 +100,7 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
 }
 /* Telas claras: abertura e conversa (a página do original é clara). O escuro fica nos cartões e no painel. O neon vira acento:
    onde vai texto, o verde escurece para passar de 4,5:1 no fundo claro */
-body[data-largura="abertura"],body[data-largura="sala"],body[data-largura="plano"]{
+body[data-largura="abertura"],body[data-largura="sala"]{
   --papel:#f3f5ef; --superficie:#ffffff; --tinta:#07070d; --ardosia:#586070; --linha:#d8dcd0; --trilho:#e2e6da;
   --folha:#007a3e; --folha-forte:#006733; --folha-suave:#dcfae9; --folha-borda:#a8ebc6; --sobre-folha:#ffffff;
   --tomate:#c4323f; --tomate-suave:#fbe6e8; --trigo:#9a5f00; --trigo-suave:#fdf1dc;
@@ -131,7 +131,6 @@ h1,h2,h3{text-wrap:balance}
 body[data-largura="abertura"] .topo{display:none} /* na abertura, o cabeçalho é o da landing-page-02 (.cab-safra) */
 body[data-largura="coluna"] .topo{max-width:620px}
 body[data-largura="relatorio"] .topo{max-width:760px}
-body[data-largura="plano"] .topo{max-width:760px}
 /* conversa: só a barra de progresso fina (trecho preto sobre trilho claro), sem cabeçalho carregado */
 body[data-largura="sala"] .topo{max-width:1180px;padding-block:11px}
 body[data-largura="sala"] .topo__linha{display:none}
@@ -657,26 +656,6 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 .rodape{font-family:var(--f-dado);font-size:11.5px;line-height:1.7;color:var(--ardosia);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;border-top:1px solid var(--linha);padding-top:16px;margin-top:-24px}
 .rodape .marca{font-size:12px}
 
-/* ··· Oferta do plano de 90 dias (depois do contato): página de exemplo com botões flutuantes, vídeo do time e chamada para o WhatsApp ··· */
-.plano-ex{max-width:760px;margin-inline:auto;padding-block:20px 150px}
-.plano-ex h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(2rem,1.4rem + 2.6vw,3rem);line-height:1.04;letter-spacing:-.03em;margin:0 0 14px}
-.plano-ex__lede{margin:0 0 28px;font-size:1.1rem;color:var(--ardosia)}
-.folha{position:relative;display:grid;gap:30px;padding:clamp(24px,5vw,48px);background:var(--superficie);border:1px solid var(--linha);border-radius:18px;box-shadow:0 30px 60px -36px var(--sombra)}
-.folha__bloco{display:grid;gap:10px}
-.folha__bloco .esqueleto{height:9px}
-.folha__bloco .esqueleto:first-child{height:16px;background:var(--linha)}
-.folha__selo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:calc(100% - 32px);padding:10px 18px;border:1.5px dashed var(--ardosia);border-radius:999px;background:var(--superficie);font-family:var(--f-maq);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--ardosia)}
-.flutua{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;width:max-content;max-width:calc(100vw - 32px);padding:8px;border-radius:999px;border:1px solid var(--linha);background:color-mix(in srgb,var(--superficie) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 18px 40px -18px var(--sombra)}
-.flutua .botao{padding:12px 20px;font-size:.98rem;white-space:nowrap}
-@media (max-width:620px){ .flutua{bottom:calc(60px + env(safe-area-inset-bottom,0px))} }
-.video--time{background:radial-gradient(ellipse 70% 60% at 30% 100%,color-mix(in srgb,var(--folha-viva) 20%,transparent),transparent 72%),linear-gradient(180deg,#07070d 0%,#07120d 40%,var(--verde-fundo) 100%)}
-.video__ph{position:absolute;left:16px;top:14px;font-family:var(--f-maq);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sobre-painel) 55%,transparent)}
-.video-chat .cartao__aviso{margin-top:12px;background:var(--trigo-suave);color:var(--tinta)}
-.whats{display:grid;gap:12px;justify-items:start;padding:18px;background:var(--superficie);border:1px solid var(--linha);border-radius:16px}
-.whats__rotulo{margin:0;font-family:var(--f-maq);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ardosia)}
-.whats__msg{justify-self:end;margin:0;padding:10px 14px;border-radius:12px 12px 3px 12px;background:var(--folha-suave);border:1px solid var(--folha-borda);font-family:var(--f-titulo);font-weight:500;font-size:1.05rem;color:var(--tinta)}
-.whats .fino{margin:0}
-
 /* Erro (T28) */
 .erro{max-width:480px;margin-inline:auto;padding-block:72px 24px;text-align:center}
 .erro h1{font-family:var(--f-titulo);font-weight:750;font-size:1.7rem;line-height:1.15;letter-spacing:-.015em;margin:0 0 12px}
@@ -764,9 +743,7 @@ const FATOS = {
   // ficha-de-fatos#grafia-junior · decidido
   grafia_junior: {valor:'Junior Neves'},
   // ficha-de-fatos#analise-gratuidade · decidido. Texto na forma da landing (pergunta 9.3), sem o número de ficha-de-fatos#analises-gratuitas (copy, M6 e M20)
-  analise_gratuidade: {valor:'Sem custo na promoção de lançamento', frase:'Na promoção de lançamento, ele sai sem custo'},
-  // ficha-de-fatos#analise-valor · decidido
-  analise_valor: {valor:'R$ 497'},
+  analise_gratuidade: {valor:'Sem custo na promoção de lançamento'},
   // ficha-de-fatos#metas-por-etapa · regra do método: pré-qualificação, agendamento, comparecimento, fechamento, em %.
   // Os números das metas no texto (pelo menos 5, 1 a cada 4, 1 a cada 5, metade, conversão geral) saem daqui (pergunta 13.13).
   metas_por_etapa: {valor:[50, 50, 75, 20]},
@@ -775,8 +752,6 @@ const FATOS = {
   preco_avancada: {valor:45000}
 };
 const fato = (k, parte) => { const f = FATOS[k]; return f.bloqueado ? '[a definir: ' + f.rotulo + ']' : f[parte || 'valor']; };
-// Dados que ainda não existem (copy, "a definir")
-const A_DEFINIR = {whatsapp:'[a definir: número do WhatsApp]'};
 // A política de privacidade, publicada no site do protótipo (#117): o link abre numa aba nova, para o diagnóstico não se perder
 const POLITICA = {endereco:'/politica-de-privacidade/'};
 const LINK_POLITICA = '<a href="' + POLITICA.endereco + '" target="_blank" rel="noopener">política de privacidade</a>';
@@ -837,8 +812,6 @@ const UTM_ACEITAS = {utm_source:['stories', 'bio', 'reels', 'email', 'whatsapp']
 /* ··· Foto e glifos ··· */
 // Foto real do Junior (mesma do site da Triad). Vira a capa do vídeo até o vídeo ser gravado.
 const FOTO = 'poster-junior.jpg';
-// WhatsApp da Triad para o pedido do plano de 90 dias. Número só com dígitos, com país (ex.: '5511999999999'). Vazio = o protótipo mostra um aviso.
-const WHATS = {numero:'', plano:'Envie o meu plano de ação.'};
 const TRIAD = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>';
 const SEMENTE = '<svg class="g-semente" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6c3.2 3.2 3.2 9.6 0 12.8-3.2-3.2-3.2-9.6 0-12.8z"/></svg>';
 const FRUTO = '<svg class="g-fruto" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="9.6" r="5.4"/><path class="g-folha" d="M8.2 4.4c.6-2 2.6-3 4.6-2.6-.5 2-2.4 2.9-4.6 2.6z"/></svg>';
@@ -853,7 +826,6 @@ const ICO = {
   relogio: IC('<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 1.5M9.5 2.8h5"/>'),
   ok: IC('<path d="M5 12.5l4.5 4.5L19 7.5"/>')
 };
-const CONVERSA_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
 
 /* ··· Utilidades ··· */
 const $ = (s, el) => (el || document).querySelector(s);
@@ -886,7 +858,7 @@ const ETAPAS = [
 
 /* ··· Respostas: o que a pessoa marcou, com exemplo quando pula ··· */
 const R = {nome:'', origem:[], ticket:'', nums:[{v:'',u:'n'},{v:'',u:'p'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null, consentimento:{aceite:true, em:null}};
-const EX = {nome:'Marina', ramo:'Serviços para empresas', faturamento:'R$ 150 mil a R$ 500 mil', vendedores:'2 ou 3', 'quem-marca':'Sim. O vendedor faz tudo', 'valor-medio':'15.000', origem:['Anúncios pagos (Meta, Google)','Indicação de clientes'], crm:'Sim, mas pouca gente atualiza', cargo:'Dono(a) ou sócio(a)', lembra:'Sim', chute:'Menos de ' + METAS[2] + '%', causa:'No mesmo dia', causa2:'Depende do vendedor', causa3:'Alguns', plano:'Sim, eu quero'};
+const EX = {nome:'Marina', ramo:'Serviços para empresas', faturamento:'R$ 150 mil a R$ 500 mil', vendedores:'2 ou 3', 'quem-marca':'Sim. O vendedor faz tudo', 'valor-medio':'15.000', origem:['Anúncios pagos (Meta, Google)','Indicação de clientes'], crm:'Sim, mas pouca gente atualiza', cargo:'Dono(a) ou sócio(a)', lembra:'Sim', chute:'Menos de ' + METAS[2] + '%', causa:'No mesmo dia', causa2:'Depende do vendedor', causa3:'Alguns'};
 const val = k => { const v = R[k]; if (Array.isArray(v)) return v.length ? v : EX[k]; return (typeof v === 'string' ? v.trim() : v) || EX[k]; };
 const qualificado = () => val('faturamento') !== 'Menos de R$ 50 mil' && val('vendedores') !== 'Nenhum por enquanto';
 const nm = () => String(val('nome')).split(' ')[0];
@@ -919,10 +891,10 @@ const FALAS = {
   causa2:{q:'Quantas vezes vocês tentam falar com o lead antes de desistir?', a:'Conte ligações e mensagens.'},
   causa3:{q:'No fim do dia, sobra lead sem contato?'},
   contato:{q:'Para onde eu mando o diagnóstico completo?', a:'Ele aparece nesta tela logo depois, e uma cópia vai para o seu e-mail e WhatsApp.'},
-  plano:{q:'Quer receber o seu plano de ação de 90 dias?'}
+  conversa:{q:'Quer uma conversa gratuita comigo? Eu te apresento um plano de ação de 90 dias para aumentar a eficácia do sistema de vendas da sua empresa.'}
 };
-// Passos da conversa sem pergunta: só falas do Junior (e, no fim, o vídeo e o WhatsApp)
-const SEM_PERGUNTA = ['montando', 'video-time'];
+// Passos da conversa sem pergunta: só falas do Junior
+const SEM_PERGUNTA = ['montando'];
 const pergunta = id => { const p = PERFIL.find(x => x.id === id); return p ? {q:p.q, a:p.ajuda} : FALAS[id]; };
 
 /* ··· Telas do protótipo ··· */
@@ -939,9 +911,7 @@ const TELAS = [
   {id:'causa3', rot:'Causa · lead sem contato', chat:true},
   {id:'contato', rot:'Contato', chat:true},
   {id:'montando', rot:'Montando o diagnóstico', chat:true},
-  {id:'plano', rot:'Oferta · plano de 90 dias', chat:true},
-  {id:'plano-exemplo', rot:'Plano de 90 dias · exemplo', largura:'plano'},
-  {id:'video-time', rot:'Vídeo do time + WhatsApp', chat:true},
+  {id:'conversa', rot:'Conversa gratuita com o Junior', chat:true},
   {id:'relatorio',rot:'Relatório · qualificado', rel:'fraco', q:true, largura:'relatorio'},
   {id:'relatorio-nao', rot:'Relatório · não qualificado', rel:'fraco', q:false, largura:'relatorio'},
   {id:'relatorio-chute', rot:'Relatório · por estimativa', rel:'fraco', q:true, est:true, largura:'relatorio'},
@@ -954,7 +924,7 @@ const tela = id => TELAS.find(x => x.id === id);
 /* ··· Caminho da conversa e o que já foi respondido ··· */
 function caminho(id){
   const f = id === 'chute' || id === 'numeros' ? id : (val('lembra') === 'Não' ? 'chute' : 'numeros');
-  return ['nome'].concat(PERFIL.map(p => p.id), ['lembra', f, 'causa', 'causa2', 'causa3', 'contato', 'montando', 'plano', 'video-time']);
+  return ['nome'].concat(PERFIL.map(p => p.id), ['lembra', f, 'causa', 'causa2', 'causa3', 'contato', 'montando', 'conversa']);
 }
 function respondido(id){
   const t = tela(atual);
@@ -1162,11 +1132,11 @@ function depois(id){
     case 'causa2': return [v.indexOf('6 ou mais') === 0 ? 'Persistência com roteiro é o que separa lead perdido de conversa marcada.' : 'Sem um número fixo de tentativas, cada vendedor desiste num ponto diferente, e lead com perfil fica pelo caminho.'];
     case 'causa3': return [v === 'Não' ? 'Bom sinal: o time dá conta de todos os leads que chegam.' : 'Sobra de lead no fim do dia é sinal de que entra mais lead do que o time consegue atender.', '<strong>Causas</strong> ✓ 3 de 3.'];
     case 'montando': return ['<strong>Diagnóstico</strong> ✓ pronto.'];
-    case 'plano': return [v === 'Quero ver como é' && R.planoVolta === 'voltar' ? 'Agora você já viu como ele é, ' + esc(nm()) + '.' : 'Fechou, ' + esc(nm()) + '.'];
+    case 'conversa': return [v === 'Sim, eu quero' ? 'Fechou, ' + esc(nm()) + '. Em alguns minutos alguém do meu time chama você no WhatsApp para marcar.' : 'Tudo bem, ' + esc(nm()) + '. O seu diagnóstico está pronto.'];
   }
   return [];
 }
-/* ··· Dinheiro na mesa da conversa (oferta do plano de 90 dias) ···
+/* ··· Conta da conversa: o perfil do funil que o painel mostra depois do contato ···
    Usa os números da pessoa quando o funil está completo; senão, o mesmo cenário de exemplo do relatório. */
 function contaConversa(){
   const f = funilPainel(), est = R.lembra === 'Não';
@@ -1191,24 +1161,7 @@ function antes(id){
       bot('Falta a leitura: a causa provável e o que fazer em cada etapa, e quanto dinheiro fica na mesa. Quem monta é uma IA treinada no meu jeito de diagnosticar. Tem custo, mas fica por minha conta.')];
   }
   if (id === 'montando') return [bot('Recebido, ' + esc(nm()) + '. Estou montando seu diagnóstico agora.')];
-  if (id === 'plano') {
-    const c = contaConversa(), k = c.k;
-    return [
-      bot('Olha só, ' + esc(nm()) + ': ' + (c.est ? 'pela sua estimativa' : 'pelos números que você informou') + ', se as etapas fracas chegassem na meta, a conta daria <strong>' +
-        (c.est ? 'cerca de ' : '') + k.extraV + (k.extraV === 1 ? ' venda' : ' vendas') + ' a mais por mês, uns ' + mil(k.extraR) + '</strong>. É conta, não promessa: é dinheiro que hoje fica na mesa.'),
-      bot('Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial.'),
-      bot(fato('analise_gratuidade', 'frase') + '. Depois, vai custar ' + fato('analise_valor') + '.')
-    ];
-  }
-  if (id === 'video-time') return [
-    bot('Agora dá o play neste recado rápido de alguém do meu time.'),
-    // Vídeo dentro da conversa (como o T23 do original): 16:9, com som na versão final, não trava nada
-    '<div class="video-chat recuo"><div class="video video--time escuro"><span class="video__ph">placeholder · vídeo</span>' +
-      '<button type="button" class="video__play" data-acao="aviso" data-alvo="avisoVideoTime" data-aviso="Placeholder: o vídeo de alguém do time do Junior ainda vai ser gravado. Na versão final ele toca aqui, com som, e não trava nada: a chamada para o WhatsApp fica liberada o tempo todo." aria-label="Assistir ao vídeo de alguém do time do Junior"><span class="play" aria-hidden="true"></span></button>' +
-      '<span class="pilula">vídeo · alguém do time do Junior</span></div>' +
-      '<p class="cartao__aviso" id="avisoVideoTime" role="status" hidden></p></div>',
-    bot('Depois, é só mandar esta mensagem no nosso WhatsApp que o seu plano chega por lá.')
-  ];
+  if (id === 'conversa') return [bot('Antes de abrir o seu diagnóstico, uma pergunta, ' + esc(nm()) + '.')];
   return [];
 }
 function resumoNumeros(){
@@ -1286,11 +1239,8 @@ const CORPO = {
     '<p class="montando__titulo" id="foco" tabindex="-1">Montando seu diagnóstico</p>' +
     '<ol class="passos"><li>Calculando as 4 etapas do funil</li><li>Comparando com as metas</li><li>Somando o dinheiro na mesa</li></ol>' +
     '<button type="button" class="botao" data-acao="ver-relatorio" hidden>Continuar <span class="seta" aria-hidden="true">→</span></button></div>',
-  plano: () => opcoes('plano', ['Sim, eu quero', 'Quero ver como é']),
-  'video-time': () => '<div class="whats recuo"><p class="whats__rotulo" id="foco" tabindex="-1">Mensagem pronta</p>' +
-    '<p class="whats__msg">' + esc(WHATS.plano) + '</p>' +
-    '<button type="button" class="botao" data-acao="whats-plano">' + CONVERSA_SVG + 'Mandar no WhatsApp</button>' +
-    '<p class="fino" id="avisoWhatsPlano" role="status" hidden></p></div>'
+  // a conversa gratuita: antes da resposta, as duas opções; depois, o botão que abre o diagnóstico (com o foco nele)
+  conversa: () => R.conversa ? nav({acao:'ver-diagnostico', rotulo:'Ver meu diagnóstico', id:'foco'}) : opcoes('conversa', ['Sim, eu quero', 'Agora não'])
 };
 function corpo(t){
   if (!t.perfil) return CORPO[t.id]();
@@ -1306,8 +1256,8 @@ function corpo(t){
 const FICHA = [['nome', 'Nome'], ['cargo', 'Cargo'], ['ramo', 'Ramo'], ['faturamento', 'Faturamento']];
 function painel(t){
   const analisando = t.id === 'montando';
-  // depois do contato, na oferta do plano: o perfil do funil já aparece
-  const pf = t.id === 'plano' || t.id === 'video-time' ? perfilConversa() : null;
+  // depois do contato, na conversa gratuita: o perfil do funil já aparece
+  const pf = t.id === 'conversa' ? perfilConversa() : null;
   const f = funilPainel();
   const g = ganhos(f && f.taxas);
   const quadro = (cls, nome) => '<div class="quadro quadro--' + cls + '"><b>' + nome + '</b><span class="esqueleto"></span><span class="esqueleto"></span></div>';
@@ -1335,7 +1285,7 @@ function preenchidos(){
 function abas(){
   const n = preenchidos();
   const selo = atual === 'montando' ? '<span class="abas__selo is-girando" id="abaSelo" role="img" aria-label="analisando">' + n + '</span>'
-    : atual === 'plano' || atual === 'video-time' ? '<span class="abas__selo is-novo" role="img" aria-label="diagnóstico pronto">✓</span>'
+    : atual === 'conversa' ? '<span class="abas__selo is-novo" role="img" aria-label="diagnóstico pronto">✓</span>'
     : n ? '<span class="abas__selo' + (sinal ? ' is-novo' : '') + '" role="img" aria-label="' + n + ' itens preenchidos">' + n + '</span>' : '';
   return '<div class="abas" role="tablist" aria-label="Ver conversa ou resultado">' +
     '<button type="button" role="tab" data-aba="conversa" aria-selected="' + (aba !== 'resultado') + '">Conversa</button>' +
@@ -1343,16 +1293,18 @@ function abas(){
 }
 function telaChat(t){
   const c = caminho(t.id), i = c.indexOf(t.id);
+  // a conversa gratuita já respondida: a pergunta e a resposta viram histórico, e a resposta do Junior entra como fala nova
+  const feita = t.id === 'conversa' && !!R.conversa;
   let hist = '';
-  // pergunta + resposta de cada passo já feito; quem viu o exemplo do plano e clicou "Quero o meu" ganha essa resposta logo abaixo
-  const respondida = id => SEM_PERGUNTA.indexOf(id) > -1 ? '' : perg(pergunta(id).q) + eu(resposta(id), id === 'contato' ? null : id) +
-    (id === 'plano' && val('plano') === 'Quero ver como é' && R.planoVolta === 'quero' ? eu('Quero o meu') : '');
+  // pergunta + resposta de cada passo já feito; a do contato e a da conversa gratuita ficam sem o lápis de corrigir
+  const respondida = id => SEM_PERGUNTA.indexOf(id) > -1 ? '' : perg(pergunta(id).q) + eu(resposta(id), id === 'contato' || id === 'conversa' ? null : id);
   c.slice(0, i).forEach((id, j) => {
     hist += antes(id).join('') + respondida(id) + (j < i - 1 ? depois(id).map(fala).join('') : '');
   });
-  const novas = (i > 0 ? depois(c[i - 1]).map(fala) : []).concat(antes(t.id));
+  if (feita) hist += depois(c[i - 1]).map(fala).join('') + antes(t.id).join('') + respondida(t.id);
+  const novas = feita ? depois(t.id).map(fala) : (i > 0 ? depois(c[i - 1]).map(fala) : []).concat(antes(t.id));
   if (msgSelo) novas.push(bot(msgSelo));
-  if (SEM_PERGUNTA.indexOf(t.id) < 0) { const p = pergunta(t.id); novas.push(perg(p.q, {atual:true, ajuda:p.a})); }
+  if (SEM_PERGUNTA.indexOf(t.id) < 0 && !feita) { const p = pergunta(t.id); novas.push(perg(p.q, {atual:true, ajuda:p.a})); }
   // data-ancora: ponto de altura zero onde começa tudo que é novo (ver alinhar)
   return '<div class="sala">' + abas() +
     '<section class="conversa" data-pane="conversa" aria-label="Conversa">' + hist + '<div data-ancora></div>' + novas.map(nova).join('') + '<div data-corpo>' + corpo(t) + '</div></section>' +
@@ -1614,20 +1566,8 @@ function telaRelatorio(t){
     '<span>Metas usadas: ' + ETAPAS.map((e, i) => e.nome.toLowerCase() + ' ' + METAS[i] + '%').join(' · ') + '. Cada etapa é medida contra a anterior.</span>' +
     '<span>Final do quiz: [a definir: critério de qualificação]</span></footer>';
 
-  return '<article class="relatorio">' + topo + funil + selos + quadros(k, saudavel, est) + fracos + mesa + video + cta(t.q === false ? 'nao' : 'qualificado', saudavel) + acoes + rodape + '</article>';
-}
-
-/* ··· Exemplo do plano de 90 dias (placeholder): "Voltar" e "Quero o meu" flutuando, os dois voltam para a conversa ··· */
-function telaPlanoExemplo(){
-  const blocos = [[46, 92, 84, 70], [40, 88, 76, 90, 58], [52, 80, 94, 66]];
-  return '<section class="plano-ex"><p class="olho">plano de ação de 90 dias · exemplo</p>' +
-    '<h1 id="foco" tabindex="-1">Como é o plano de ação de 90 dias</h1>' +
-    '<p class="plano-ex__lede">Placeholder: aqui entra um exemplo real do plano.</p>' +
-    '<div class="folha" role="img" aria-label="Espaço reservado para o exemplo do plano de ação">' +
-      blocos.map(b => '<div class="folha__bloco">' + b.map(w => '<span class="esqueleto" style="width:' + w + '%"></span>').join('') + '</div>').join('') +
-      '<span class="folha__selo">exemplo do plano entra aqui</span></div></section>' +
-    '<div class="flutua"><button type="button" class="botao botao--linha" data-acao="plano-voltar"><span class="seta" aria-hidden="true">←</span> Voltar</button>' +
-    '<button type="button" class="botao" data-acao="plano-quero">Quero o meu <span class="seta" aria-hidden="true">→</span></button></div>';
+  // aberto pelo "Ver meu diagnóstico" da conversa gratuita, sem o bloco de chamada: a pessoa já respondeu na conversa
+  return '<article class="relatorio">' + topo + funil + selos + quadros(k, saudavel, est) + fracos + mesa + video + (semChamada ? '' : cta(t.q === false ? 'nao' : 'qualificado', saudavel)) + acoes + rodape + '</article>';
 }
 
 function telaErro(){
@@ -1804,6 +1744,8 @@ function registrarEvento(tipo, extra){
 // sem ele, 32.2). Antes disso, fica na memória da aba e sai quando o fim do quiz gravar (inclusive pelo "Tentar de novo").
 // Com a caixa desmarcada, nada é enviado (13.4; 30.3). Cada valor vai uma vez só por sessão.
 const CLIQUES = {marcar:'quero-conversa', whats:'chamar-whatsapp', interesse:'tenho-interesse', 'agora-nao':'agora-nao'};
+// As duas opções da conversa gratuita com o Junior (v8) mandam os mesmos valores, pelo mesmo caminho
+const CLIQUES_CONVERSA = {'Sim, eu quero':'quero-conversa', 'Agora não':'agora-nao'};
 let fimGravado = false;
 const cliquesEsperando = [], cliquesFeitos = new Set();
 function registrarClique(valor){
@@ -1825,6 +1767,8 @@ $('#avisoEnvio').addEventListener('click', e => {
 /* ··· Motor do protótipo ··· */
 const palco = $('#palco');
 let atual = null, porFluxo = false, primeira = true;
+// o relatório aberto pelo botão da conversa gratuita vai sem o bloco de chamada (pelo painel "Telas" e nos outros caminhos, com ele)
+let semChamada = false;
 let aba = 'conversa', sinal = false, empurrao = false, selosAntes = new Set(), novosSelos = [], msgSelo = '';
 const timers = [];
 const limparTimers = () => { while (timers.length) clearTimeout(timers.pop()); };
@@ -1832,7 +1776,6 @@ const limparTimers = () => { while (timers.length) clearTimeout(timers.pop()); }
 function render(t){
   if (t.id === 'abertura') return telaAbertura();
   if (t.id === 'erro') return telaErro();
-  if (t.id === 'plano-exemplo') return telaPlanoExemplo();
   if (t.rel) return telaRelatorio(t);
   return telaChat(t);
 }
@@ -1840,7 +1783,7 @@ function mostrar(id, o){
   o = o || {};
   const t = tela(id) || TELAS[0];
   const vemDaConversa = !!(atual && tela(atual).chat);
-  atual = t.id; porFluxo = !!o.fluxo;
+  atual = t.id; porFluxo = !!o.fluxo; semChamada = !!o.semChamada;
   limparTimers();
   $('#avisoSelo').hidden = true;
   // selos novos: só quando a pessoa chega respondendo (não pelo seletor)
@@ -1848,7 +1791,7 @@ function mostrar(id, o){
   const agora = ganhos(f && f.taxas);
   novosSelos = porFluxo && t.chat && vemDaConversa ? SELOS.map(s => s.id).filter(s => agora.has(s) && !selosAntes.has(s)) : [];
   msgSelo = novosSelos.length && selosAntes.size === 0 ? 'Boa, ' + esc(nm()) + ': primeiro selo conquistado. Ele fica guardado no painel.' : '';
-  if (t.chat) selosAntes = agora; // páginas fora da conversa (ex.: exemplo do plano) não zeram os selos já vistos
+  if (t.chat) selosAntes = agora; // páginas fora da conversa (ex.: os relatórios) não zeram os selos já vistos
   if (porFluxo && t.chat) { aba = 'conversa'; if (t.id !== 'nome') sinal = true; }
   palco.innerHTML = render(t);
   palco.className = t.chat ? 'palco' : 'palco entra';
@@ -1869,13 +1812,13 @@ function proximaDe(id){
   if (id === 'numeros' || id === 'chute') return 'causa';
   if (id === 'montando') {
     // funil saudável: relatório de crescimento. Quem não se qualifica: relatório com "Tenho interesse" (regra 5).
-    // Qualificado com etapa abaixo da meta: oferta do plano de ação de 90 dias, na conversa
+    // Qualificado com etapa abaixo da meta: a conversa gratuita com o Junior, na conversa; o relatório abre pelo botão dela
     const f = funilPainel(), saud = !!f && !f.exemplo && f.taxas.every((v, i) => v !== null && v >= METAS[i]);
     if (saud) return 'relatorio-saudavel' + (qualificadoFim() ? '' : '-nao');
-    return qualificadoFim() ? 'plano' : 'relatorio-nao';
+    return qualificadoFim() ? 'conversa' : 'relatorio-nao';
   }
-  if (id === 'plano') return val('plano') === 'Quero ver como é' ? 'plano-exemplo' : 'video-time';
-  if (id === 'plano-exemplo') return 'video-time';
+  // Respondida, a conversa gratuita fica na mesma tela: entram a resposta do Junior e o botão "Ver meu diagnóstico"
+  if (id === 'conversa') return 'conversa';
   const i = TELAS.findIndex(x => x.id === id);
   return TELAS[Math.min(i + 1, TELAS.length - 1)].id;
 }
@@ -1977,11 +1920,10 @@ function girar(){
 function progresso(t){
   if (t.rel || t.id === 'erro') return 100;
   if (!t.chat) return null;
-  if (t.id === 'video-time') return 100;
-  if (t.id === 'plano') return 95;
+  if (t.id === 'conversa') return R.conversa ? 100 : 95;
   if (t.id === 'montando') return 90;
   if (t.id === 'contato') return 80;
-  const qs = caminho(t.id).filter(id => ['contato', 'montando', 'plano', 'video-time'].indexOf(id) < 0), feitas = qs.indexOf(t.id);
+  const qs = caminho(t.id).filter(id => ['contato', 'montando', 'conversa'].indexOf(id) < 0), feitas = qs.indexOf(t.id);
   const peso = i => i < 6 ? 2 : i < 10 ? 1.5 : 1;
   let feito = 0, total = 0;
   qs.forEach((id, i) => { total += peso(i); if (i < feitas) feito += peso(i); });
@@ -2022,7 +1964,7 @@ palco.addEventListener('click', e => {
       R[campo] = v;
       op.parentElement.querySelectorAll('.opcao').forEach(x => x.setAttribute('aria-checked', x === op));
       if (campo === 'chute') { R.chuteN = ''; const ch = $('#chuteN'); if (ch) ch.value = ''; }
-      if (campo === 'plano') R.planoVolta = null;
+      if (campo === 'conversa') registrarClique(CLIQUES_CONVERSA[v]);
       if ('auto' in op.dataset) { clearTimeout(tAuto); tAuto = setTimeout(avancar, 380); }
     }
     return;
@@ -2066,6 +2008,8 @@ palco.addEventListener('click', e => {
       avancar(); break;
     }
     case 'ver-relatorio': mostrar(proximaDe('montando')); break;
+    // o botão da conversa gratuita: o relatório do qualificado, sem o bloco de chamada
+    case 'ver-diagnostico': mostrar('relatorio', {fluxo:true, semChamada:true}); break;
     case 'tentar': mostrar('montando', {fluxo:true}); break;
     case 'aviso': { const alvo = document.getElementById(b.dataset.alvo); if (alvo) { alvo.textContent = b.dataset.aviso; alvo.hidden = false; } break; }
     case 'corrigir-email':
@@ -2081,15 +2025,6 @@ palco.addEventListener('click', e => {
     case 'whats':
       $('#agenda').hidden = true;
       nota.textContent = 'Abre o nosso WhatsApp com a mensagem pronta: “Oi, fiz o diagnóstico de vendas e quero conversar.” (protótipo: sem link)'; nota.hidden = false; break;
-    case 'plano-quero': case 'plano-voltar':
-      // os dois botões da página de exemplo voltam para a conversa, no vídeo do time
-      R.plano = 'Quero ver como é'; R.planoVolta = b.dataset.acao === 'plano-quero' ? 'quero' : 'voltar';
-      mostrar('video-time', {fluxo:true}); break;
-    case 'whats-plano': {
-      if (WHATS.numero) { window.open('https://wa.me/' + WHATS.numero + '?text=' + encodeURIComponent(WHATS.plano), '_blank', 'noopener'); break; }
-      const a = $('#avisoWhatsPlano');
-      a.textContent = 'Protótipo: na versão final, abre o nosso WhatsApp com a mensagem “' + WHATS.plano + '” já escrita. Número: ' + A_DEFINIR.whatsapp + '.'; a.hidden = false; break;
-    }
     case 'interesse':
       R.interesse = true; b.disabled = true; nota.textContent = notaInteresse(); nota.hidden = false; break;
     case 'agora-nao': {

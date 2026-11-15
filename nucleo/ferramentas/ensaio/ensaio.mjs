@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 10 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 11 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -25,6 +25,9 @@
 //      e todo texto novo com as cópias certas, na versão do computador e na do celular.
 //      (v9; #119) No programa da landing-page-02 v4: "GSAAS" em lugar nenhum; nenhum texto que o pedido 20 trocou; as duas
 //      respostas do FAQ do pedido 20 nas duas cópias; e o contador do carrossel de "01 / 09" a "09 / 09" nas duas versões.
+//      (v11; quiz-01-pagina v8) O lead A termina na conversa gratuita com o Junior (#conversa, no lugar da oferta do plano de 90
+//      dias), responde "Sim, eu quero", o clique quero-conversa chega ao banco (201) e o botão "Ver meu diagnóstico" abre o
+//      relatório do qualificado, sem o bloco de chamada; no banco e na planilha, o clique do lead A.
 //   7. A planilha do SDR (Codigo.gs v2, 20 colunas, com o Google de mentira, em outro processo).
 //   8. Casos de erro: chaves no lugar errado, pacote sem consentimento, clique sem fim do quiz,
 //      a mesma pessoa enviando duas vezes ao mesmo tempo.
@@ -45,7 +48,8 @@
 //      aceita a origem nova e recusa a antiga; a porta privada responde igual com os dois nomes, e a planilha do SDR puxa os leads
 //      pelo antigo; noindex em toda resposta, inclusive nos redirecionamentos; os links da política e do aviso de cookies abrem;
 //      as 10 chamadas da landing, clicadas uma a uma em 1440, 375 e 360, pedem direto /analise/ com as cinco utm e o id_sessao;
-//      quem abre um link antigo chega à página no endereço novo; e o quiz vai da abertura ao fim em /analise/, nos três desfechos.
+//      quem abre um link antigo chega à página no endereço novo; e o quiz vai da abertura ao fim em /analise/, nos três desfechos
+//      (desde a v11, o do lead A é a conversa gratuita e o relatório que o botão dela abre).
 //      Desde a v10, as idas da landing ao quiz das seções 6, 10 e 11 também têm de ser diretas, sem passar por /quiz.
 //  13. Fechamento: conferir.sql de novo e registros sem dado pessoal.
 //
@@ -796,13 +800,14 @@ async function principal() {
   // v10: se a landing não levar ao quiz, ou o quiz parar no meio, a pessoa volta com o que deu para colher e as conferências dela
   // saem FALHOU, em vez de o ensaio parar no meio (até a v9, parava com erro). As telas por onde o quiz passou ficam anotadas com o
   // caminho da página em cada uma, e os dois links da política do quiz (o da abertura e o da tela do contato) são clicados.
-  async function fazerQuiz({ landing, busca, respostas, pessoa, largura, telaFinal, desmarcar = false, clique = null, botao = BOTAO_GRANDE }) {
+  // v11 (quiz-01-pagina v8): conversa = a opção que a pessoa responde na conversa gratuita com o Junior, quando o fim é #conversa
+  async function fazerQuiz({ landing, busca, respostas, pessoa, largura, telaFinal, desmarcar = false, clique = null, botao = BOTAO_GRANDE, conversa = null }) {
     const ctx = await novoContexto(largura);
     const page = await ctx.newPage();
     const api = [], idas = [], telas = [];
     const SEM_LEITURA = { charset: '', modo: '', titulo: '', fontes: [] };
     const r = { endereco: new URL(BASE + landing + busca), sessao: null, visita: null, inicio: null, fim: null, clique: null, aviso: false, caixaMarcada: false, caixas: 0,
-      naLanding: SEM_LEITURA, noQuiz: SEM_LEITURA, api, telaFinal: 'não chegou ao fim', telas, direto: false, politica: {}, erro: null };
+      naLanding: SEM_LEITURA, noQuiz: SEM_LEITURA, api, telaFinal: 'não chegou ao fim', telas, direto: false, politica: {}, erro: null, resposta: null, botaoConversa: null, relatorio: null };
     page.on('console', m => consoleTexto.push(m.text()));
     page.on('response', rr => { const e = new URL(rr.url()); if (rr.url().startsWith(BASE + '/api/')) api.push({ rota: e.pathname, tipo: tipoDoPedido(rr.request()), status: rr.status() }); });
     try {
@@ -859,7 +864,7 @@ async function principal() {
       const rf = fim ? await fim : null;
       r.fim = rf && rf.status();
       // Espera a tela do fim, qualquer que seja; a conferência diz se foi a esperada (assim um corte errado vira FALHOU, não erro)
-      await page.waitForFunction(() => /^#(plano|relatorio(-nao|-saudavel|-saudavel-nao)?)$/.test(location.hash), null, { timeout: 15000 });
+      await page.waitForFunction(() => /^#(conversa|relatorio(-nao|-saudavel|-saudavel-nao)?)$/.test(location.hash), null, { timeout: 15000 });
       r.telaFinal = await page.evaluate(() => location.hash);
       telas.push([r.telaFinal.slice(1), new URL(page.url()).pathname]);
       if (clique && r.telaFinal === '#' + telaFinal) {
@@ -867,6 +872,22 @@ async function principal() {
         await page.locator('[data-acao="' + clique + '"]').first().click();
         const rc = doClique ? await doClique : null;
         r.clique = rc && rc.status();
+      }
+      // v11: na conversa gratuita, a opção (o clique vai a /api/evento), a resposta do Junior e o botão que abre o relatório
+      if (conversa && r.telaFinal === '#' + telaFinal) {
+        const doClique = desmarcar ? null : page.waitForResponse(ehEvento('interesse_pos_relatorio'), { timeout: 15000 }).catch(() => null);
+        await opcao(conversa);
+        const rc = doClique ? await doClique : null;
+        r.clique = rc && rc.status();
+        const bt = page.locator('[data-corpo] [data-acao="ver-diagnostico"]');
+        await bt.waitFor({ state: 'visible', timeout: 15000 });
+        r.resposta = await page.evaluate(() => { const f = [...document.querySelectorAll('.conversa .balao--bot .fala')]; return f.length ? f[f.length - 1].innerText.trim() : null; });
+        r.botaoConversa = (await bt.innerText()).replace(/\s+/g, ' ').trim();
+        await bt.click();
+        await naTela('relatorio');
+        await page.waitForTimeout(300);
+        r.relatorio = await page.evaluate(() => ({ titulo: !!document.querySelector('.relatorio .rel-topo h1'), cta: document.querySelectorAll('.relatorio .cta').length,
+          chamada: document.body.innerText.includes('Quer resolver isso junto com a nossa equipe?') }));
       }
       await page.waitForTimeout(desmarcar ? 1000 : 300);
       r.aviso = await page.locator('#avisoEnvio').isVisible();
@@ -881,7 +902,7 @@ async function principal() {
   }
 
   // Lead 1: landing-page-02 pelo botão do topo, utm bio, 1440, o exemplo do lead score (96, faixa a), caixa marcada
-  const q1 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: EXEMPLO, pessoa: PESSOA_A, largura: 1440, telaFinal: 'plano', botao: BOTAO_DO_TOPO });
+  const q1 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: EXEMPLO, pessoa: PESSOA_A, largura: 1440, telaFinal: 'conversa', botao: BOTAO_DO_TOPO, conversa: 'Sim, eu quero' });
   conferir(q1.visita === 201, 'landing: a visita foi gravada (POST /api/evento, ' + q1.visita + ')');
   conferir(q1.naLanding.modo === 'CSS1Compat' && q1.naLanding.charset === 'UTF-8', 'landing: modo padrão (' + q1.naLanding.modo + ') e UTF-8 (34.13)');
   conferir(LISTA_FONTES['landing-02'].length === 0 || q1.naLanding.fontes.includes('Geist'), 'landing: Geist carregada de /fontes/, sem o Google (' + q1.naLanding.fontes.join(', ') + ')');
@@ -942,7 +963,12 @@ async function principal() {
   // v5: o quiz abre na abertura, com o cabeçalho e o botão da landing-page-02 (Geist); a letra de mão (Permanent Marker) fica para o relatório
   conferir(['Inter', 'Space Grotesk', 'Geist'].every(n => q1.noQuiz.fontes.includes(n)), 'quiz: Inter, Space Grotesk e Geist carregadas de /analise/fontes/ na abertura (' + q1.noQuiz.fontes.join(', ') + ')');
   conferir(q1.caixaMarcada && q1.caixas === 1, 'quiz: uma caixa de aceite só, já marcada (13.4)');
-  conferir(q1.fim === 201 && !q1.aviso && q1.telaFinal === '#plano', 'lead A: POST /api/fim-quiz gravado (' + q1.fim + '), tela do plano, sem aviso de falha');
+  conferir(q1.fim === 201 && !q1.aviso && q1.telaFinal === '#conversa', 'lead A: POST /api/fim-quiz gravado (' + q1.fim + '), tela da conversa gratuita com o Junior, sem aviso de falha');
+  // v11 (quiz-01-pagina v8): na conversa gratuita, "Sim, eu quero", o clique quero-conversa gravado e o relatório pelo botão, sem o bloco de chamada
+  conferir(q1.clique === 201 && q1.resposta === 'Fechou, Marina. Em alguns minutos alguém do meu time chama você no WhatsApp para marcar.',
+    'lead A: "Sim, eu quero" na conversa gratuita, com a resposta do Junior, e o clique quero-conversa gravado (POST /api/evento, ' + q1.clique + ')');
+  conferir(q1.botaoConversa === 'Ver meu diagnóstico →' && q1.relatorio && q1.relatorio.titulo && q1.relatorio.cta === 0 && !q1.relatorio.chamada && q1.telas.length > 0 && q1.telas[q1.telas.length - 1].join(' ') === 'relatorio /analise/',
+    'lead A: "Ver meu diagnóstico" abre o relatório do qualificado em /analise/#relatorio, sem o bloco de chamada (v11)');
 
   // Lead 2: landing-page-02 pelo botão grande, utm stories, 375, eliminatório, caixa marcada, clique "Tenho interesse"
   const q2 = await fazerQuiz({ landing: '/', busca: '?utm_source=stories&utm_campaign=funil-01', respostas: ELIMINATORIO, pessoa: PESSOA_ELIM, largura: 375, telaFinal: 'relatorio-nao', clique: 'interesse' });
@@ -1014,16 +1040,18 @@ async function principal() {
   conferir(esperadoCons.every(t => t && textoCons.includes(t)) && /diagnóstico/.test(textoCons) && !/Ã|Â|�/.test(textoCons),
     'banco · pessoas: texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página)');
   conferir(paDoBanco && pa.primeira_utm_source === 'bio' && pa.primeira_utm_campaign === 'funil-01', 'banco · pessoas: primeira visita bio, funil-01');
-  conferir(ea.length === 1 && ea[0].tipo === 'fim_quiz' && ea[0].lead_score_nota === 96 && ea[0].lead_score_faixa === 'a' && ea[0].lead_score_versao === 3,
+  conferir(ea.length === 2 && ea[0].tipo === 'fim_quiz' && ea[0].lead_score_nota === 96 && ea[0].lead_score_faixa === 'a' && ea[0].lead_score_versao === 3,
     'banco · eventos: um fim_quiz do lead A com nota 96, faixa a, versão 3 do lead score' + (ea[0] ? ' (veio ' + ea[0].lead_score_nota + ', ' + ea[0].lead_score_faixa + ', v' + ea[0].lead_score_versao + ')' : ''));
-  conferir(ea.length === 1 && ea[0].funil === 'funil-01' && ea[0].entrega === 'quiz-01' && ea[0].versao_entrega === 2 && ea[0].utm_source === 'bio' && ea[0].utm_campaign === 'funil-01' && ea[0].gravado_por === 'garcom' && ea[0].id_sessao === q1.sessao,
+  conferir(ea.length === 2 && ea[0].funil === 'funil-01' && ea[0].entrega === 'quiz-01' && ea[0].versao_entrega === 2 && ea[0].utm_source === 'bio' && ea[0].utm_campaign === 'funil-01' && ea[0].gravado_por === 'garcom' && ea[0].id_sessao === q1.sessao,
     'banco · eventos: etiquetas funil-01, quiz-01 versão 2, utm bio e funil-01, gravado pelo garçom, com a sessão que veio da landing');
-  conferir(ea.length === 1 && ea[0].respostas && ea[0].respostas.faturamento === EXEMPLO.faturamento && Array.isArray(ea[0].respostas.numeros), 'banco · eventos: as respostas do quiz gravadas');
+  conferir(ea.length === 2 && ea[0].respostas && ea[0].respostas.faturamento === EXEMPLO.faturamento && Array.isArray(ea[0].respostas.numeros), 'banco · eventos: as respostas do quiz gravadas');
+  conferir(ea[1] && ea[1].tipo === 'interesse_pos_relatorio' && ea[1].clique_fim_quiz === 'quero-conversa' && ea[1].id_sessao === q1.sessao && ea[1].entrega === 'quiz-01' && ea[1].versao_entrega === 2,
+    'banco · o clique do lead A na conversa gratuita: interesse_pos_relatorio, quero-conversa, ligado à pessoa pela sessão (v11; quiz-01-pagina v8)');
   {
     const s1 = await eventosDaSessao(q1.sessao);
     const vis = s1.find(e => e.tipo === 'visita'), ini = s1.find(e => e.tipo === 'inicio_quiz');
-    conferir(s1.map(e => e.tipo).join(',') === 'visita,inicio_quiz,fim_quiz',
-      'banco · a sessão do lead A tem, na ordem, visita, início do quiz e fim do quiz (' + s1.map(e => e.tipo).join(', ') + ')');
+    conferir(s1.map(e => e.tipo).join(',') === 'visita,inicio_quiz,fim_quiz,interesse_pos_relatorio',
+      'banco · a sessão do lead A tem, na ordem, visita, início do quiz, fim do quiz e o clique da conversa gratuita (' + s1.map(e => e.tipo).join(', ') + ')');
     conferir(vis && vis.entrega === 'landing-page-02' && vis.versao_entrega === 1 && vis.utm_source === 'bio' && vis.utm_campaign === 'funil-01' && vis.id_pessoa === pa.id_pessoa && vis.gravado_por === 'garcom',
       'banco · visita: landing-page-02 versão 1, utm bio e funil-01, gravada pelo garçom sem pessoa e ligada à pessoa pelo fim do quiz da mesma sessão (6.2)');
     conferir(ini && ini.entrega === 'quiz-01' && ini.versao_entrega === 2 && ini.id_pessoa === pa.id_pessoa && ini.lead_score_faixa === null && ini.respostas === null,
@@ -1120,8 +1148,8 @@ async function principal() {
   const la = linhaDe(pa.id_pessoa), lb = linhaDe((pb || VAZIO).id_pessoa), lo = linhaDe(idsDeAntes[0]);
   conferir(col(la, 'nome') === PESSOA_A.nome && col(la, 'email') === PESSOA_A.email && col(la, 'telefone') === pa.telefone,
     'linha do lead A: id_pessoa, nome, telefone e e-mail iguais aos do banco');
-  conferir(col(la, 'lead_score_faixa') === 'a' && col(la, 'lead_score_nota') === 96 && col(la, 'consentimento_whatsapp') === 'sim' && col(la, 'consentimento_email') === 'sim' && col(la, 'empresa') === '' && col(la, 'respostas_a_confirmar') === '' && col(la, 'clique_fim_quiz') === '',
-    'linha do lead A: faixa a, nota 96, consentimentos sim, empresa, respostas_a_confirmar e clique vazios');
+  conferir(col(la, 'lead_score_faixa') === 'a' && col(la, 'lead_score_nota') === 96 && col(la, 'consentimento_whatsapp') === 'sim' && col(la, 'consentimento_email') === 'sim' && col(la, 'empresa') === '' && col(la, 'respostas_a_confirmar') === '' && col(la, 'clique_fim_quiz') === 'quero-conversa',
+    'linha do lead A: faixa a, nota 96, consentimentos sim, empresa e respostas_a_confirmar vazios, e o clique quero-conversa da conversa gratuita (v11)');
   conferir(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(col(la, 'entrou_em') || '') && col(la, 'tentativas_feitas') === 0 && col(la, 'estagio') === 'captado' && col(la, 'estado') === '' && col(la, 'data_volta') === '',
     'linha do lead A: entrou_em no horário de Brasília (AAAA-MM-DD HH:MM:SS), 0 tentativas, estágio captado, estado e data_volta vazios');
   conferir(['canal', 'contato_em', 'reuniao_em', 'produto'].every(k => col(la, k) === ''), 'linha do lead A: as colunas do SDR (canal, contato_em, reuniao_em, produto) ficaram vazias');
@@ -1895,14 +1923,15 @@ async function principal() {
     // ··· O quiz do começo ao fim em /analise/, nos três desfechos (as cinco pessoas da seção 6) ···
     {
       const TELAS = ['abertura', 'nome', 'ramo', 'faturamento', 'vendedores', 'quem-marca', 'valor-medio', 'origem', 'crm', 'cargo', 'lembra', 'numeros', 'causa', 'causa2', 'causa3', 'contato'];
-      const pessoas = [['o lead A', q1, 'plano'], ['o eliminatório', q2, 'relatorio-nao'], ['a faixa c do corte', q3, 'relatorio-nao'], ['a faixa b', q4, 'relatorio-saudavel'], ['a caixa desmarcada', q5, 'relatorio-saudavel']];
-      const erradas = pessoas.filter(([, q, fim]) => q.telas.map(t => t[0]).join() !== [...TELAS, fim].join() || !q.telas.every(t => t[1] === '/analise/') || q.endereco.pathname !== '/analise/')
+      // v11: o lead A termina na conversa gratuita e segue, pelo botão dela, para o relatório (uma tela a mais)
+      const pessoas = [['o lead A', q1, ['conversa', 'relatorio']], ['o eliminatório', q2, ['relatorio-nao']], ['a faixa c do corte', q3, ['relatorio-nao']], ['a faixa b', q4, ['relatorio-saudavel']], ['a caixa desmarcada', q5, ['relatorio-saudavel']]];
+      const erradas = pessoas.filter(([, q, fim]) => q.telas.map(t => t[0]).join() !== [...TELAS, ...fim].join() || !q.telas.every(t => t[1] === '/analise/') || q.endereco.pathname !== '/analise/')
         .map(([nome, q]) => nome + ': ' + (q.telas.length ? q.telas.length + ' telas, a última ' + q.telas[q.telas.length - 1].join(' em ') : 'não entrou no quiz'));
       const desfechos = [...new Set(pessoas.map(([, q]) => q.telaFinal))].sort();
       const telasVistas = pessoas.reduce((t, [, q]) => t + q.telas.length, 0);
-      conferir(erradas.length === 0 && desfechos.join() === '#plano,#relatorio-nao,#relatorio-saudavel' && telasVistas === pessoas.length * (TELAS.length + 1),
-        'quiz em /analise/ · do começo ao fim nos três desfechos: a oferta do plano (o lead A), o relatório de quem não se qualifica (o eliminatório e a faixa c do corte) e o relatório do funil saudável ' +
-        '(a faixa b e a caixa desmarcada); nas cinco pessoas, as ' + (TELAS.length + 1) + ' telas na ordem, da abertura ao fim, e em todas o caminho da página é /analise/ (' + telasVistas + ' telas; desfechos: ' + desfechos.join(', ') + ')' +
+      conferir(erradas.length === 0 && desfechos.join() === '#conversa,#relatorio-nao,#relatorio-saudavel' && telasVistas === pessoas.reduce((t, [, , fim]) => t + TELAS.length + fim.length, 0),
+        'quiz em /analise/ · do começo ao fim nos três desfechos: a conversa gratuita com o Junior e o relatório que o botão dela abre (o lead A), o relatório de quem não se qualifica (o eliminatório e a faixa c do corte) e o relatório do funil saudável ' +
+        '(a faixa b e a caixa desmarcada); nas cinco pessoas, as ' + (TELAS.length + 1) + ' telas na ordem, da abertura ao fim (no lead A, ' + (TELAS.length + 2) + '), e em todas o caminho da página é /analise/ (' + telasVistas + ' telas; desfechos: ' + desfechos.join(', ') + ')' +
         (erradas.length ? ', mas: ' + erradas.join(' | ') : ''));
     }
 
