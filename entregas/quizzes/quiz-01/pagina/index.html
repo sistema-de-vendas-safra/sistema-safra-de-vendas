@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 8
+versao: 9
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -89,7 +89,7 @@ Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de 
   --btn:#00ff87; --btn-texto:#04130b; --btn-hover:#5cffb4;
   --f-maq:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
 }
-/* Superfícies escuras (cartões da capa, painel ao vivo, vídeo, relatório de exemplo): as mesmas peças, com os tons trocados por dentro */
+/* Superfícies escuras (cartões da capa, painel ao vivo, relatório de exemplo): as mesmas peças, com os tons trocados por dentro */
 .escuro{
   --tinta:var(--sobre-painel); --ardosia:color-mix(in srgb,var(--sobre-painel) 62%,transparent);
   --linha:color-mix(in srgb,var(--sobre-painel) 18%,transparent); --trilho:color-mix(in srgb,var(--sobre-painel) 14%,transparent);
@@ -169,13 +169,6 @@ body[data-largura="sala"] .progresso__fill{background:var(--tinta);box-shadow:no
 .g-semente{fill:var(--ardosia)}
 .g-fruto circle{fill:var(--trigo)}
 .g-folha{fill:var(--folha)}
-
-/* ··· Peças dos vídeos (pílula, aviso e play) ··· */
-.pilula{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sobre-painel) 22%,transparent);background:color-mix(in srgb,var(--painel) 78%,transparent);font-family:var(--f-dado);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sobre-painel) 72%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pilula::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--folha-viva)}
-.cartao__aviso{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--sobre-painel) 10%,transparent);font-family:var(--f-dado);font-size:12.5px;line-height:1.55}
-.play{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,var(--folha-viva) 92%,transparent);box-shadow:0 0 0 8px color-mix(in srgb,var(--folha-viva) 16%,transparent),0 12px 30px -10px rgba(0,0,0,.55)}
-.play::before{content:"";margin-left:5px;border-left:18px solid var(--sobre-folha);border-top:11px solid transparent;border-bottom:11px solid transparent}
 
 /* ··· Abertura do teste (A1 a A9): página clara, peça a peça como a do /assessment do original.
    Relatório de exemplo grande à esquerda (cartão escuro, inclinado, clicável); etiqueta, título, texto, botão preto e nota à direita ··· */
@@ -621,17 +614,6 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 .tabela td{font-family:var(--f-titulo);font-weight:600;font-size:1.1rem;padding:10px 10px 10px 0;border-top:1px solid color-mix(in srgb,var(--trigo) 45%,transparent)}
 .tabela td:last-child,.tabela th:last-child{text-align:right;padding-right:0}
 
-/* Vídeo do Junior no relatório (T23) */
-.video{position:relative;isolation:isolate;aspect-ratio:16/9;max-width:100%;border-radius:18px;overflow:hidden;background:var(--painel)}
-.video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 26%}
-.video__veu{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,color-mix(in srgb,var(--painel) 85%,transparent))}
-.video__play{position:absolute;inset:0;width:100%;padding:0;border:0;background:transparent;cursor:pointer;display:grid;place-items:center}
-.video__play:focus-visible{outline:2px solid var(--folha-viva);outline-offset:-6px;border-radius:18px}
-.video__play:hover .play{transform:scale(1.06)}
-.video .play{transition:transform .2s var(--curva)}
-.video .pilula{position:absolute;left:16px;bottom:14px;max-width:calc(100% - 32px)}
-.video-bloco .cartao__aviso{margin-top:12px;background:var(--trigo-suave);color:var(--tinta)}
-
 /* Chamada final */
 .cta{background:radial-gradient(ellipse 70% 170px at 20% 0%,color-mix(in srgb,var(--folha) 17%,transparent),transparent 72%) no-repeat,linear-gradient(180deg,#07070d 0%,var(--verde-fundo) 100%);color:var(--sobre-painel);border:1px solid color-mix(in srgb,var(--folha) 32%,transparent);border-radius:22px;padding:clamp(24px,4.5vw,44px)}
 .cta .secao__olho{color:color-mix(in srgb,var(--sobre-painel) 65%,transparent)}
@@ -650,11 +632,6 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 .fichas button[aria-pressed="true"]{background:var(--folha);border-color:var(--folha);color:var(--sobre-folha)}
 .agenda .botao{justify-self:start}
 .cta__nota{margin:18px 0 0!important;padding:14px 16px;border-radius:12px;background:color-mix(in srgb,var(--sobre-painel) 10%,transparent);font-family:var(--f-dado);font-size:13px!important;line-height:1.55}
-.acoes{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:-28px}
-.acoes .botao{padding:11px 20px;font-size:.95rem}
-.acoes .fino{flex-basis:100%}
-.rodape{font-family:var(--f-dado);font-size:11.5px;line-height:1.7;color:var(--ardosia);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;border-top:1px solid var(--linha);padding-top:16px;margin-top:-24px}
-.rodape .marca{font-size:12px}
 
 /* Erro (T28) */
 .erro{max-width:480px;margin-inline:auto;padding-block:72px 24px;text-align:center}
@@ -810,9 +787,8 @@ const ETIQUETAS = {funil:'funil-01', entrega:'quiz-01', versao_entrega:2};
 const UTM_ACEITAS = {utm_source:['stories', 'bio', 'reels', 'email', 'whatsapp'], utm_campaign:['funil-01']};
 
 /* ··· Foto e glifos ··· */
-// Foto real do Junior (mesma do site da Triad). Vira a capa do vídeo até o vídeo ser gravado.
+// Foto real do Junior (mesma do site da Triad), no avatar da conversa.
 const FOTO = 'poster-junior.jpg';
-const TRIAD = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>';
 const SEMENTE = '<svg class="g-semente" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6c3.2 3.2 3.2 9.6 0 12.8-3.2-3.2-3.2-9.6 0-12.8z"/></svg>';
 const FRUTO = '<svg class="g-fruto" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="9.6" r="5.4"/><path class="g-folha" d="M8.2 4.4c.6-2 2.6-3 4.6-2.6-.5 2-2.4 2.9-4.6 2.6z"/></svg>';
 // Ícones de traço (ficha do painel, abertura)
@@ -1552,22 +1528,8 @@ function telaRelatorio(t){
       '<p class="mesa__nota">Conta feita com os seus números, não é promessa. Hoje: ' + k.hoje + ' vendas, ' + mil(k.hoje * c.ticket) + ' por mês. Com as etapas na meta: ' + k.naMeta + ' vendas, ' + mil(k.naMeta * c.ticket) + '. Valor médio da venda: R$ ' + num(c.ticket, 0) + '.</p></section>');
   }
 
-  const video = '<section class="video-bloco"><p class="secao__olho">antes de decidir</p><h2 class="secao__titulo">1 minuto com o Junior sobre o seu diagnóstico</h2>' +
-    '<div class="video escuro"><img src="' + FOTO + '" alt="" loading="lazy" width="928" height="1152"><span class="video__veu"></span>' +
-    '<button type="button" class="video__play" data-acao="aviso" data-alvo="avisoVideoRel" data-aviso="Protótipo: o vídeo ainda vai ser gravado. Na versão final ele toca aqui, com som, e não trava nada: a chamada abaixo fica liberada o tempo todo." aria-label="Assistir ao vídeo do Junior"><span class="play" aria-hidden="true"></span></button>' +
-    '<span class="pilula">vídeo do Junior · cerca de 1 min</span></div>' +
-    '<p class="cartao__aviso" id="avisoVideoRel" role="status" hidden></p></section>';
-
-  const acoes = '<div class="acoes"><button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoAcoes" data-aviso="Protótipo: na versão final, copia o link do seu diagnóstico para mandar a um sócio ou gestor.">Compartilhar</button>' +
-    '<button type="button" class="botao botao--linha" data-acao="aviso" data-alvo="avisoAcoes" data-aviso="Protótipo: na versão final, baixa o diagnóstico em PDF.">Baixar PDF</button>' +
-    '<p class="fino" id="avisoAcoes" role="status" hidden></p></div>';
-
-  const rodape = '<footer class="rodape"><span class="marca">' + TRIAD + fato('nome_agencia') + '</span>' +
-    '<span>Metas usadas: ' + ETAPAS.map((e, i) => e.nome.toLowerCase() + ' ' + METAS[i] + '%').join(' · ') + '. Cada etapa é medida contra a anterior.</span>' +
-    '<span>Final do quiz: [a definir: critério de qualificação]</span></footer>';
-
   // aberto pelo "Ver meu diagnóstico" da conversa gratuita, sem o bloco de chamada: a pessoa já respondeu na conversa
-  return '<article class="relatorio">' + topo + funil + selos + quadros(k, saudavel, est) + fracos + mesa + video + (semChamada ? '' : cta(t.q === false ? 'nao' : 'qualificado', saudavel)) + acoes + rodape + '</article>';
+  return '<article class="relatorio">' + topo + funil + selos + quadros(k, saudavel, est) + fracos + mesa + (semChamada ? '' : cta(t.q === false ? 'nao' : 'qualificado', saudavel)) + '</article>';
 }
 
 function telaErro(){
@@ -2011,7 +1973,6 @@ palco.addEventListener('click', e => {
     // o botão da conversa gratuita: o relatório do qualificado, sem o bloco de chamada
     case 'ver-diagnostico': mostrar('relatorio', {fluxo:true, semChamada:true}); break;
     case 'tentar': mostrar('montando', {fluxo:true}); break;
-    case 'aviso': { const alvo = document.getElementById(b.dataset.alvo); if (alvo) { alvo.textContent = b.dataset.aviso; alvo.hidden = false; } break; }
     case 'corrigir-email':
       R.contato.email = R.contato.email.split('@')[0] + '@' + b.dataset.dominio; $('#email').value = R.contato.email; validarContato(); break;
     case 'marcar':

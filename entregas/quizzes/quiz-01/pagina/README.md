@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 8
+versao: 9
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -74,6 +74,17 @@ No topo do script, quatro objetos concentram o que se ajusta:
 **Texto.** Como está (7.5, #110), salvo a caixa de aceite e a linha da cópia no relatório, que depende dela (M21). Desde a v8, a oferta do plano de 90 dias saiu do fim do quiz, e com ela a fala 2 do plano, que estava sem o percentual (perguntas 31.3 e 34.1); no lugar, a conversa gratuita com o Junior, com os textos aprovados pelo Otávio em 15/11/2026 (abaixo, "O que mudou na versão 8"). A nota do "Tenho interesse" é a do lado do lead score ("Anotado. Seu interesse fica registrado com o seu diagnóstico."), que já estava na página, porque vale o corte mais restritivo e ela não promete ligação (13.7; pergunta 31.14).
 
 **Visual.** O do mockup, em conflito (conflito-18), salvo a abertura, que desde a v4 tem o cabeçalho e o botão da landing-page-02 (abaixo). Duas mudanças técnicas da v3: o `<!doctype html>` e a meta charset como as duas primeiras linhas (09.1), e as fontes (Inter, Space Grotesk e Permanent Marker, de licença livre) servidas junto com a página, em fontes/, sem nenhum pedido ao Google (10.7). Os arquivos de fonte não ficam nesta pasta: são instalados pelo npm em nucleo/ferramentas/fontes/ (lista em fontes.json) e o montador do site os copia para /quiz/fontes/, com a licença de cada um. Aberta direto do arquivo, sem a pasta fontes/, a página cai na letra do sistema, sem pedir nada a ninguém.
+
+## O que mudou na versão 9
+
+Pedido do Otávio, 16/11/2026, na conversa com o Claude: "Agora eu quero que vc elimine a parte anexada de todos os relatórios.", com um print do fim do relatório, e depois "é a ultima parte do quiz, essa da imagem".
+
+- **Saiu o fim de todos os relatórios** (qualificado, não qualificado, por estimativa, funil saudável e saudável não qualificado), em três peças: o vídeo ("Antes de decidir", "1 minuto com o Junior sobre o seu diagnóstico", a pílula "vídeo do Junior · cerca de 1 min" e o aviso de protótipo do play); os botões "Compartilhar" e "Baixar PDF", com o aviso de protótipo deles; e o rodapé (a marca Triad, "Metas usadas: ..." e "Final do quiz: [a definir: critério de qualificação]"). Agora o relatório termina no dinheiro na mesa ou, onde existe, na chamada.
+- **Saiu junto o que só essas peças usavam:** os estilos .video, .video-bloco, .pilula, .play, .cartao__aviso, .acoes e .rodape, a constante TRIAD (o símbolo do rodapé) e a ação "aviso" do programa.
+- **Ficou:** o botão "Cookies" (o link do consentimento, que é da montagem do site e aparece em todas as páginas, não do relatório); a chamada de cada relatório, como na v8 (o relatório aberto pela conversa continua sem ela); a foto do Junior, que a conversa usa; o nome da agência, que o cabeçalho usa; e os botões "Compartilhar" e "Baixar PDF" desativados do painel lateral que acompanha o quiz, que não é relatório (pergunta no log.md).
+- **O critério de qualificação** (conflito-16) continua a definir, mas deixa de aparecer na tela: só o rodapé o mostrava.
+- **Não mudou:** as outras telas e textos, as regras de qualificação, a conta, o envio, a medição, os eventos e a etiqueta que a página manda ao banco (quiz-01, versão 2).
+- **Testes:** o teste do quiz confere, nas três larguras, que nenhum dos cinco relatórios (pelo painel "Telas"), nem o do qualificado aberto pela conversa, nem o do não qualificado pelo caminho do quiz, tem o vídeo, os dois botões ou o rodapé, e que nada deles sobra no arquivo da página: 425 de 425 (eram 388).
 
 ## O que mudou na versão 8
 
@@ -325,7 +336,7 @@ Tudo certo: todas as conferências passaram
 
 - Decidir os conflitos 16 a 19 e o nome da Análise (conflito-02) e da agência (conflito-07).
 - Conferir o texto da caixa de aceite (31.1) e decidir o que acontece com quem desmarca (30.3, 31.2) e a volta do percentual (31.3).
-- O link da política de privacidade no consentimento; o número do WhatsApp; os vídeos.
+- O link da política de privacidade no consentimento; o número do WhatsApp.
 - A migração 001, o catalogo-prototipo.sql v2 e o garçom v4 no Supabase e na Cloudflare (roteiro da etapa 35), para o início do quiz, o clique e a versão 2 gravarem de verdade; antes de tráfego real, a proteção contra robô e o limite de pedidos (log.md, Pendências).
 - O relatório usar os números da pessoa no lugar dos cenários de exemplo do protótipo (14.7: fica para a versão que for ao ar).
 - A montagem tirar os comentários de cabeçalho dos HTML antes de ir ao ar com gente de verdade (23.9: fica para a versão que for ao ar).

@@ -18,6 +18,9 @@
 // (exemplo) e "Agora não" (falha) dão cada um a sua resposta e mandam os cliques quero-conversa e agora-nao; o botão
 // "Ver meu diagnóstico" abre o relatório do qualificado sem o bloco de chamada, que pelo painel "Telas" continua lá; e nenhum
 // texto da oferta antiga sobra, nem no arquivo da página.
+// Fim do relatório (quiz-01-pagina v9; pedido do Otávio, 16/11/2026): nenhum dos cinco relatórios tem mais o vídeo
+// "Antes de decidir · 1 minuto com o Junior", os botões "Compartilhar" e "Baixar PDF" nem o rodapé (Triad, metas usadas e
+// "Final do quiz"), nem pelo caminho do quiz nem pelo painel "Telas"; e nada disso sobra no arquivo da página.
 // Abertura (v4): o quiz abre nela, sem a capa, com o cabeçalho e o botão "Fazer a Análise" da landing-page-02. No computador,
 // título, promessa e botão ficam parados enquanto o relatório de exemplo rola; no celular, o texto vem antes e o botão fica fixo
 // no rodapé quando o da página sai da tela. A entrada no quiz é pelo botão da abertura, pelo do cabeçalho (eliminatório) e,
@@ -68,6 +71,10 @@ const CONVERSA = {
 // Textos da oferta antiga do plano de 90 dias (até a v7), que não podem sobrar
 const OFERTA_ANTIGA = ['Quer receber o seu plano de ação de 90 dias?', 'Quero ver como é', 'recado rápido', 'placeholder · vídeo', 'Envie o meu plano de ação.'];
 const RELATORIO_SEM_CHAMADA = 'Quer resolver isso junto com a nossa equipe?';
+// O fim que saiu de todos os relatórios na v9: o vídeo, os dois botões e o rodapé (textos e peças)
+const FIM_ANTIGO = { textos: ['1 minuto com o Junior', 'vídeo do Junior', 'Compartilhar', 'Baixar PDF', 'Metas usadas', 'Final do quiz'],
+  pecas: ['.video-bloco', '.video', '.acoes', '.rodape', 'footer'] };
+const RELATORIOS = ['relatorio', 'relatorio-nao', 'relatorio-chute', 'relatorio-saudavel', 'relatorio-saudavel-nao'];
 const FORMATO_SESSAO = /^sessao-[a-z0-9-]{1,60}$/;
 // nada disto pode aparecer no console da página
 const DADO_PESSOAL = /TESTE|teste\.invalid|90000|pacote fim_quiz|"pessoa"/;
@@ -178,12 +185,17 @@ const lerConversa = page => page.evaluate(antigos => {
     botaoSeta: !!(bt && bt.classList.contains('botao') && bt.querySelector('.seta')), foco: !!bt && document.activeElement === bt,
     eu: eu[eu.length - 1] || '', sobras: antigos.filter(x => texto.includes(x)) };
 }, OFERTA_ANTIGA);
-const lerRelatorio = page => page.evaluate(([antigos, chamada]) => {
+const lerRelatorio = page => page.evaluate(([antigos, chamada, fimAntigo]) => {
   const texto = document.body.innerText;
+  const rel = document.querySelector('.relatorio');
+  const textoRel = rel ? rel.textContent : '';
   return { hash: location.hash, cta: document.querySelectorAll('.relatorio .cta').length, chamada: texto.includes(chamada),
     botoes: ['marcar', 'whats', 'agora-nao'].filter(a => document.querySelector('.relatorio [data-acao="' + a + '"]')),
-    qualificado: !!document.querySelector('.relatorio .rel-topo h1'), sobras: antigos.filter(x => texto.includes(x)) };
-}, [OFERTA_ANTIGA, RELATORIO_SEM_CHAMADA]);
+    qualificado: !!document.querySelector('.relatorio .rel-topo h1'), sobras: antigos.filter(x => texto.includes(x)),
+    tem: !!rel, fim: fimAntigo.textos.filter(x => textoRel.toLowerCase().includes(x.toLowerCase())).concat(fimAntigo.pecas.filter(x => rel && rel.querySelector(x))) };
+}, [OFERTA_ANTIGA, RELATORIO_SEM_CHAMADA, FIM_ANTIGO]);
+// v9: o relatório que está na tela termina no dinheiro na mesa ou na chamada, sem o vídeo, os botões e o rodapé
+const semFimAntigo = (rl, onde) => conferir(rl.tem && rl.fim.length === 0, 'fim do relatório (v9): ' + onde + ' sem o vídeo, sem "Compartilhar" e "Baixar PDF" e sem o rodapé' + (rl.fim.length ? ' (sobrou: ' + rl.fim.join(' | ') + ')' : ''));
 
 // Percorre da abertura até a tela de contato; devolve o que viu dos campos de número e do valor médio.
 // entrada: 'botao' (o da abertura), 'cabecalho' (o do cabeçalho da landing-page-02) ou 'barra' (o fixo no rodapé, só no celular)
@@ -255,6 +267,9 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     const fonte = fs.readFileSync(path.join(PASTA, 'index.html'), 'utf8');
     const sobras = OFERTA_ANTIGA.concat(["'video-time'", "'plano-exemplo'", 'WHATS', 'planoVolta']).filter(x => fonte.includes(x));
     conferir(sobras.length === 0, 'arquivo da página: nenhum texto da oferta antiga do plano de 90 dias, nem as telas plano-exemplo e video-time (' + (sobras.length ? 'sobrou: ' + sobras.join(' | ') : OFERTA_ANTIGA.join(' | ')) + ')');
+    // v9: o fim antigo dos relatórios também não sobra no programa (nem os estilos dele)
+    const fimSobras = ['antes de decidir', '1 minuto com o Junior', 'avisoVideoRel', 'avisoAcoes', 'baixa o diagnóstico em PDF', 'Metas usadas', 'Final do quiz', 'video-bloco', 'class="rodape"', '.rodape{', '.acoes{', '.video{', 'const TRIAD', "case 'aviso'"].filter(x => fonte.includes(x));
+    conferir(fimSobras.length === 0, 'arquivo da página (v9): nada do fim antigo dos relatórios (vídeo, "Compartilhar" e "Baixar PDF", rodapé) nem os estilos e trechos só dele' + (fimSobras.length ? ' (sobrou: ' + fimSobras.join(' | ') + ')' : ''));
   }
 
   for (const largura of [375, 360, 1440]) {
@@ -358,6 +373,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     let rl = await lerRelatorio(t.page);
     conferir(rl.qualificado && rl.cta === 0 && !rl.chamada && rl.botoes.length === 0 && rl.sobras.length === 0,
       'conversa (v8): "Ver meu diagnóstico" abre o relatório do qualificado (#relatorio) sem o bloco de chamada (nem "' + RELATORIO_SEM_CHAMADA + '", nem os botões dele) e sem texto da oferta antiga');
+    semFimAntigo(rl, 'o relatório aberto pelo "Ver meu diagnóstico"');
     conferir(doTipo(t, 'interesse_pos_relatorio').length === 1, 'conversa (v8): abrir o relatório não manda clique nenhum');
     // pelo painel "Telas", o mesmo relatório continua com o bloco de chamada
     await t.page.click('#protoBotao');
@@ -365,6 +381,15 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.waitForTimeout(300);
     rl = await lerRelatorio(t.page);
     conferir(rl.hash === '#relatorio' && rl.cta === 1 && rl.chamada && rl.botoes.join() === 'marcar,whats,agora-nao', 'relatório pelo painel "Telas" (v8): continua com o bloco de chamada, como antes (' + rl.botoes.join(', ') + ')');
+    // v9: os cinco relatórios, pelo painel "Telas", sem o fim antigo (a chamada de cada um fica)
+    for (const id of RELATORIOS) {
+      await t.page.click('#protoBotao');
+      await t.page.click('#protoLista [data-ir="' + id + '"]');
+      await t.page.waitForTimeout(300);
+      const r5 = await lerRelatorio(t.page);
+      conferir(r5.hash === '#' + id && r5.cta === 1, 'relatório pelo painel "Telas" (v9): #' + id + ' abre com a chamada dele');
+      semFimAntigo(r5, '#' + id + ' pelo painel');
+    }
     conferir(semDadoNoConsole(t), 'exemplo: console sem o pacote e sem dado de pessoa');
     conferir(t.externas.length === 0, 'exemplo: nenhuma requisição para outro endereço' + (t.externas.length ? ' (' + t.externas.join(', ') + ')' : ''));
     conferir(LISTA_FONTES.filter(f => !f.arquivo.startsWith('permanent-marker')).every(f => t.pedidos.includes(BASE + 'analise/fontes/' + f.arquivo)), 'exemplo: as fontes vêm de /analise/fontes/, junto com a página (10.7; a de mão só no relatório)');
@@ -377,6 +402,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.click('#enviar');
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-eliminatorio', largura);
+    semFimAntigo(await lerRelatorio(t.page), 'o relatório do não qualificado pelo caminho do quiz');
     p = t.pacotes[0];
     conferir(t.envios.length === 1, 'eliminatório: um envio');
     conferir(p && p.evento.lead_score_faixa === 'eliminatorio' && p.evento.lead_score_nota === 81, 'eliminatório: faixa eliminatorio, com a nota guardada (14.8; veio ' + (p && p.evento.lead_score_faixa) + ', nota ' + (p && p.evento.lead_score_nota) + ')');
