@@ -2,6 +2,14 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-16 · publicação do quiz-01 v9
+
+Pedido do Otávio (16/11/2026, na conversa com o Claude): "pode publicar."
+
+- **Publicado em 16/11/2026, 11h37 (Brasília)**, da main no 0c85760: Current Version ID **496f06ae-b31e-4373-b0f6-0b4d65ca8457**. Versão anterior: 437989f3-2d9f-407b-9a83-846b5c515402 (15/11/2026, 10h07). Mesmo jeito de publicar (APLICAR-21, passo 2: montagem e wrangler deploy com o token de API da nuvem, sem mostrar o valor). Montagem "Tudo certo"; 1 arquivo enviado (a página do quiz), 334 já no ar; Worker e Custom Domain sem erro.
+- Conferido no ar: https://svsafra.gotriad.com.br/analise/ na versão 9, sem nenhum texto do fim antigo ("1 minuto com o Junior", os avisos do vídeo e dos botões, "Metas usadas", "Final do quiz", o rodapé, a ação "aviso") e com a conversa gratuita; / e /politica-de-privacidade/ com 200; o endereço antigo levando a /analise/ do novo (302). No navegador, em 375, #relatorio, #relatorio-nao e #relatorio-saudavel sem o vídeo, os botões e o rodapé, cada um com a sua chamada. Nenhum lead foi enviado nesta conferência.
+- entregas/prototipo-funil-01/README.md v16 para v17 (prototipo-funil-01), só a linha da publicação; index.md: as linhas do protótipo e da página do quiz.
+
 ## 2026-11-16 · quiz-01 v9 · o fim dos relatórios saiu (vídeo, Compartilhar e Baixar PDF, rodapé)
 
 Pedido do Otávio (16/11/2026, na conversa com o Claude): "Agora eu quero que vc elimine a parte anexada de todos os relatórios.", com um print do fim do relatório, e depois "é a ultima parte do quiz, essa da imagem". O print mostrava o vídeo ("Antes de decidir · 1 minuto com o Junior sobre o seu diagnóstico"), os botões "Compartilhar" e "Baixar PDF" e o rodapé (Triad, "Metas usadas: ..." e "Final do quiz: [a definir: critério de qualificação]").
