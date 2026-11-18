@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-22
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -128,7 +128,7 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado".
 
 ### 2.2 · Pedir a publicação
 
-**Faça:** numa conversa do Claude Code online, neste repositório, escreva: **"pode publicar pelo APLICAR-22"** e cole junto o resultado do passo 1.3 ("20 de 20"). O Claude abre um **formulário seguro** para a chave da Cloudflare (endereço api.cloudflare.com). Copie a chave na tela do 2.1, cole **só no formulário** e salve. O Claude nunca vê o valor.
+**Faça:** nas configurações do ambiente da nuvem (menu do ambiente, no título da sessão, **Edit**), em **Environment variables**, crie `CLOUDFLARE_API_TOKEN` com o valor da chave do 2.1. **Não use Network secrets** ("API credentials") para esta chave: lá, o proxy troca também a chave temporária que a Cloudflare dá ao wrangler para enviar os arquivos, e a publicação para no meio (401; aconteceu em 18/11/2026, às 20h17, sem mudar nada no ar). Depois, numa sessão nova do Claude Code online, neste repositório, escreva: **"pode publicar pelo APLICAR-22"** e cole junto o resultado do passo 1.3 ("20 de 20"). Nunca cole a chave no chat.
 
 **Deu certo se:** o Claude responde com o **Current Version ID** novo e segue para o passo 3.
 
