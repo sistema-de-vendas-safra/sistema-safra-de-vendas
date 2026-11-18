@@ -35,8 +35,8 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
    Manda a visita ao garçom (POST /api/evento, mesma origem) sem esperar a resposta: se falhar, a visita se perde,
    sem aviso e sem nova tentativa. As utm vão como vieram no endereço, ou vazias (10.8). Aberta do arquivo, não manda nada.
    Etiquetas: entrega landing-page-02, versão 1, que precisa da linha no catálogo (dados/banco/catalogo-prototipo.sql v3).
-   Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /analise/ com as utm presentes e o mesmo
-   código, no parâmetro id_sessao (10.5). O clique é pego antes do programa da página, que antes só rolava a tela.
+   Os botões que começam por "Fazer a Análise" ou "Faça uma Análise" levam a /analise/ com as utm presentes, o fbclid
+   (versão 6; #121) e o mesmo código, no parâmetro id_sessao (10.5). O clique é pego antes do programa da página, que antes só rolava a tela.
    Em quatro lugares o programa da página desenha a chamada como um bloco com o nome interno "Botão/Primário", não como
    botão de verdade: o "Fazer a Análise" do cabeçalho, no celular (levado ao quiz desde a versão 3, decisão #118);
    a chamada do topo da página, no celular, que antes só rolava a tela até o cartão da oferta; e a chamada do cartão
@@ -78,7 +78,8 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
     } catch (e) {}
   }
   var ida = new URLSearchParams();
-  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+  // fbclid entra no repasse desde a versão 6 (#121, 18/11/2026): o quiz lê e grava a origem do anúncio
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach(function (k) {
     var valor = params.get(k);
     if (valor) ida.set(k, valor);
   });

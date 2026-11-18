@@ -1,6 +1,6 @@
 ---
 id: planilha-sdr-funil-01
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ depende_de:
   - id: funil-01-planilha-sdr
     versao: 3
   - id: garcom
-    versao: 5
+    versao: 6
   - id: banco-rascunho
     versao: 5
   - id: banco-migracao-002
@@ -16,11 +16,13 @@ depende_de:
   - id: regra-seguranca
     versao: 3
   - id: decisoes
-    versao: 4
+    versao: 11
 desatualizado: true
 ---
 
 # Planilha do SDR do funil-01 · Apps Script
+
+**Versão 4 (18/11/2026, #121).** A aba respostas ganha onze colunas no fim, depois de "outras respostas", sem mudar a ordem das de antes: utm_source, utm_medium, utm_campaign, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado ("sim" ou "não"), do mesmo fim de quiz que a função da planilha já usa (leads_para_planilha v5, migração 003). A aba fila não muda. Com o banco sem a 003, as onze ficam vazias. O cabeçalho é conferido pelas primeiras colunas: a planilha com o cabeçalho novo e o código de antes continua funcionando; a planilha com o código novo e o cabeçalho de antes para e avisa (cabecalho-diferente) até o cabeçalho ser posto. Por isso, na publicação, o cabeçalho vem antes do código (APLICAR-22, passo 4). Teste local: 70 de 70.
 
 > **SÓ DADOS DE TESTE ATÉ A DECISÃO.** Dado pessoal não entra no Google Drive (nucleo/regras/seguranca.md, regra 4), e onde a planilha do SDR mora segue em aberto (prompts/05-fila-perguntas.md, 5.4; funis/funil-01/planilha-sdr.md, "Onde a planilha mora"). Esta planilha pode ser criada no Drive do Safra **só para o teste**, com leads de mentira: nome começando por TESTE e e-mail terminado em @teste.invalid (#102). Com gente de verdade, não liga antes da decisão (pergunta 24.1).
 

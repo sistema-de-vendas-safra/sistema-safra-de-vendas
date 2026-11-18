@@ -1,7 +1,7 @@
 /*
  * ---
  * id: planilha-sdr-funil-01
- * versao: 3
+ * versao: 4
  * status: rascunho
  * aprovado_por:
  *   otavio: pendente
@@ -9,15 +9,17 @@
  *   - id: funil-01-planilha-sdr
  *     versao: 3
  *   - id: garcom
- *     versao: 5
+ *     versao: 6
  *   - id: banco-rascunho
  *     versao: 5
  *   - id: banco-migracao-002
  *     versao: 1
+ *   - id: banco-migracao-003
+ *     versao: 1
  *   - id: regra-seguranca
  *     versao: 3
  *   - id: decisoes
- *     versao: 4
+ *     versao: 11
  * desatualizado: true
  * ---
  *
@@ -106,8 +108,13 @@ var COLUNAS_RESPOSTAS = [
   'leads por mês', 'pré-qualificados', 'agendados', 'conversas realizadas', 'vendas fechadas',
   'chute de comparecimento',
   'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato',
-  'outras respostas'
+  'outras respostas',
+  // v4 (#121; migração 003): a origem e os ids do lead, no fim, sem mudar a ordem das de antes
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+  'fbclid', 'fbp', 'fbc', 'id_lead', 'id_qualificado', 'qualificado'
 ];
+// v4: as onze colunas da origem e dos ids, como vêm do banco (qualificado vira "sim" ou "não")
+var COLUNAS_ORIGEM_E_IDS = COLUNAS_RESPOSTAS.slice(-11);
 // Cada chave de respostas (o objeto que a página manda no fim do quiz) e a coluna dela.
 var COLUNA_DA_RESPOSTA = {
   'ramo': 'ramo', 'faturamento': 'faturamento', 'vendedores': 'vendedores',
@@ -127,7 +134,9 @@ var COLUNA_DO_NUMERO = {
 var COLUNAS_TEXTO_RESPOSTAS = [
   'nome', 'ramo', 'faturamento', 'vendedores', 'quem marca a conversa', 'origem dos leads', 'CRM',
   'cargo', 'lembra dos números', 'chute de comparecimento',
-  'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato', 'outras respostas'
+  'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato', 'outras respostas',
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+  'fbclid', 'fbp', 'fbc', 'id_lead', 'id_qualificado', 'qualificado'
 ];
 
 var ROTA = '/api/planilha/leads-novos';
@@ -488,6 +497,11 @@ function linhaDeRespostas_(lead) {
     }
   }
   valores['outras respostas'] = outras.join('; ');
+  // v4: a origem e os ids (o banco sem a migração 003 não manda: ficam vazios)
+  for (var k = 0; k < COLUNAS_ORIGEM_E_IDS.length; k++) {
+    var nomeOrigem = COLUNAS_ORIGEM_E_IDS[k], vo = lead[nomeOrigem];
+    valores[nomeOrigem] = nomeOrigem === 'qualificado' ? (vo === true ? 'sim' : vo === false ? 'não' : '') : (vo === null || vo === undefined ? '' : String(vo));
+  }
   return COLUNAS_RESPOSTAS.map(function (nome) {
     var v = valores[nome];
     // texto que precisa continuar texto (a porcentagem do funil): o apóstrofo na frente não aparece

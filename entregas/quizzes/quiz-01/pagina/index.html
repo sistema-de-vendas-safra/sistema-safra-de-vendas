@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 9
+versao: 10
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -19,15 +19,15 @@ depende_de:
   - id: ficha-de-fatos
     versao: 5
   - id: planta-do-banco
-    versao: 4
+    versao: 5
   - id: funil-01
-    versao: 3
+    versao: 4
   - id: lacunas
     versao: 7
   - id: garcom
-    versao: 4
+    versao: 6
   - id: decisoes
-    versao: 7
+    versao: 11
   - id: landing-page-02
     versao: 2
   - id: politica-de-privacidade
@@ -38,8 +38,9 @@ Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-r
 Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo a caixa de aceite (M16; #104) e, na v4 (pedido do Otavio, 12/11/2026), a capa (C1 a C11), que saiu do funil, e o botao da abertura, agora "Fazer a Analise"; e, na v5 (#117, 13/11/2026), o nome publico da Analise e o nome da agencia vindos da ficha de fatos, e "politica de privacidade" como link para a pagina da politica (/politica-de-privacidade/, numa aba nova). Visual do mockup (conflito-18), agora com doctype (09.1) e as fontes servidas junto com a pagina (10.7).
 Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-page-02 (logo do Safra e "Fazer a Analise"). No computador, so o relatorio de exemplo rola; no celular, o texto vem antes do relatorio e o botao fica fixo no rodape quando o da pagina sai da tela.
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
+Origem, ids e avisos ao GTM (v10; #121, 18/11/2026): o pacote do fim do quiz leva tambem utm_medium, utm_content, utm_term e fbclid, lidos do endereco e saneados, e id_lead, id_qualificado e qualificado (pela regra do fim, CRITERIO_DO_FIM). Nada fica guardado no navegador. Depois do 201 do garcom, a pagina avisa o GTM pelo dataLayer (quiz_enviado e, se qualificado, quiz_qualificado), so com os ids; quiz_iniciado vai na primeira resposta. Nenhuma resposta nem dado da pessoa vai ao dataLayer. Nada da Meta.
 -->
-<title>[a definir: nome público da Análise]</title>
+<title>Análise Estratégica do Sistema de Vendas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Fontes servidas junto com a página (10.7; v3): nada do Google. Os arquivos vêm dos pacotes do npm em nucleo/ferramentas/fontes/
@@ -682,7 +683,7 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 
 <header class="topo" id="topo">
   <div class="topo__linha">
-    <span class="marca"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>[a definir: nome da agência]</span>
+    <span class="marca"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 15 14H1z"/></svg>Triad</span>
     <span class="topo__passo" id="passo"></span>
   </div>
   <div class="progresso" id="progresso" role="progressbar" aria-label="Progresso do diagnóstico" aria-valuemin="0" aria-valuemax="100" hidden><div class="progresso__fill" id="fill"></div></div>
@@ -783,8 +784,13 @@ const CRITERIO_DO_FIM = 'mais-restritivo';
    no catálogo (dados/banco/catalogo-prototipo.sql, linha quiz-01 versão 2; 10.15). A versão 1 foi a da página v2. */
 const ETIQUETAS = {funil:'funil-01', entrega:'quiz-01', versao_entrega:2};
 // Valores aceitos de cada utm, da tabela de origens do funil-01 (funis/funil-01/funil.md, "Origens e links"). Fora da lista: vazio (pergunta 5.5).
-// meta-ads está reservada e fora do MVP: fica fora da lista até sair da reserva.
-const UTM_ACEITAS = {utm_source:['stories', 'bio', 'reels', 'email', 'whatsapp'], utm_campaign:['funil-01']};
+// meta-ads saiu da reserva na v10 (#121). utm_campaign continua fechada em funil-01.
+const UTM_ACEITAS = {utm_source:['stories', 'bio', 'reels', 'email', 'whatsapp', 'meta-ads'], utm_campaign:['funil-01']};
+// v10 (#121): utm de texto livre, saneadas (minúsculas; letras, números, hífen e sublinhado; até 100). Fora disso: vazio.
+const UTM_LIVRES = ['utm_medium', 'utm_content', 'utm_term'];
+const UTM_LIVRE = /^[a-z0-9_-]{1,100}$/;
+// fbclid: como veio (maiúsculas contam), só letras, números, hífen e sublinhado, até 500. Fora disso: vazio.
+const FBCLID = /^[A-Za-z0-9_-]{1,500}$/;
 
 /* ··· Foto e glifos ··· */
 // Foto real do Junior (mesma do site da Triad), no avatar da conversa.
@@ -1607,10 +1613,24 @@ function novaSessao(){
   return 'sessao-' + Date.now().toString(36) + '-' + sorte;
 }
 const ID_SESSAO = (() => { const v = new URLSearchParams(location.search).get('id_sessao') || ''; return FORMATO_SESSAO.test(v) ? v : novaSessao(); })();
-function lerUtm(){
+// A origem vem só do endereço: a landing repassa as cinco utm e o fbclid ao /analise/, e quem entra direto no /analise/
+// traz os mesmos parâmetros. Nada fica guardado no navegador (política, item 7; #121). O endereço é lido uma vez, ao abrir,
+// porque depois do "Aceitar" a medição tira o id_sessao da barra (e só ele).
+const ORIGEM = (() => {
   const p = new URLSearchParams(location.search), o = {};
   Object.keys(UTM_ACEITAS).forEach(k => { const v = (p.get(k) || '').trim().toLowerCase(); o[k] = UTM_ACEITAS[k].indexOf(v) > -1 ? v : ''; });
+  UTM_LIVRES.forEach(k => { const v = (p.get(k) || '').trim().toLowerCase(); o[k] = UTM_LIVRE.test(v) ? v : ''; });
+  const f = (p.get('fbclid') || '').trim(); o.fbclid = FBCLID.test(f) ? f : '';
   return o;
+})();
+// As duas utm de lista, como sempre foram, para o início do quiz e o clique (a porta /api/evento não leva as outras)
+function lerUtm(){ return {utm_source:ORIGEM.utm_source, utm_campaign:ORIGEM.utm_campaign}; }
+// Ids de evento do envio (#121): lead-<milissegundos>-<sorte> e qualificado-<milissegundos>-<sorte>
+function novoId(prefixo){
+  let sorte = '';
+  try { const b = new Uint8Array(8); crypto.getRandomValues(b); b.forEach(x => { sorte += (x % 36).toString(36); }); }
+  catch (e) { sorte = Math.random().toString(36).slice(2, 10).padEnd(8, '0'); }
+  return prefixo + '-' + Date.now() + '-' + sorte;
 }
 function respostasDoQuiz(){
   // Só o que a pessoa respondeu, pergunta por pergunta
@@ -1627,6 +1647,10 @@ function respostasDoQuiz(){
 }
 function montarPacote(){
   const ls = calcularLeadScore(), c = R.contato, p = pais(c.pais), utm = lerUtm();
+  // o resultado do corte é o mesmo que decide o fim do quiz (CRITERIO_DO_FIM, no topo; conflito-16): sem regra paralela
+  const passou = qualificadoFim();
+  const ids = {id_lead:novoId('lead'), qualificado:passou};
+  if (passou) ids.id_qualificado = novoId('qualificado');
   return {
     pessoa: {
       nome: c.nome.trim(),
@@ -1654,7 +1678,13 @@ function montarPacote(){
       respostas: respostasDoQuiz(),
       lead_score_nota: ls.nota,
       lead_score_faixa: ls.faixa,
-      lead_score_versao: ls.versao
+      lead_score_versao: ls.versao,
+      // v10 (#121): a origem completa e os ids (opcionais para o garçom v6; fbp e fbc só depois do Pixel)
+      utm_medium: ORIGEM.utm_medium,
+      utm_content: ORIGEM.utm_content,
+      utm_term: ORIGEM.utm_term,
+      fbclid: ORIGEM.fbclid,
+      ...ids
     }
   };
 }
@@ -1682,9 +1712,33 @@ function enviarPacote(pacote){
   if (!ENVIO_LIGADO || enviando) return;
   pacotePendente = pacote; enviando = true;
   fetch(ROTA_FIM_QUIZ, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pacote), credentials:'same-origin', cache:'no-store'})
-    .then(r => { if (!r.ok) throw new Error('envio'); pacotePendente = null; avisoEnvio(false); fimGravado = true; soltarCliques(); })
+    .then(r => { if (!r.ok) throw new Error('envio'); pacotePendente = null; avisoEnvio(false); fimGravado = true; soltarCliques(); avisarEnvio(pacote); })
     .catch(() => { avisoEnvio(true); })
     .then(() => { enviando = false; });
+}
+
+/* ··· Avisos ao Google Tag Manager, pelo dataLayer (v10; #121) ···
+   Só três avisos, sem nenhuma resposta, faixa, nota, valor nem dado da pessoa: quiz_iniciado (na primeira resposta, uma vez
+   por sessão), quiz_enviado com id_lead (só depois do 201 do garçom) e quiz_qualificado com id_qualificado (logo depois, só
+   se passou no corte). Se o envio der erro, nada é avisado. Tudo dentro de try/catch: se o aviso falhar ou for bloqueado, a
+   pessoa segue igual. A marca do "uma vez por sessão" fica na memória da aba, junto com o id_sessao, e nada vai para o
+   navegador (política, item 7). O dataLayer existe desde o carregamento (bloco da medição); o GTM só o lê depois do "Aceitar". */
+function avisarGtm(evento, dados){
+  try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(Object.assign({event:evento}, dados || {})); } catch (e) {}
+}
+let inicioAvisado = false;
+function avisarInicio(){
+  if (inicioAvisado) return;
+  inicioAvisado = true;
+  avisarGtm('quiz_iniciado');
+}
+function avisarEnvio(pacote){
+  try {
+    const e = pacote.evento;
+    if (!e.id_lead) return;
+    avisarGtm('quiz_enviado', {id_lead:e.id_lead});
+    if (e.qualificado === true && e.id_qualificado) avisarGtm('quiz_qualificado', {id_qualificado:e.id_qualificado});
+  } catch (x) {}
 }
 
 /* ··· Eventos sem dado de pessoa: início do quiz e clique no fim (garçom v4, POST /api/evento; planta v4) ···
@@ -1917,6 +1971,7 @@ let tAuto = null;
 palco.addEventListener('click', e => {
   const op = e.target.closest('.opcao');
   if (op) {
+    avisarInicio();
     const campo = op.dataset.campo, v = op.dataset.valor;
     if ('varios' in op.dataset) {
       const arr = (R[campo] || []).slice(), k = arr.indexOf(v);
@@ -1958,7 +2013,7 @@ palco.addEventListener('click', e => {
   const nota = $('#ctaNota');
   if (CLIQUES[b.dataset.acao]) registrarClique(CLIQUES[b.dataset.acao]);
   switch (b.dataset.acao) {
-    case 'proximo': clearTimeout(tAuto); avancar(); break;
+    case 'proximo': clearTimeout(tAuto); if (atual !== 'abertura') avisarInicio(); avancar(); break;
     case 'enviar': {
       if (b.disabled) break;
       // Caixa marcada: o pacote vai ao garçom. Desmarcada: nada é enviado e o diagnóstico aparece na tela (13.4; 30.3)
@@ -2020,7 +2075,7 @@ palco.addEventListener('input', e => {
 palco.addEventListener('keydown', e => {
   if (e.key !== 'Enter' || e.target.id !== 'nomeIn') return;
   e.preventDefault();
-  const s = $('#seguir'); if (s && !s.disabled) avancar();
+  const s = $('#seguir'); if (s && !s.disabled) { avisarInicio(); avancar(); }
 });
 palco.addEventListener('change', e => {
   if (e.target.id === 'consAceite') { R.consentimento.aceite = e.target.checked; validarContato(); return; }

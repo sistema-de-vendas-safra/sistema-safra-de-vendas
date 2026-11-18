@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 9
+versao: 10
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -16,15 +16,15 @@ depende_de:
   - id: ficha-de-fatos
     versao: 5
   - id: planta-do-banco
-    versao: 4
+    versao: 5
   - id: funil-01
-    versao: 3
+    versao: 4
   - id: lacunas
     versao: 7
   - id: garcom
-    versao: 4
+    versao: 6
   - id: decisoes
-    versao: 7
+    versao: 11
   - id: landing-page-02
     versao: 2
   - id: politica-de-privacidade
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Quiz-01 · página
+
+**Versão 10 (18/11/2026, #121).** A origem completa, os ids e os avisos ao GTM, sem nada da Meta. (1) A página lê do endereço, uma vez ao abrir, as cinco utm e o fbclid: utm_source na lista (agora com meta-ads) e utm_campaign em funil-01, como antes; utm_medium, utm_content e utm_term saneadas (minúsculas, letras, números, hífen e sublinhado, até 100; fora disso, vazio); fbclid como veio, se tiver só letras, números, hífen e sublinhado, até 500. Nada fica guardado no navegador. (2) No envio, o pacote do fim do quiz leva esses campos e mais id_lead (lead-<milissegundos>-<sorte>), qualificado (o resultado de qualificadoFim(), a mesma regra que decide o fim do quiz, CRITERIO_DO_FIM) e, só se qualificado, id_qualificado (qualificado-<milissegundos>-<sorte>). O "Tentar de novo" reenvia o mesmo pacote, com o mesmo id_lead, e o banco não duplica. (3) Avisos ao GTM pelo dataLayer, em try/catch: quiz_iniciado na primeira resposta (uma vez por sessão, marcado na memória da aba); quiz_enviado com id_lead só depois do 201 do garçom; quiz_qualificado com id_qualificado logo depois, só se qualificado. Nenhuma resposta, faixa, nota, valor ou dado da pessoa vai ao dataLayer; com erro no envio, nada é avisado. O GTM só lê o dataLayer depois do "Aceitar". (4) O título e o nome da agência no HTML estático passam a ser os valores que a página já mostrava ("Análise Estratégica do Sistema de Vendas" e "Triad", ficha-de-fatos#analise-nome-publico e #nome-agencia), para a prévia de link não mostrar o marcador. O texto do consentimento, as telas e a regra de corte não mudaram; versao_entrega continua 2 (o lead vê a mesma página). Ensaio v13: 283 de 283; teste do quiz: tudo certo.
 
 A página do quiz-01 do funil-01, em rascunho. Nada daqui vai ao ar.
 

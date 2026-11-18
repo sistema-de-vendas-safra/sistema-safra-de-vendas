@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 12
+versao: 13
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -39,6 +39,8 @@ desatualizado: true
 ---
 
 # Ensaio geral do protótipo do funil-01
+
+**Versão 13 (18/11/2026, #121).** Roda a migração 003 duas vezes depois da 002, com os dados de antes iguais, e o conferir.sql v4 (20 linhas). A Carla (faixa c, não qualificada) e a Bia (faixa b, qualificada) chegam por um anúncio (utm_source=meta-ads, com utm_content, fbclid e, na Bia, utm_medium em maiúsculas), e o ensaio confere, do anúncio ao banco: o fbclid repassado pela landing; utm_source, utm_medium (em minúsculas), utm_content, fbclid, id_lead, id_qualificado e qualificado na linha do fim do quiz; fbp vazio. No fim de cada quiz, lê o dataLayer da página: quiz_iniciado, quiz_enviado com o mesmo id_lead do banco e, só no qualificado, quiz_qualificado com o mesmo id_qualificado; na caixa desmarcada, só quiz_iniciado; e nenhuma chave além de event, id_lead e id_qualificado, sem resposta nem dado da pessoa. Rodado uma vez, com o wrangler dev e WRANGLER_SEND_METRICS=false, numa máquina Linux na nuvem: **283 de 283**, com o código de saída 0. Nessa máquina, o Chromium foi achado por um atalho fora do repositório, no caminho que acharChromium() procura (o do Mac), apontando para o Chromium já instalado.
 
 Roda tudo junto, na máquina, sem nenhum serviço real: o banco, um Supabase de mentira, o site montado, o garçom, a landing e o quiz num navegador sem tela e a planilha do SDR com um Google de mentira. Serve para não ter surpresa quando o Otávio aplicar as mudanças no protótipo que está no ar (prompts/08-fila-da-madrugada.md, etapa 25; prompts/11-decisoes-de-09-11.md, etapa 35; o roteiro é entregas/prototipo-funil-01/APLICAR-11.md; desde a v10, o roteiro do endereço novo é entregas/prototipo-funil-01/APLICAR-21.md).
 

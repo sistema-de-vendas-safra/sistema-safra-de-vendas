@@ -1,6 +1,6 @@
 ---
 id: garcom
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -10,11 +10,11 @@ depende_de:
   - id: banco-migracao-001
     versao: 1
   - id: planta-do-banco
-    versao: 4
+    versao: 5
   - id: decisoes
-    versao: 10
+    versao: 11
   - id: funil-01
-    versao: 3
+    versao: 4
   - id: funil-01-planilha-sdr
     versao: 2
   - id: regra-seguranca
@@ -25,6 +25,8 @@ desatualizado: true
 ---
 
 # Garçom · rascunho
+
+**Versão 6 (18/11/2026, #121).** Meta-ads entra na lista de utm_source. A porta do fim do quiz aceita nove campos novos, todos opcionais: utm_medium, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado. O pacote de antes, sem eles, continua passando igual, para nenhum lead falhar durante a troca. Os campos novos são saneados e nunca recusam o lead (sanearOrigemEIds): utm de texto livre fora do formato vira vazia (e vai em minúsculas); fbclid fora do formato vira vazio; fbp e fbc fora do formato saem do pacote; os três ids, se não forem coerentes, saem juntos. O registro anota só os nomes dos campos mexidos, nunca o valor. A visita, o início do quiz e o clique continuam sem esses campos (campo desconhecido na porta /api/evento). Precisa da migração 003 no banco antes (dados/banco/migracoes/003-origem-e-ids.sql); com o banco sem ela, os campos novos seriam ignorados pela função antiga, mas meta-ads seria recusada pela lista antiga do banco. Teste local: 386 de 386 (eram 360). Publicação: entregas/prototipo-funil-01/APLICAR-22.md.
 
 A função que fica entre as páginas do protótipo e o banco (funis/funil-01/funil.md, "Caminho do dado", passos 2 e 5), escrita como um Cloudflare Worker em JavaScript, sem dependências externas. **Publicada pela primeira vez em 09/11/2026, na v2, no Worker do protótipo, ligada ao banco de teste, só com leads de teste (#102). A v4 está no ar desde 09/11/2026, 19h16** (publicada pelo Otávio pelo roteiro da etapa 35; entregas/prototipo-funil-01/README.md, "Publicações"; até a v4 deste documento, esta frase ainda dizia que a v3 e a v4 não tinham sido publicadas). A v4 só funciona por inteiro depois da migração 001 rodar no Supabase (dados/banco/migracoes/001-v3.sql): antes dela, a porta nova /api/evento responde `servico indisponivel`, e o resto continua igual. **A v5 (decisão #120: o endereço novo e o quiz em /analise/) não foi publicada:** vai ao ar só pelo roteiro entregas/prototipo-funil-01/APLICAR-21.md, que nasce na parte 21.3 do pedido 21, depois de a zona gotriad.com.br estar ativa na Cloudflare.
 

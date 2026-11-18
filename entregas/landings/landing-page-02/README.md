@@ -1,6 +1,6 @@
 ---
 id: landing-page-02
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,17 +8,19 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: garcom
-    versao: 5
+    versao: 6
   - id: planta-do-banco
-    versao: 4
+    versao: 5
   - id: banco-catalogo-prototipo
     versao: 3
   - id: decisoes
-    versao: 10
+    versao: 11
 desatualizado: true
 ---
 
 # Landing-page-02 · página de vendas do Sistema de Vendas Safra
+
+**Versão 6 (18/11/2026, #121).** O programa do fim (no index.html) repassa ao /analise/ também o fbclid, além das cinco utm e do id_sessao, para o quiz gravar a origem do anúncio. Nada mais mudou; nada fica guardado no navegador. A visita com utm_source=meta-ads passa a ser gravada com meta-ads (garçom v6 e migração 003).
 
 A página que aparece antes do quiz no protótipo do funil-01, no lugar das duas variantes da landing-page-01 (pedido do Otávio, 12/11/2026). Foi feita fora do sistema, em React e Vite, e chegou num zip: safra-pagina-vendas-git-preview-klyver.vercel.app, capturado da prévia na Vercel em 12/11/2026.
 
