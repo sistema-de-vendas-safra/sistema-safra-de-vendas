@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 18
+versao: 19
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,25 +8,27 @@ depende_de:
   - id: garcom
     versao: 5
   - id: quiz-01-pagina
-    versao: 8
+    versao: 11
   - id: landing-page-02
     versao: 5
   - id: banco-rascunho
     versao: 4
   - id: decisoes
-    versao: 10
+    versao: 12
   - id: regra-seguranca
     versao: 3
   - id: lacunas
     versao: 7
   - id: aviso-de-cookies
-    versao: 3
-  - id: politica-de-privacidade
     versao: 4
+  - id: politica-de-privacidade
+    versao: 7
 desatualizado: true
 ---
 
 # Protótipo do funil-01 · site de teste
+
+**Versão 19 (18/11/2026, #122; no branch claude/rastreamento-meta, nada publicado).** medicao.mjs: ao trocar de "Aceitar" para "Recusar", além do Google, se window.fbq existir, a página chama fbq('consent', 'revoke') e apaga os cookies _fbp e _fbc do domínio do endereço (e dos de cima dele) e de .gotriad.com.br. O Pixel da Meta entra só pelo Google Tag Manager, que continua carregando só depois do "Aceitar"; o id_sessao continua saindo do endereço antes do Tag Manager carregar. montar-site.mjs: confere também que nada no site carrega o Pixel (connect.facebook.net, fbevents.js, facebook.com/tr, fbq('init') ou fbq('track')); fora do bloco da medição, nenhum fbq; dentro, só fbq('consent', 'revoke'). O site montado leva a política v7, o aviso de cookies v4 e o quiz v11. Publicação: APLICAR-22.md v2, o roteiro único das Etapas 2 e 3.
 
 O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funil-01 (decisão #101): a landing-page-02, o quiz-01 e o garçom no mesmo endereço, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. **Publicado pela primeira vez em 09/11/2026** (Current Version ID 7c6024d7-ff13-4ab8-b9f7-1a58213c0909), só com leads de teste. Nessa publicação o quiz saiu com os acentos quebrados; a correção é a v3 (pedido 09). A v4 (etapa 34) monta as páginas novas (quiz v3, landings v3) com as fontes servidas junto; nada disso foi publicado. A v5 (etapa 35) só aponta para o APLICAR-11.md. A v6 (12/11/2026, pedido do Otávio) põe a landing-page-02, a página de vendas, em / no lugar das duas variantes da landing-page-01, e tira o /b/ do site; as variantes continuam no repositório. A v7 e a v8 só registram as publicações de 12/11/2026 das 10h14 e das 11h40 (seção "Publicações"). A v9 (pedido 17, parte 17.2; decisão #116) acrescenta nos HTML montados o aviso de cookies e o Google Tag Manager (GTM-T6L4QTB8), que só carrega depois do "Aceitar" (seção "Medição"). **No ar desde 13/11/2026, 9h20** (Current Version ID 31e6f08c-025d-4885-8601-63b145b7ffc5), com a v11 desta pasta: a página da política em /politica-de-privacidade/, o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2; a v12 só registra essa publicação. Antes, desde 12/11/2026, 16h16 (a82e93cc), com a v9 desta pasta: a landing-page-02 em /, o quiz-01 abrindo na abertura (quiz-01-pagina v4) e a medição nas duas páginas; a v10 só registra essa publicação (pedido 17, parte 17.3). A v11 (13/11/2026, #117) monta a página da política de privacidade em /politica-de-privacidade/ (pagina-politica.mjs), com o quiz-01 v5 (os nomes da Análise e da agência e os links da política), a landing-page-02 v2 (sem as perguntas 6 e 7 do FAQ) e o aviso-de-cookies v2 (com o link da política). A v12 só registra a publicação da v11 (13/11/2026, 9h20). A v13 só registra a publicação de 13/11/2026, 16h35, que levou ao ar a landing-page-02 v4 (pedidos 18 e 20; #118 e #119), e acerta o depende_de (landing-page-02 4 e decisoes 9). **A v14 (14/11/2026; pedido 21, parte 21.2; decisão #120) prepara, sem publicar, o endereço novo, https://svsafra.gotriad.com.br, e o quiz em /analise/ no lugar de /quiz/:** a montagem põe o quiz em analise/, a landing-page-02 v5 leva a /analise/, o garçom v5 leva o endereço antigo e o /quiz ao novo, e o wrangler.toml ganha o Custom Domain, com o endereço do workers.dev ainda ligado (seções "Mapa de rotas" e "O endereço novo"). **No ar desde 15/11/2026, 10h07** (Current Version ID 437989f3-2d9f-407b-9a83-846b5c515402), pelo roteiro APLICAR-21.md desta pasta: o endereço novo, https://svsafra.gotriad.com.br, com o quiz em /analise/; o endereço antigo leva ao novo, no mesmo caminho. Até então ficou no ar o endereço antigo, com o quiz em /quiz/, na versão 70f8766c. A v15 (14/11/2026; pedido 21, parte 21.3; correção de forma) só põe o roteiro APLICAR-21.md na lista desta pasta e acerta a frase sobre o ensaio geral, que na v10 confere o caminho /analise/ e os dois endereços; nada do programa mudou, e nada foi publicado. A v16 só registra a publicação de 15/11/2026, 10h07, e acerta o depende_de (quiz-01-pagina 8). Esta pasta tem a configuração do Worker, o script que monta o site a partir das entregas, os prints do site montado e o roteiro para ligar.
 

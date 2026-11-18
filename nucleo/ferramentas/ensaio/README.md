@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 13
+versao: 14
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -34,11 +34,13 @@ depende_de:
   - id: aviso-de-cookies
     versao: 3
   - id: politica-de-privacidade
-    versao: 4
+    versao: 7
 desatualizado: true
 ---
 
 # Ensaio geral do protótipo do funil-01
+
+**Versão 14 (18/11/2026, #122).** Duas conferências novas. No banco: o consentimento_texto gravado é o texto de aceite novo (três usos, com a Meta) e termina com a caixa nova. Na medição, em 375, 360 e 1440: no quiz, com um Pixel de mentira (um fbq que só anota as chamadas e os cookies _fbp e _fbc), trocar de "Aceitar" para "Recusar" pelo link "Cookies" chama fbq('consent', 'revoke') uma vez e apaga os dois cookies. As conferências de antes que provam que o id_sessao sai do endereço antes do gtm.js e que o gtm.js é o único pedido para fora continuam de pé.
 
 **Versão 13 (18/11/2026, #121).** Roda a migração 003 duas vezes depois da 002, com os dados de antes iguais, e o conferir.sql v4 (20 linhas). A Carla (faixa c, não qualificada) e a Bia (faixa b, qualificada) chegam por um anúncio (utm_source=meta-ads, com utm_content, fbclid e, na Bia, utm_medium em maiúsculas), e o ensaio confere, do anúncio ao banco: o fbclid repassado pela landing; utm_source, utm_medium (em minúsculas), utm_content, fbclid, id_lead, id_qualificado e qualificado na linha do fim do quiz; fbp vazio. No fim de cada quiz, lê o dataLayer da página: quiz_iniciado, quiz_enviado com o mesmo id_lead do banco e, só no qualificado, quiz_qualificado com o mesmo id_qualificado; na caixa desmarcada, só quiz_iniciado; e nenhuma chave além de event, id_lead e id_qualificado, sem resposta nem dado da pessoa. Rodado uma vez, com o wrangler dev e WRANGLER_SEND_METRICS=false, numa máquina Linux na nuvem: **283 de 283**, com o código de saída 0. Nessa máquina, o Chromium foi achado por um atalho fora do repositório, no caminho que acharChromium() procura (o do Mac), apontando para o Chromium já instalado.
 

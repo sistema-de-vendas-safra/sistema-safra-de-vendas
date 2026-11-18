@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -16,7 +16,7 @@ depende_de:
   - id: lacunas
     versao: 6
   - id: decisoes
-    versao: 5
+    versao: 12
   - id: tom-de-voz
     versao: 4
   - id: provas-e-conformidade
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Copy · quiz-01
+
+**Versão 3 (18/11/2026, #122).** Só o M16 muda: o texto de aceite e o rótulo da caixa passam a cobrir também a medição dos anúncios da Meta pelo nosso sistema, com o e-mail e o WhatsApp transformados em código (pacote v7, aprovado pelo Otávio e pelo jurídico; base/decisoes.md, #122). O aviso com a caixa desmarcada não muda. Nada mais neste documento mudou.
 
 O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro do briefing (`quiz-01-briefing`, seção 4). Parte do texto do Júnior na cópia nova do quiz (fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html) e muda só onde a base manda. Cada mudança está na seção "Mudanças no texto do Júnior", no fim, e vai para o Júnior aprovar (pauta, item 29).
 
@@ -233,9 +235,9 @@ No mockup, as três perguntas são as do agendamento. As das outras etapas estã
 
 **Texto de consentimento** (novo, M16), no cartão, **antes** dos campos de e-mail e WhatsApp:
 
-> Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado para a gente. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser. Tudo explicado na [política de privacidade]({{a definir: link da politica de privacidade}}).
+> Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para três coisas: mandar o seu diagnóstico; alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail; e medir os nossos anúncios no Facebook e no Instagram, com o seu e-mail e o seu WhatsApp transformados em código antes de sair daqui. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado, nem para a gente, nem para a Meta. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser. Tudo explicado na [política de privacidade]({{a definir: link da politica de privacidade}}). (muda na v3, #122)
 
-- **Caixa única (já marcada):** "Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail." (muda, M16; #104)
+- **Caixa única (já marcada):** "Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail, e o uso do meu e-mail e do meu WhatsApp, em código, para medir os anúncios da Meta." (muda, M16; #104; v3, #122)
 - **Campos:** "Seu nome" (já preenchido com o nome da conversa; exemplo "Como podemos chamar você") · "E-mail" (exemplo "voce@empresa.com.br") · "WhatsApp" com o país (exemplo "(11) 98765-4321") · "Nome da empresa (opcional)" (exemplo "Empresa Ltda.") (fica)
 - **Dicas:** "Formato: [modelo]" · "Número completo" · "Faltam números" · "Você quis dizer [e-mail corrigido]?" (fica)
 - **Botão:** "Ver meu diagnóstico →" (fica). Libera com nome, e-mail e WhatsApp válidos, como hoje. Com a caixa marcada, o contato e as respostas vão ao banco e à equipe; com a caixa desmarcada, o diagnóstico aparece na tela e nada vai ao banco nem à equipe [PENDENTE: 30.3].
@@ -423,7 +425,7 @@ Toda alteração feita no texto do mockup (fontes/quiz-01-repositorio-2026-11-08
 | M13 | Modo chute | "Se fosse chutar, quantos dos leads com perfil marcam reunião?" · "Se fosse chutar, quantos dos agendados vêm para a reunião?" · "De cada 100 reuniões marcadas, quantas acontecem de verdade." | "... marcam a conversa de venda?" · "... vêm para a conversa de venda?" · "De cada 100 conversas marcadas, quantas acontecem de verdade." | "Reunião" queimada (13.1); "X" das opções pela meta da ficha |
 | M14 | Falas depois do primeiro contato e das tentativas | "... quem responde primeiro costuma ficar com a reunião." · "... separa lead perdido de reunião marcada." | "... costuma ficar com a conversa." · "... separa lead perdido de conversa marcada." | "Reunião" queimada (13.1) |
 | M15 | Descrição dos selos | "Tem gente só para marcar reunião." · "3 de cada 4 reuniões acontecem." · "1 venda a cada 5 reuniões, ou melhor." | "Tem gente só para marcar a conversa de venda." · "3 de cada 4 conversas marcadas acontecem." · "1 venda a cada 5 conversas, ou melhor." | "Reunião" queimada (13.1) |
-| M16 | Contato | Sem texto de consentimento; botão libera só com nome, e-mail e WhatsApp | Texto de aceite antes dos campos, uma caixa só, já marcada ("Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail."), link da política e o aviso "Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado." | Caixa única já marcada (decisão do Otávio, 09/11/2026, 13.4 e 16.12; #104, #105); a posição fica (#110); o que acontece ao desmarcar é provisório (30.3) |
+| M16 | Contato | Sem texto de consentimento; botão libera só com nome, e-mail e WhatsApp | Texto de aceite antes dos campos, uma caixa só, já marcada ("Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail, e o uso do meu e-mail e do meu WhatsApp, em código, para medir os anúncios da Meta."; v3, #122), link da política e o aviso "Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado." | Caixa única já marcada (decisão do Otávio, 09/11/2026, 13.4 e 16.12; #104, #105); a posição fica (#110); o que acontece ao desmarcar é provisório (30.3) |
 | M17 | Perfis do funil | "Lead com perfil demora a virar reunião." · "Agenda furada · Reunião marcada não vira reunião feita." · "Reunião sem fechamento · O cliente vem para a reunião e sai sem comprar." | "... demora a virar conversa de venda." · "Agenda furada · Conversa marcada não vira conversa feita." · "Conversa sem fechamento · O cliente vem para a conversa e sai sem comprar." | "Reunião" queimada (13.1) |
 | M18 | Oferta do plano, fala 1 | "... uns R$ [n] mil. É dinheiro que hoje fica na mesa." | "... uns [R$] mil. É conta, não promessa: é dinheiro que hoje fica na mesa." | O manual dele manda dizer o dinheiro na mesa como conta, nunca como promessa (MANUAL, seção 5); a tela não tinha a ressalva que o relatório tem |
 | M19 | Oferta do plano, fala 2 | "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." | Desfeita: fica o texto do mockup. (Na v1 da copy: "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial.") | O Otávio mantém o quiz como está, com a promessa de percentual, como exceção às regras de prova e conformidade (#110). Na v1, o motivo da troca era o percentual proibido antes de caso comprovado (#39; CONAR; CDC, art. 30; conflito-19) |

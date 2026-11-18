@@ -1089,6 +1089,10 @@ async function principal() {
     'banco · pessoas: a caixa marcada vira consentimento por WhatsApp e por e-mail, com a data (#104)');
   conferir(esperadoCons.every(t => t && textoCons.includes(t)) && /diagnóstico/.test(textoCons) && !/Ã|Â|�/.test(textoCons),
     'banco · pessoas: texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página)');
+  // v13 (#122): o texto aceito gravado é o novo, o da copy v3 (M16), com a Meta, e não o de antes
+  conferir(textoCons.includes('servem para três coisas') && textoCons.includes('medir os nossos anúncios no Facebook e no Instagram') &&
+      textoCons.includes('nem para a gente, nem para a Meta') && textoCons.endsWith('em código, para medir os anúncios da Meta.') && !textoCons.includes('servem para duas coisas'),
+    'banco · pessoas: consentimento_texto é o texto de aceite novo (três usos, com a Meta) e termina com a caixa nova (#122; quiz-01-copy v3, M16)');
   conferir(paDoBanco && pa.primeira_utm_source === 'bio' && pa.primeira_utm_campaign === 'funil-01', 'banco · pessoas: primeira visita bio, funil-01');
   conferir(ea.length === 2 && ea[0].tipo === 'fim_quiz' && ea[0].lead_score_nota === 96 && ea[0].lead_score_faixa === 'a' && ea[0].lead_score_versao === 3,
     'banco · eventos: um fim_quiz do lead A com nota 96, faixa a, versão 3 do lead score' + (ea[0] ? ' (veio ' + ea[0].lead_score_nota + ', ' + ea[0].lead_score_faixa + ', v' + ea[0].lead_score_versao + ')' : ''));
@@ -1472,6 +1476,23 @@ async function principal() {
           limpaQ && limpaQ.pagina_limpa === BASE + '/analise/?utm_source=bio&utm_campaign=funil-01' && limpaQ.origem_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01',
           rotulo + ' · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (' + endQ.search + endQ.hash + ')');
         if (sessaoDaIda) sessoesAceitas.push(sessaoDaIda);
+        // v13 (#122): a troca de "Aceitar" para "Recusar" também revoga a Meta e apaga os cookies do Pixel. O Pixel de verdade só
+        // viria pelo Tag Manager (o gtm.js do ensaio é de mentira): aqui, um fbq de mentira e os dois cookies fazem o papel dele.
+        await page.evaluate(() => {
+          window.__chamadasFbq = [];
+          window.fbq = function () { window.__chamadasFbq.push([].slice.call(arguments)); };
+          document.cookie = '_fbp=fb.1.1763500000000.1234567890; path=/';
+          document.cookie = '_fbc=fb.1.1763500000000.IwAR_teste; path=/';
+        });
+        const antesDaRecusa = await page.evaluate(() => document.cookie);
+        await page.locator('.aviso-cookies-reabrir__botao').click();
+        await doAviso(page, TA.recusar).click();
+        await page.waitForTimeout(300);
+        const depoisDaRecusa = await page.evaluate(() => ({ cookies: document.cookie, fbq: window.__chamadasFbq }));
+        conferir(/_fbp=/.test(antesDaRecusa) && /_fbc=/.test(antesDaRecusa) && !/_fbp=|_fbc=/.test(depoisDaRecusa.cookies) &&
+            JSON.stringify(depoisDaRecusa.fbq) === JSON.stringify([['consent', 'revoke']]) && (await lerEscolha(page)) === 'recusado',
+          rotulo + " · trocar para \"Recusar\" no quiz: fbq('consent', 'revoke') uma vez e os cookies _fbp e _fbc apagados (#122; " +
+            JSON.stringify(depoisDaRecusa.fbq) + ')');
       } finally {
         await ctx.close();
       }

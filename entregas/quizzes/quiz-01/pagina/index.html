@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 10
+versao: 11
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -11,7 +11,7 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 2
+    versao: 3
   - id: quiz-01-briefing
     versao: 2
   - id: lead-score
@@ -27,11 +27,11 @@ depende_de:
   - id: garcom
     versao: 6
   - id: decisoes
-    versao: 11
+    versao: 12
   - id: landing-page-02
     versao: 2
   - id: politica-de-privacidade
-    versao: 4
+    versao: 7
 desatualizado: true
 ---
 Quiz-01 · pagina (rascunho, nada vai ao ar). Ponto de partida: fontes/quiz-01-repositorio-2026-11-08/mockups/quiz-diagnostico.html.
@@ -39,6 +39,7 @@ Texto: entregas/quizzes/quiz-01/copy.md (M1 a M30), como esta (7.5, #110), salvo
 Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-page-02 (logo do Safra e "Fazer a Analise"). No computador, so o relatorio de exemplo rola; no celular, o texto vem antes do relatorio e o botao fica fixo no rodape quando o da pagina sai da tela.
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 Origem, ids e avisos ao GTM (v10; #121, 18/11/2026): o pacote do fim do quiz leva tambem utm_medium, utm_content, utm_term e fbclid, lidos do endereco e saneados, e id_lead, id_qualificado e qualificado (pela regra do fim, CRITERIO_DO_FIM). Nada fica guardado no navegador. Depois do 201 do garcom, a pagina avisa o GTM pelo dataLayer (quiz_enviado e, se qualificado, quiz_qualificado), so com os ids; quiz_iniciado vai na primeira resposta. Nenhuma resposta nem dado da pessoa vai ao dataLayer. Nada da Meta.
+Aceite (v11; #122, 18/11/2026): o texto de aceite e o rotulo da caixa da copy v3 (M16), que cobrem tambem a medicao dos anuncios da Meta pelo nosso sistema. consentimento_texto gravado no banco passa a ser o texto novo, a frase da politica e a caixa nova.
 -->
 <title>Análise Estratégica do Sistema de Vendas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1549,8 +1550,9 @@ function telaErro(){
    consentimento_whatsapp e consentimento_email com o mesmo valor e o mesmo texto aceito (#104). Desmarcada: o diagnóstico
    aparece na tela e nada é enviado, nem o fim do quiz nem o clique do fim (escolha provisória, pergunta 30.3). */
 const CONSENTIMENTO = {
-  texto:'Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para duas coisas: mandar o seu diagnóstico e alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado para a gente. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser.',
-  caixa:'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail.',
+  // v11 (#122; copy v3, M16): três usos, com a Meta. A frase "Tudo explicado na política de privacidade." vem depois, com o link (telaContato e textoConsentimento)
+  texto:'Antes do seu contato, o combinado. Seu nome, e-mail e WhatsApp servem para três coisas: mandar o seu diagnóstico; alguém da nossa equipe falar com você sobre ele, por mensagem ou ligação no WhatsApp e por e-mail; e medir os nossos anúncios no Facebook e no Instagram, com o seu e-mail e o seu WhatsApp transformados em código antes de sair daqui. Nada além disso. A caixa abaixo já vem marcada. Se preferir, desmarque: você vê o diagnóstico aqui na tela, e nada é enviado, nem para a gente, nem para a Meta. Você pode retirar o aceite ou pedir para apagar seus dados quando quiser.',
+  caixa:'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail, e o uso do meu e-mail e do meu WhatsApp, em código, para medir os anúncios da Meta.',
   aviso:'Sem o aceite, o diagnóstico aparece só aqui na tela, e nada é enviado.'
 };
 const temConsentimento = () => !!R.consentimento.aceite;
