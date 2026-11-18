@@ -1,12 +1,17 @@
--- Conferência do banco do funil-01, depois de esquema.sql e das migrações 001 e 002 (Postgres, no Supabase)
--- id: banco-conferir · versao 3 · rascunho · otavio: pendente
--- depende_de: banco-rascunho v5, banco-migracao-001 v1, banco-migracao-002 v1, planta-do-banco v4, decisoes v5
--- desatualizado: true (banco-rascunho, banco-migracao-001 e banco-migracao-002 continuam marcados; regra 11.1)
+-- Conferência do banco do funil-01, depois de esquema.sql e das migrações 001, 002 e 003 (Postgres, no Supabase)
+-- id: banco-conferir · versao 4 · rascunho · otavio: pendente
+-- depende_de: banco-rascunho v6, banco-migracao-001 v1, banco-migracao-002 v1, banco-migracao-003 v1, planta-do-banco v5, decisoes v11
+-- desatualizado: true (banco-rascunho, banco-migracao-001, banco-migracao-002 e banco-migracao-003 continuam marcados; regra 11.1)
+--
+-- Versão 4 (18/11/2026, #121): entra a linha 20, da migração 003
+-- (dados/banco/migracoes/003-origem-e-ids.sql): as nove colunas novas da gaveta eventos, as
+-- restrições delas, meta-ads nas listas de utm_source e a função da planilha v5. A linha 19 passa
+-- a aceitar colunas depois de respostas. Num banco com a 002 e sem a 003, só a linha 20 dá false
+-- ("19 de 20"): é o aviso de que falta rodar a 003.
 --
 -- Versão 3 (15/11/2026, planilha do SDR v3): entra a linha 19, da migração 002
 -- (dados/banco/migracoes/002-respostas-na-planilha.sql): a função da planilha devolve a coluna
--- respostas. Num banco com a 001 e sem a 002, só a linha 19 dá false ("18 de 19"): é o aviso de
--- que falta rodar a 002. Nada mais mudou.
+-- respostas. Num banco com a 001 e sem a 002, as linhas 19 e 20 dão false (desde a v4).
 --
 -- Versão 2 (etapa 32): confere o banco v3, que é o esquema v2 (esquema.sql) mais a migração
 -- dados/banco/migracoes/001-v3.sql. Tudo o que a versão 1 conferia continua, com a porta nova
@@ -31,7 +36,7 @@
 -- padrão desse papel.
 
 with
--- nomes que o esquema v2 e as migrações 001 e 002 criam
+-- nomes que o esquema v2 e as migrações 001, 002 e 003 criam
 tabelas(nome) as (values ('entregas'), ('pessoas'), ('eventos'), ('investimento')),
 funcoes(nome) as (values ('registrar_fim_quiz'), ('registrar_evento'), ('leads_para_planilha')),
 
@@ -306,14 +311,49 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
   select 19, 'função da planilha v4 (respostas)',
          'leads_para_planilha com a coluna respostas (jsonb) no fim',
          coalesce((select 'leads_para_planilha ('
-                            || case when pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb)'
+                            || case when pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb%'
                                     then 'com' else 'sem' end
                             || ' a coluna respostas no fim)'
                      from pg_catalog.pg_proc p
                     where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'), 'não existe'),
          exists (select 1 from pg_catalog.pg_proc p
                   where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
-                    and pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb)')
+                    and pg_catalog.pg_get_function_result(p.oid) like '%cursor_gravado_em timestamp with time zone, respostas jsonb%')
+
+  -- 20. Migração 003 · a origem e os ids do lead (#121): as nove colunas novas da gaveta eventos,
+  --     as seis restrições delas conferidas, meta-ads nas listas de utm_source (eventos e pessoas)
+  --     e a função da planilha v5, com qualificado (boolean) na última coluna.
+  union all
+  select 20, 'origem e ids do lead (migração 003)',
+         '9 colunas, 6 restrições, meta-ads nas 2 listas, planilha v5',
+         (select pg_catalog.count(*) || ' colunas, '
+            from pg_catalog.pg_attribute a
+           where a.attrelid = pg_catalog.to_regclass('public.eventos') and not a.attisdropped
+             and a.attname in ('utm_medium', 'utm_content', 'utm_term', 'fbclid', 'fbp', 'fbc',
+                               'id_lead', 'id_qualificado', 'qualificado'))
+         || (select pg_catalog.count(*) || ' restrições, ' from checks_eventos k
+              where k.convalidated and k.conname in ('eventos_utm_texto_livre', 'eventos_fbclid_formato',
+                    'eventos_fbp_fbc_formato', 'eventos_ids_formato', 'eventos_ids_so_no_fim', 'eventos_qualificado_coerente'))
+         || (select pg_catalog.count(*) || ' listas com meta-ads, ' from pg_catalog.pg_constraint c
+              where c.conname in ('eventos_utm_source_lista', 'pessoas_primeira_utm_source_lista')
+                and pg_catalog.pg_get_constraintdef(c.oid) like '%meta-ads%')
+         || coalesce((select 'planilha ' || case when pg_catalog.pg_get_function_result(p.oid) like '%, qualificado boolean)' then 'v5' else 'antiga' end
+                        from pg_catalog.pg_proc p
+                       where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'), 'sem planilha'),
+         (select pg_catalog.count(*) = 9
+            from pg_catalog.pg_attribute a
+           where a.attrelid = pg_catalog.to_regclass('public.eventos') and not a.attisdropped
+             and a.attname in ('utm_medium', 'utm_content', 'utm_term', 'fbclid', 'fbp', 'fbc',
+                               'id_lead', 'id_qualificado', 'qualificado'))
+         and (select pg_catalog.count(*) = 6 from checks_eventos k
+               where k.convalidated and k.conname in ('eventos_utm_texto_livre', 'eventos_fbclid_formato',
+                     'eventos_fbp_fbc_formato', 'eventos_ids_formato', 'eventos_ids_so_no_fim', 'eventos_qualificado_coerente'))
+         and (select pg_catalog.count(*) = 2 from pg_catalog.pg_constraint c
+               where c.conname in ('eventos_utm_source_lista', 'pessoas_primeira_utm_source_lista')
+                 and pg_catalog.pg_get_constraintdef(c.oid) like '%meta-ads%')
+         and exists (select 1 from pg_catalog.pg_proc p
+                      where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
+                        and pg_catalog.pg_get_function_result(p.oid) like '%, qualificado boolean)')
 )
 
 select n, conferencia, esperado, encontrado, ok from conferencias

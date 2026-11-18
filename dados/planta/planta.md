@@ -1,6 +1,6 @@
 ---
 id: planta-do-banco
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -133,7 +133,7 @@ Todo evento leva as cinco etiquetas. Evento sem alguma delas não entra. Etiquet
 | funil | O id do funil | funil-01 | Não |
 | entrega | O id da entrega em que o evento aconteceu, do catálogo da gaveta entregas | quiz-01 | Não |
 | versao_entrega | A versão dessa entrega, do mesmo catálogo | 1 | Não |
-| utm_source | A origem, da tabela de origens do funil-01 (stories, bio, reels, email, whatsapp; meta-ads reservada, fora do MVP); vazio se a etiqueta veio fora da lista (5.5) | bio | Não sozinho; ligado à pessoa, sim |
+| utm_source | A origem, da tabela de origens do funil-01 (stories, bio, reels, email, whatsapp, meta-ads; meta-ads fora da reserva desde a v5, #121); vazio se a etiqueta veio fora da lista (5.5) | bio | Não sozinho; ligado à pessoa, sim |
 | utm_campaign | A campanha, da mesma tabela | funil-01 | Não sozinho; ligado à pessoa, sim |
 
 O banco confere, por chave estrangeira, se o par entrega e versão existe no catálogo; se não existe, o evento não entra. O garçom confere só o formato e não lê nenhuma tabela (18.8). Origem fora da lista é gravada em branco pelo garçom, e o banco é a última trava (5.5; #114).
@@ -162,6 +162,12 @@ Os eventos que não acontecem numa página (os do SDR, da Call de Direcionamento
 | reuniao_em | Data e hora da Call de Direcionamento | reuniao_marcada | 2026-11-25 10:00 | Sim, ligado à pessoa |
 | produto | O que foi vendido: iasv ou essencial, lista fechada (5.3; #114); só a IASV conta para as vagas (ficha-de-fatos#vendas-que-contam) | venda | iasv | Sim, ligado à pessoa |
 | clique_fim_quiz | O que a pessoa clicou no fim do quiz, numa lista fechada com um valor por botão do fim do quiz. **Proposta:** quero-conversa, chamar-whatsapp, tenho-interesse, agora-nao (prompts/11-fila-perguntas.md) | interesse_pos_relatorio | quero-conversa | Sim, ligado à pessoa |
+| utm_medium, utm_content, utm_term | (v5; #121) As etiquetas de texto livre do link, saneadas: minúsculas, letras, números, hífen e sublinhado, até 100 caracteres; vazio se não vieram ou vieram fora disso | fim_quiz (nos outros tipos, vazias) | cpc; nome-do-criativo | Não sozinho; ligado à pessoa, sim |
+| fbclid | (v5; #121) O código do clique que a Meta põe no endereço do anúncio, como veio (maiúsculas contam): letras, números, hífen e sublinhado, até 500; vazio se não veio | fim_quiz (nos outros tipos, vazio) | IwAR0exemplo | Não sozinho; ligado à pessoa, sim (identifica o clique) |
+| fbp, fbc | (v5; #121) Os cookies da Meta (_fbp e _fbc), no formato fb.N.N.xxx. **Vazios até o Pixel existir**, o que depende do pacote v7 (política, aviso de cookies e texto de consentimento) | fim_quiz | fb.1.1700000000000.123 | Sim, ligado à pessoa (identificador de navegador) |
+| id_lead | (v5; #121) O código do envio do fim do quiz, criado pela página: lead-<milissegundos>-<sorte>. Único: o mesmo id_lead de novo não grava outra linha | fim_quiz | lead-1763500000000-abc12345 | Indireto |
+| id_qualificado | (v5; #121) O código do envio de quem passou no corte, criado pela página: qualificado-<milissegundos>-<sorte>; só com qualificado verdadeiro | fim_quiz | qualificado-1763500000000-abc12345 | Indireto |
+| qualificado | (v5; #121) Verdadeiro ou falso: o resultado do corte do fim do quiz (CRITERIO_DO_FIM da página; conflito-16); vazio nos fins de quiz gravados antes da v5 | fim_quiz | verdadeiro | Sim, ligado à pessoa |
 
 O evento perda não guarda motivo: um texto livre do SDR pode trazer dado pessoal que não precisa estar ali. Se o motivo da perda for útil, ele entra como lista fechada nova, nunca texto livre, e nada de texto livre na planilha inteira (6.5, com 15.7; #114).
 

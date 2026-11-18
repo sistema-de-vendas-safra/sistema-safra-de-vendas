@@ -382,6 +382,7 @@ async function principal() {
   const ESQUEMA = readFileSync(join(RAIZ, 'dados/banco/esquema.sql'), 'utf8');
   const MIGRACAO = readFileSync(join(RAIZ, 'dados/banco/migracoes/001-v3.sql'), 'utf8');
   const MIGRACAO_002 = readFileSync(join(RAIZ, 'dados/banco/migracoes/002-respostas-na-planilha.sql'), 'utf8');
+  const MIGRACAO_003 = readFileSync(join(RAIZ, 'dados/banco/migracoes/003-origem-e-ids.sql'), 'utf8');
   const CONFERIR = readFileSync(join(RAIZ, 'dados/banco/conferir.sql'), 'utf8');
   const CATALOGO = readFileSync(join(RAIZ, 'dados/banco/catalogo-prototipo.sql'), 'utf8');
 
@@ -398,7 +399,7 @@ async function principal() {
       if (!l.ok) conferir(false, rotulo + ' · conferir.sql ' + l.n + ' (' + l.conferencia + '): encontrado ' + l.encontrado);
     }
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === true && final.encontrado === '19 de 19',
+    conferir(final && final.ok === true && final.encontrado === '20 de 20',
       rotulo + ' · conferir.sql: linha "tudo certo" = ' + (final && final.ok) + ' (' + (final && final.encontrado) + ')');
   }
   {
@@ -406,7 +407,7 @@ async function principal() {
     const linhas = await linhasDoConferir();
     const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === false && final.encontrado === '11 de 19' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19]),
+    conferir(final && final.ok === false && final.encontrado === '11 de 20' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19, 20]),
       'antes das migrações · conferir.sql avisa que faltam as migrações: false nas linhas ' + falsas.join(', ') + ' (' + (final && final.encontrado) + ')');
   }
 
@@ -448,7 +449,7 @@ async function principal() {
   const fotografia = async () => (await naFila(() => db.query(`
     select (select count(*) from public.pessoas) as pessoas, (select count(*) from public.eventos) as eventos,
            (select md5(coalesce(string_agg(to_jsonb(p)::text, '|' order by p.id_pessoa), '')) from public.pessoas p) as h_pessoas,
-           (select md5(coalesce(string_agg((to_jsonb(e) - 'clique_fim_quiz')::text, '|' order by e.id_evento), '')) from public.eventos e) as h_eventos,
+           (select md5(coalesce(string_agg((to_jsonb(e) - 'clique_fim_quiz' - 'utm_medium' - 'utm_content' - 'utm_term' - 'fbclid' - 'fbp' - 'fbc' - 'id_lead' - 'id_qualificado' - 'qualificado')::text, '|' order by e.id_evento), '')) from public.eventos e) as h_eventos,
            (select md5(coalesce(string_agg(to_jsonb(x)::text, '|' order by x.id_entrega, x.versao), '')) from public.entregas x) as h_entregas`))).rows[0];
   // fotografia do esquema: restrições, colunas, funções e permissões
   const esquemaAtual = async () => (await naFila(() => db.query(`
@@ -479,8 +480,8 @@ async function principal() {
     const linhas = await linhasDoConferir();
     const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.encontrado === '18 de 19' && JSON.stringify(falsas) === '[19]',
-      'depois da 001 e antes da 002 · conferir.sql avisa só na linha 19 (' + (final && final.encontrado) + ')');
+    conferir(final && final.encontrado === '18 de 20' && JSON.stringify(falsas) === '[19,20]',
+      'depois da 001 e antes da 002 · conferir.sql avisa só nas linhas 19 e 20 (' + (final && final.encontrado) + ')');
   }
   // v12: a migração 002 (as respostas completas na função da planilha) duas vezes, sobre os mesmos dados
   let esquemaDa002 = null;
@@ -494,6 +495,19 @@ async function principal() {
     const h = await esquemaAtual();
     if (vez === 'primeira') esquemaDa002 = h;
     else conferir(h === esquemaDa002, 'migração 002, segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
+  }
+  // v13 (#121): a migração 003 (a origem e os ids do lead) duas vezes, sobre os mesmos dados
+  let esquemaDa003 = null;
+  for (const vez of ['primeira', 'segunda']) {
+    let erro = null;
+    try { await comoDono(MIGRACAO_003); } catch (e) { erro = e; }
+    conferir(!erro, 'migracoes/003-origem-e-ids.sql aplicada pelo dono, ' + vez + ' vez, sem erro' + (erro ? ' (' + erro.message + ')' : ''));
+    const depois = await fotografia();
+    conferir(JSON.stringify(depois) === JSON.stringify(antesDaMigracao),
+      'migração 003, ' + vez + ' vez: os dados de antes não mudaram (' + depois.pessoas + ' pessoas e ' + depois.eventos + ' eventos, cada linha igual)');
+    const h = await esquemaAtual();
+    if (vez === 'primeira') esquemaDa003 = h;
+    else conferir(h === esquemaDa003, 'migração 003, segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
   }
   fotografiaDeAntesInicial = await fotografiaDeAntes(naFila, db);
   await rodarConferir('depois das migrações');
@@ -838,7 +852,7 @@ async function principal() {
     const api = [], idas = [], telas = [];
     const SEM_LEITURA = { charset: '', modo: '', titulo: '', fontes: [] };
     const r = { endereco: new URL(BASE + landing + busca), sessao: null, visita: null, inicio: null, fim: null, clique: null, aviso: false, caixaMarcada: false, caixas: 0,
-      naLanding: SEM_LEITURA, noQuiz: SEM_LEITURA, api, telaFinal: 'não chegou ao fim', telas, direto: false, politica: {}, erro: null, resposta: null, botaoConversa: null, relatorio: null };
+      naLanding: SEM_LEITURA, noQuiz: SEM_LEITURA, api, telaFinal: 'não chegou ao fim', telas, direto: false, politica: {}, erro: null, resposta: null, botaoConversa: null, relatorio: null, camada: null };
     page.on('console', m => consoleTexto.push(m.text()));
     page.on('response', rr => { const e = new URL(rr.url()); if (rr.url().startsWith(BASE + '/api/')) api.push({ rota: e.pathname, tipo: tipoDoPedido(rr.request()), status: rr.status() }); });
     try {
@@ -922,6 +936,10 @@ async function principal() {
       }
       await page.waitForTimeout(desmarcar ? 1000 : 300);
       r.aviso = await page.locator('#avisoEnvio').isVisible();
+      // v13 (#121): os avisos ao GTM que a página pôs no dataLayer (só os do quiz; chaves do próprio GTM fora)
+      r.camada = await page.evaluate(() => (window.dataLayer || [])
+        .filter(x => x && !Array.isArray(x) && typeof x.event === 'string' && x.event.indexOf('quiz_') === 0)
+        .map(x => Object.fromEntries(Object.keys(x).filter(k => k.indexOf('gtm.') !== 0).map(k => [k, x[k]]))));
     } catch (e) {
       r.erro = String(e && e.message || e).split('\n')[0];
       informar('a pessoa de teste que ia para a tela ' + telaFinal + ', em ' + largura + ', não chegou ao fim do quiz: parou ' + (telas.length ? 'na tela ' + telas[telas.length - 1][0] : 'antes do quiz') +
@@ -1009,12 +1027,13 @@ async function principal() {
   conferir(q2.clique === 201, 'eliminatório: o clique "Tenho interesse" foi gravado (POST /api/evento, ' + q2.clique + ')');
 
   // Lead 3: o corte mais restritivo (14.2): faixa c que passa no corte do Júnior vai para o relatório de quem não se qualifica
-  const q3 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: FAIXA_C, pessoa: PESSOA_CORTE, largura: 1440, telaFinal: 'relatorio-nao', clique: 'interesse' });
+  // v13 (#121): a Carla e a Bia chegam por um anúncio (meta-ads), com utm de texto livre e fbclid
+  const q3 = await fazerQuiz({ landing: '/', busca: '?utm_source=meta-ads&utm_campaign=funil-01&utm_content=teste&fbclid=teste', respostas: FAIXA_C, pessoa: PESSOA_CORTE, largura: 1440, telaFinal: 'relatorio-nao', clique: 'interesse' });
   conferir(q3.fim === 201 && q3.telaFinal === '#relatorio-nao' && q3.clique === 201,
     'corte mais restritivo: quem passa no corte do Júnior e fica na faixa c vai para o relatório de não qualificado (antes, plano); fim do quiz e clique gravados (' + q3.telaFinal + ')');
 
   // Lead 4: faixa b com o funil todo na meta (relatório saudável), clique "Quero marcar uma conversa"
-  const q4 = await fazerQuiz({ landing: '/', busca: '?utm_source=bio&utm_campaign=funil-01', respostas: FAIXA_B, pessoa: PESSOA_B, largura: 375, telaFinal: 'relatorio-saudavel', clique: 'marcar' });
+  const q4 = await fazerQuiz({ landing: '/', busca: '?utm_source=meta-ads&utm_campaign=funil-01&utm_medium=CPC&utm_content=teste&fbclid=IwAR_Teste-1', respostas: FAIXA_B, pessoa: PESSOA_B, largura: 375, telaFinal: 'relatorio-saudavel', clique: 'marcar' });
   conferir(q4.fim === 201 && !q4.aviso && q4.telaFinal === '#relatorio-saudavel' && q4.clique === 201, 'faixa b: fim do quiz gravado (' + q4.fim + '), relatório do funil saudável, clique "Quero marcar uma conversa" gravado (' + q4.clique + ')');
 
   // Lead 5: as mesmas respostas da faixa b, com a caixa desmarcada (13.4; 30.3): nada da pessoa vai a lugar nenhum
@@ -1070,6 +1089,10 @@ async function principal() {
     'banco · pessoas: a caixa marcada vira consentimento por WhatsApp e por e-mail, com a data (#104)');
   conferir(esperadoCons.every(t => t && textoCons.includes(t)) && /diagnóstico/.test(textoCons) && !/Ã|Â|�/.test(textoCons),
     'banco · pessoas: texto aceito com os acentos certos (o combinado, a política de privacidade e a caixa, iguais aos da página)');
+  // v13 (#122): o texto aceito gravado é o novo, o da copy v3 (M16), com a Meta, e não o de antes
+  conferir(textoCons.includes('servem para três coisas') && textoCons.includes('medir os nossos anúncios no Facebook e no Instagram') &&
+      textoCons.includes('nem para a gente, nem para a Meta') && textoCons.endsWith('em código, para medir os anúncios da Meta.') && !textoCons.includes('servem para duas coisas'),
+    'banco · pessoas: consentimento_texto é o texto de aceite novo (três usos, com a Meta) e termina com a caixa nova (#122; quiz-01-copy v3, M16)');
   conferir(paDoBanco && pa.primeira_utm_source === 'bio' && pa.primeira_utm_campaign === 'funil-01', 'banco · pessoas: primeira visita bio, funil-01');
   conferir(ea.length === 2 && ea[0].tipo === 'fim_quiz' && ea[0].lead_score_nota === 96 && ea[0].lead_score_faixa === 'a' && ea[0].lead_score_versao === 3,
     'banco · eventos: um fim_quiz do lead A com nota 96, faixa a, versão 3 do lead score' + (ea[0] ? ' (veio ' + ea[0].lead_score_nota + ', ' + ea[0].lead_score_faixa + ', v' + ea[0].lead_score_versao + ')' : ''));
@@ -1105,6 +1128,35 @@ async function principal() {
     'banco · faixa b: nota 68 e o clique quero-conversa' + (eb[0] ? ' (veio ' + eb[0].lead_score_nota + ', ' + eb[0].lead_score_faixa + ')' : ''));
   conferir(eb[0] && eb[0].respostas.crm === FAIXA_B.crm && Array.isArray(numerosB) && numerosB.some(n => n.linha === 'Leads por mês' && n.valor === '200'),
     'banco · faixa b: as respostas trazem o CRM e a linha "Leads por mês" que a planilha lê (15.4)');
+  // v13 (#121): a origem completa e os ids, do anúncio até o banco, e os avisos ao GTM no dataLayer
+  {
+    const ID_LEAD = /^lead-[0-9]{13}-[a-z0-9]{8}$/, ID_Q = /^qualificado-[0-9]{13}-[a-z0-9]{8}$/;
+    conferir(q4.endereco.searchParams.get('fbclid') === 'IwAR_Teste-1' && q4.endereco.searchParams.get('utm_medium') === 'CPC' && q4.endereco.searchParams.get('utm_source') === 'meta-ads',
+      'landing: o fbclid vai para /analise/ junto com as utm, como veio (landing-page-02 v6)');
+    conferir(ec[0] && ec[0].utm_source === 'meta-ads' && ec[0].utm_campaign === 'funil-01' && ec[0].utm_content === 'teste' && ec[0].utm_medium === '' && ec[0].fbclid === 'teste' &&
+        ID_LEAD.test(ec[0].id_lead || '') && ec[0].qualificado === false && ec[0].id_qualificado === null && ec[0].fbp === null && pc.primeira_utm_source === 'meta-ads',
+      'banco · não qualificado vindo do anúncio: meta-ads, utm_content teste, fbclid teste, id_lead no formato, qualificado = false, sem id_qualificado, fbp vazio (#121)');
+    conferir(eb[0] && eb[0].utm_source === 'meta-ads' && eb[0].utm_medium === 'cpc' && eb[0].utm_content === 'teste' && eb[0].fbclid === 'IwAR_Teste-1' &&
+        ID_LEAD.test(eb[0].id_lead || '') && eb[0].qualificado === true && ID_Q.test(eb[0].id_qualificado || ''),
+      'banco · qualificado vindo do anúncio: meta-ads, utm_medium em minúsculas, fbclid com as maiúsculas, id_lead e id_qualificado no formato, qualificado = true (#121)');
+    const ea1 = ea;
+    conferir(ea1[0] && ea1[0].qualificado === true && ea1[0].utm_medium === '' && ea1[0].fbclid === '', 'banco · lead A (bio, sem anúncio): qualificado = true, utm_medium e fbclid vazios');
+    const nomes = (c) => (c || []).map(x => x.event).join(',');
+    conferir(nomes(q3.camada) === 'quiz_iniciado,quiz_enviado' && q3.camada[1].id_lead === (ec[0] && ec[0].id_lead),
+      'dataLayer · não qualificado: quiz_iniciado e quiz_enviado com o mesmo id_lead do banco, sem quiz_qualificado (' + nomes(q3.camada) + ')');
+    conferir(nomes(q4.camada) === 'quiz_iniciado,quiz_enviado,quiz_qualificado' && q4.camada[1].id_lead === (eb[0] && eb[0].id_lead) &&
+        q4.camada[2].id_qualificado === (eb[0] && eb[0].id_qualificado),
+      'dataLayer · qualificado: quiz_iniciado, quiz_enviado e quiz_qualificado, com os mesmos ids do banco (' + nomes(q4.camada) + ')');
+    conferir(nomes(q1.camada) === 'quiz_iniciado,quiz_enviado,quiz_qualificado' && nomes(q2.camada) === 'quiz_iniciado,quiz_enviado',
+      'dataLayer · lead A (qualificado) com os três avisos; o eliminatório sem quiz_qualificado (' + nomes(q1.camada) + ' | ' + nomes(q2.camada) + ')');
+    conferir(nomes(q5.camada) === 'quiz_iniciado', 'dataLayer · caixa desmarcada (nada enviado): só quiz_iniciado, nenhum quiz_enviado (' + nomes(q5.camada) + ')');
+    const todas = [q1, q2, q3, q4, q5].flatMap(q => q.camada || []);
+    const chaves = [...new Set(todas.flatMap(x => Object.keys(x)))].sort();
+    const texto = JSON.stringify(todas);
+    const pessoais = [PESSOA_A, PESSOA_ELIM, PESSOA_CORTE, PESSOA_B, PESSOA_DESMARCADA].flatMap(p => [p.nome, p.email, p.tel]);
+    conferir(JSON.stringify(chaves) === '["event","id_lead","id_qualificado"]' && !pessoais.some(v => texto.includes(v)) && !/faturamento|vendedores|R\$|lead_score|faixa/i.test(texto),
+      'dataLayer · só event, id_lead e id_qualificado: nenhuma resposta, faixa, valor, nome, e-mail ou telefone (chaves: ' + chaves.join(', ') + ')');
+  }
   {
     const s5 = await eventosDaSessao(q5.sessao);
     conferir((await linhaPessoa(PESSOA_DESMARCADA.email)).length === 0 && s5.every(e => e.id_pessoa === null) && s5.map(e => e.tipo).join(',') === 'visita,inicio_quiz',
@@ -1424,6 +1476,23 @@ async function principal() {
           limpaQ && limpaQ.pagina_limpa === BASE + '/analise/?utm_source=bio&utm_campaign=funil-01' && limpaQ.origem_limpa === BASE + '/?utm_source=bio&utm_campaign=funil-01',
           rotulo + ' · no quiz: o início do quiz leva o id_sessao que veio da landing; o endereço da barra, a pagina_limpa e a origem_limpa saem sem ele (' + endQ.search + endQ.hash + ')');
         if (sessaoDaIda) sessoesAceitas.push(sessaoDaIda);
+        // v13 (#122): a troca de "Aceitar" para "Recusar" também revoga a Meta e apaga os cookies do Pixel. O Pixel de verdade só
+        // viria pelo Tag Manager (o gtm.js do ensaio é de mentira): aqui, um fbq de mentira e os dois cookies fazem o papel dele.
+        await page.evaluate(() => {
+          window.__chamadasFbq = [];
+          window.fbq = function () { window.__chamadasFbq.push([].slice.call(arguments)); };
+          document.cookie = '_fbp=fb.1.1763500000000.1234567890; path=/';
+          document.cookie = '_fbc=fb.1.1763500000000.IwAR_teste; path=/';
+        });
+        const antesDaRecusa = await page.evaluate(() => document.cookie);
+        await page.locator('.aviso-cookies-reabrir__botao').click();
+        await doAviso(page, TA.recusar).click();
+        await page.waitForTimeout(300);
+        const depoisDaRecusa = await page.evaluate(() => ({ cookies: document.cookie, fbq: window.__chamadasFbq }));
+        conferir(/_fbp=/.test(antesDaRecusa) && /_fbc=/.test(antesDaRecusa) && !/_fbp=|_fbc=/.test(depoisDaRecusa.cookies) &&
+            JSON.stringify(depoisDaRecusa.fbq) === JSON.stringify([['consent', 'revoke']]) && (await lerEscolha(page)) === 'recusado',
+          rotulo + " · trocar para \"Recusar\" no quiz: fbq('consent', 'revoke') uma vez e os cookies _fbp e _fbc apagados (#122; " +
+            JSON.stringify(depoisDaRecusa.fbq) + ')');
       } finally {
         await ctx.close();
       }

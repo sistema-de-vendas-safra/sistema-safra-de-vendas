@@ -1,4 +1,4 @@
-// Teste local do garçom v5 · não toca nenhum serviço real
+// Teste local do garçom v6 · não toca nenhum serviço real
 // Rodar da raiz do repositório:  node entregas/garcom/teste/testar-garcom.mjs
 //
 // Importa o handler de entregas/garcom/garcom.mjs e o chama nas quatro partes do Worker:
@@ -178,7 +178,70 @@ async function utmVazia(nome, mexer, parte, campo) {
   marcar(gravado === '' && anotado, nome + ': gravada vazia e anotada no registro do garçom');
 }
 await utmVazia('utm_source fora da lista (tiktok)', p => { p.evento.utm_source = 'tiktok'; }, 'evento', 'utm_source');
-await utmVazia('utm_source reservada fora do MVP (meta-ads)', p => { p.evento.utm_source = 'meta-ads'; }, 'evento', 'utm_source');
+// v6 (#121): meta-ads saiu da reserva e é gravada como veio
+{ const p = copia(); p.evento.utm_source = 'meta-ads'; p.pessoa.primeira_utm_source = 'meta-ads';
+  const { chamadas: gm } = await caso('utm_source meta-ads (fora da reserva desde a v6)', pedido({ corpo: p }), 201, 1);
+  marcar(gm[0] && gm[0].corpo.pacote.evento.utm_source === 'meta-ads' && gm[0].corpo.pacote.pessoa.primeira_utm_source === 'meta-ads',
+    'meta-ads: gravada como veio, no evento e na pessoa'); }
+
+// 2c. v6 (#121): os campos opcionais do fim do quiz. O pacote de antes continua passando igual
+//     (o caso 1, o do exemplo, não tem nenhum deles); os campos novos são saneados e nunca recusam.
+{
+  const ID_L = 'lead-1763500000000-abc123', ID_Q = 'qualificado-1763500000000-abc123';
+  const novo = (extra) => { const p = copia(); Object.assign(p.evento, extra); return p; };
+  const gravadoCom = async (nome, extra) => {
+    const antes = registros.length;
+    const { chamadas: gv } = await caso(nome, pedido({ corpo: novo(extra) }), 201, 1);
+    return { e: gv[0] && gv[0].corpo.pacote.evento, registro: registros.slice(antes).join(' | ') };
+  };
+  marcar(!['utm_medium', 'fbclid', 'id_lead', 'qualificado'].some(k => k in gravacaoExemplo.corpo.pacote.evento),
+    'pacote de antes (sem os campos novos): vai ao banco sem eles, como antes');
+
+  let r = await gravadoCom('pacote novo qualificado, completo', { utm_source: 'meta-ads', utm_medium: 'cpc', utm_content: 'teste',
+    utm_term: '', fbclid: 'IwAR0abc_DEF-123', id_lead: ID_L, id_qualificado: ID_Q, qualificado: true });
+  marcar(r.e && r.e.utm_medium === 'cpc' && r.e.utm_content === 'teste' && r.e.utm_term === '' && r.e.fbclid === 'IwAR0abc_DEF-123' &&
+      r.e.id_lead === ID_L && r.e.id_qualificado === ID_Q && r.e.qualificado === true && !r.registro.includes('saneado'),
+    'qualificado: os campos vão ao banco como vieram, sem nada saneado');
+
+  r = await gravadoCom('pacote novo não qualificado', { id_lead: ID_L, qualificado: false, id_qualificado: '' });
+  marcar(r.e && r.e.id_lead === ID_L && r.e.qualificado === false && !('id_qualificado' in r.e),
+    'não qualificado: id_qualificado vazio sai do pacote; id_lead e qualificado = false vão');
+
+  r = await gravadoCom('utm de texto livre com maiúsculas e espaços nas pontas', { utm_medium: ' CPC ', utm_content: 'Anuncio_01', utm_term: 'Termo-A' });
+  marcar(r.e && r.e.utm_medium === 'cpc' && r.e.utm_content === 'anuncio_01' && r.e.utm_term === 'termo-a',
+    'utm de texto livre: vai em minúsculas e sem espaço nas pontas');
+
+  r = await gravadoCom('utm de texto livre fora do formato', { utm_medium: 'com espaço', utm_content: 'x'.repeat(101), utm_term: 7 });
+  marcar(r.e && r.e.utm_medium === '' && r.e.utm_content === '' && r.e.utm_term === '' && /saneado: utm_medium, utm_content, utm_term/.test(r.registro) &&
+      !r.registro.includes('com espaço'),
+    'utm de texto livre fora do formato: vazia, e o registro anota só os nomes, nunca o valor');
+
+  r = await gravadoCom('fbclid fora do formato', { fbclid: 'abc def<script>' });
+  marcar(r.e && r.e.fbclid === '' && r.registro.includes('saneado: fbclid'), 'fbclid fora do formato: vazio');
+
+  r = await gravadoCom('fbp e fbc', { fbp: 'fb.1.1596403881668.1116446470', fbc: 'qualquer-coisa' });
+  marcar(r.e && r.e.fbp === 'fb.1.1596403881668.1116446470' && !('fbc' in r.e) && r.registro.includes('saneado: fbc'),
+    'fbp no formato vai; fbc fora do formato sai do pacote');
+
+  for (const [nome, extra] of [
+    ['id_lead fora do formato', { id_lead: 'lead-x', qualificado: false }],
+    ['qualificado verdadeiro sem id_qualificado', { id_lead: ID_L, qualificado: true }],
+    ['id_qualificado com qualificado falso', { id_lead: ID_L, id_qualificado: ID_Q, qualificado: false }],
+    ['qualificado que não é verdadeiro nem falso', { id_lead: ID_L, qualificado: 'sim' }],
+    ['id_qualificado sem id_lead', { id_qualificado: ID_Q, qualificado: true }]
+  ]) {
+    r = await gravadoCom('ids incoerentes: ' + nome, extra);
+    marcar(r.e && !('id_lead' in r.e) && !('id_qualificado' in r.e) && !('qualificado' in r.e) && r.registro.includes('saneado'),
+      'ids incoerentes (' + nome + '): os três saem, e o lead é gravado sem eles');
+  }
+
+  // a visita, o início do quiz e o clique continuam sem os campos do fim do quiz
+  const ev = { evento: { tipo: 'inicio_quiz', funil: 'funil-01', entrega: 'quiz-01', versao_entrega: 2, utm_source: 'meta-ads',
+    utm_campaign: 'funil-01', id_sessao: 'sessao-teste-v6', ocorrido_em: new Date().toISOString() } };
+  await caso('início do quiz com utm_source meta-ads (v6)', pedido({ corpo: ev, caminho: '/api/evento' }), 201, 1);
+  await caso('início do quiz com id_lead: campo desconhecido nessa porta', pedido({ corpo: { evento: { ...ev.evento, id_lead: ID_L } }, caminho: '/api/evento' }), 422, 0);
+  await caso('início do quiz com utm_medium: campo desconhecido nessa porta', pedido({ corpo: { evento: { ...ev.evento, utm_medium: 'cpc' } }, caminho: '/api/evento' }), 422, 0);
+}
 await utmVazia('primeira_utm_campaign fora da lista', p => { p.pessoa.primeira_utm_campaign = 'outra-campanha'; }, 'pessoa', 'primeira_utm_campaign');
 
 // 3. Portaria: método, origem, tipo do corpo, tamanho, JSON

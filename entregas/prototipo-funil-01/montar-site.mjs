@@ -1,5 +1,8 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 14 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 19 · rascunho · otavio: pendente (ver README.md desta pasta)
+// v19 (#122, 18/11/2026): confere também que nada no site carrega o Pixel da Meta (connect.facebook.net, fbevents.js,
+// facebook.com/tr, fbq('init') ou fbq('track')): o Pixel entra só pelo Tag Manager. Fora do bloco da medição, nenhum fbq;
+// dentro dele, só fbq('consent', 'revoke'), na troca de "Aceitar" para "Recusar".
 // Rodar da raiz do repositório:  node entregas/prototipo-funil-01/montar-site.mjs
 //
 // O que faz (decisão #101; v6, 12/11/2026: a landing-page-02 no lugar das duas variantes da landing-page-01):
@@ -196,6 +199,9 @@ function pedidosDe(texto) {
 // Medição (v9; #116). O bloco é separado do resto pelos marcadores, antes de apagar os comentários (os marcadores são
 // comentários). Fora do bloco, nada do Tag Manager nem do Google Analytics; dentro, só o carregador, exatamente.
 const GOOGLE_DA_MEDICAO = /googletagmanager\.com|gtm\.js|google-analytics\.com|gtag\/js/i;
+// v19 (#122): o Pixel da Meta só entra pelo Tag Manager; nada no site o carrega
+const PIXEL_DA_META = /connect\.facebook\.net|fbevents\.js|facebook\.com\/tr\b|fbq\s*\(\s*['"](?:init|track|trackCustom)['"]/i;
+const FBQ_PERMITIDO = /fbq\s*\(\s*'consent'\s*,\s*'revoke'\s*\)/g;
 function separarMedicao(bruto, arquivo) {
   const inicios = bruto.split(MARCA_INICIO).length - 1, fins = bruto.split(MARCA_FIM).length - 1;
   if (!arquivo.endsWith('.html')) {
@@ -242,6 +248,9 @@ for (const arquivo of arquivosDoSite) {
   const { bloco, fora, inicio } = separarMedicao(bruto, arquivo);
   if (bloco) conferirBloco(arquivo, bruto, bloco, inicio);
   if (GOOGLE_DA_MEDICAO.test(fora)) problema(arquivo + ': cita o Tag Manager, o gtm.js ou o Google Analytics fora do bloco da medição');
+  if (PIXEL_DA_META.test(bruto)) problema(arquivo + ': carrega ou chama o Pixel da Meta (só o Tag Manager pode, #122)');
+  if (/\bfbq\s*\(/.test(fora)) problema(arquivo + ': chama fbq fora do bloco da medição');
+  if (/\bfbq\s*\(/.test(bloco.replace(FBQ_PERMITIDO, ''))) problema(arquivo + ": no bloco da medição, fbq que não é fbq('consent', 'revoke')");
   const texto = semComentarios(fora), textoDoBloco = semComentarios(bloco);
   const refs = [];
   for (const t of [texto, textoDoBloco]) {
@@ -274,6 +283,7 @@ for (const arquivo of arquivosDoSite) {
   const js = readFileSync(join(SITE, arquivo), 'utf8');
   if (/fonts\.(googleapis|gstatic)\.com|vercel\.live/i.test(js)) problema(arquivo + ': cita fonts.googleapis, fonts.gstatic ou vercel.live');
   if (GOOGLE_DA_MEDICAO.test(js)) problema(arquivo + ': cita o Tag Manager, o gtm.js ou o Google Analytics (só o bloco da medição pode, v9)');
+  if (PIXEL_DA_META.test(js) || /\bfbq\s*\(/.test(js)) problema(arquivo + ': carrega ou chama o Pixel da Meta (só o Tag Manager pode, #122)');
   const imagens = new Set();
   for (const [, nome, pasta] of js.matchAll(/([A-Za-z_$][\w$]*)="(\/a\/[0-9a-z]+)"/g)) {
     const depois = new RegExp('\\$\\{' + nome.replace(/\$/g, '\\$') + '\\}(/[A-Za-z0-9_.-]+)', 'g');

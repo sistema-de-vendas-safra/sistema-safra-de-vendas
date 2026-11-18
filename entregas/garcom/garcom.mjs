@@ -1,8 +1,14 @@
 // Garçom do funil-01 · Cloudflare Worker, sem dependências externas
-// id: garcom · versao 5 · rascunho · otavio: pendente
+// id: garcom · versao 6 · rascunho · otavio: pendente
 // Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com
 // leads de teste, e a v4, no mesmo dia, às 19h16 (README do protótipo, "Publicações"). A v5
-// (decisão #120) só vai ao ar pelo roteiro APLICAR-21.
+// (decisão #120) foi ao ar pelo roteiro APLICAR-21, em 15/11/2026. A v6 (decisão #121) só vai ao ar
+// pelo roteiro APLICAR-22, depois da migração 003 no banco.
+// v6 (#121, 18/11/2026): meta-ads entra na lista de utm_source; o fim do quiz aceita nove campos
+// novos, todos opcionais (o pacote de antes continua passando igual): utm_medium, utm_content,
+// utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado. Eles são saneados, nunca
+// recusam o lead: utm de texto livre fora do formato vira vazia; fbclid fora do formato vira vazio;
+// fbp e fbc fora do formato saem do pacote; os três ids, se não forem coerentes, saem juntos.
 // O formato dos pacotes é o da planta do banco (dados/planta/planta.md v4; 23.11).
 //
 // Um Worker só para o protótipo (decisão #101): safra-prototipo-funil-01 serve as páginas e o
@@ -48,7 +54,7 @@
 // ··· Listas fechadas (funis/funil-01/funil.md, "Origens e links"; dados/planta/planta.md) ···
 const FUNIS = ['funil-01'];
 const UTM_ACEITAS = {
-  utm_source: ['stories', 'bio', 'reels', 'email', 'whatsapp'],  // meta-ads reservada, fora do MVP
+  utm_source: ['stories', 'bio', 'reels', 'email', 'whatsapp', 'meta-ads'],  // meta-ads fora da reserva desde a v6 (#121)
   utm_campaign: ['funil-01']
 };
 const FAIXAS = ['a', 'b', 'c', 'eliminatorio'];
@@ -97,6 +103,8 @@ function levar(destino) {
 }
 
 // ··· Campos aceitos: nada além disto entra ···
+// v6 (#121): os campos opcionais do fim do quiz, só nele (a visita, o início e o clique não levam)
+const CAMPOS_ORIGEM_E_IDS = ['utm_medium', 'utm_content', 'utm_term', 'fbclid', 'fbp', 'fbc', 'id_lead', 'id_qualificado', 'qualificado'];
 const CAMPOS_PESSOA = [
   'nome', 'telefone', 'email', 'empresa',
   'consentimento_whatsapp', 'consentimento_email', 'consentimento_texto', 'consentimento_em',
@@ -104,7 +112,9 @@ const CAMPOS_PESSOA = [
 ];
 const CAMPOS_EVENTO = [
   'tipo', 'funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign',
-  'id_sessao', 'ocorrido_em', 'respostas', 'lead_score_nota', 'lead_score_faixa', 'lead_score_versao'
+  'id_sessao', 'ocorrido_em', 'respostas', 'lead_score_nota', 'lead_score_faixa', 'lead_score_versao',
+  // v6 (#121): opcionais; quem não manda continua passando (migração 003; planta v5)
+  ...CAMPOS_ORIGEM_E_IDS
 ];
 // Campos do evento sem pessoa (/api/evento): os mesmos que registrar_evento aceita, e nada mais
 const CAMPOS_EVENTO_SEM_PESSOA = [
@@ -162,6 +172,54 @@ export function esvaziarUtmForaDaLista(pacote, campos = UTM_DO_PACOTE) {
     }
   }
   return esvaziados;
+}
+
+// v6 (#121): saneia os campos opcionais do fim do quiz, sem nunca recusar o lead por causa deles.
+// Chamar só depois de conferirPacote. Devolve os nomes dos campos mexidos (nunca o valor).
+//   utm_medium, utm_content, utm_term: minúsculas; só letras, números, hífen e sublinhado, até 100;
+//     fora disso (ou que não seja texto), vazio. Ausente continua ausente (o banco grava vazio).
+//   fbclid: letras (maiúsculas e minúsculas), números, hífen e sublinhado, até 500; fora disso, vazio.
+//   fbp e fbc: só no formato fb.N.N.xxx, até 500; fora disso, saem do pacote.
+//   id_lead, id_qualificado e qualificado: valem juntos. id_lead no formato lead-<ms>-<sorte>,
+//     qualificado verdadeiro ou falso, e id_qualificado (qualificado-<ms>-<sorte>) só quando
+//     verdadeiro. Se algo não bater, os três saem do pacote e o lead é gravado sem eles.
+const UTM_LIVRE = /^[a-z0-9_-]{1,100}$/;
+const FBCLID = /^[A-Za-z0-9_-]{1,500}$/;
+const COOKIE_META = /^fb\.[0-9]+\.[0-9]+\.[A-Za-z0-9_.-]+$/;
+const ID_LEAD = /^lead-[0-9]{10,16}-[a-z0-9]{4,32}$/;
+const ID_QUALIFICADO = /^qualificado-[0-9]{10,16}-[a-z0-9]{4,32}$/;
+const tem = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+export function sanearOrigemEIds(pacote) {
+  const e = pacote.evento, mexidos = [];
+  for (const k of ['utm_medium', 'utm_content', 'utm_term']) {
+    if (!tem(e, k)) continue;
+    const v = ehTexto(e[k]) ? e[k].trim().toLowerCase() : '';
+    const limpo = v === '' || UTM_LIVRE.test(v) ? v : '';
+    if (limpo !== e[k]) mexidos.push(k);
+    e[k] = limpo;
+  }
+  if (tem(e, 'fbclid')) {
+    const v = ehTexto(e.fbclid) ? e.fbclid.trim() : '';
+    const limpo = v === '' || FBCLID.test(v) ? v : '';
+    if (limpo !== e.fbclid) mexidos.push('fbclid');
+    e.fbclid = limpo;
+  }
+  for (const k of ['fbp', 'fbc']) {
+    if (!tem(e, k)) continue;
+    if (e[k] === '' || !ehTexto(e[k]) || e[k].length > 500 || !COOKIE_META.test(e[k])) {
+      if (e[k] !== '') mexidos.push(k);
+      delete e[k];
+    }
+  }
+  if (tem(e, 'id_qualificado') && e.id_qualificado === '') delete e.id_qualificado;
+  if (tem(e, 'id_lead') || tem(e, 'id_qualificado') || tem(e, 'qualificado')) {
+    const coerente = ehTexto(e.id_lead) && ID_LEAD.test(e.id_lead) && typeof e.qualificado === 'boolean' &&
+      (e.qualificado ? ehTexto(e.id_qualificado) && ID_QUALIFICADO.test(e.id_qualificado) : !tem(e, 'id_qualificado'));
+    if (!coerente) {
+      for (const k of ['id_lead', 'id_qualificado', 'qualificado']) if (tem(e, k)) { delete e[k]; mexidos.push(k); }
+    }
+  }
+  return mexidos;
 }
 
 // Etiquetas obrigatórias em todo evento (planta v4, "Etiquetas obrigatórias em todo evento"):
@@ -356,9 +414,10 @@ async function lerCorpoLimitado(request, maximo) {
 //   conferir  conferência do pacote (devolve o motivo ou null)
 //   utm       campos de utm que, fora da lista, são gravados vazios (5.5)
 //   funcao    a função do banco que grava
+//   sanear    (só o fim do quiz, v6) saneia os campos opcionais e devolve os nomes mexidos
 const PORTA_FIM_QUIZ = {
   nome: 'fim-quiz', maximo: TAMANHO_MAXIMO, conferir: p => conferirPacote(p),
-  utm: UTM_DO_PACOTE, funcao: 'registrar_fim_quiz'
+  utm: UTM_DO_PACOTE, funcao: 'registrar_fim_quiz', sanear: p => sanearOrigemEIds(p)
 };
 const PORTA_EVENTO = {
   nome: 'evento', maximo: TAMANHO_MAXIMO_EVENTO, conferir: p => conferirEvento(p),
@@ -434,6 +493,11 @@ async function portaPublica(request, env, porta) {
   // utm fora da lista: grava vazia e registra só os nomes dos campos (5.5; 18.7)
   const esvaziados = esvaziarUtmForaDaLista(pacote, porta.utm);
   if (esvaziados.length) registrar(nome + ': utm-fora-da-lista, gravada vazia: ' + esvaziados.join(', '));
+  // v6 (#121): os campos opcionais do fim do quiz, saneados; registra só os nomes
+  if (porta.sanear) {
+    const mexidos = porta.sanear(pacote);
+    if (mexidos.length) registrar(nome + ': saneado: ' + mexidos.join(', '));
+  }
 
   // gravação, só pela função da porta e só com a chave publicável
   let resposta;

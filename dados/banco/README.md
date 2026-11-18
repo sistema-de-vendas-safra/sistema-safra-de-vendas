@@ -1,14 +1,14 @@
 ---
 id: banco-rascunho
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: planta-do-banco
-    versao: 4
-  - id: decisoes
     versao: 5
+  - id: decisoes
+    versao: 11
   - id: funil-01
     versao: 3
   - id: lead-score
@@ -25,6 +25,8 @@ desatualizado: true
 ---
 
 # Banco · rascunho
+
+**Versão 6 (18/11/2026, #121).** Entra a migração 003 (migracoes/003-origem-e-ids.sql): nove colunas novas na gaveta eventos (utm_medium, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado), meta-ads nas listas de utm_source, registrar_fim_quiz v4 (os campos novos opcionais; o mesmo id_lead de novo não grava outra linha) e leads_para_planilha v5 (as onze colunas da origem e dos ids no fim). Nenhuma mudança de RLS: as tabelas continuam sem acesso direto e só as três funções são portas. conferir.sql v4 ganha a linha 20 ("20 de 20" depois da 003). Ordem: esquema.sql, 001, 002, 003, conferir.sql. testar-migracao.mjs: 120 de 120 (eram 85), com a 003 duas vezes sobre os dados e a seção 8, que confere o pacote antigo, o novo, o reenvio, as recusas do banco e a planilha.
 
 O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.md, para o projeto sistema-de-vendas-safra do Supabase (decisão #99; conexoes.md). O esquema v2 já roda no projeto do Safra, com o protótipo ligado e dados de teste (#102; log.md, pedido 10). A migração da versão 3 (001) rodou no Supabase em 09/11/2026, pelo Otávio, com o conferir.sql v2 dando 18 de 18 (APLICAR-11, parte 2; prompts/14-estado-para-o-mentor.md, "APLICAR-11, em 09/11/2026"). **A migração 002 e o SQL de limpeza dos leads de teste ainda não foram executados no Supabase:** foram conferidos só numa cópia local do Postgres, sem serviço real (ver "Conferido nesta máquina"). Nenhum dado deste repositório é real.
 

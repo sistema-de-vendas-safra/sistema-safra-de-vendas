@@ -1,5 +1,8 @@
 // Medição com o Google nas páginas do protótipo do funil-01: o aviso de cookies e o Tag Manager · Node, sem dependências
-// id: prototipo-funil-01 · versao 9 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 19 · rascunho · otavio: pendente (ver README.md desta pasta)
+// v19 (#122, 18/11/2026): o Pixel da Meta entra só pelo Tag Manager, que continua carregando só depois do "Aceitar".
+// Ao trocar de "Aceitar" para "Recusar", além do Google, se window.fbq existir, a página chama fbq('consent', 'revoke')
+// e apaga os cookies _fbp e _fbc do domínio do endereço (e dos de cima dele) e de .gotriad.com.br. Nada carrega a Meta aqui.
 // Usado pela montagem (montar-site.mjs, nos HTML montados, nunca nas entregas) e pelo teste do quiz
 // (nucleo/ferramentas/prints/testar-quiz-01.js, que serve a página da entrega com o mesmo bloco).
 //
@@ -203,9 +206,23 @@ const PROGRAMA = `(function () {
       dominios.forEach(function (d) { document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/' + d; });
     });
   }
+  /* Os cookies do Pixel da Meta (_fbp e _fbc), sem domínio, com o domínio do endereço e os de cima dele, e com .gotriad.com.br (#122) */
+  function apagarCookiesMeta() {
+    var host = location.hostname, dominios = ['', '; domain=.gotriad.com.br'];
+    if (host) {
+      var partes = /^[0-9.]+$/.test(host) || host.indexOf(':') > -1 ? [host] : host.split('.');
+      for (var k = 0; k < Math.max(1, partes.length - 1); k++) dominios.push('; domain=' + partes.slice(k).join('.'));
+    }
+    ['_fbp', '_fbc'].forEach(function (n) {
+      dominios.forEach(function (d) { document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/' + d; });
+    });
+  }
   function desligarMedicao() {
     window.gtag('consent', 'update', {analytics_storage: 'denied'});
     apagarCookiesGa();
+    /* a Meta (#122): avisa a recusa ao Pixel, se ele já carregou pelo Tag Manager, e apaga os cookies dele */
+    try { if (typeof window.fbq === 'function') window.fbq('consent', 'revoke'); } catch (e) {}
+    apagarCookiesMeta();
   }
   function modelo(id) {
     var t = document.getElementById(id);

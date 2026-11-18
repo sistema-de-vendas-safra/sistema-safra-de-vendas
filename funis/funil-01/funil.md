@@ -1,9 +1,9 @@
 ---
 id: funil-01
-versao: 3
+versao: 4
 status: pendente-aprovacao
 aprovado_por:
-  otavio: 2026-11-09
+  otavio: 2026-11-18
   junior: pendente
   euclides: pendente
 depende_de:
@@ -153,9 +153,11 @@ Cada link do funil leva duas etiquetas fixas, em minúsculas e sem acento (5.5; 
 | Reels | reels | funil-01 | O reels não tem link clicável. O lead comenta uma palavra; o comentário dispara uma mensagem com o link etiquetado como reels, pela ferramenta de ficha-de-fatos#reels-ferramenta (#112) | **Reservada · fora do MVP até agora:** a ferramenta depende da ligação com o Instagram, que é da Meta (conexoes.md); quando entra é pergunta (prompts/11-fila-perguntas.md, 30.5) |
 | E-mail | email | funil-01 | Link no e-mail | Sim |
 | WhatsApp | whatsapp | funil-01 | Link na mensagem de WhatsApp | Sim |
-| Meta Ads | meta-ads | funil-01 | Anúncio pago | **Reservada · fora do MVP** (a Meta está fora do MVP, conexoes.md) |
+| Meta Ads | meta-ads | funil-01 | Anúncio pago, com utm_campaign=funil-01 | Sim, desde 18/11/2026 (#121): fora da reserva; o Pixel da Meta continua fora até o pacote v7 (política, aviso de cookies e texto de consentimento) |
 
 Forma do link: `[endereço da landing-page-01]?utm_source=stories&utm_campaign=funil-01`. O endereço da landing não está decidido neste documento.
+
+**Etiquetas de texto livre e fbclid (#121, 18/11/2026).** Além das duas fixas, o link pode levar `utm_medium`, `utm_content` e `utm_term`, em texto livre (minúsculas, letras, números, hífen e sublinhado, até 100 caracteres; fora disso, o banco grava vazio), e o `fbclid` que a Meta põe no clique do anúncio. A landing repassa as cinco utm e o fbclid ao quiz pelo endereço, e o fim do quiz grava todos em eventos (dados/planta/planta.md v5). Nada fica guardado no navegador. Exemplo de anúncio: `?utm_source=meta-ads&utm_campaign=funil-01&utm_content=nome-do-criativo`.
 
 **Palavra dos reels.** Fica para depois (ficha-de-fatos#reels-palavra; #112).
 

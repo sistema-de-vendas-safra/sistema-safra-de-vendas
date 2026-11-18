@@ -1,5 +1,6 @@
 // Teste local de Codigo.gs (planilha do SDR do funil-01), sem Google e sem rede.
-// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v3, rascunho; ver README.md).
+// Parte de entregas/planilha-sdr-funil-01/ (id planilha-sdr-funil-01, v4, rascunho; ver README.md).
+// v4 (#121): a aba respostas ganha onze colunas no fim, com a origem e os ids do lead (migração 003).
 // v3: os casos da aba respostas (a segunda aba, com as respostas completas do quiz) estão no fim,
 // em "aba respostas". Os casos de antes continuam; só o de "instalar duas vezes" passou a contar
 // as duas abas.
@@ -26,7 +27,9 @@ const COLUNAS_RESPOSTAS = ['id_pessoa', 'nome', 'entrou_em', 'lead_score_faixa',
   'origem dos leads', 'CRM', 'cargo', 'lembra dos números',
   'leads por mês', 'pré-qualificados', 'agendados', 'conversas realizadas', 'vendas fechadas',
   'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato',
-  'outras respostas'];
+  'outras respostas',
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+  'fbclid', 'fbp', 'fbc', 'id_lead', 'id_qualificado', 'qualificado'];
 const CR = Object.fromEntries(COLUNAS_RESPOSTAS.map((c, i) => [c, i + 1]));
 
 // Respostas no formato de respostasDoQuiz() da página (entregas/quizzes/quiz-01/pagina/index.html), de mentira
@@ -699,14 +702,15 @@ await caso('aba respostas · instalar: as duas abas na ordem (fila 1ª, resposta
   return 'fila 1, respostas 2, Página1 3';
 });
 
-await caso('aba respostas · instalar: os 24 cabeçalhos na ordem do quiz, primeira linha congelada, texto simples só nas colunas de texto, sem lista', () => {
+await caso('aba respostas · instalar: os 35 cabeçalhos (os 24 do quiz e os 11 da origem e dos ids, no fim), primeira linha congelada, texto simples só nas colunas de texto, sem lista', () => {
   const m = montar();
   const aba = abaR(m);
-  igual(aba.linha(1, 24), COLUNAS_RESPOSTAS, 'cabeçalho');
+  igual(aba.linha(1, 35), COLUNAS_RESPOSTAS, 'cabeçalho');
   igual(aba.getFrozenRows(), 1, 'congelada');
   igual(linhasDeDados(aba), 0, 'linhas');
   const comTexto = ['nome', 'ramo', 'faturamento', 'vendedores', 'quem marca a conversa', 'origem dos leads', 'CRM', 'cargo',
-    'lembra dos números', 'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato', 'outras respostas'];
+    'lembra dos números', 'chute de comparecimento', 'causa · primeiro contato', 'causa · tentativas', 'causa · lead sem contato', 'outras respostas',
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'fbp', 'fbc', 'id_lead', 'id_qualificado', 'qualificado'];
   for (const c of COLUNAS_RESPOSTAS) {
     const f = aba.formatos.filter(x => x.coluna === CR[c]);
     if (comTexto.includes(c)) igual(f.map(x => [x.formato, x.linha, x.linhas]), [['@', 2, aba.getMaxRows() - 1]], 'formato de ' + c);
@@ -714,7 +718,7 @@ await caso('aba respostas · instalar: os 24 cabeçalhos na ordem do quiz, prime
   }
   igual(aba.validacoes.length, 0, 'validações');
   guardarRegistros(m);
-  return '24 colunas; 14 com @; números sem formato';
+  return '35 colunas; 25 com @; números sem formato';
 });
 
 await caso('aba respostas · primeira busca: os mesmos leads da fila, na mesma ordem, na mesma rodada, numa escrita só', () => {
@@ -723,7 +727,7 @@ await caso('aba respostas · primeira busca: os mesmos leads da fila, na mesma o
   const r = m.gs.buscarLeadsNovos();
   igual([r.acrescentadas, r.respostas_acrescentadas, m.estado.chamadas.length], [3, 3, 1], 'resultado');
   igual([2, 3, 4].map(n => abaR(m).valor(n, 1)), [2, 3, 4].map(n => m.aba().valor(n, 1)), 'mesmas pessoas, mesma ordem');
-  igual(abaR(m).escritas.filter(e => e.quem === 'script' && e.linha > 1).map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[2, 1, 3, 24]], 'escritas');
+  igual(abaR(m).escritas.filter(e => e.quem === 'script' && e.linha > 1).map(e => [e.linha, e.coluna, e.linhas, e.colunas]), [[2, 1, 3, 35]], 'escritas');
   certo(m.estado.registros.some(t => /respostas: 3 linha\(s\) nova\(s\)/.test(t)), 'registro sem a contagem da aba respostas');
   guardarRegistros(m);
   return 'fila 3, respostas 3, uma chamada';
@@ -737,6 +741,7 @@ await caso('aba respostas · a linha com cada coluna (modo números): lista com 
     'Serviços para empresas', 'R$ 150 mil a R$ 500 mil', '2 ou 3', 'Sim. O vendedor faz tudo', 15000,
     'Anúncios pagos (Meta, Google); Indicação de clientes', 'Sim, mas pouca gente atualiza', 'Dono(a) ou sócio(a)', 'Sim',
     1200, '50%', 300, '12,5%', 40, '', 'No mesmo dia', 'Depende do vendedor', 'Alguns', ''], 'linha');
+  igual(aba.linha(2, 35).slice(24), Array(11).fill(''), 'origem e ids vazios (lead sem eles)');
   igual([aba.celula(2, CR['pré-qualificados']).texto, aba.celula(2, CR['conversas realizadas']).texto], [true, true], 'porcentagem como texto');
   igual(['leads por mês', 'agendados', 'vendas fechadas', 'valor médio da venda', 'lead_score_nota'].map(c => typeof aba.valor(2, CR[c])), ['number', 'number', 'number', 'number', 'number'], 'números');
   guardarRegistros(m);
@@ -776,11 +781,28 @@ await caso('aba respostas · sem a coluna respostas (migração 002 não rodada)
   const m = montar({ base: [lead(1), lead(2, { respostas: null })] });
   const r = m.gs.buscarLeadsNovos();
   igual([r.situacao, r.acrescentadas, r.respostas_acrescentadas], ['ok', 2, 2], 'resultado');
-  igual(abaR(m).linha(2, 24), [lead(1).id_pessoa, 'TESTE Pessoa 1', '2026-11-08 09:00:01', 'a', 96, ...Array(19).fill('')], 'linha 1');
+  igual(abaR(m).linha(2, 35), [lead(1).id_pessoa, 'TESTE Pessoa 1', '2026-11-08 09:00:01', 'a', 96, ...Array(30).fill('')], 'linha 1');
   igual(abaR(m).linha(3, 24).slice(5), Array(19).fill(''), 'linha 2');
   igual(m.aba().linha(2, 16), (() => { const x = montar({ base: [lead(1)] }); x.gs.buscarLeadsNovos(); return x.aba().linha(2, 16); })(), 'fila igual à de sempre');
   guardarRegistros(m);
   return 'linhas 2; 19 colunas de respostas vazias';
+});
+
+await caso('aba respostas · v4: a origem e os ids do lead nas onze colunas do fim, como vieram; qualificado em sim ou não', () => {
+  const origem = { utm_source: 'meta-ads', utm_medium: 'cpc', utm_campaign: 'funil-01', utm_content: 'teste', utm_term: '',
+    fbclid: 'IwAR0abc_DEF-123', fbp: null, fbc: null, id_lead: 'lead-1763500000000-abc123', id_qualificado: 'qualificado-1763500000000-abc123', qualificado: true };
+  const m = montar({ base: [lead(1, { respostas: RESP_NUMEROS, ...origem }),
+    lead(3, { respostas: RESP_NUMEROS, ...origem, id_lead: 'lead-1763500000001-def456', id_qualificado: null, qualificado: false })] });
+  const r = m.gs.buscarLeadsNovos();
+  igual([r.situacao, r.acrescentadas, r.respostas_acrescentadas], ['ok', 2, 2], 'resultado');
+  const aba = abaR(m);
+  igual(aba.linha(2, 35).slice(24), ['meta-ads', 'cpc', 'funil-01', 'teste', '', 'IwAR0abc_DEF-123', '', '', 'lead-1763500000000-abc123',
+    'qualificado-1763500000000-abc123', 'sim'], 'linha qualificada');
+  igual(aba.linha(3, 35).slice(32), ['lead-1763500000001-def456', '', 'não'], 'linha não qualificada');
+  igual(aba.linha(2, 24).slice(0, 5), [lead(1).id_pessoa, 'TESTE Pessoa 1', '2026-11-08 09:00:01', 'a', 96], 'as colunas de antes no mesmo lugar');
+  igual(m.aba().linha(2, 16), (() => { const x = montar({ base: [lead(1)] }); x.gs.buscarLeadsNovos(); return x.aba().linha(2, 16); })(), 'fila igual à de sempre');
+  guardarRegistros(m);
+  return 'meta-ads, cpc, teste, fbclid e ids nas colunas 25 a 35';
 });
 
 await caso('aba respostas · sem duplicar: segunda busca e cursor perdido não repetem na aba respostas', () => {

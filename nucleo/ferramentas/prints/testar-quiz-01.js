@@ -57,7 +57,8 @@ const ARQUIVO = 'file://' + path.join(PASTA, 'index.html') + BUSCA;
 const PRINTS = path.join(RAIZ, 'entregas/quizzes/quiz-01/prints');
 const PESSOA = { nome: 'TESTE Marina', email: 'marina@teste.invalid', tel: '00900000000' };
 const SESSAO_DA_LANDING = 'sessao-landing-teste-0001';
-const CAIXA = 'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail.';
+// copy v3 (M16; #122, 18/11/2026): a caixa cobre também o uso do e-mail e do WhatsApp, em código, para medir os anúncios da Meta
+const CAIXA = 'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail, e o uso do meu e-mail e do meu WhatsApp, em código, para medir os anúncios da Meta.';
 const NOTA_LEAD_SCORE = 'Anotado. Seu interesse fica registrado com o seu diagnóstico.';
 // A conversa gratuita com o Junior (v8): os textos aprovados pelo Otávio, letra por letra, com o nome do teste (Marina)
 const CONVERSA = {
@@ -328,7 +329,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(await t.page.locator('#consAceite').isChecked(), 'exemplo: a caixa única já vem marcada (13.4)');
     conferir(await t.page.locator('input[type="checkbox"]').count() === 1, 'exemplo: uma caixa só');
     conferir(!(await t.page.locator('#consAviso').isVisible()), 'exemplo: com a caixa marcada, o aviso de desmarcada não aparece');
-    conferir((await t.page.locator('#consentimento').innerText()).includes(CAIXA), 'exemplo: texto da caixa da copy v2 (M16)');
+    conferir((await t.page.locator('#consentimento').innerText()).includes(CAIXA), 'exemplo: texto da caixa da copy v3 (M16; #122)');
     await print(t.page, 'contato-consentimento', largura);
     await t.page.click('#enviar');
     await naTela(t.page, 'conversa');
@@ -350,7 +351,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(p && p.evento.utm_source === 'bio' && p.evento.utm_campaign === 'funil-01', 'exemplo: utm lidas do endereço (bio, funil-01)');
     conferir(p && ei && p.evento.id_sessao === ei.id_sessao, 'exemplo: o fim do quiz leva a mesma sessão do início');
     conferir(p && p.pessoa.consentimento_whatsapp === 'sim' && p.pessoa.consentimento_email === 'sim' && !!p.pessoa.consentimento_em, 'exemplo: a caixa preenche os dois consentimentos com o mesmo valor (#104)');
-    conferir(p && p.pessoa.consentimento_texto.endsWith(CAIXA) && p.pessoa.consentimento_texto.includes('por mensagem ou ligação no WhatsApp e por e-mail'), 'exemplo: o texto aceito é o texto de antes da caixa e o da caixa');
+    conferir(p && p.pessoa.consentimento_texto.endsWith(CAIXA) && p.pessoa.consentimento_texto.includes('servem para três coisas') && p.pessoa.consentimento_texto.includes('nem para a gente, nem para a Meta'), 'exemplo: o texto aceito é o texto de antes da caixa (v3, com a Meta) e o da caixa');
     conferir(p && p.pessoa.nome === PESSOA.nome && p.pessoa.email === PESSOA.email, 'exemplo: pessoa de teste marcada (TESTE, @teste.invalid)');
     conferir(p && Object.keys(p).join() === 'pessoa,evento', 'exemplo: pacote só com pessoa e evento');
     conferir(!(await t.page.locator('#avisoEnvio').isVisible()), 'exemplo: nenhum aviso de falha');
