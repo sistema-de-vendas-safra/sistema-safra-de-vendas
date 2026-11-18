@@ -1,7 +1,7 @@
 /*
  * ---
  * id: planilha-sdr-funil-01
- * versao: 4
+ * versao: 5
  * status: rascunho
  * aprovado_por:
  *   otavio: pendente
@@ -26,9 +26,12 @@
  * Planilha do SDR do funil-01 · Apps Script (JavaScript V8, sem bibliotecas).
  * Leia entregas/planilha-sdr-funil-01/README.md antes de usar.
  *
- * SÓ DADOS DE TESTE até a decisão de onde a planilha mora (5.4; pergunta 24.1): dado pessoal
- * não entra no Google Drive (nucleo/regras/seguranca.md, regra 4). No teste, só leads de
- * mentira (#102: nome começando por TESTE, e-mail @teste.invalid).
+ * DADO PESSOAL PELA EXCEÇÃO DA REGRA 4 (nucleo/regras/seguranca.md v3, regra 4; decisão do Otávio,
+ * 09/11/2026, 5.4 com 16.8 e 24.1; base/decisoes.md, #114): esta planilha é o único lugar do Google
+ * Drive com dado pessoal. Mora no Drive do Safra, com acesso só do Otávio e de quem liga para os
+ * leads, sem outro compartilhamento; quem liga abre só a planilha (#95). Leads de teste continuam
+ * marcados (#102: nome começando por TESTE, e-mail @teste.invalid) e saem pela limpeza dos leads
+ * de teste. (Até a v4, este aviso dizia "só dados de teste até a decisão"; a decisão é a #114.)
  *
  * Destino dos contatos em conflito (conflito-17): este código segue o lado 2 (banco e planilha,
  * #90), sem escolher. Protótipo de teste não é entrega.
@@ -50,6 +53,9 @@
  *
  * Nada de dado pessoal no registro: só contagens e códigos.
  * A volta do status para o banco não existe ainda (não há porta para isso): não está aqui.
+ *
+ * Versão 5 (18/11/2026, pedido do Otávio): só o aviso do topo, pela exceção da regra 4 (#114). O
+ * código não mudou; colar de novo no Apps Script é opcional (o que roda lá é igual).
  *
  * Versão 3 (15/11/2026, pedido do Otávio): aba nova "respostas", a segunda, com as respostas
  * completas do quiz (uma linha por lead, as mesmas pessoas da fila, na mesma rodada); vem da coluna

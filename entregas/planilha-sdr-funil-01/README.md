@@ -1,6 +1,6 @@
 ---
 id: planilha-sdr-funil-01
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -22,9 +22,11 @@ desatualizado: true
 
 # Planilha do SDR do funil-01 · Apps Script
 
+**Versão 5 (18/11/2026).** Pedido do Otávio, depois da publicação do APLICAR-22: o aviso do topo deste README e do Codigo.gs passa a dizer a exceção da regra 4 (#114), no lugar de "só dados de teste até a decisão". Correção de forma: o código não mudou, e colar de novo no Apps Script é opcional.
+
 **Versão 4 (18/11/2026, #121).** A aba respostas ganha onze colunas no fim, depois de "outras respostas", sem mudar a ordem das de antes: utm_source, utm_medium, utm_campaign, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado ("sim" ou "não"), do mesmo fim de quiz que a função da planilha já usa (leads_para_planilha v5, migração 003). A aba fila não muda. Com o banco sem a 003, as onze ficam vazias. O cabeçalho é conferido pelas primeiras colunas: a planilha com o cabeçalho novo e o código de antes continua funcionando; a planilha com o código novo e o cabeçalho de antes para e avisa (cabecalho-diferente) até o cabeçalho ser posto. Por isso, na publicação, o cabeçalho vem antes do código (APLICAR-22, passo 4). Teste local: 70 de 70.
 
-> **SÓ DADOS DE TESTE ATÉ A DECISÃO.** Dado pessoal não entra no Google Drive (nucleo/regras/seguranca.md, regra 4), e onde a planilha do SDR mora segue em aberto (prompts/05-fila-perguntas.md, 5.4; funis/funil-01/planilha-sdr.md, "Onde a planilha mora"). Esta planilha pode ser criada no Drive do Safra **só para o teste**, com leads de mentira: nome começando por TESTE e e-mail terminado em @teste.invalid (#102). Com gente de verdade, não liga antes da decisão (pergunta 24.1).
+> **DADO PESSOAL PELA EXCEÇÃO DA REGRA 4.** Esta planilha é o único lugar do Google Drive com dado pessoal, pela exceção registrada na regra 4 de segurança (nucleo/regras/seguranca.md v3; decisão do Otávio, 09/11/2026, 5.4 com 16.8 e 24.1; base/decisoes.md, #114): mora no Drive do Safra, com acesso só do Otávio e de quem liga para os leads, sem outro compartilhamento; quem liga abre só a planilha (#95). Leads de teste continuam marcados (nome começando por TESTE e e-mail terminado em @teste.invalid; #102) e saem pela limpeza dos leads de teste. Até a v4, este aviso dizia "só dados de teste até a decisão"; a decisão é a #114.
 
 O código que faz a planilha do SDR pedir ao garçom, a cada 5 minutos, os leads novos e acrescentá-los em duas abas, com as colunas e a ordem de funis/funil-01/planilha-sdr.md: a **fila** (a primeira, resumida) e, desde a versão 3, a **respostas** (a segunda, com as respostas completas do quiz). A planilha do protótipo se chama **Planilha do SDR funil-01** desde 15/11/2026 (o Otávio tirou o "TESTE" do nome); o código não depende do nome. A versão 2 roda no Google desde 09/11/2026 (APLICAR-11, parte 3). **A versão 3 nunca foi rodada no Google.** Foi conferida só aqui, com um Google de mentira (ver "Teste local"), e no ensaio geral.
 
