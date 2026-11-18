@@ -1,9 +1,9 @@
 ---
 id: ficha-de-fatos
-versao: 5
+versao: 6
 status: decidido
 aprovado_por:
-  otavio: 2026-11-13
+  otavio: 2026-11-18
 depende_de: []
 desatualizado: false
 ---
@@ -435,6 +435,11 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** 12 meses, contados do último evento da pessoa.
 - **Fonte:** #106.
 - **Status:** decidido (otavio: 2026-11-09). Entra na política de privacidade e na planta do banco. O caminho de apagamento é pendência com prazo (#106; log.md, Pendências).
+
+### prazo-de-guarda-analytics
+- **Valor:** até 14 meses, contados da última visita da pessoa.
+- **Fonte:** decisão do Otávio, 18/11/2026, na conversa com o Claude ("14 meses"; log.md, entrada de 18/11/2026). Na conta padrão do Google Analytics, a retenção dos dados de usuários e de eventos só pode ser 2 ou 14 meses (support.google.com/analytics/answer/7667196); ela não vale para os relatórios padrão agregados.
+- **Status:** decidido (otavio: 2026-11-18). Entra na política de privacidade (item 8). Vale na propriedade "Sistema de Vendas Safra · funil-01" (conexoes.md), em Administrador, Retenção de dados.
 
 ### reels-ferramenta
 - **Valor:** ManyChat, a ferramenta que manda o link a quem comenta nos reels.
