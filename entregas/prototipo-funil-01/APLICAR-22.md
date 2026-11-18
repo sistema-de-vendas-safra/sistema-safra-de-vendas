@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-22
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -18,7 +18,7 @@ depende_de:
   - id: landing-page-02
     versao: 6
   - id: politica-de-privacidade
-    versao: 7
+    versao: 8
   - id: aviso-de-cookies
     versao: 4
   - id: prototipo-funil-01
@@ -35,9 +35,9 @@ desatualizado: true
 Roteiro único do Otávio para levar ao ar as Etapas 2 e 3 de 18/11/2026:
 
 - **Etapa 2 (#121):** a origem completa do lead (as cinco utm e o fbclid) gravada no Supabase e na planilha, os ids de evento (id_lead e id_qualificado) e os avisos ao Google Tag Manager (quiz_iniciado, quiz_enviado e quiz_qualificado).
-- **Etapa 3 (#122):** a política de privacidade v7, o aviso de cookies v4 e o texto de aceite novo do quiz, que já contam o Pixel da Meta; e a recusa que avisa a Meta e apaga os cookies do Pixel.
+- **Etapa 3 (#122):** a política de privacidade v8 (a v7 do pacote, com uma frase completada no item 7), o aviso de cookies v4 e o texto de aceite novo do quiz, que já contam o Pixel da Meta; e a recusa que avisa a Meta e apaga os cookies do Pixel.
 
-**O que este roteiro NÃO liga:** o Pixel da Meta. Ele só entra pelo Google Tag Manager, numa tag que você publica lá depois deste roteiro (ver "Depois deste roteiro"). Por isso o teste do passo 5 é sem a Meta. Nada do site carrega o Pixel: a montagem do site confere isso a cada vez.
+**O que este roteiro NÃO liga:** o Pixel da Meta. Ele só entra pelo Google Tag Manager, numa tag que você publica lá **no mesmo dia da publicação**, logo depois do passo 5 (ver "No mesmo dia: o Pixel no Google Tag Manager"; decisão do Otávio, 18/11/2026). Por isso o teste do passo 5 é sem a Meta. Nada do site carrega o Pixel: a montagem do site confere isso a cada vez.
 
 Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado".
 
@@ -314,9 +314,9 @@ Os dois leads de teste saem do banco e da planilha pela limpeza de sempre (`dado
 
 ---
 
-## Depois deste roteiro: o Pixel no Google Tag Manager
+## No mesmo dia: o Pixel no Google Tag Manager
 
-Fica fora deste roteiro e é com você, na conta do Safra (#122):
+No mesmo dia da publicação, logo depois do passo 5 (decisão do Otávio, 18/11/2026: a política e o aviso já falam do Pixel, então ele não deve ficar dias sem existir). É com você, na conta do Safra (#122):
 
 1. No conjunto de dados **Triad · Site** (2051896072170241), confira que continuam desligados: a correspondência automática de site, os eventos automáticos, o rastreamento automático sem código, as informações detalhadas de páginas e produtos e a medição nos dispositivos dos clientes.
 2. No Google Tag Manager, a tag do Pixel e os quatro eventos (PageView, QuizIniciado, Lead e LeadQualificado), usando os avisos que o site já manda ao dataLayer (quiz_iniciado, quiz_enviado com id_lead e quiz_qualificado com id_qualificado). Teste no modo Visualizar antes de publicar, como o Google Analytics.
@@ -327,7 +327,7 @@ Fica fora deste roteiro e é com você, na conta do Safra (#122):
 ## Fontes
 
 - Decisões #121 e #122 (base/decisoes.md v12); log.md, entradas de 18/11/2026, "rastreamento" e "Etapa 3".
-- dados/banco/migracoes/003-origem-e-ids.sql e dados/banco/conferir.sql v4; entregas/garcom/garcom.mjs v6; entregas/quizzes/quiz-01/pagina/index.html v11 e copy.md v3 (M16); entregas/landings/landing-page-02/pagina/index.html v6; entregas/documentos/politica-de-privacidade.md v7 e aviso-de-cookies.md v4; entregas/prototipo-funil-01/medicao.mjs e montar-site.mjs v19; entregas/planilha-sdr-funil-01/Codigo.gs v4.
+- dados/banco/migracoes/003-origem-e-ids.sql e dados/banco/conferir.sql v4; entregas/garcom/garcom.mjs v6; entregas/quizzes/quiz-01/pagina/index.html v11 e copy.md v3 (M16); entregas/landings/landing-page-02/pagina/index.html v6; entregas/documentos/politica-de-privacidade.md v8 e aviso-de-cookies.md v4; entregas/prototipo-funil-01/medicao.mjs e montar-site.mjs v19; entregas/planilha-sdr-funil-01/Codigo.gs v4.
 - As respostas dos dois envios de teste: as do ensaio (nucleo/ferramentas/ensaio/ensaio.mjs, EXEMPLO, nota 96, faixa a; FAIXA_C, nota 24, faixa c) e a regra do fim do quiz (CRITERIO_DO_FIM e LEAD_SCORE, na página do quiz).
 - Documentação da Cloudflare, lida em 18/11/2026: "Create API token" (developers.cloudflare.com/fundamentals/api/get-started/create-token/, atualizada em 06/11/2026) e "API token templates" (developers.cloudflare.com/fundamentals/api/reference/template/, atualizada em 20/04/2026: o modelo Edit Cloudflare Workers).
 - entregas/prototipo-funil-01/APLICAR-21.md, passo 2 (o jeito de publicar) e entregas/planilha-sdr-funil-01/APLICAR-PLANILHA-V3.md, passo 4 (o jeito de colar o código).
