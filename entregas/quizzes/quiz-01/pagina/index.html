@@ -40,7 +40,7 @@ Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-pag
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 Origem, ids e avisos ao GTM (v10; #121, 18/11/2026): o pacote do fim do quiz leva tambem utm_medium, utm_content, utm_term e fbclid, lidos do endereco e saneados, e id_lead, id_qualificado e qualificado (pela regra do fim, CRITERIO_DO_FIM). Nada fica guardado no navegador. Depois do 201 do garcom, a pagina avisa o GTM pelo dataLayer (quiz_enviado e, se qualificado, quiz_qualificado), so com os ids; quiz_iniciado vai na primeira resposta. Nenhuma resposta nem dado da pessoa vai ao dataLayer. Nada da Meta.
 Aceite (v11; #122, 18/11/2026): o texto de aceite e o rotulo da caixa da copy v3 (M16), que cobrem tambem a medicao dos anuncios da Meta pelo nosso sistema. consentimento_texto gravado no banco passa a ser o texto novo, a frase da politica e a caixa nova.
-Numeros (v12; #123, pedido 23, 25/11/2026): a tela dos cinco numeros do funil fica so em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botao "%" e sem a troca de unidade; a conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior" (so aviso). O botao de seguir so acende com os cinco preenchidos, leads, pre-qualificados, agendados e conversas maiores que zero, vendas podendo ser zero (numerosCompletos, a mesma condicao do lead score); com o botao apagado, a dica nova aparece perto dele. O pacote continua com a unidade em cada linha, agora sempre "nº". A tela do chute nao muda. versao_entrega continua 2.
+Numeros (v12; #123, pedido 23, 25/11/2026): a tela dos cinco numeros do funil fica so em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botao "%" e sem a troca de unidade; a conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior" (so aviso). O botao de seguir so acende com os cinco preenchidos, leads, pre-qualificados, agendados e conversas maiores que zero, vendas podendo ser zero (numerosCompletos, a mesma condicao do lead score); com o botao apagado, a dica nova aparece perto dele. O pacote continua com a unidade em cada linha, agora sempre "nº". A tela do chute nao muda. Relatorio (v12, 23.3): o relatorio e a conversa gratuita saem de uma conta so (funilDaPessoa: os cinco numeros e o valor medio da pessoa), tambem usada pelo lead score em dinheiroNaMesaInformado, sem mudar nota; pelo caminho do quiz, nenhum numero de CENARIOS chega a quem respondeu "Sim"; sem empresa, o topo fica sem nome de empresa; vendas zero e funil pequeno sem venda a mais tem conta e frase proprias; quem respondeu "Nao" ve o exemplo (CENARIOS.chute), avisado (copy v4); pelo painel "Telas" ou pelo endereco, os relatorios continuam com o exemplo, para revisao. versao_entrega continua 2.
 -->
 <title>Análise Estratégica do Sistema de Vendas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -926,6 +926,14 @@ function numerosCompletos(){
   const vol = volumesDe(R.nums);
   return !vol.some(v => v === null) && vol.slice(0, 4).every(v => v > 0);
 }
+// v12 (#123, 23.3): a conta do funil da pessoa, uma só para o relatório, a conversa gratuita e o lead score (dinheiroNaMesaInformado).
+// Os cinco números e o valor médio que ela informou; null sem "Sim", sem valor médio ou com número faltando.
+function funilDaPessoa(){
+  const ticket = lerNum(R.ticket || '');
+  if (R.lembra !== 'Sim' || !ticket || !numerosCompletos()) return null;
+  const vol = volumesDe(R.nums), c = {leads:vol[0], n:vol.slice(1), ticket:ticket};
+  return {c:c, k:calcular(c)};
+}
 function taxasDe(nums){
   const abs = volumesDe(nums);
   return [1, 2, 3, 4].map(i => abs[i] !== null && abs[i - 1] ? abs[i] / abs[i - 1] * 100 : null);
@@ -937,7 +945,9 @@ function funilPainel(){
   const t = taxasDe(R.nums);
   // ponytail: no modo chute o protótipo só pergunta 1 das 4 etapas; o painel mostra o exemplo
   if (caminho(atual).indexOf('numeros') > -1 && t.every(v => v !== null)) return {taxas:t, vol:volumesDe(R.nums), exemplo:false};
-  return {taxas:exTaxas(), vol:calcular(CENARIOS.fraco).vol, exemplo:true};
+  // v12 (#123): para quem respondeu "Não", o mesmo exemplo do relatório e do perfil (CENARIOS.chute); pelo "Telas", o de sempre
+  const ex = calcular(R.lembra === 'Não' ? CENARIOS.chute : CENARIOS.fraco);
+  return {taxas:ex.taxas, vol:ex.vol, exemplo:true};
 }
 /* ··· Selos (T15) ··· */
 const tem = (t, i, m) => !!t && t[i] !== null && t[i] >= m;
@@ -952,6 +962,8 @@ const SELOS = [
   {id:'fecha', nome:'Fechador', desc:'1 venda a cada ' + umACada(METAS[3]) + ' conversas, ou melhor.', ok:t => tem(t, 3, METAS[3])}
 ];
 const ganhos = taxas => new Set(SELOS.filter(s => s.ok(taxas)).map(s => s.id));
+// v12 (#123): as taxas do exemplo (funilPainel com exemplo:true) não dão selo de taxa a quem respondeu "Não"
+const taxasDela = f => f && !f.exemplo ? f.taxas : null;
 const listaSelos = (g, cls) => '<ul class="selos' + (cls || '') + '">' + SELOS.map(s => '<li class="selo-item' + (g.has(s.id) ? ' is-ganho' : '') + '" title="' + esc(s.nome + ': ' + s.desc) + '">' + s.nome + '</li>').join('') + '</ul>';
 
 /* ··· Perfil do funil (a "persona" do Arthur) ··· */
@@ -1119,18 +1131,15 @@ function depois(id){
   return [];
 }
 /* ··· Conta da conversa: o perfil do funil que o painel mostra depois do contato ···
-   Usa os números da pessoa quando o funil está completo; senão, o mesmo cenário de exemplo do relatório. */
+   v12 (#123): a mesma conta do relatório (funilDaPessoa), sempre, mesmo sem venda a mais; sem os números, o exemplo, avisado no painel. */
 function contaConversa(){
-  const f = funilPainel(), est = R.lembra === 'Não';
-  if (f && !f.exemplo && f.vol.slice(0, 4).every(v => v > 0) && f.vol[4] !== null) {
-    const k = calcular({leads:f.vol[0], n:f.vol.slice(1), ticket:lerNum(R.ticket) || CENARIOS.fraco.ticket});
-    if (k.extraV > 0) return {k:k, est:false};
-  }
-  return {k:calcular(est ? CENARIOS.chute : CENARIOS.fraco), est:est};
+  const fp = funilDaPessoa(), est = R.lembra === 'Não';
+  if (fp) return {k:fp.k, est:false, exemplo:false};
+  return {k:calcular(est ? CENARIOS.chute : CENARIOS.fraco), est:est, exemplo:true};
 }
 function perfilConversa(){
-  const k = contaConversa().k;
-  return k.partes.length ? PERFIS[k.partes[0].i] : PERFIL_OK;
+  const cc = contaConversa(), k = cc.k;
+  return Object.assign({exemplo:cc.exemplo}, k.partes.length ? PERFIS[k.partes[0].i] : PERFIL_OK);
 }
 function antes(id){
   if (id === 'nome') return [bot('Oi! Sou o ' + fato('grafia_junior') + ' e vou guiar você neste diagnóstico.'), bot('São perguntas sobre sua empresa e seu time de vendas. Leva cerca de 8 minutos, e o relatório sai no final.')];
@@ -1139,7 +1148,7 @@ function antes(id){
   if (id === 'contato') {
     const f = funilPainel();
     const n = f ? f.taxas.filter((v, i) => v !== null && v < METAS[i]).length : 0;
-    return [bot(n ? 'Pronto, ' + esc(nm()) + '! O painel já mostra ' + n + ' de 4 etapas abaixo da meta.' : 'Pronto, ' + esc(nm()) + '! Pelo painel, as 4 etapas batem a meta.'),
+    return [bot(f && f.exemplo ? 'Pronto, ' + esc(nm()) + '! Sem os seus números, o painel mostra um funil de exemplo.' : n ? 'Pronto, ' + esc(nm()) + '! O painel já mostra ' + n + ' de 4 etapas abaixo da meta.' : 'Pronto, ' + esc(nm()) + '! Pelo painel, as 4 etapas batem a meta.'),
       bot('Falta a leitura: a causa provável e o que fazer em cada etapa, e quanto dinheiro fica na mesa. Quem monta é uma IA treinada no meu jeito de diagnosticar. Tem custo, mas fica por minha conta.')];
   }
   if (id === 'montando') return [bot('Recebido, ' + esc(nm()) + '. Estou montando seu diagnóstico agora.')];
@@ -1243,7 +1252,7 @@ function painel(t){
   // depois do contato, na conversa gratuita: o perfil do funil já aparece
   const pf = t.id === 'conversa' ? perfilConversa() : null;
   const f = funilPainel();
-  const g = ganhos(f && f.taxas);
+  const g = ganhos(taxasDela(f));
   const quadro = (cls, nome) => '<div class="quadro quadro--' + cls + '"><b>' + nome + '</b><span class="esqueleto"></span><span class="esqueleto"></span></div>';
   const sec = (n, titulo, meta) => '<div class="sec-cab"><b>' + n + '</b><h2>' + titulo + '</h2><span>' + meta + '</span></div>';
   return '<div class="painel__topo"><span class="painel__marca">' + fato('analise_nome_publico') + '</span><span>' + MES + ' · ' + ANO + '</span></div>' +
@@ -1253,8 +1262,8 @@ function painel(t){
       const v = respondido(id) ? val(id) : '';
       return '<li data-chave="' + id + '"' + (v ? '' : ' class="is-vazio"') + '><span class="ficha__ic" aria-hidden="true">' + ICO[id] + '</span><span class="ficha__corpo"><span class="ficha__k">' + k + '</span><span class="ficha__v">' + (v ? esc(v) : '·') + '</span></span></li>';
     }).join('') + '</ul>' +
-    '<div class="perfil-funil"><p class="perfil-funil__cab">Perfil do funil</p><div class="perfil-funil__corpo"><span class="perfil-funil__ic" aria-hidden="true">' + ICO.estrela + '</span><p class="perfil-funil__nome">' + (pf ? pf.nome : '???') + '</p></div>' +
-    '<p class="perfil-funil__sub">' + (pf ? pf.sub : analisando ? 'Sai junto com o diagnóstico.' : 'Aparece quando você terminar de responder.') + '</p></div>' +
+    '<div class="perfil-funil"><p class="perfil-funil__cab">' + (pf && pf.exemplo ? 'Perfil do exemplo' : 'Perfil do funil') + '</p><div class="perfil-funil__corpo"><span class="perfil-funil__ic" aria-hidden="true">' + ICO.estrela + '</span><p class="perfil-funil__nome">' + (pf ? pf.nome : '???') + '</p></div>' +
+    '<p class="perfil-funil__sub">' + (pf ? (pf.exemplo ? 'Sem os seus números, este é o perfil de um funil de exemplo, não o seu.' : pf.sub) : analisando ? 'Sai junto com o diagnóstico.' : 'Aparece quando você terminar de responder.') + '</p></div>' +
     '<section>' + sec('01', 'Funil', f && f.exemplo ? 'exemplo' : '') + '<div id="painelFunil">' + graficoBarras(f ? f.vol : [null, null, null, null, null], {fixo:true}) + '</div></section>' +
     '<section>' + sec('02', 'Selos', g.size + ' / ' + SELOS.length) + listaSelos(g) + '</section>' +
     '<section>' + sec('03', 'Leitura', '4 quadros') + '<div class="quadros">' + quadro('f', 'Forças') + quadro('r', 'Fraquezas') + quadro('o', 'Oportunidades') + quadro('a', 'Alertas') + '</div>' +
@@ -1378,7 +1387,10 @@ function calcular(c){
   const naMeta = Math.floor(c.leads * taxas.reduce((acc, t, i) => acc * (fracas.indexOf(i) > -1 ? METAS[i] : t) / 100, 1) + 1e-9);
   const extraV = naMeta - hoje, extraR = extraV * c.ticket;
   // ponytail: cada etapa leva uma fatia proporcional a ln(meta/taxa); as fatias somam o total e não dependem da ordem das etapas
-  const pesos = fracas.map(i => Math.log(METAS[i] / taxas[i]));
+  let pesos = fracas.map(i => Math.log(METAS[i] / taxas[i]));
+  // v12 (#123): etapa com taxa 0 (ex.: vendas zero) dá ln(meta/0) infinito. É o limite da própria conta quando a taxa tende a zero:
+  // as etapas com taxa 0 ficam com a fatia toda, em partes iguais, e as outras com zero. Sem taxa 0, nada muda.
+  if (pesos.some(w => !isFinite(w))) pesos = pesos.map(w => isFinite(w) ? 0 : 1);
   const soma = pesos.reduce((a, b) => a + b, 0);
   const partes = fracas.map((i, k) => ({i:i, share:pesos[k] / soma, r:extraR * pesos[k] / soma, v:extraV * pesos[k] / soma}))
     .sort((a, b) => Math.round(b.r) - Math.round(a.r) || a.i - b.i); // empate: segue a ordem do funil
@@ -1387,17 +1399,20 @@ function calcular(c){
 // conferência rápida da conta do exemplo do manual (400 leads, R$ 15 mil): 7 → 15 vendas, R$ 120 mil na mesa
 (function(){ const k = calcular(CENARIOS.fraco); console.assert(k.naMeta === 15 && k.extraR === 120000 && Math.abs(k.partes.reduce((a, p) => a + p.r, 0) - 120000) < 1, 'conta do dinheiro na mesa'); })();
 
+// v12 (#123): o primeiro contato que a pessoa respondeu (copy, 10.2, Agendamento: "sai [no mesmo dia]"). Com "Em até 10 minutos",
+// "Não sei" ou sem resposta, a frase "Você contou..." sai e o resto da causa fica.
+const PRIMEIRO_CONTATO = {'Em até 1 hora':'em até 1 hora', 'No mesmo dia':'no mesmo dia', 'No dia seguinte ou depois':'no dia seguinte ou depois'};
 const LEITURA = {
   0:{frase:t => 'De cada 10 leads, ' + Math.floor(t / 10) + (Math.floor(t / 10) === 1 ? ' tem' : ' têm') + ' perfil de compra. O esperado é pelo menos ' + METAS[0] / 10 + '.',
      causa:'Quando menos da ' + fracao(METAS[0]) + ' dos leads tem perfil, o problema nasce no marketing, não no time de vendas. O mais comum é criativo ou público errado, ou uma promessa que atrai curioso em vez de quem pode comprar.',
      fazer:['Escrever em uma frase quem é o cliente com perfil e julgar cada anúncio por ela.','Colocar 2 ou 3 perguntas na entrada que filtrem quem pode comprar, como faturamento e prazo.','Desligar o anúncio que traz lead barato que nunca vira conversa.']},
   1:{frase:t => 'De cada 10 leads com perfil, ' + Math.floor(t / 10) + ' marcam a conversa de venda. O esperado é pelo menos ' + METAS[1] / 10 + '.',
-     causa:'Você contou que o primeiro contato sai no mesmo dia. Lead com perfil esfria rápido, e quem responde primeiro costuma ficar com a conversa. Antes de mexer no que se fala, vale atacar a velocidade.',
+     causa:pc => (PRIMEIRO_CONTATO[pc] ? 'Você contou que o primeiro contato sai ' + PRIMEIRO_CONTATO[pc] + '. ' : '') + 'Lead com perfil esfria rápido, e quem responde primeiro costuma ficar com a conversa. Antes de mexer no que se fala, vale atacar a velocidade.',
      fazer:['Responder cada lead em até 10 minutos no horário comercial.','Cada lead com um responsável e um número fixo de tentativas, por ligação e WhatsApp.','Se sobra lead sem contato no fim do dia, está entrando mais lead do que o time consegue atender.']},
   2:{frase:t => 'De cada 10 conversas marcadas, ' + (10 - Math.round(t / 10)) + ' não acontecem. O esperado é perder no máximo 1 a cada ' + umACada(100 - METAS[2]) + '.',
      causa:'Hoje a pessoa recebe um lembrete só. Sem aviso na véspera e algumas horas antes, a conversa perde prioridade na agenda dela.',
      fazer:['Lembrete na véspera e de novo algumas horas antes.','Quem falta é remarcado no mesmo dia.','Ao marcar, explicar o que a pessoa leva da conversa e pedir o compromisso dela.']},
-  3:{frase:t => 'De cada ' + Math.round(100 / t) + ' conversas, 1 vira venda. O esperado é pelo menos 1 a cada ' + umACada(METAS[3]) + '.',
+  3:{frase:t => t <= 0 ? 'Nenhuma conversa virou venda no mês. O esperado é pelo menos 1 a cada ' + umACada(METAS[3]) + '.' : 'De cada ' + Math.round(100 / t) + ' conversas, 1 vira venda. O esperado é pelo menos 1 a cada ' + umACada(METAS[3]) + '.',
      causa:'Quando a venda não fecha, o mais comum é o cliente dizer que vai pensar e sumir. Isso costuma indicar conversa que termina sem próximo passo e uma explicação que não deixa claro o que o cliente ganha.',
      fazer:['Toda conversa de venda termina com um sim, um não ou uma nova data marcada.','Um roteiro único de conversa de venda, com duas gravações ouvidas por semana.','Anotar o motivo de cada venda perdida.']}
 };
@@ -1412,7 +1427,7 @@ function haste(c, k, est){
         regua(t, METAS[i]) +
         '<div class="etapa__pe"><span>' + q + num(k.vol[i + 1], 0) + ' de ' + num(k.vol[i], 0) + ' ' + e.base + ' ' + e.verbo + '</span><span class="etapa__status">' + (baixo ? 'abaixo da meta' : 'bateu a meta') + '</span></div></li>';
     }).join('') + '</ol>' +
-    '<div class="haste__ponta">' + FRUTO + '<b>' + num(k.hoje, 0) + '</b><span>vendas no mês · os frutos</span>' +
+    '<div class="haste__ponta">' + FRUTO + '<b>' + num(k.hoje, 0) + '</b><span>' + (k.hoje === 1 ? 'venda' : 'vendas') + ' no mês · os frutos</span>' +
     '<p class="haste__geral"><strong>' + q + pct(k.geral) + '</strong> dos leads viram venda. Somando as quatro metas, dá ' + num(META_GERAL, 2) + '%.</p></div></div>';
 }
 
@@ -1425,20 +1440,23 @@ function quadrosDados(k, saudavel, est, ctx){
     o:['Mais leads com perfil: com as suas taxas, cada lead novo tem a mesma chance de virar venda.', 'Venda de maior valor: o mesmo trabalho rende mais por cliente.'],
     a:['Mais leads pedem mais gente para atender. Fila maior que o time derruba o agendamento.']
   } : {
-    f:(k.taxas[0] >= METAS[0] ? [Maiusc(fracao(METAS[0])) + ' dos leads tem perfil de compra: o marketing traz gente certa.'] : [])
+    // est (v12, #123): o funil é o de exemplo; o que sai das taxas é dito como do exemplo, e o que sai das respostas continua dela
+    f:(!est && k.taxas[0] >= METAS[0] ? [Maiusc(fracao(METAS[0])) + ' dos leads tem perfil de compra: o marketing traz gente certa.'] : [])
       .concat(!est && ctx.lembra === 'Sim' ? ['Vocês sabem os números do funil, então dá para medir cada conserto.'] : []),
-    r:k.partes.map(p => ETAPAS[p.i].nome + ': ' + (est ? '≈ ' : '') + pct(k.taxas[p.i]) + ', meta ' + METAS[p.i] + '%.'),
-    o:['Dinheiro na mesa: ≈ ' + mil(k.extraR) + ' por mês com as etapas fracas na meta.']
+    r:k.partes.map(p => (est ? 'No exemplo, ' + ETAPAS[p.i].nome.toLowerCase() : ETAPAS[p.i].nome) + ': ' + pct(k.taxas[p.i]) + ', meta ' + METAS[p.i] + '%.'),
+    o:[est ? 'No exemplo, o dinheiro na mesa é de ≈ ' + mil(k.extraR) + ' por mês com as etapas fracas na meta.'
+      : k.extraV > 0 ? 'Dinheiro na mesa: ≈ ' + mil(k.extraR) + ' por mês com as etapas fracas na meta.'
+      : 'Com o volume de hoje, as etapas fracas na meta ainda não somam uma venda a mais por mês. Com mais leads, cada conserto passa a render.']
       .concat(k.fracas.indexOf(1) > -1 || k.fracas.indexOf(2) > -1 ? ['Agendamento e comparecimento dependem de rotina. Costumam ser os consertos mais baratos.'] : []),
     a:(k.fracas.indexOf(2) > -1 && k.fracas.indexOf(3) > -1 ? ['Comparecimento e fechamento fracos juntos costumam indicar gente sem perfil entrando na agenda.'] : [])
       .concat(crmEmDia ? [] : ['Sem CRM atualizado todo dia, fica difícil ver onde cada lead para.'])
-      .concat(est ? ['Os números são estimativa. Contar os cinco números todo mês deixa o diagnóstico preciso.'] : [])
+      .concat(est ? ['Os números deste relatório são de um funil de exemplo. Com os cinco números do seu funil, a leitura passa a ser a sua.'] : [])
   };
 }
 function quadros(k, saudavel, est){
   const q = quadrosDados(k, saudavel, est, {crm:val('crm'), lembra:val('lembra')});
   const bloco = (cls, titulo, itens) => '<div class="quatro__q ' + cls + '"><h3>' + titulo + '</h3><ul class="lista">' + (itens.length ? itens : ['·']).map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
-  return '<section><p class="secao__olho">leitura em 4 quadros</p><h2 class="secao__titulo">O resumo do seu comercial</h2><div class="quatro">' +
+  return '<section><p class="secao__olho">leitura em 4 quadros</p><h2 class="secao__titulo">' + (est ? 'O resumo do exemplo, com as suas respostas' : 'O resumo do seu comercial') + '</h2><div class="quatro">' +
     bloco('q-forca', 'Forças', q.f) + bloco('q-fraqueza', 'Fraquezas', q.r) + bloco('q-oportunidade', 'Oportunidades', q.o) + bloco('q-alerta', 'Alertas', q.a) + '</div></section>';
 }
 function cta(tipo, saudavel){
@@ -1461,31 +1479,49 @@ function cta(tipo, saudavel){
     '<p class="cta__nota" id="ctaNota" role="status" hidden></p></section>';
 }
 
+// v12 (#123): onde está a perda, das etapas fracas (sem a pré-qualificação). A frase de antes só quando as três estão fracas
+const NA_ETAPA = {1:'no agendamento', 2:'no comparecimento', 3:'no fechamento'};
+const juntarE = l => l.length > 1 ? l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1] : l.join('');
+const ondePerde = fracas => fracas.slice().sort((a, b) => a - b).join() === '1,2,3' ? 'A perda começa no agendamento e vai até o fechamento.'
+  : 'A perda está ' + juntarE(fracas.filter(i => NA_ETAPA[i]).sort((a, b) => a - b).map(i => NA_ETAPA[i])) + '.';
 function telaRelatorio(t){
-  const saudavel = t.rel === 'saudavel';
-  // estimativa: tela do seletor ou quem respondeu "não lembro dos números"
-  const est = !saudavel && (!!t.est || R.lembra === 'Não');
-  const c = saudavel ? CENARIOS.saudavel : est ? CENARIOS.chute : CENARIOS.fraco;
-  const k = calcular(c);
-  const empresa = R.contato.empresa.trim() || 'Empresa Exemplo';
-  const nomeTodo = R.contato.nome.trim() || R.nome.trim() || 'Marina Souza';
+  // v12 (#123): pelo caminho do quiz (porFluxo), o relatório é da pessoa: os números dela (funilDaPessoa) ou, sem eles, o exemplo avisado (est).
+  // Pelo painel "Telas" ou pelo endereço, continua o exemplo de revisão (CENARIOS, pela tela escolhida).
+  const fp = porFluxo ? funilDaPessoa() : null;
+  const saudavel = porFluxo ? !!fp && !fp.k.fracas.length : t.rel === 'saudavel';
+  // est: o funil de exemplo, avisado (quem respondeu "Não"; pelo "Telas", o relatório por estimativa)
+  const est = porFluxo ? !fp : !saudavel && (!!t.est || R.lembra === 'Não');
+  const c = fp ? fp.c : saudavel ? CENARIOS.saudavel : est ? CENARIOS.chute : CENARIOS.fraco;
+  const k = fp ? fp.k : calcular(c);
+  const empresa = R.contato.empresa.trim() || (porFluxo ? '' : 'Empresa Exemplo');
+  const nomeTodo = R.contato.nome.trim() || R.nome.trim() || (porFluxo ? '' : 'Marina Souza');
   const nome = nomeTodo.split(' ')[0];
   const nf = k.fracas.length;
   const perfil = saudavel ? PERFIL_OK : PERFIS[k.partes[0].i];
+  const ficha = porFluxo ? [nomeTodo, R.cargo, R.ramo, R.faturamento] : [nomeTodo, val('cargo'), val('ramo'), val('faturamento')];
+  // o primeiro contato que a pessoa respondeu, para a causa do agendamento (LEITURA[1])
+  const primeiroContato = porFluxo ? R.causa : val('causa');
+  const semVendaAMais = !est && !saudavel && k.extraV <= 0;
 
-  const topo = '<header class="rel-topo"><p class="olho">' + fato('analise_nome_publico') + ' · ' + esc(empresa) + ' · ' + MES + ' de ' + ANO + '</p>' +
-    '<p class="rel-ficha">' + [nomeTodo, val('cargo'), val('ramo'), val('faturamento')].map(x => '<span>' + esc(x) + '</span>').join('') + '</p>' +
+  const topo = '<header class="rel-topo"><p class="olho">' + [fato('analise_nome_publico'), empresa ? esc(empresa) : '', MES + ' de ' + ANO].filter(Boolean).join(' · ') + '</p>' +
+    '<p class="rel-ficha">' + ficha.filter(Boolean).map(x => '<span>' + esc(x) + '</span>').join('') + '</p>' +
     (saudavel
       ? '<h1 id="foco" tabindex="-1">' + esc(nome) + ', seu funil <span class="ok">bate a meta</span> nas 4 etapas.</h1><p class="rel-topo__lede">Pelos números que você informou, todas as etapas estão na meta ou acima. O processo comercial funciona. O limite agora é quantas sementes entram.</p>'
-      : '<h1 id="foco" tabindex="-1">' + esc(nome) + ', seu funil perde força em <span>' + nf + ' das 4 etapas</span>.</h1><p class="rel-topo__lede">' + (est ? 'Pela sua estimativa' : 'Pelos números que você informou') +
-        (k.fracas.indexOf(0) < 0 ? ', o marketing faz a parte dele. ' + Maiusc(fracao(METAS[0])) + ' dos leads tem perfil de compra. A perda começa no agendamento e vai até o fechamento.' : ', a perda começa na entrada: menos da ' + fracao(METAS[0]) + ' dos leads tem perfil de compra.') + '</p>') +
-    '<div class="rel-selos">' + (est ? '<span class="selo selo--est">estimativa · respostas por chute</span>' : '<span class="selo">confiança alta · números que você informou</span>') +
-    '<span class="perfil-chip">perfil do funil <b>' + perfil.nome + '</b></span></div>' +
+      : est
+      // quem não lembra (copy v4, #123): o exemplo, dito com todas as letras; os números vêm do cenário, nunca escritos à mão
+      ? '<h1 id="foco" tabindex="-1">' + esc(nome) + ', sem os seus números, este é um funil de exemplo.</h1><p class="rel-topo__lede">Um funil comum, com ' + num(c.leads, 0) + ' leads por mês e R$ ' + num(c.ticket / 1000, 0) + ' mil por venda, para mostrar onde as vendas costumam escapar. Não é o diagnóstico da sua empresa. Com os cinco números do seu funil, a conta passa a ser a sua.</p>'
+      : '<h1 id="foco" tabindex="-1">' + esc(nome) + ', seu funil perde força em <span>' + nf + ' das 4 etapas</span>.</h1><p class="rel-topo__lede">Pelos números que você informou' +
+        (k.fracas.indexOf(0) < 0 ? ', o marketing faz a parte dele. ' + Maiusc(fracao(METAS[0])) + ' dos leads tem perfil de compra. ' + ondePerde(k.fracas) : ', a perda começa na entrada: menos da ' + fracao(METAS[0]) + ' dos leads tem perfil de compra.') + '</p>') +
+    '<div class="rel-selos">' + (est ? '<span class="selo selo--est">exemplo · sem os seus números</span>' : '<span class="selo">confiança alta · números que você informou</span>') +
+    '<span class="perfil-chip">' + (est ? 'perfil do exemplo' : 'perfil do funil') + ' <b>' + perfil.nome + '</b></span></div>' +
     // Cópia (quiz-01-copy v2, M21): com a caixa marcada, o texto do mockup; desmarcada, nada foi enviado (30.3)
     '<p class="rel-copia">' + (temConsentimento() ? 'Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp.' : 'Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado.') + '</p></header>';
 
-  const funil = '<section><p class="secao__olho">da semente ao fruto</p><h2 class="secao__titulo">Suas 4 etapas contra as metas</h2>' + haste(c, k, est) + '</section>';
-  const g = ganhos(k.taxas);
+  const funil = '<section><p class="secao__olho">da semente ao fruto</p><h2 class="secao__titulo">' + (est ? 'As 4 etapas do exemplo contra as metas' : 'Suas 4 etapas contra as metas') + '</h2>' +
+    // os números do exemplo são exatos do cenário: sem o "≈" da estimativa (v12)
+    haste(c, k, false) + '</section>';
+  // no exemplo, só os selos que saem das respostas (as taxas são do exemplo, não dela)
+  const g = ganhos(est ? null : k.taxas);
   if (est) g.delete('mede');
   const selos = '<section><p class="secao__olho">selos · ' + g.size + ' de ' + SELOS.length + '</p><h2 class="secao__titulo">O que o seu time já faz bem</h2>' + listaSelos(g, ' selos--rel') + '</section>';
 
@@ -1499,19 +1535,21 @@ function telaRelatorio(t){
       '<div class="fraco__bloco" style="margin-top:18px"><h4>O que manter</h4><p>Continue contando os cinco números todo mês, num lugar só. É isso que permite ver uma etapa cair antes de ela pesar no faturamento.</p></div></section>';
   } else {
     const ok = ETAPAS.filter((e, i) => k.fracas.indexOf(i) < 0);
-    fracos = '<section><p class="secao__olho">' + nf + ' pontos fracos · do que mais pesa para o que menos pesa</p><h2 class="secao__titulo">Onde sua equipe perde performance</h2>' +
+    const conjunta1 = k.fracas.indexOf(2) > -1 && k.fracas.indexOf(3) > -1, conjunta2 = k.fracas.indexOf(1) > -1 || k.fracas.indexOf(2) > -1;
+    fracos = '<section><p class="secao__olho">' + nf + (nf === 1 ? ' ponto fraco' : ' pontos fracos') + ' · do que mais pesa para o que menos pesa</p><h2 class="secao__titulo">' + (est ? 'Onde um funil como este perde performance' : 'Onde sua equipe perde performance') + '</h2>' +
       '<ol class="fracos">' + k.partes.map((p, n) => {
         const e = ETAPAS[p.i], L = LEITURA[p.i];
-        return '<li class="fraco"><div class="fraco__tag">' + (n === 0 ? '<span class="principal">etapa principal</span>' : '') + '<span>≈ ' + mil(p.r) + ' por mês na mesa</span></div>' +
+        return '<li class="fraco"><div class="fraco__tag">' + (n === 0 ? '<span class="principal">etapa principal</span>' : '') + (semVendaAMais ? '' : '<span>≈ ' + mil(p.r) + ' por mês na mesa</span>') + '</div>' +
           '<div class="fraco__cabeca"><h3>' + e.nome + '</h3><span class="fraco__num"><b>' + pct(k.taxas[p.i]) + '</b> · meta ' + METAS[p.i] + '%</span></div>' +
           '<p class="fraco__frase">' + L.frase(k.taxas[p.i]) + '</p>' +
-          '<div class="fraco__bloco"><h4>Causa provável</h4><p>' + L.causa + '</p></div>' +
+          '<div class="fraco__bloco"><h4>Causa provável</h4><p>' + (typeof L.causa === 'function' ? L.causa(primeiroContato) : L.causa) + '</p></div>' +
           '<div class="fraco__bloco"><h4>O que fazer</h4><ul class="lista">' + L.fazer.map(f => '<li>' + f + '</li>').join('') + '</ul></div></li>';
       }).join('') + '</ol>' +
-      '<div class="conjunta"><p class="secao__olho">leitura conjunta</p>' +
-      '<p>Comparecimento e fechamento fracos ao mesmo tempo costumam vir da mesma raiz. Gente sem perfil está entrando na agenda. Vale conferir o que quem agenda pergunta antes de marcar.</p>' +
-      '<p>Agendamento e comparecimento dependem de rotina, não de talento. Costumam ser os consertos mais baratos.</p></div>' +
-      (ok.length ? '<div class="funciona">' + FRUTO + '<p><strong>O que já funciona:</strong> ' + ok.map(e => e.nome.toLowerCase()).join(', ') + '.' + (k.fracas.indexOf(0) < 0 ? ' ' + Maiusc(fracao(METAS[0])) + ' dos seus leads tem perfil de compra, então o marketing está trazendo gente certa.' : '') + '</p></div>' : '') +
+      // v12 (#123): cada parágrafo só quando as etapas dele estão fracas (as mesmas condições dos quadros); sem nenhum, o bloco sai
+      (conjunta1 || conjunta2 ? '<div class="conjunta"><p class="secao__olho">leitura conjunta</p>' +
+      (conjunta1 ? '<p>Comparecimento e fechamento fracos ao mesmo tempo costumam vir da mesma raiz. Gente sem perfil está entrando na agenda. Vale conferir o que quem agenda pergunta antes de marcar.</p>' : '') +
+      (conjunta2 ? '<p>Agendamento e comparecimento dependem de rotina, não de talento. Costumam ser os consertos mais baratos.</p>' : '') + '</div>' : '') +
+      (ok.length ? '<div class="funciona">' + FRUTO + '<p><strong>' + (est ? 'No exemplo, já funcionam:' : 'O que já funciona:') + '</strong> ' + ok.map(e => e.nome.toLowerCase()).join(', ') + '.' + (!est && k.fracas.indexOf(0) < 0 ? ' ' + Maiusc(fracao(METAS[0])) + ' dos seus leads tem perfil de compra, então o marketing está trazendo gente certa.' : '') + '</p></div>' : '') +
       '</section>';
   }
 
@@ -1525,15 +1563,17 @@ function telaRelatorio(t){
       '<p class="mesa__nota">Conta feita com as suas taxas de hoje: ' + pct(k.geral) + ' dos leads viram venda, valor médio de R$ ' + num(c.ticket, 0) + '. Não é promessa. Mais leads também pedem gente para atender.</p></section>';
   } else {
     mesa = '<section class="mesa"><p class="secao__olho">dinheiro na mesa</p>' +
-      '<p class="mesa__valor">' + (est ? '≈ ' : '') + mil(k.extraR) + '<small>por mês' + (est ? ' · estimativa' : '') + '</small></p>' +
-      '<p class="mesa__frase">São ' + (est ? 'cerca de ' : '') + k.extraV + ' vendas a mais por mês se as ' + nf + ' etapas fracas chegassem na meta. Frutos que hoje ficam no pé.</p>' +
-      '<ul class="partes">' + k.partes.map(p => {
+      '<p class="mesa__valor">' + (est ? '≈ ' : '') + (semVendaAMais ? 'R$ 0' : mil(k.extraR)) + '<small>por mês' + (est ? ' · no exemplo' : '') + '</small></p>' +
+      (est ? '<p class="mesa__frase">No exemplo, ' + (k.extraV === 1 ? 'é cerca de 1 venda' : 'são cerca de ' + k.extraV + ' vendas') + ' a mais por mês se ' + (nf === 1 ? 'a etapa fraca chegasse' : 'as ' + nf + ' etapas fracas chegassem') + ' na meta.</p>'
+        : semVendaAMais ? '<p class="mesa__frase">Com o volume de hoje, levar ' + (nf === 1 ? 'a etapa fraca' : 'as ' + nf + ' etapas fracas') + ' até a meta ainda não soma uma venda inteira a mais por mês. O ganho aparece quando entrarem mais leads.</p>'
+        : '<p class="mesa__frase">' + (k.extraV === 1 ? 'É 1 venda' : 'São ' + k.extraV + ' vendas') + ' a mais por mês se ' + (nf === 1 ? 'a etapa fraca chegasse' : 'as ' + nf + ' etapas fracas chegassem') + ' na meta. Frutos que hoje ficam no pé.</p>') +
+      // sem venda a mais (funil pequeno), sem as fatias de R$ 0 por etapa
+      (semVendaAMais ? '' : '<ul class="partes">' + k.partes.map(p => {
         const v = Math.round(p.v);
         return '<li><span class="partes__nome">' + ETAPAS[p.i].nome + '</span><span class="partes__barra" style="--p:' + (p.share * 100).toFixed(1) + '"></span><span class="partes__valor"><b>' + mil(p.r) + '</b> · ≈ ' + v + (v === 1 ? ' venda' : ' vendas') + '</span></li>';
-      }).join('') + '</ul>' +
-      (est ? '<p class="mesa__nota">Conta por estimativa, não é promessa. Onde você respondeu “menos de X%”, a etapa entra como 70% da meta: ' + k.fracas.map(i => ETAPAS[i].nome.toLowerCase() + ' ' + pct(k.taxas[i])).join(', ') +
-        '. Base: ' + num(c.leads, 0) + ' leads por mês e valor médio de R$ ' + num(c.ticket, 0) + '. Com os números exatos, a conta fica precisa.</p></section>' :
-      '<p class="mesa__nota">Conta feita com os seus números, não é promessa. Hoje: ' + k.hoje + ' vendas, ' + mil(k.hoje * c.ticket) + ' por mês. Com as etapas na meta: ' + k.naMeta + ' vendas, ' + mil(k.naMeta * c.ticket) + '. Valor médio da venda: R$ ' + num(c.ticket, 0) + '.</p></section>');
+      }).join('') + '</ul>') +
+      (est ? '<p class="mesa__nota">Conta de exemplo, não é a sua nem é promessa: um funil de ' + num(c.leads, 0) + ' leads por mês e valor médio de R$ ' + num(c.ticket, 0) + '. Com os seus números, a conta fica sua.</p></section>' :
+      '<p class="mesa__nota">Conta feita com os seus números, não é promessa. Hoje: ' + k.hoje + (k.hoje === 1 ? ' venda, ' : ' vendas, ') + mil(k.hoje * c.ticket) + ' por mês. Com as etapas na meta: ' + k.naMeta + (k.naMeta === 1 ? ' venda, ' : ' vendas, ') + mil(k.naMeta * c.ticket) + '. Valor médio da venda: R$ ' + num(c.ticket, 0) + '.</p></section>');
   }
 
   // aberto pelo "Ver meu diagnóstico" da conversa gratuita, sem o bloco de chamada: a pessoa já respondeu na conversa
@@ -1571,11 +1611,9 @@ const notaInteresse = () => CRITERIO_DO_FIM === 'junior' ? 'Anotado. Alguém da 
 /* ··· Lead score: a conta (regra em LEAD_SCORE, no topo) ···
    Usa só o que a pessoa respondeu (R), nunca os exemplos do protótipo (EX). */
 function dinheiroNaMesaInformado(){
-  // "sem números informados": modo chute, número faltando ou valor da venda vazio
-  if (R.lembra !== 'Sim') return null;
-  const vol = volumesDe(R.nums), ticket = lerNum(R.ticket || '');
-  if (!ticket || vol.some(v => v === null) || !vol.slice(0, 4).every(v => v > 0)) return null;
-  return Math.max(0, calcular({leads:vol[0], n:vol.slice(1), ticket:ticket}).extraR);
+  // "sem números informados": modo chute, número faltando ou valor da venda vazio. v12 (#123): a mesma conta do relatório (funilDaPessoa)
+  const f = funilDaPessoa();
+  return f ? Math.max(0, f.k.extraR) : null;
 }
 function calcularLeadScore(){
   const C = LEAD_SCORE, P = C.pontos, ticket = lerNum(R.ticket || '');
@@ -1807,7 +1845,7 @@ function mostrar(id, o){
   $('#avisoSelo').hidden = true;
   // selos novos: só quando a pessoa chega respondendo (não pelo seletor)
   const f = funilPainel();
-  const agora = ganhos(f && f.taxas);
+  const agora = ganhos(taxasDela(f));
   novosSelos = porFluxo && t.chat && vemDaConversa ? SELOS.map(s => s.id).filter(s => agora.has(s) && !selosAntes.has(s)) : [];
   msgSelo = novosSelos.length && selosAntes.size === 0 ? 'Boa, ' + esc(nm()) + ': primeiro selo conquistado. Ele fica guardado no painel.' : '';
   if (t.chat) selosAntes = agora; // páginas fora da conversa (ex.: os relatórios) não zeram os selos já vistos
