@@ -1,6 +1,6 @@
 ---
 id: garcom
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -9,22 +9,26 @@ depende_de:
     versao: 4
   - id: banco-migracao-001
     versao: 1
+  - id: banco-migracao-004
+    versao: 1
   - id: planta-do-banco
-    versao: 5
+    versao: 6
   - id: decisoes
-    versao: 11
+    versao: 15
   - id: funil-01
-    versao: 4
+    versao: 5
   - id: funil-01-planilha-sdr
     versao: 2
   - id: regra-seguranca
     versao: 3
   - id: lacunas
-    versao: 7
+    versao: 8
 desatualizado: true
 ---
 
 # Garçom · rascunho
+
+**Versão 7 (25/11/2026, pedido 24, item 2 e item 4).** A proteção contra robô, a mais leve que funciona e sem operador de dados novo, e a contagem das recusas. (1) **Limite de pedidos por IP** nas duas portas públicas, antes de qualquer conferência, pelos limitadores de Workers Rate Limiting da Cloudflare declarados no wrangler.toml do protótipo (v15): `LIMITE_FIM_QUIZ`, 10 fins de quiz por minuto por IP, e `LIMITE_EVENTO`, 60 eventos por minuto por IP. Passou do limite: 429 `pacote recusado`, com `Retry-After: 60`. A chave é o IP de quem pede (cabeçalho CF-Connecting-IP, que a própria Cloudflare põe); o IP fica só no limitador da Cloudflare, nunca no banco nem no registro. Os limites são folgados de propósito, porque a Cloudflare avisa que muita gente pode sair pelo mesmo IP (operadora de celular). Se o limitador faltar ou falhar, o garçom deixa passar (falha aberta): um lead de verdade nunca é barrado por defeito do limitador. (2) **No fim do quiz, a armadilha e o tempo mínimo.** O pacote ganha o bloco `protecao`, com `armadilha` (o campo que pessoa nenhuma vê nem preenche, até 200 caracteres) e `duracao_s` (os segundos entre abrir a página e mandar o contato, no relógio da página, um número inteiro de 0 a 604.800, uma semana de aba aberta). Sem o bloco: 422 `protecao-faltando`; fora do formato: `protecao-formato`; armadilha preenchida: `armadilha`; menos de 20 segundos: `rapido-demais`. O bloco sai do pacote antes de gravar: nada dele chega ao banco. O pacote de antes, sem o bloco, passa a ser recusado: a página v14 tem de ir ao ar junto (APLICAR-24). (3) **Toda recusa das portas públicas soma 1 na tabela `recusas`** do banco (migração 004), pela função `registrar_recusa`, com a chave publicável: só o dia, a porta e o motivo, nenhum dado do pacote nem o IP. Roda depois da resposta (não atrasa ninguém). Para uma enxurrada de recusas não virar uma enxurrada de gravações, o limitador `LIMITE_REGISTRO` deixa somar até 30 por minuto para cada porta e motivo; as outras ficam no registro da Cloudflare como `recusa-nao-contada`. Nenhuma recusa é silenciosa: quem é recusado vê o aviso de falha com "Tentar de novo", e a contagem fica no banco. (4) **`/api/evento` aceita `utm_medium`, `utm_content` e `utm_term`**, opcionais e saneadas como no fim do quiz (minúsculas, letras, números, hífen e sublinhado, até 100; fora disso, vazias), para a medição por criativo desde a abertura do quiz (KR 2.1). **Não entrou:** o Turnstile da Cloudflare, que seria um operador novo de dados do navegador e pediria mudar a política de privacidade antes; e a recusa do mesmo e-mail repetido, porque o banco já junta a mesma pessoa pelo e-mail e pelo telefone, e uma recusa por e-mail barraria quem refaz o quiz de verdade. Teste local: **438 de 438** (eram 386). Precisa da migração 004 no banco antes; publicação pelo roteiro entregas/prototipo-funil-01/APLICAR-24.md.
 
 **Versão 6 (18/11/2026, #121).** Meta-ads entra na lista de utm_source. A porta do fim do quiz aceita nove campos novos, todos opcionais: utm_medium, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado. O pacote de antes, sem eles, continua passando igual, para nenhum lead falhar durante a troca. Os campos novos são saneados e nunca recusam o lead (sanearOrigemEIds): utm de texto livre fora do formato vira vazia (e vai em minúsculas); fbclid fora do formato vira vazio; fbp e fbc fora do formato saem do pacote; os três ids, se não forem coerentes, saem juntos. O registro anota só os nomes dos campos mexidos, nunca o valor. A visita, o início do quiz e o clique continuam sem esses campos (campo desconhecido na porta /api/evento). Precisa da migração 003 no banco antes (dados/banco/migracoes/003-origem-e-ids.sql); com o banco sem ela, os campos novos seriam ignorados pela função antiga, mas meta-ads seria recusada pela lista antiga do banco. Teste local: 386 de 386 (eram 360). Publicação: entregas/prototipo-funil-01/APLICAR-22.md.
 
@@ -34,7 +38,7 @@ A função que fica entre as páginas do protótipo e o banco (funis/funil-01/fu
 
 **Destino dos contatos em conflito · bloqueado para entrega até a decisão** (conflito-17, em base/lacunas.md). Este código segue o lado 2 (#90: banco pelo garçom e planilha do SDR), como a planta e o funil-01, sem escolher. Se o lado 1 (Triad CRM) vencer, só a gravação e a porta da planilha mudam; as conferências continuam valendo. O protótipo de teste não é entrega: com gente de verdade, nada vai ao ar antes da decisão.
 
-**Antes de tráfego real:** a proteção contra robô e o limite de pedidos não estão ligados (log.md, Pendências).
+**Antes de tráfego real:** a proteção contra robô e o limite de pedidos entram na v7, que só vale depois de publicada pelo roteiro APLICAR-24 (log.md, Pendências).
 
 ## O que tem dentro
 
@@ -196,7 +200,7 @@ Só os nomes aparecem no código. Os valores dos segredos moram nas variáveis s
 | ORIGEM_PERMITIDA | Variável comum | O próprio endereço do protótipo, sem barra no fim. Desde a v5, o endereço novo: https://svsafra.gotriad.com.br (#120; até a v4, https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev; conexoes.md, linha da Cloudflare). Se vier com barra no fim, o garçom ignora a barra | As duas portas públicas e, desde a v5, o destino do redirecionamento do endereço antigo |
 | ENDERECO_ANTIGO | Variável comum (v5) | O endereço antigo do protótipo, no mesmo formato da de cima: https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev. Só o nome do endereço é comparado. Sem ela, nenhum pedido muda de endereço | Só o redirecionamento das páginas |
 
-Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável. Nenhum segredo novo na v5: a variável nova é comum e fica em [vars] do wrangler.toml.
+Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável. Nenhum segredo novo na v5: a variável nova é comum e fica em [vars] do wrangler.toml. Nenhum segredo novo na v7: os três limitadores (`LIMITE_FIM_QUIZ`, `LIMITE_EVENTO` e `LIMITE_REGISTRO`) são bindings declarados no wrangler.toml, sem valor secreto, e nascem com a publicação; a contagem das recusas usa a mesma chave publicável.
 
 ## O que falta para funcionar
 
@@ -205,7 +209,7 @@ Nenhum segredo novo na v4: a porta /api/evento usa a mesma chave publicável. Ne
 3. **Segredos no cofre**, pelo roteiro da etapa 26.
 4. **Ligar a página:** `enviarPacote` do quiz-01 faz o POST para /api/fim-quiz, numa versão nova da página (etapa 23).
 5. **Planilha do SDR** chamando a porta privada (etapa 24).
-6. **Antes de tráfego real:** proteção contra robô (Turnstile) e limite de pedidos da Cloudflare (Rate Limiting) (log.md, Pendências).
+6. **Antes de tráfego real:** a proteção da v7 (limite de pedidos por IP, armadilha e tempo mínimo) publicada pelo roteiro APLICAR-24, com a migração 004 antes. O Turnstile ficou de fora (v7: pediria mudar a política de privacidade).
 7. **Decisão do conflito-17** (Júnior e Euclides) e aprovação do Otávio.
 8. **Para a v4:** a migração 001 rodada no Supabase antes de publicar (dados/banco/README.md, "Como aplicar"); a linha da landing no catálogo, sem a qual toda visita volta recusada (pergunta 32.4); a landing e o quiz mandando os eventos para /api/evento (etapa 34); a lista do clique respondida (31.15).
 9. **Para a v5:** a zona gotriad.com.br ativa na conta da Cloudflare e a publicação pelo roteiro entregas/prototipo-funil-01/APLICAR-21.md (parte 21.3 do pedido 21); depois, a planilha do SDR apontada para o endereço novo, passo do Otávio (log.md, Pendências, "Domínio do funil (#120)").

@@ -1,5 +1,5 @@
 // Garçom do funil-01 · Cloudflare Worker, sem dependências externas
-// id: garcom · versao 6 · rascunho · otavio: pendente
+// id: garcom · versao 7 · rascunho · otavio: pendente
 // Ver entregas/garcom/README.md. RASCUNHO: a v2 foi publicada no protótipo em 09/11/2026, só com
 // leads de teste, e a v4, no mesmo dia, às 19h16 (README do protótipo, "Publicações"). A v5
 // (decisão #120) foi ao ar pelo roteiro APLICAR-21, em 15/11/2026. A v6 (decisão #121) só vai ao ar
@@ -10,6 +10,15 @@
 // recusam o lead: utm de texto livre fora do formato vira vazia; fbclid fora do formato vira vazio;
 // fbp e fbc fora do formato saem do pacote; os três ids, se não forem coerentes, saem juntos.
 // O formato dos pacotes é o da planta do banco (dados/planta/planta.md v4; 23.11).
+// v7 (pedido 24, 25/11/2026): (1) proteção contra robô, leve e sem novo operador de dados, nas duas portas
+// públicas: o limite de pedidos por IP (limitadores LIMITE_FIM_QUIZ e LIMITE_EVENTO da Cloudflare, no
+// wrangler.toml); no fim do quiz, a armadilha e o tempo mínimo entre abrir a página e enviar o contato
+// (o bloco "protecao" do pacote, conferido aqui e tirado antes de gravar). (2) Toda recusa das portas
+// públicas soma 1 na tabela recusas do banco (migração 004), só com a porta e o motivo, pela função
+// registrar_recusa; o limitador LIMITE_REGISTRO segura uma enxurrada de gravações. (3) /api/evento
+// aceita utm_medium, utm_content e utm_term, opcionais e saneadas como no fim do quiz (migração 004).
+// Nenhuma recusa nova é silenciosa: a página mostra o aviso de falha com "Tentar de novo", e a
+// contagem fica no banco. Só vai ao ar pelo roteiro APLICAR-24, depois da migração 004.
 //
 // Um Worker só para o protótipo (decisão #101): safra-prototipo-funil-01 serve as páginas e o
 // garçom no mesmo endereço. As rotas /api/ são atendidas antes dos arquivos.
@@ -73,6 +82,11 @@ const TAMANHO_MAXIMO_EVENTO = 2 * 1024;  // bytes; o pacote de um evento tem per
 const ESPERA_DO_BANCO_MS = 8000;
 const LIMITE_PLANILHA = 200;       // o mesmo teto de leads_para_planilha
 const CHAVE_PLANILHA_MINIMO = 32;  // segredo mais curto que isto no cofre não abre a porta (22.4)
+// v7 (pedido 24): a proteção do fim do quiz. Pessoa nenhuma termina o quiz (umas 20 perguntas e o contato) em
+// menos de 20 segundos; o robô que preenche formulário termina num instante e preenche a armadilha.
+const TEMPO_MINIMO_S = 20;
+const DURACAO_MAXIMA_S = 7 * 24 * 3600;   // uma aba aberta por uma semana ainda vale
+const ARMADILHA_MAXIMO = 200;
 
 // ··· Rotas ···
 const ROTA_FIM_QUIZ = '/api/fim-quiz';
@@ -119,7 +133,9 @@ const CAMPOS_EVENTO = [
 // Campos do evento sem pessoa (/api/evento): os mesmos que registrar_evento aceita, e nada mais
 const CAMPOS_EVENTO_SEM_PESSOA = [
   'tipo', 'funil', 'entrega', 'versao_entrega', 'utm_source', 'utm_campaign',
-  'id_sessao', 'ocorrido_em', 'clique_fim_quiz'
+  'id_sessao', 'ocorrido_em', 'clique_fim_quiz',
+  // v7 (pedido 24): opcionais; quem não manda continua passando (migração 004)
+  'utm_medium', 'utm_content', 'utm_term'
 ];
 // Campos que levam dado de pessoa: nunca entram por /api/evento
 const CAMPOS_COM_DADO_DE_PESSOA = [...CAMPOS_PESSOA, 'respostas', 'lead_score_nota', 'lead_score_faixa'];
@@ -189,8 +205,9 @@ const COOKIE_META = /^fb\.[0-9]+\.[0-9]+\.[A-Za-z0-9_.-]+$/;
 const ID_LEAD = /^lead-[0-9]{10,16}-[a-z0-9]{4,32}$/;
 const ID_QUALIFICADO = /^qualificado-[0-9]{10,16}-[a-z0-9]{4,32}$/;
 const tem = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
-export function sanearOrigemEIds(pacote) {
-  const e = pacote.evento, mexidos = [];
+// As três utm de texto livre: minúsculas; só letras, números, hífen e sublinhado, até 100; fora disso, vazio.
+// Ausente continua ausente (o banco grava vazio). v7: a mesma regra no fim do quiz e em /api/evento.
+function sanearUtmLivres(e, mexidos) {
   for (const k of ['utm_medium', 'utm_content', 'utm_term']) {
     if (!tem(e, k)) continue;
     const v = ehTexto(e[k]) ? e[k].trim().toLowerCase() : '';
@@ -198,6 +215,16 @@ export function sanearOrigemEIds(pacote) {
     if (limpo !== e[k]) mexidos.push(k);
     e[k] = limpo;
   }
+  return mexidos;
+}
+// v7 (pedido 24): /api/evento saneia as três utm de texto livre, sem nunca recusar o evento por elas.
+// Chamar só depois de conferirEvento. Devolve os nomes dos campos mexidos (nunca o valor).
+export function sanearEvento(pacote) {
+  return sanearUtmLivres(pacote.evento, []);
+}
+export function sanearOrigemEIds(pacote) {
+  const e = pacote.evento, mexidos = [];
+  sanearUtmLivres(e, mexidos);
   if (tem(e, 'fbclid')) {
     const v = ehTexto(e.fbclid) ? e.fbclid.trim() : '';
     const limpo = v === '' || FBCLID.test(v) ? v : '';
@@ -268,7 +295,12 @@ export function conferirEvento(pacote) {
 // Pacote de /api/fim-quiz. Devolve o motivo da recusa (só para o registro interno, nunca para
 // quem enviou) ou null.
 export function conferirPacote(pacote) {
-  if (!ehObjeto(pacote) || !soCampos(pacote, ['pessoa', 'evento'])) return 'formato';
+  if (!ehObjeto(pacote) || !soCampos(pacote, ['pessoa', 'evento', 'protecao'])) return 'formato';
+  // v7 (pedido 24): o bloco da proteção é obrigatório e só tem a armadilha e a duração
+  const pr = pacote.protecao;
+  if (pr === undefined) return 'protecao-faltando';
+  if (!ehObjeto(pr) || !soCampos(pr, ['armadilha', 'duracao_s']) || !ehTexto(pr.armadilha) || pr.armadilha.length > ARMADILHA_MAXIMO
+      || !ehInteiro(pr.duracao_s, 0, DURACAO_MAXIMA_S)) return 'protecao-formato';
   const p = pacote.pessoa, e = pacote.evento;
   if (!ehObjeto(p) || !ehObjeto(e)) return 'formato';
   if (!soCampos(p, CAMPOS_PESSOA) || !soCampos(e, CAMPOS_EVENTO)) return 'campo-desconhecido';
@@ -302,6 +334,16 @@ export function conferirPacote(pacote) {
   if (!ehTexto(p.consentimento_texto) || p.consentimento_texto.trim() === '' || p.consentimento_texto.length > 3000) return 'consentimento-texto';
   if (!ehData(p.consentimento_em)) return 'consentimento-data';
 
+  return null;
+}
+
+// v7 (pedido 24): a proteção do fim do quiz, depois de conferirPacote. Devolve o motivo da recusa ou null.
+//   armadilha     o campo que pessoa nenhuma vê veio preenchido
+//   rapido-demais menos de TEMPO_MINIMO_S segundos entre abrir a página e enviar o contato
+export function conferirProtecao(pacote) {
+  const pr = pacote.protecao;
+  if (pr.armadilha.trim() !== '') return 'armadilha';
+  if (pr.duracao_s < TEMPO_MINIMO_S) return 'rapido-demais';
   return null;
 }
 
@@ -414,18 +456,72 @@ async function lerCorpoLimitado(request, maximo) {
 //   conferir  conferência do pacote (devolve o motivo ou null)
 //   utm       campos de utm que, fora da lista, são gravados vazios (5.5)
 //   funcao    a função do banco que grava
-//   sanear    (só o fim do quiz, v6) saneia os campos opcionais e devolve os nomes mexidos
+//   sanear    saneia os campos opcionais e devolve os nomes mexidos (o fim do quiz desde a v6; o evento desde a v7)
+//   protecao  (só o fim do quiz, v7) a armadilha e o tempo mínimo; o bloco sai do pacote antes de gravar
+//   limite    (v7) o nome do limitador da Cloudflare desta porta (wrangler.toml, [[ratelimits]])
 const PORTA_FIM_QUIZ = {
   nome: 'fim-quiz', maximo: TAMANHO_MAXIMO, conferir: p => conferirPacote(p),
-  utm: UTM_DO_PACOTE, funcao: 'registrar_fim_quiz', sanear: p => sanearOrigemEIds(p)
+  utm: UTM_DO_PACOTE, funcao: 'registrar_fim_quiz', sanear: p => sanearOrigemEIds(p),
+  protecao: p => conferirProtecao(p), limite: 'LIMITE_FIM_QUIZ'
 };
 const PORTA_EVENTO = {
   nome: 'evento', maximo: TAMANHO_MAXIMO_EVENTO, conferir: p => conferirEvento(p),
-  utm: UTM_DO_EVENTO, funcao: 'registrar_evento'
+  utm: UTM_DO_EVENTO, funcao: 'registrar_evento', sanear: p => sanearEvento(p), limite: 'LIMITE_EVENTO'
 };
 
-async function portaPublica(request, env, porta) {
+// v7 (pedido 24): o limite de pedidos por IP, pelo limitador da Cloudflare (Workers Rate Limiting, GA desde 19/09/2025;
+// documentação lida em 25/11/2026). A chave é o IP de quem pede (cabeçalho CF-Connecting-IP), que fica só no limitador
+// da Cloudflare, por um minuto, e não vai a registro nem ao banco. O limite vale por local da Cloudflare e é aproximado.
+// Folgado de propósito: no celular, muita gente sai pelo mesmo IP da operadora. Sem o limitador (o contorno Node do
+// ensaio, os testes) ou com ele em falha, ninguém é limitado: na dúvida, o lead passa.
+async function dentroDoLimite(limitador, request) {
+  if (!limitador || typeof limitador.limit !== 'function') return true;
+  const ip = request.headers.get('CF-Connecting-IP') || 'sem-ip';
+  try {
+    const r = await limitador.limit({ key: ip });
+    return !r || r.success !== false;
+  } catch {
+    return true;
+  }
+}
+
+// v7 (pedido 24): soma 1 recusa na tabela recusas (migração 004), só com a porta e o motivo (código fixo deste
+// arquivo; fora do formato, "outro"). Para uma enxurrada de recusas não virar uma enxurrada de gravações, o limitador
+// LIMITE_REGISTRO (por porta e motivo, 30 por minuto em cada local) deixa passar só as primeiras: as outras ficam só no
+// registro da Cloudflare, como "recusa-nao-contada". Se o banco falhar, a recusa também só fica no registro.
+// Nunca atrasa a resposta: com o ctx do Worker, roda depois dela (waitUntil); sem ele (testes), devolve a promessa.
+const MOTIVO_GRAVAVEL = /^[a-z]+(-[a-z]+)*$/;
+export function contarRecusa(env, ctx, porta, motivo) {
+  const m = MOTIVO_GRAVAVEL.test(motivo) && motivo.length <= 40 ? motivo : 'outro';
+  const tarefa = (async () => {
+    if (!env.SUPABASE_URL || !env.SUPABASE_CHAVE_PUBLICAVEL) return;
+    const lim = env.LIMITE_REGISTRO;
+    if (lim && typeof lim.limit === 'function') {
+      try {
+        const r = await lim.limit({ key: porta + ':' + m });
+        if (r && r.success === false) { registrar(porta + ': recusa-nao-contada: ' + m); return; }
+      } catch { /* sem o limitador, conta */ }
+    }
+    try {
+      const resposta = await chamarFuncao('registrar_recusa', { porta, motivo: m }, env.SUPABASE_CHAVE_PUBLICAVEL, env);
+      if (!resposta.ok) registrar(porta + ': recusa-nao-contada: banco-' + resposta.status);
+    } catch {
+      registrar(porta + ': recusa-nao-contada: banco-sem-resposta');
+    }
+  })();
+  if (ctx && typeof ctx.waitUntil === 'function') { ctx.waitUntil(tarefa); return null; }
+  return tarefa;
+}
+
+async function portaPublica(request, env, porta, ctx) {
   const nome = porta.nome;
+  // v7: toda recusa soma 1 na contagem do banco (contarRecusa), além do registro da Cloudflare
+  const recusa = async (status, corpo, motivo, registro) => {
+    registrar(nome + ': ' + (registro || motivo));
+    const t = contarRecusa(env, ctx, nome, motivo);
+    if (t) await t;
+    return responder(status, corpo);
+  };
   // o navegador manda o Origin sem barra no fim; uma barra no fim do valor da variável é ignorada
   const origemPermitida = (env.ORIGEM_PERMITIDA || '').replace(/\/+$/, '');
   // Só a chave publicável. Sem ela, nada é gravado; a secreta nunca é usada aqui.
@@ -434,66 +530,60 @@ async function portaPublica(request, env, porta) {
     return responder(503, INDISPONIVEL);
   }
 
+  // v7 (pedido 24): o limite de pedidos por IP, antes de tudo (é o que segura uma enxurrada)
+  if (!(await dentroDoLimite(env[porta.limite], request))) {
+    const r = await recusa(429, RECUSADO, 'limite');
+    r.headers.set('Retry-After', '60');
+    return r;
+  }
+
   // Mesma origem: o protótipo é servido por este Worker, e o navegador manda Origin no POST.
   // Só a origem do próprio protótipo passa; nada de CORS. Isto NÃO protege contra robô:
   // um robô fora do navegador forja o cabeçalho Origin sem esforço. A conferência de origem só
   // barra páginas de outros sites abertas no navegador (log.md, Pendências).
   const origem = request.headers.get('Origin');
-  if (origem !== origemPermitida) {
-    registrar(nome + ': origem');
-    return responder(403, RECUSADO);
-  }
+  if (origem !== origemPermitida) return recusa(403, RECUSADO, 'origem');
 
   // método: só POST. O pré-voo (OPTIONS) saiu na v4 e cai aqui, como qualquer outro (22.2).
   if (request.method !== 'POST') {
-    registrar(nome + ': metodo');
-    const r = responder(405, RECUSADO);
+    const r = await recusa(405, RECUSADO, 'metodo');
     r.headers.set('Allow', 'POST');
     return r;
   }
 
   // formato do corpo
   const tipoCorpo = (request.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase();
-  if (tipoCorpo !== 'application/json') {
-    registrar(nome + ': tipo-do-corpo');
-    return responder(415, RECUSADO);
-  }
+  if (tipoCorpo !== 'application/json') return recusa(415, RECUSADO, 'tipo-do-corpo');
 
   // tamanho: pelo cabeçalho e, de novo, pelo corpo lido em partes, parando assim que passar
   // do máximo (sem Content-Length, o corpo nunca é lido inteiro na memória)
   const declarado = Number(request.headers.get('Content-Length') || '0');
-  if (declarado > porta.maximo) {
-    registrar(nome + ': tamanho');
-    return responder(413, RECUSADO);
-  }
+  if (declarado > porta.maximo) return recusa(413, RECUSADO, 'tamanho');
   const lido = await lerCorpoLimitado(request, porta.maximo);
-  if (lido === 'tamanho') {
-    registrar(nome + ': tamanho');
-    return responder(413, RECUSADO);
-  }
-  if (lido === 'leitura') {
-    registrar(nome + ': leitura');
-    return responder(400, RECUSADO);
-  }
+  if (lido === 'tamanho') return recusa(413, RECUSADO, 'tamanho');
+  if (lido === 'leitura') return recusa(400, RECUSADO, 'leitura');
 
   let pacote;
   try {
     pacote = JSON.parse(new TextDecoder().decode(lido));
   } catch {
-    registrar(nome + ': json');
-    return responder(400, RECUSADO);
+    return recusa(400, RECUSADO, 'json');
   }
 
   const motivo = porta.conferir(pacote);
-  if (motivo) {
-    registrar(nome + ': recusado: ' + motivo);
-    return responder(422, RECUSADO);
+  if (motivo) return recusa(422, RECUSADO, motivo, 'recusado: ' + motivo);
+
+  // v7 (pedido 24): a armadilha e o tempo mínimo (só o fim do quiz). O bloco sai do pacote antes de gravar.
+  if (porta.protecao) {
+    const suspeito = porta.protecao(pacote);
+    if (suspeito) return recusa(422, RECUSADO, suspeito, 'recusado: ' + suspeito);
+    delete pacote.protecao;
   }
 
   // utm fora da lista: grava vazia e registra só os nomes dos campos (5.5; 18.7)
   const esvaziados = esvaziarUtmForaDaLista(pacote, porta.utm);
   if (esvaziados.length) registrar(nome + ': utm-fora-da-lista, gravada vazia: ' + esvaziados.join(', '));
-  // v6 (#121): os campos opcionais do fim do quiz, saneados; registra só os nomes
+  // v6 (#121): os campos opcionais do fim do quiz, saneados; v7: também os do evento; registra só os nomes
   if (porta.sanear) {
     const mexidos = porta.sanear(pacote);
     if (mexidos.length) registrar(nome + ': saneado: ' + mexidos.join(', '));
@@ -504,8 +594,7 @@ async function portaPublica(request, env, porta) {
   try {
     resposta = await chamarFuncao(porta.funcao, { pacote }, env.SUPABASE_CHAVE_PUBLICAVEL, env);
   } catch {
-    registrar(nome + ': banco-sem-resposta');
-    return responder(502, INDISPONIVEL);
+    return recusa(502, INDISPONIVEL, 'banco-sem-resposta');
   }
   if (resposta.ok) {
     registrar(nome + ': gravado');
@@ -513,11 +602,10 @@ async function portaPublica(request, env, porta) {
   }
   // O banco recusou (restrição, catálogo, clique sem fim do quiz na sessão) ou falhou. O detalhe
   // fica fora da resposta.
-  registrar(nome + ': banco-' + resposta.status);
   // 400 e 409 são recusa do pacote (restrição, catálogo); 401 e 403 são chave errada, e
   // o resto é falha do banco: os dois últimos aparecem como serviço indisponível.
-  if (resposta.status === 400 || resposta.status === 409) return responder(422, RECUSADO);
-  return responder(502, INDISPONIVEL);
+  if (resposta.status === 400 || resposta.status === 409) return recusa(422, RECUSADO, 'banco-recusou', 'banco-' + resposta.status);
+  return recusa(502, INDISPONIVEL, 'banco-falhou', 'banco-' + resposta.status);
 }
 
 // ··· Porta privada: GET /api/planilha/leads-novos ···
@@ -639,13 +727,13 @@ async function arquivos(request, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const caminho = url.pathname;
     // as rotas /api/ vêm antes dos arquivos (#101)
     if (caminho === '/api' || caminho.startsWith('/api/')) {
-      if (caminho === ROTA_FIM_QUIZ) return portaPublica(request, env, PORTA_FIM_QUIZ);
-      if (caminho === ROTA_EVENTO) return portaPublica(request, env, PORTA_EVENTO);
+      if (caminho === ROTA_FIM_QUIZ) return portaPublica(request, env, PORTA_FIM_QUIZ, ctx);
+      if (caminho === ROTA_EVENTO) return portaPublica(request, env, PORTA_EVENTO, ctx);
       if (caminho === ROTA_PLANILHA) return portaPlanilha(request, env, url);
       registrar('api: rota-desconhecida');
       return responder(404, NAO_ENCONTRADO);

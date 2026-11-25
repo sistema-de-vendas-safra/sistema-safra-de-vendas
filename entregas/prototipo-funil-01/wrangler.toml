@@ -1,5 +1,5 @@
 # Worker do protótipo do funil-01 · configuração da Cloudflare. RASCUNHO; publicado no protótipo em 09/11/2026, só com leads de teste.
-# id: prototipo-funil-01 · versao 14 · rascunho · otavio: pendente (ver README.md desta pasta)
+# id: prototipo-funil-01 · versao 15 · rascunho · otavio: pendente (ver README.md desta pasta)
 #
 # Um Worker só para o protótipo (decisão #101): serve a landing-page-02 em / (desde 12/11/2026, no lugar
 # das variantes A e B da landing-page-01), o quiz em /analise/ (v14, decisão #120; até a v13, em /quiz/) e o
@@ -57,3 +57,34 @@ SUPABASE_URL = "https://bvrvdlhpralmzizobsvu.supabase.co"
 ORIGEM_PERMITIDA = "https://svsafra.gotriad.com.br"
 # O endereço antigo (v14; #120): nele, o garçom leva as páginas ao novo; as rotas /api/ não são redirecionadas
 ENDERECO_ANTIGO = "https://safra-prototipo-funil-01.sistemadevendassafra.workers.dev"
+
+# Limite de pedidos por IP nas duas portas públicas e o freio da contagem das recusas (v15; pedido 24, item 2; garçom v7).
+# Workers Rate Limiting, GA desde 19/09/2025; exige wrangler 4.36.0 ou mais novo (o daqui é o 4.158.0). Documentação lida em
+# 25/11/2026: o período só pode ser 10 ou 60 segundos; o limite vale por local da Cloudflare e é aproximado; a Cloudflare não
+# recomenda o IP como chave porque muita gente pode sair pelo mesmo IP, por isso os limites são folgados. namespace_id é um
+# número inteiro, em texto, único na conta: estes três não podem ser usados por outro Worker da conta do Safra.
+# Sem nada no painel: o limitador nasce com a publicação. Se a conta não aceitar o binding, a publicação para com erro antes
+# de pôr o Worker novo no ar (roteiro APLICAR-24, "Se der errado").
+[[ratelimits]]
+name = "LIMITE_FIM_QUIZ"
+namespace_id = "2401"
+# Uma pessoa manda um fim de quiz; 10 por minuto por IP cobre uma operadora com várias pessoas no mesmo IP
+[ratelimits.simple]
+limit = 10
+period = 60
+
+[[ratelimits]]
+name = "LIMITE_EVENTO"
+namespace_id = "2402"
+# Uma pessoa manda a visita, o início do quiz e até quatro cliques; 60 por minuto por IP
+[ratelimits.simple]
+limit = 60
+period = 60
+
+[[ratelimits]]
+name = "LIMITE_REGISTRO"
+namespace_id = "2403"
+# A contagem das recusas no banco: até 30 por minuto para cada porta e motivo; o resto fica só no registro da Cloudflare
+[ratelimits.simple]
+limit = 30
+period = 60

@@ -1,4 +1,4 @@
-// Teste local do garçom v6 · não toca nenhum serviço real
+// Teste local do garçom v7 · não toca nenhum serviço real
 // Rodar da raiz do repositório:  node entregas/garcom/teste/testar-garcom.mjs
 //
 // Importa o handler de entregas/garcom/garcom.mjs e o chama nas quatro partes do Worker:
@@ -14,11 +14,13 @@
 // O fetch é falso: só registra o que seria chamado e nunca sai da máquina.
 // Os valores do env são de mentira e não apontam para lugar nenhum (domínio .invalid).
 // Leads de teste com nome começando por TESTE e e-mail @teste.invalid (decisão #102).
+// v7 (pedido 24): a proteção do fim do quiz (o bloco protecao: armadilha e tempo mínimo), o limite de pedidos por IP
+// (limitadores falsos no env) e a contagem das recusas (registrar_recusa, conferida à parte das gravações), seção 26.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import garcom, { comCharset, caminhoNovo } from '../garcom.mjs';
+import garcom, { comCharset, caminhoNovo, contarRecusa } from '../garcom.mjs';
 
 const aqui = dirname(fileURLToPath(import.meta.url));
 const raiz = join(aqui, '..', '..', '..');
@@ -59,11 +61,15 @@ const LEADS_FALSOS = [
 // ··· Fetch falso: registra e responde como o banco responderia ···
 let chamadas = [];
 let todasAsChamadas = [];
+// v7: as chamadas à contagem das recusas (registrar_recusa) ficam à parte: não são gravação de lead nem de evento
+let recusasContadas = [];
+let todasAsRecusas = [];
 let respostaDoBanco = { status: 204 };
 globalThis.fetch = async (endereco, opcoes) => {
   if (!String(endereco).startsWith(ENV.SUPABASE_URL)) throw new Error('teste tentou sair para fora: ' + endereco);
   const c = { endereco: String(endereco), funcao: String(endereco).split('/rpc/')[1], metodo: opcoes.method, cabecalhos: { ...opcoes.headers }, corpo: JSON.parse(opcoes.body) };
-  chamadas.push(c); todasAsChamadas.push(c);
+  if (c.funcao === 'registrar_recusa') { recusasContadas.push(c); todasAsRecusas.push(c); }
+  else { chamadas.push(c); todasAsChamadas.push(c); }
   if (respostaDoBanco.falha) throw new Error('banco fora do ar (simulado)');
   if (respostaDoBanco.corpo !== undefined) {
     return new Response(typeof respostaDoBanco.corpo === 'string' ? respostaDoBanco.corpo : JSON.stringify(respostaDoBanco.corpo),
@@ -110,6 +116,7 @@ const VAZAMENTO = /supabase|exemplo\.invalid|23503|detalhe interno|de-mentira|te
 // Devolve { r, texto, chamadas }.
 async function caso(nome, req, esperado, chamadasEsperadas, { env = ENV, podeTerLeads = false } = {}) {
   chamadas = [];
+  recusasContadas = [];
   const r = await garcom.fetch(req, env);
   const texto = await r.text();
   const noindex = r.headers.get('X-Robots-Tag') === 'noindex';
@@ -125,6 +132,10 @@ async function caso(nome, req, esperado, chamadasEsperadas, { env = ENV, podeTer
   marcar(ok, nome + ' (status ' + r.status + ', chamadas ao banco ' + chamadas.length + (mostrar ? ', resposta ' + mostrar : '') + ')');
   return { r, texto, chamadas: chamadas.slice() };
 }
+
+// v7: um início do quiz no formato da planta, com campos a mais quando pedido
+const ev26 = (extra = {}) => ({ evento: { tipo: 'inicio_quiz', funil: 'funil-01', entrega: 'quiz-01', versao_entrega: 2, utm_source: 'meta-ads',
+  utm_campaign: 'funil-01', id_sessao: 'sessao-teste-v7', ocorrido_em: new Date().toISOString(), ...extra } });
 
 // ════════ Porta pública: POST /api/fim-quiz (todos os casos da v1) ════════
 
@@ -240,7 +251,8 @@ await utmVazia('utm_source fora da lista (tiktok)', p => { p.evento.utm_source =
     utm_campaign: 'funil-01', id_sessao: 'sessao-teste-v6', ocorrido_em: new Date().toISOString() } };
   await caso('início do quiz com utm_source meta-ads (v6)', pedido({ corpo: ev, caminho: '/api/evento' }), 201, 1);
   await caso('início do quiz com id_lead: campo desconhecido nessa porta', pedido({ corpo: { evento: { ...ev.evento, id_lead: ID_L } }, caminho: '/api/evento' }), 422, 0);
-  await caso('início do quiz com utm_medium: campo desconhecido nessa porta', pedido({ corpo: { evento: { ...ev.evento, utm_medium: 'cpc' } }, caminho: '/api/evento' }), 422, 0);
+  // v7 (pedido 24): utm_medium, utm_content e utm_term passam a valer em /api/evento (seção 26); o fbclid continua de fora
+  await caso('início do quiz com fbclid: campo desconhecido nessa porta (v7)', pedido({ corpo: { evento: { ...ev.evento, fbclid: 'IwAR0abc' } }, caminho: '/api/evento' }), 422, 0);
 }
 await utmVazia('primeira_utm_campaign fora da lista', p => { p.pessoa.primeira_utm_campaign = 'outra-campanha'; }, 'pessoa', 'primeira_utm_campaign');
 
@@ -737,6 +749,107 @@ async function seguir(inicio, env = ENV_V5) {
   const c = await seguir(ANTIGO + '/');
   marcar(c.saltos === 1 && c.status === 200 && c.endereco === ORIGEM + '/', 'sem laço: do endereço antigo em / ao novo em / num salto só (' + c.saltos + ' salto, status ' + c.status + ')'); }
 
+// ════════ v7 (pedido 24): proteção, limite de pedidos, contagem das recusas e utm na abertura ════════
+
+// 26. A proteção do fim do quiz, o limite por IP, a contagem das recusas e as utm de texto livre em /api/evento
+{
+  const ultimaRecusa = () => recusasContadas.length === 1 ? recusasContadas[0].corpo : null;
+  const contada = (porta, motivo) => { const c = ultimaRecusa(); return !!c && c.porta === porta && c.motivo === motivo && Object.keys(c).join() === 'porta,motivo'; };
+
+  // a proteção é obrigatória e tem formato fechado
+  let p = copia(); delete p.protecao;
+  await caso('fim do quiz sem o bloco protecao (v7)', pedido({ corpo: p }), 422, 0);
+  marcar(contada('fim-quiz', 'protecao-faltando'), 'recusa sem protecao contada no banco: fim-quiz, protecao-faltando, só porta e motivo');
+  for (const [nome, mexer] of [
+    ['duracao_s em texto', x => { x.protecao.duracao_s = '312'; }],
+    ['duracao_s negativa', x => { x.protecao.duracao_s = -1; }],
+    ['duracao_s com fração', x => { x.protecao.duracao_s = 30.5; }],
+    ['armadilha que não é texto', x => { x.protecao.armadilha = 1; }],
+    ['armadilha longa demais', x => { x.protecao.armadilha = 'x'.repeat(201); }],
+    ['campo a mais na protecao', x => { x.protecao.ip = '127.0.0.1'; }],
+    ['protecao que não é objeto', x => { x.protecao = 'ok'; }]
+  ]) {
+    p = copia(); mexer(p);
+    await caso('protecao fora do formato: ' + nome, pedido({ corpo: p }), 422, 0);
+    marcar(contada('fim-quiz', 'protecao-formato'), 'recusa contada: protecao-formato (' + nome + ')');
+  }
+  // a armadilha preenchida e o envio rápido demais: recusa visível (422) e contada, nada gravado
+  p = copia(); p.protecao.armadilha = 'https://robo.exemplo.invalid';
+  await caso('armadilha preenchida', pedido({ corpo: p }), 422, 0);
+  marcar(contada('fim-quiz', 'armadilha'), 'recusa contada: armadilha');
+  p = copia(); p.protecao.armadilha = '   ';
+  await caso('armadilha só com espaços conta como vazia', pedido({ corpo: p }), 201, 1);
+  p = copia(); p.protecao.duracao_s = 19;
+  await caso('19 segundos entre abrir e enviar: rápido demais', pedido({ corpo: p }), 422, 0);
+  marcar(contada('fim-quiz', 'rapido-demais'), 'recusa contada: rapido-demais');
+  p = copia(); p.protecao.duracao_s = 20;
+  const { chamadas: g20 } = await caso('20 segundos: passa', pedido({ corpo: p }), 201, 1);
+  marcar(g20.length === 1 && !('protecao' in g20[0].corpo.pacote) && Object.keys(g20[0].corpo.pacote).join() === 'pessoa,evento' && recusasContadas.length === 0,
+    'o bloco protecao sai do pacote antes de gravar: o banco recebe só pessoa e evento, e nada é contado como recusa');
+
+  // o limite por IP: o limitador falso diz não, o garçom responde 429 com Retry-After e conta a recusa
+  const pedidosAoLimitador = [];
+  const limitador = (passa) => ({ async limit(o) { pedidosAoLimitador.push(o); return { success: passa }; } });
+  const comIp = (req, ip) => { const h = new Headers(req.headers); h.set('CF-Connecting-IP', ip); return new Request(req, { headers: h }); };
+  let r = await caso('limite por IP estourado no fim do quiz', comIp(pedido({ corpo: copia() }), '203.0.113.7'), 429, 0, { env: { ...ENV, LIMITE_FIM_QUIZ: limitador(false) } });
+  marcar(r.r.headers.get('Retry-After') === '60' && contada('fim-quiz', 'limite'), '429 com Retry-After: 60, e a recusa contada como limite');
+  marcar(pedidosAoLimitador.length === 1 && pedidosAoLimitador[0].key === '203.0.113.7' && Object.keys(pedidosAoLimitador[0]).join() === 'key',
+    'a chave do limitador é o IP do cabeçalho CF-Connecting-IP, e só ela');
+  r = await caso('limite por IP estourado no evento', comIp(pedido({ corpo: ev26(), caminho: '/api/evento' }), '203.0.113.8'), 429, 0, { env: { ...ENV, LIMITE_EVENTO: limitador(false) } });
+  marcar(contada('evento', 'limite'), 'recusa contada: evento, limite');
+  await caso('dentro do limite: grava', comIp(pedido({ corpo: copia() }), '203.0.113.9'), 201, 1, { env: { ...ENV, LIMITE_FIM_QUIZ: limitador(true) } });
+  await caso('limitador em falha: na dúvida, o lead passa', pedido({ corpo: copia() }), 201, 1, { env: { ...ENV, LIMITE_FIM_QUIZ: { async limit() { throw new Error('fora'); } } } });
+  await caso('limitador do evento não vale para o fim do quiz', pedido({ corpo: copia() }), 201, 1, { env: { ...ENV, LIMITE_EVENTO: limitador(false) } });
+  marcar(!registros.some(l => l.includes('203.0.113.')), 'o IP não vai ao registro do garçom');
+
+  // a contagem das recusas: só com a chave publicável, só porta e motivo; segurada pelo LIMITE_REGISTRO
+  const recusasDaSecao = todasAsRecusas.slice();
+  marcar(recusasDaSecao.length > 0 && recusasDaSecao.every(c => c.cabecalhos.apikey === PUBLICAVEL && !Object.values(c.cabecalhos).some(v => String(v).includes(SECRETA))
+    && Object.keys(c.corpo).join() === 'porta,motivo' && /^[a-z]+(-[a-z]+)*$/.test(c.corpo.motivo)),
+    'a contagem vai só a registrar_recusa, com a chave publicável, só com porta e motivo (' + recusasDaSecao.length + ' contagens)');
+  const pedidosAoRegistro = [];
+  await caso('LIMITE_REGISTRO cheio: a recusa não vai ao banco', pedido({ corpo: (() => { const x = copia(); x.protecao.armadilha = 'robo'; return x; })() }), 422, 0,
+    { env: { ...ENV, LIMITE_REGISTRO: { async limit(o) { pedidosAoRegistro.push(o); return { success: false }; } } } });
+  marcar(recusasContadas.length === 0 && pedidosAoRegistro.length === 1 && pedidosAoRegistro[0].key === 'fim-quiz:armadilha' && registros.some(l => l === '[garcom] fim-quiz: recusa-nao-contada: armadilha'),
+    'com o LIMITE_REGISTRO cheio, a recusa fica só no registro da Cloudflare (recusa-nao-contada), pela chave porta:motivo');
+  respostaDoBanco = { falha: true };
+  await caso('banco fora do ar na contagem: a resposta não muda', pedido({ corpo: (() => { const x = copia(); x.protecao.duracao_s = 1; return x; })() }), 422, 0);
+  respostaDoBanco = { status: 204 };
+  marcar(registros.some(l => l === '[garcom] fim-quiz: recusa-nao-contada: banco-sem-resposta'), 'banco fora do ar: a recusa fica no registro como não contada');
+  // com o ctx do Worker, a contagem roda depois da resposta (waitUntil)
+  const agendadas = [];
+  recusasContadas = [];
+  const rCtx = await garcom.fetch(pedido({ corpo: (() => { const x = copia(); x.protecao.armadilha = 'robo'; return x; })() }), ENV, { waitUntil: t => agendadas.push(t) });
+  await Promise.all(agendadas);
+  marcar(rCtx.status === 422 && agendadas.length === 1 && recusasContadas.length === 1 && recusasContadas[0].corpo.motivo === 'armadilha',
+    'com o ctx do Worker, a contagem vai por waitUntil e não segura a resposta');
+  recusasContadas = [];
+  await contarRecusa(ENV, null, 'fim-quiz', 'fulano@exemplo');
+  marcar(recusasContadas.length === 1 && recusasContadas[0].corpo.motivo === 'outro', 'motivo fora do formato vira "outro" antes de ir ao banco');
+  // a recusa do banco e a falha do banco também são contadas (nenhum lead perdido sem rastro)
+  respostaDoBanco = { status: 400 };
+  await caso('banco recusou o fim do quiz', pedido({ corpo: copia() }), 422, 1);
+  marcar(recusasContadas.length === 1 && recusasContadas[0].corpo.motivo === 'banco-recusou', 'recusa do banco contada: banco-recusou');
+  respostaDoBanco = { status: 500 };
+  await caso('banco falhou no fim do quiz', pedido({ corpo: copia() }), 502, 1);
+  marcar(recusasContadas.length === 1 && recusasContadas[0].corpo.motivo === 'banco-falhou', 'falha do banco contada: banco-falhou');
+  respostaDoBanco = { status: 204 };
+  await caso('origem errada no evento', pedido({ corpo: ev26(), caminho: '/api/evento', origem: 'https://outro.exemplo.invalid' }), 403, 0);
+  marcar(contada('evento', 'origem'), 'recusa de origem contada: evento, origem');
+
+  // as utm de texto livre na abertura do quiz (item 4)
+  let { chamadas: ge } = await caso('início do quiz com utm_medium, utm_content e utm_term (v7)',
+    pedido({ corpo: ev26({ utm_medium: 'cpc', utm_content: 'criativo-07', utm_term: 'donos_de_agencia' }), caminho: '/api/evento' }), 201, 1);
+  let e26 = ge[0] && ge[0].corpo.pacote.evento;
+  marcar(!!e26 && e26.utm_medium === 'cpc' && e26.utm_content === 'criativo-07' && e26.utm_term === 'donos_de_agencia', 'as três utm de texto livre chegam ao registrar_evento como vieram');
+  ({ chamadas: ge } = await caso('início do quiz com utm fora do formato: grava vazia', pedido({ corpo: ev26({ utm_medium: ' CPC ', utm_content: 'com espaço', utm_term: 7 }), caminho: '/api/evento' }), 201, 1));
+  e26 = ge[0] && ge[0].corpo.pacote.evento;
+  marcar(!!e26 && e26.utm_medium === 'cpc' && e26.utm_content === '' && e26.utm_term === '' && registros.some(l => l === '[garcom] evento: saneado: utm_medium, utm_content, utm_term'),
+    'utm do evento saneadas como no fim do quiz: minúsculas, e fora do formato vira vazio, só os nomes no registro');
+  ({ chamadas: ge } = await caso('início do quiz sem as três utm: como antes', pedido({ corpo: ev26(), caminho: '/api/evento' }), 201, 1));
+  marcar(!!ge[0] && !['utm_medium', 'utm_content', 'utm_term'].some(k => k in ge[0].corpo.pacote.evento), 'sem as três, o pacote vai como antes (o banco grava vazio)');
+}
+
 // ════════ Conferências gerais ════════
 
 marcar(semNoindex.length === 0, 'X-Robots-Tag: noindex em toda resposta' + (semNoindex.length ? ' (faltou em: ' + semNoindex.join('; ') + ')' : ''));
@@ -744,7 +857,8 @@ marcar(comCors.length === 0, 'nenhuma resposta com cabeçalho de CORS (v4; 22.2)
 { const publicas = todasAsChamadas.filter(c => c.funcao === 'registrar_fim_quiz' || c.funcao === 'registrar_evento');
   const usouSecreta = publicas.some(c => Object.values(c.cabecalhos).some(v => String(v).includes(SECRETA)));
   const soAsTres = todasAsChamadas.every(c => ['registrar_fim_quiz', 'registrar_evento', 'leads_para_planilha'].includes(c.funcao));
-  marcar(publicas.length > 0 && !usouSecreta && soAsTres, 'as duas portas públicas nunca usaram a chave secreta, e o garçom só chamou as três funções (' + todasAsChamadas.length + ' chamadas)'); }
+  marcar(publicas.length > 0 && !usouSecreta && soAsTres, 'as duas portas públicas nunca usaram a chave secreta, e o garçom só chamou as três funções (' + todasAsChamadas.length + ' chamadas)');
+  marcar(todasAsRecusas.every(c => c.funcao === 'registrar_recusa' && c.cabecalhos.apikey === PUBLICAVEL), 'v7: a contagem das recusas só chamou registrar_recusa, com a publicável (' + todasAsRecusas.length + ' contagens)'); }
 
 // O registro do garçom não leva dado pessoal, cursor nem segredo
 const pessoais = [PACOTE_EXEMPLO.pessoa.nome, PACOTE_EXEMPLO.pessoa.email, PACOTE_EXEMPLO.pessoa.telefone, 'TESTE', 'teste.invalid'];

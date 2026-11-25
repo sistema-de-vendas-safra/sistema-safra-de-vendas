@@ -1,20 +1,20 @@
 ---
 id: prototipo-funil-01
-versao: 20
+versao: 21
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: garcom
-    versao: 5
+    versao: 7
   - id: quiz-01-pagina
-    versao: 11
+    versao: 14
   - id: landing-page-02
-    versao: 5
+    versao: 7
   - id: banco-rascunho
-    versao: 4
+    versao: 7
   - id: decisoes
-    versao: 12
+    versao: 15
   - id: regra-seguranca
     versao: 3
   - id: lacunas
@@ -27,6 +27,8 @@ desatualizado: true
 ---
 
 # Protótipo do funil-01 · site de teste
+
+**Versão 21 (25/11/2026, pedido 24; nada publicado).** wrangler.toml v15: três limitadores de Workers Rate Limiting para o garçom v7, `LIMITE_FIM_QUIZ` (10 por minuto por IP), `LIMITE_EVENTO` (60 por minuto por IP) e `LIMITE_REGISTRO` (30 recusas contadas por minuto, por porta e motivo), com namespace_id 2401, 2402 e 2403, que nenhum outro Worker da conta pode usar. Nada no painel da Cloudflare: os limitadores nascem com a publicação (wrangler 4.36.0 ou mais novo; o daqui é o 4.158.0). O dry-run de 25/11/2026 lista os três (seção "Como conferir com o dry-run"). O site montado leva o quiz v14, a landing-page-02 v7 e o garçom v7. Roteiro novo: APLICAR-24.md, a publicação única do pedido 24, que substitui o APLICAR-23 (que não rodou). Ensaio v16: ver nucleo/ferramentas/ensaio/README.md.
 
 **Versão 20 (18/11/2026).** Só registra a publicação de 18/11/2026, 20h52 (cacf72e8), pelo APLICAR-22, na tabela "Publicações".
 
@@ -123,6 +125,7 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 |---|---|
 | LIGAR.md | O roteiro para ligar o protótipo, para iniciante, passo a passo, com o tempo de cada passo e como saber que deu certo (id prototipo-funil-01-ligar) |
 | APLICAR-11.md | O roteiro para aplicar no protótipo que está no ar as mudanças das etapas 32 a 34, no mesmo padrão (id prototipo-funil-01-aplicar-11) |
+| APLICAR-24.md | (v21) O roteiro único do pedido 24: a migração 004, a publicação do quiz v14, do garçom v7 e da landing-page-02 v7, a conferência no ar com os três perfis, a limpeza v2 contada no banco e nas duas abas da planilha, a chave da Cloudflare tirada no fim e as duas pendências antigas (a chave de 12/11 e as chaves JWT do Supabase). Substitui o APLICAR-23.md, que fica como histórico |
 | APLICAR-21.md | (v15) O roteiro para levar o funil ao endereço novo, https://svsafra.gotriad.com.br, com o quiz em /analise/ (decisão #120): ver o domínio ativo, ligar o endereço ao Worker, publicar e conferir no ar pelos dois endereços, como voltar atrás e o que trocar depois (a planilha do SDR, o Google Analytics e o Tag Manager, o Search Console). Desde 14/11/2026, é só por ele que se publica (id prototipo-funil-01-aplicar-21) |
 | wrangler.toml | A configuração do Worker: nome, main apontando para ../garcom/garcom.mjs, arquivos pelo binding ASSETS com run_worker_first, preview_urls = false (sem links de prévia, #101), (v14) o Custom Domain svsafra.gotriad.com.br e workers_dev = true, as três variáveis comuns (SUPABASE_URL, ORIGEM_PERMITIDA e, na v14, ENDERECO_ANTIGO) e, só em comentário, o nome dos três segredos. Sem id de conta, sem id de zona e sem segredo |
 | montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro) |
@@ -297,6 +300,28 @@ env.ENDERECO_ANTIGO ("https://safra-prototipo-funil-01.sist...")       Environme
 Como ler a v14: o wrangler aceitou o arquivo, com o garçom v5 (19,21 KiB; 5,60 KiB comprimido) e as três variáveis comuns. **O dry-run desta versão do wrangler não lista as rotas nem o workers.dev:** a saída só mostra as ligações. Que ele leu o bloco `[[routes]]` foi conferido de dois jeitos, fora do repositório: numa cópia com `custom_domain = "sim"`, ou com `pattern = "svsafra.gotriad.com.br/*"`, o mesmo dry-run para com erro ("Wildcard operators (*) are not allowed in Custom Domains", "Paths are not allowed in Custom Domains"); e no `wrangler dev --local` o garçom passa a receber os pedidos com o nome svsafra.gotriad.com.br. A rota e o workers.dev só aparecem de verdade na saída da publicação, que é do roteiro APLICAR-21. A única tentativa de falar com fora da máquina foi a procura de versão nova do wrangler (registry.npmjs.org), recusada pela trava; nada foi à Cloudflare.
 
 Como ler a de 08/11/2026: o pacote do Worker (o garçom) tem 15,91 KiB (4,78 KiB comprimido); os arquivos do site vão à parte, pelo binding ASSETS. As duas variáveis comuns foram reconhecidas; preview_urls = false passou sem aviso. Os três segredos não aparecem, porque não estão no arquivo: entram no cofre da Cloudflare no dia de publicar. A pasta tem 7 arquivos e nenhum arquivo escondido (conferido).
+
+Resultado (25/11/2026, v21, wrangler 4.158.0; sem a variável do token no ambiente, sem login):
+
+```
+ ⛅️ wrangler 4.158.0 (update available 4.168.0)
+───────────────────────────────────────────────
+✨ Read 384 files from the assets directory (caminho da pasta site/)
+Total Upload: 24.51 KiB / gzip: 7.09 KiB
+Your Worker has access to the following bindings:
+Binding                                                                Resource
+env.LIMITE_FIM_QUIZ (10 requests/60s)                                  Rate Limit
+env.LIMITE_EVENTO (60 requests/60s)                                    Rate Limit
+env.LIMITE_REGISTRO (30 requests/60s)                                  Rate Limit
+env.ASSETS                                                             Assets
+env.SUPABASE_URL ("https://bvrvdlhpralmzizobsvu.supabase...")          Environment Variable
+env.ORIGEM_PERMITIDA ("https://svsafra.gotriad.com.br")                Environment Variable
+env.ENDERECO_ANTIGO ("https://safra-prototipo-funil-01.sist...")       Environment Variable
+
+--dry-run: exiting now.
+```
+
+Como ler a v21: o wrangler aceitou os três limitadores com o limite e o período de cada um; o garçom v7 tem 24,51 KiB (7,09 KiB comprimido). O aviso "Proxy environment variables detected" que aparece antes, na máquina onde rodou, é da rede dela, não do arquivo.
 
 ## Segredos, só pelo nome
 
