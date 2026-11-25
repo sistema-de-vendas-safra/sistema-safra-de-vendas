@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-23
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -29,6 +29,8 @@ Roteiro único do Otávio para levar ao ar a página do quiz v13 (decisão #123;
 - na abertura, a headline "Você já pagou pelas suas próximas vendas" no cabeçalho, no lugar do logo do Safra (v13).
 
 Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". Este roteiro não pede chave nenhuma no chat nem em arquivo.
+
+**Substituído pelo APLICAR-24 (v3, 25/11/2026; pedido 24).** Este roteiro não chegou a rodar. O pedido 24 pede uma publicação só, no fim: a página v13 vai ao ar dentro da v14, junto com o garçom v7, a migração 004, a landing-page-02 v7 e a limpeza v2. Não rode este; rode o entregas/prototipo-funil-01/APLICAR-24.md. O texto abaixo fica como histórico.
 
 **Status.** Rascunho. Os textos novos da página são proposta do mentor e continuam rascunho até o Otávio aprovar (copy.md v4; lista em prompts/23-relatorio-com-os-numeros-da-pessoa-resposta.md). Publicar antes da aprovação dos textos é decisão do Otávio.
 

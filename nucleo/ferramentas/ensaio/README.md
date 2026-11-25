@@ -1,34 +1,36 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 15
+versao: 16
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: banco-rascunho
-    versao: 5
+    versao: 7
   - id: banco-migracao-001
     versao: 1
   - id: banco-migracao-002
     versao: 1
+  - id: banco-migracao-004
+    versao: 1
   - id: banco-conferir
-    versao: 3
+    versao: 5
   - id: banco-catalogo-prototipo
     versao: 3
   - id: garcom
-    versao: 5
+    versao: 7
   - id: prototipo-funil-01
-    versao: 15
+    versao: 21
   - id: quiz-01-pagina
-    versao: 12
+    versao: 14
   - id: landing-page-02
-    versao: 5
+    versao: 7
   - id: planilha-sdr-funil-01
     versao: 3
   - id: lead-score
     versao: 3
   - id: decisoes
-    versao: 10
+    versao: 15
   - id: regra-seguranca
     versao: 3
   - id: aviso-de-cookies
@@ -39,6 +41,8 @@ desatualizado: true
 ---
 
 # Ensaio geral do protótipo do funil-01
+
+**Versão 16 (25/11/2026, pedido 24; garçom v7, migração 004, quiz-01-pagina v14, landing-page-02 v7).** (1) A **migração 004** roda duas vezes depois da 003, com os dados de antes iguais; o conferir.sql v5 avisa nas linhas 4, 8 e 21 entre a 003 e a 004 ("18 de 21") e dá "21 de 21" depois; a chave publicável executa registrar_recusa e ninguém lê a tabela recusas; um motivo fora do formato (um nome) é recusado pela restrição. (2) **O limite por IP:** no wrangler dev, o limitador é o do workerd, e a chave é o cabeçalho CF-Connecting-IP, que no wrangler dev é aceito como vier (na Cloudflare, quem põe é ela). Para o ensaio não esbarrar no limite que ele não está testando, cada contexto do navegador e cada pedido do Node levam um IP de documentação novo (2001:db8::/32, que não existe na internet). (3) **Seção 12b, nova:** a armadilha, os 5 segundos, o pacote sem o bloco e o bloco fora do formato dão 422 e nada chega ao banco; com os 20 segundos exatos, grava, sem o bloco no banco; com um IP fixo, 10 fins de quiz passam pelo limitador e o 11º leva 429 com Retry-After 60, e outro IP não é barrado; 60 eventos passam e o 61º leva 429; cada recusa soma 1 na tabela recusas, pela porta e pelo motivo, e das 60 recusas iguais 30 somam e 30 ficam no registro como recusa-nao-contada (o freio); o registro do garçom não escreve IP. No fechamento, a tabela recusas só com dia, porta, motivo, quantas e as horas. (4) **O tempo mínimo:** cada pessoa de teste que manda o contato no navegador espera os 20 segundos desde abrir o quiz (no relógio da página); o pacote do Node leva o bloco protecao. Com isso, o caminho de cada pessoa ficou mais longo, e o primeiro fim de quiz novo pode passar de 1 minuto antes da primeira busca da planilha: no modo padrão, os 4 fins de quiz novos vão para os últimos 20 segundos, na mesma ordem, antes da primeira busca (o mesmo contorno da margem, ao contrário). (5) **As utm na abertura:** o início do quiz da faixa b (vinda do anúncio, com utm_medium CPC) grava "cpc" e "teste"; o do corte, "teste"; o do lead A, vazias. (6) As conferências "o banco nem é chamado" olham só as portas de gravação, porque toda recusa agora chama registrar_recusa depois da resposta. Rodado inteiro em 25/11/2026, com o wrangler dev e WRANGLER_SEND_METRICS=false, numa máquina Linux na nuvem: **318 de 318** (eram 288), em 251 segundos, com o código de saída 0.
 
 **Versão 15 (25/11/2026, #123; pedido 23, parte 23.4; quiz-01-pagina v12).** A tela dos números do quiz ficou só em quantidade: as pessoas de teste que escreviam a linha de pré-qualificados em porcentagem (o exemplo e a faixa b com 200 · 50%, a faixa c com 30 · 50%) passam a escrever o número equivalente (200 · 100 e 30 · 15), e o funil de cada uma continua o mesmo: as notas, as faixas e as telas finais não mudam. Na aba respostas da planilha, a coluna de pré-qualificados do lead A e da faixa b passa a esperar o número (100), e não mais "50%". Conferência nova no banco: os cinco números do lead A chegam com a unidade nº, como foram digitados. Os testes da planilha e da migração que usam "%" ficam como estão: provam que o formato antigo continua aceito. Rodado inteiro em 25/11/2026, no Mac, com o wrangler dev e WRANGLER_SEND_METRICS=false: **288 de 288**, em 117 segundos, com o código de saída 0.
 
@@ -556,6 +560,10 @@ Tudo certo: 142 de 142 conferências passaram
 **O endereço novo (v10; #120).** O ensaio prova o que o garçom e as páginas fazem com o endereço e o caminho novos. **Não prova, e só se confere no ar, pelo roteiro entregas/prototipo-funil-01/APLICAR-21.md:** o domínio de verdade (a zona gotriad.com.br ativa na conta da Cloudflare); o DNS; o certificado; o Custom Domain (a ligação de svsafra.gotriad.com.br ao Worker, pelo painel ou pelo wrangler); o endereço do workers.dev de verdade; e o redirecionamento entre dois nomes de verdade, com https. No ensaio, o endereço novo é http://127.0.0.1 e o antigo é um nome de mentira, atendido pelo mesmo servidor por uma ponte que só troca o cabeçalho Host: o Location do endereço antigo aponta para a origem local, e nenhum nome é procurado em servidor de nomes. Também ficam de fora: o que a Cloudflare põe na frente do Worker em cada endereço (as regras de segurança do domínio próprio e as do workers.dev), que pode barrar a planilha do SDR no endereço novo; a ordem em que o wrangler publica e o que acontece se a ligação do domínio falhar (lida no código do wrangler 4.158.0, nunca rodada); as permissões do token; e o bloco `[[routes]]` do wrangler.toml, que a cópia do ensaio tira (ele só passa pelo dry-run, que nesta versão do wrangler não lista a rota). No servidor local, um POST feito com o nome do endereço igual ao da origem tem a origem reescrita para http://: por isso "a origem nova é aceita" é medida com a origem local, como sempre foi. Na conferência das 10 chamadas, o ensaio segura o pedido de navegação e não abre o quiz; a ida inteira é conferida nas seções 6, 9, 10 e 11. Dos finais do quiz, o ensaio percorre os três desfechos (o plano, o relatório de quem não se qualifica e o relatório do funil saudável); a tela "saudável, não qualificado" (relatorio-saudavel-nao), que é uma variante do terceiro, não é percorrida aqui nem no teste do quiz.
 
 **Contorno sem wrangler** (`--sem-wrangler`): o handler do garçom roda num servidor Node, com um ASSETS simples que lê a pasta montada. Não imita o binding de assets da Cloudflare (por exemplo, o redirecionamento de /analise para /analise/, que a seção 12 confere); serve só se o wrangler dev falhar. Desde a v10, o contorno passa ao garçom a ENDERECO_ANTIGO de mentira e monta o pedido com o nome que veio no cabeçalho Host, como o workerd: o endereço antigo passa a ser exercitado também nele. O contorno continua sem passar por outro motivo, antigo (pergunta 18.3.3): ele não conhece arquivo .js e entrega o programa da landing sem tipo, a página não desenha os botões e as pessoas da seção 6 não chegam ao quiz. Rodado uma vez na v10: 74 passam, 15 falham, e ele para na seção 6, agora encerrando tudo o que abriu (até a v9, parava com erro sem limpar). Esse ASSETS entrega HTML e CSS sem charset, como a Cloudflare entregou em 09/11, para o garçom ter de acrescentar.
+
+**O limite por IP (v16).** O ensaio prova o limitador do workerd, com a configuração do wrangler.toml. Não prova o da Cloudflare de verdade, que é aproximado e vale por local, nem o IP que ela põe no CF-Connecting-IP: isso só se confere no ar (APLICAR-24, passo 6).
+
+**A margem de 1 minuto com o tempo mínimo (v16).** Com `--esperar-margem`, o ensaio não mexe no banco antes da primeira busca, e, com os 20 segundos de cada pessoa, o lead A pode já ter mais de 1 minuto: a conferência "primeira busca: só os 3 leads de antes" pode falhar nesse modo sem defeito no programa.
 
 **A margem de 1 minuto e a máquina lenta.** Entre o envio do lead A e a primeira busca da planilha passam cerca de 50 segundos (48 na v9), e a conferência "primeira busca: só os 3 leads de antes" só vale se passarem menos de 60. Numa máquina mais lenta, ou com outro programa pesado rodando junto, a conta estoura, e a seção 7 dá 6 FALHOU que não são erro do funil (visto na revisão da 21.3, em três rodadas feitas duas a duas). O ensaio é para rodar sozinho. Se a seção 7 falhar com "(4)" no fim da primeira busca, rodar de novo antes de procurar erro.
 

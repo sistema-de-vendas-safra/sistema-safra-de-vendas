@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 15 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 16 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -54,6 +54,14 @@
 //      (desde a v11, o do lead A é a conversa gratuita e o relatório que o botão dela abre).
 //      Desde a v10, as idas da landing ao quiz das seções 6, 10 e 11 também têm de ser diretas, sem passar por /quiz.
 //  13. Fechamento: conferir.sql de novo e registros sem dado pessoal.
+//  (v16; pedido 24, 25/11/2026) A migração 004 entra depois da 003 (duas vezes, os dados de antes iguais; conferir.sql v5, 21 de 21).
+//  O garçom v7 tem o limite de pedidos por IP e a proteção: no wrangler dev, o limitador da Cloudflare é o do workerd, e a chave é o
+//  cabeçalho CF-Connecting-IP. Na Cloudflare, quem põe esse cabeçalho é ela, e o que o navegador mandar é trocado; no wrangler dev,
+//  o que vier é aceito. Por isso, aqui, cada contexto do navegador e cada pedido feito pelo Node vai com um IP de documentação
+//  (2001:db8::/32, que não existe na internet), um diferente por vez, para o ensaio não esbarrar no limite que ele mesmo não está
+//  testando. A seção 12b testa o limite de verdade, com um IP fixo, e a contagem das recusas na tabela recusas. Toda pessoa de
+//  teste que manda o contato no navegador espera os 20 segundos do tempo mínimo (gente leva minutos); o pacote do Node leva o
+//  bloco protecao. O início do quiz grava utm_medium, utm_content e utm_term (q3 e q4).
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -130,6 +138,10 @@ const PESSOA_SEM_CONSENTIMENTO = { nome: 'TESTE Sem Consentimento', email: 'sem.
 const PESSOA_DUPLA = { nome: 'TESTE Envio Duplo', email: 'envio.duplo@teste.invalid', telefone: '+55 (00) 90000-0005' };
 // v10: a pessoa do envio com a origem do endereço antigo, que tem de ser recusado antes do banco
 const PESSOA_ORIGEM_ANTIGA = { nome: 'TESTE Origem Antiga', email: 'origem.antiga@teste.invalid', telefone: '+55 (00) 90000-0009' };
+// v16 (pedido 24, item 2): o robô que preenche a armadilha ou manda rápido demais, que nunca pode chegar ao banco, e a pessoa que
+// manda com os 20 segundos exatos do tempo mínimo, que passa
+const PESSOA_ROBO = { nome: 'TESTE Robo Ensaio', email: 'robo.ensaio@teste.invalid', telefone: '+55 (00) 90000-0015' };
+const PESSOA_TEMPO_MINIMO = { nome: 'TESTE Tempo Minimo', email: 'tempo.minimo@teste.invalid', telefone: '+55 (00) 90000-0016' };
 // Os dados de antes da migração, gravados pelas portas do v2 (como os do teste de 09/11, prompts/10-prototipo-ligado.md).
 // A linha que imita a do Otávio só imita o formato dela (faixa a, nota 86, utm stories, os dois aceites); nada dela é real.
 const ANTES = {
@@ -285,6 +297,9 @@ const COLUNAS_RESPOSTAS = ['id_pessoa', 'nome', 'entrou_em', 'lead_score_faixa',
   'outras respostas'];
 
 const novaSessao = () => 'sessao-ensaio-' + randomBytes(4).toString('hex');
+// v16 (pedido 24, item 2): um IP de documentação novo a cada contexto ou pedido (ver o cabeçalho deste arquivo)
+let ipsUsados = 0;
+const ipNovo = () => '2001:db8::' + (++ipsUsados).toString(16);
 
 // Pacote montado no Node, no formato de montarPacote() da página v3 (para os casos de erro)
 function pacoteDeTeste(pessoa, { whatsapp = 'sim', email = 'sim', sessao = novaSessao() } = {}) {
@@ -301,7 +316,9 @@ function pacoteDeTeste(pessoa, { whatsapp = 'sim', email = 'sim', sessao = novaS
       utm_source: 'bio', utm_campaign: 'funil-01', id_sessao: sessao, ocorrido_em: agora,
       respostas: { faturamento: 'R$ 500 mil a R$ 1,5 milhão' },
       lead_score_nota: 96, lead_score_faixa: 'a', lead_score_versao: 3
-    }
+    },
+    // v16 (garçom v7): a armadilha vazia e 5 minutos entre abrir a página e mandar o contato
+    protecao: { armadilha: '', duracao_s: 300 }
   };
 }
 // Evento sem pessoa, no formato de registrarEvento() das páginas
@@ -383,6 +400,7 @@ async function principal() {
   const MIGRACAO = readFileSync(join(RAIZ, 'dados/banco/migracoes/001-v3.sql'), 'utf8');
   const MIGRACAO_002 = readFileSync(join(RAIZ, 'dados/banco/migracoes/002-respostas-na-planilha.sql'), 'utf8');
   const MIGRACAO_003 = readFileSync(join(RAIZ, 'dados/banco/migracoes/003-origem-e-ids.sql'), 'utf8');
+  const MIGRACAO_004 = readFileSync(join(RAIZ, 'dados/banco/migracoes/004-utm-na-abertura-e-recusas.sql'), 'utf8');
   const CONFERIR = readFileSync(join(RAIZ, 'dados/banco/conferir.sql'), 'utf8');
   const CATALOGO = readFileSync(join(RAIZ, 'dados/banco/catalogo-prototipo.sql'), 'utf8');
 
@@ -399,7 +417,7 @@ async function principal() {
       if (!l.ok) conferir(false, rotulo + ' · conferir.sql ' + l.n + ' (' + l.conferencia + '): encontrado ' + l.encontrado);
     }
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === true && final.encontrado === '20 de 20',
+    conferir(final && final.ok === true && final.encontrado === '21 de 21',
       rotulo + ' · conferir.sql: linha "tudo certo" = ' + (final && final.ok) + ' (' + (final && final.encontrado) + ')');
   }
   {
@@ -407,7 +425,7 @@ async function principal() {
     const linhas = await linhasDoConferir();
     const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.ok === false && final.encontrado === '11 de 20' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19, 20]),
+    conferir(final && final.ok === false && final.encontrado === '11 de 21' && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19, 20, 21]),
       'antes das migrações · conferir.sql avisa que faltam as migrações: false nas linhas ' + falsas.join(', ') + ' (' + (final && final.encontrado) + ')');
   }
 
@@ -480,8 +498,8 @@ async function principal() {
     const linhas = await linhasDoConferir();
     const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
     const final = linhas.find(l => l.n === 99);
-    conferir(final && final.encontrado === '18 de 20' && JSON.stringify(falsas) === '[19,20]',
-      'depois da 001 e antes da 002 · conferir.sql avisa só nas linhas 19 e 20 (' + (final && final.encontrado) + ')');
+    conferir(final && final.encontrado === '16 de 21' && JSON.stringify(falsas) === '[4,8,19,20,21]',
+      'depois da 001 e antes da 002 · conferir.sql v5 avisa nas linhas 19 a 21 e, pela porta registrar_recusa que só a 004 cria, nas 4 e 8 (' + (final && final.encontrado) + ')');
   }
   // v12: a migração 002 (as respostas completas na função da planilha) duas vezes, sobre os mesmos dados
   let esquemaDa002 = null;
@@ -509,6 +527,28 @@ async function principal() {
     if (vez === 'primeira') esquemaDa003 = h;
     else conferir(h === esquemaDa003, 'migração 003, segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
   }
+  {
+    // v16: entre a 003 e a 004, o conferir.sql v5 avisa nas linhas 4, 8 e 21 (falta a 004, com a porta registrar_recusa)
+    const linhas = await linhasDoConferir();
+    const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+    const final = linhas.find(l => l.n === 99);
+    conferir(final && final.encontrado === '18 de 21' && JSON.stringify(falsas) === '[4,8,21]',
+      'depois da 003 e antes da 004 · conferir.sql v5 avisa nas linhas 4, 8 e 21 (' + (final && final.encontrado) + ')');
+  }
+  // v16 (pedido 24): a migração 004 (as utm de texto livre na abertura e a contagem das recusas) duas vezes, sobre os mesmos dados
+  let esquemaDa004 = null;
+  for (const vez of ['primeira', 'segunda']) {
+    let erro = null;
+    try { await comoDono(MIGRACAO_004); } catch (e) { erro = e; }
+    conferir(!erro, 'migracoes/004-utm-na-abertura-e-recusas.sql aplicada pelo dono, ' + vez + ' vez, sem erro' + (erro ? ' (' + erro.message + ')' : ''));
+    const depois = await fotografia();
+    conferir(JSON.stringify(depois) === JSON.stringify(antesDaMigracao),
+      'migração 004, ' + vez + ' vez: os dados de antes não mudaram (' + depois.pessoas + ' pessoas e ' + depois.eventos + ' eventos, cada linha igual)');
+    const h = await esquemaAtual();
+    if (vez === 'primeira') esquemaDa004 = h;
+    else conferir(h === esquemaDa004, 'migração 004, segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
+  }
+  conferir(await contar(`select count(*) as n from public.recusas`) === 0, 'migração 004: a tabela recusas nasce vazia');
   fotografiaDeAntesInicial = await fotografiaDeAntes(naFila, db);
   await rodarConferir('depois das migrações');
 
@@ -540,6 +580,20 @@ async function principal() {
   }
   c = await codigoComo('service_role', LEADS);
   conferir(c === 'ok', 'service_role chama leads_para_planilha (' + c + ')');
+  // v16 (004): a chave publicável soma recusas e não lê a tabela; nenhum outro papel faz nem uma coisa nem outra
+  c = await codigoComo('anon', `select public.registrar_recusa('fim-quiz', 'motivo-de-teste')`);
+  conferir(c === 'ok', 'anon executa registrar_recusa, a porta da contagem das recusas (' + c + ')');
+  for (const papel of ['anon', 'authenticated', 'service_role']) {
+    c = await codigoComo(papel, `select * from public.recusas limit 1`);
+    conferir(c === '42501', papel + ' não lê a tabela recusas (' + c + ')');
+  }
+  for (const papel of ['authenticated', 'service_role', 'outro_papel']) {
+    c = await codigoComo(papel, `select public.registrar_recusa('fim-quiz', 'motivo-de-teste')`);
+    conferir(c === '42501', papel + ' não executa registrar_recusa (' + c + ')');
+  }
+  c = await codigoComo('anon', `select public.registrar_recusa('fim-quiz', 'Joana Silva')`);
+  conferir(c === '23514', 'registrar_recusa recusa motivo fora do formato (um nome não entra: ' + c + ')');
+  await comoDono(`delete from public.recusas`);
   for (const [sql, rotulo] of [[REGISTRAR, 'executar registrar_fim_quiz'], [EVENTO, 'executar registrar_evento'], [`select * from public.pessoas limit 1`, 'ler a tabela pessoas'], [`select * from public.eventos limit 1`, 'ler a tabela eventos'], [`select * from public.painel_numeros limit 1`, 'ler a visão painel_numeros']]) {
     c = await codigoComo('service_role', sql);
     conferir(c === '42501', 'service_role não pode ' + rotulo + ' (' + c + ')');
@@ -726,13 +780,18 @@ async function principal() {
 
   // ═══ 5. Catálogo ═══
   secao('5. Catálogo de entregas v3 (perguntas 23.10, 32.4 e 34.4; landing-page-02)');
-  const postFimQuiz = (pacote, origem = BASE) => fetch(BASE + '/api/fim-quiz', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origem }, body: JSON.stringify(pacote)
+  // v16: cada pedido com um IP de documentação novo, salvo quando a seção 12b fixa um
+  const postFimQuiz = (pacote, origem = BASE, ip = ipNovo()) => fetch(BASE + '/api/fim-quiz', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origem, 'CF-Connecting-IP': ip }, body: typeof pacote === 'string' ? pacote : JSON.stringify(pacote)
   });
-  const postEvento = (pacote, origem = BASE) => fetch(BASE + '/api/evento', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origem }, body: JSON.stringify(pacote)
+  const postEvento = (pacote, origem = BASE, ip = ipNovo()) => fetch(BASE + '/api/evento', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origem, 'CF-Connecting-IP': ip }, body: typeof pacote === 'string' ? pacote : JSON.stringify(pacote)
   });
-  const ultimaDoBanco = () => supabase.registro[supabase.registro.length - 1];
+  // v16 (garçom v7): toda recusa chama registrar_recusa depois da resposta; as conferências "o banco nem é chamado" e
+  // "a última chamada ao banco" olham só as outras portas
+  const RECUSA_NO_BANCO = '/rest/v1/rpc/registrar_recusa';
+  const chamadasAoBanco = () => supabase.registro.filter(l => l.rota !== RECUSA_NO_BANCO);
+  const ultimaDoBanco = () => { const c = chamadasAoBanco(); return c[c.length - 1]; };
   const pessoasDeAntes = await contar(`select count(*) as n from public.pessoas`);
   const eventosDeAntes = await contar(`select count(*) as n from public.eventos`);
   x = await postFimQuiz(pacoteDeTeste(PESSOA_SEM_CATALOGO));
@@ -793,7 +852,7 @@ async function principal() {
   // os pedidos de navegação que o próprio ensaio segura e responde (seção 12, as chamadas): não são resposta do garçom
   const seguradasPeloEnsaio = new WeakSet();
   async function novoContexto(largura, { eventoForaDoAr = false, google = null, ponte = null } = {}) {
-    const ctx = await navegador.newContext({ viewport: { width: largura, height: ALTURA[largura] || 900 }, reducedMotion: 'reduce' });
+    const ctx = await navegador.newContext({ viewport: { width: largura, height: ALTURA[largura] || 900 }, reducedMotion: 'reduce', extraHTTPHeaders: { 'CF-Connecting-IP': ipNovo() } });
     ctx.on('response', (rr) => {
       const end = rr.url();
       if (seguradasPeloEnsaio.has(rr.request())) return;
@@ -904,6 +963,8 @@ async function principal() {
       r.caixaMarcada = await page.locator('#consAceite').isChecked();
       r.caixas = await page.locator('input[type="checkbox"]').count();
       if (desmarcar) await page.uncheck('#consAceite');
+      // v16 (garçom v7): o tempo mínimo de 20 segundos entre abrir o quiz e mandar o contato, no relógio da página
+      if (!desmarcar) await page.waitForFunction(() => performance.now() > 21500, null, { timeout: 30000, polling: 250 });
       const fim = desmarcar ? null : page.waitForResponse(rr => rr.url() === BASE + '/api/fim-quiz' && rr.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
       await page.click('#enviar');
       const rf = fim ? await fim : null;
@@ -1144,6 +1205,12 @@ async function principal() {
       'banco · qualificado vindo do anúncio: meta-ads, utm_medium em minúsculas, fbclid com as maiúsculas, id_lead e id_qualificado no formato, qualificado = true (#121)');
     const ea1 = ea;
     conferir(ea1[0] && ea1[0].qualificado === true && ea1[0].utm_medium === '' && ea1[0].fbclid === '', 'banco · lead A (bio, sem anúncio): qualificado = true, utm_medium e fbclid vazios');
+    // v16 (pedido 24, item 4; migração 004): o início do quiz grava as três utm de texto livre, saneadas como no fim
+    const ini3 = (await eventosDaSessao(q3.sessao)).find(e => e.tipo === 'inicio_quiz'), ini4 = (await eventosDaSessao(q4.sessao)).find(e => e.tipo === 'inicio_quiz');
+    const iniA = (await eventosDaSessao(q1.sessao)).find(e => e.tipo === 'inicio_quiz');
+    conferir(ini4 && ini4.utm_medium === 'cpc' && ini4.utm_content === 'teste' && ini4.utm_term === '' && ini3 && ini3.utm_medium === '' && ini3.utm_content === 'teste' && iniA && iniA.utm_medium === '' && iniA.utm_content === '' && iniA.utm_term === '',
+      'banco · início do quiz (v16): utm_medium "cpc" (de CPC) e utm_content "teste" na faixa b, utm_content "teste" no corte, as três vazias no lead A; utm_term vazia em todos, como veio (' +
+      [ini4, ini3, iniA].map(e => e ? [e.utm_medium, e.utm_content, e.utm_term].map(v => v || '·').join('/') : 'sem início').join('; ') + ')');
     const nomes = (c) => (c || []).map(x => x.event).join(',');
     conferir(nomes(q3.camada) === 'quiz_iniciado,quiz_enviado' && q3.camada[1].id_lead === (ec[0] && ec[0].id_lead),
       'dataLayer · não qualificado: quiz_iniciado e quiz_enviado com o mesmo id_lead do banco, sem quiz_qualificado (' + nomes(q3.camada) + ')');
@@ -1197,6 +1264,24 @@ async function principal() {
   conferir(JSON.stringify(est.cabecalho) === JSON.stringify(COLUNAS_PLANILHA), 'aba fila: as 20 colunas de planilha-sdr.md, na ordem, com clique_fim_quiz na 13');
   conferir(JSON.stringify(est.abas) === JSON.stringify(['fila', 'respostas']) && JSON.stringify(est.cabecalho_respostas) === JSON.stringify(COLUNAS_RESPOSTAS),
     'v12 · as duas abas na ordem (fila, respostas), e a aba respostas com as 24 colunas de planilha-sdr.md v3, na ordem');
+  if (!ESPERAR_MARGEM) {
+    // v16: as pessoas de teste do navegador esperam os 20 segundos do tempo mínimo antes de mandar o contato (garçom v7), e o
+    // primeiro fim de quiz novo pode ter mais de 1 minuto quando a planilha chega aqui. Para a primeira busca continuar provando a
+    // margem de 1 minuto (21.6), os 4 fins de quiz novos de teste vão para os últimos segundos, na mesma ordem de chegada (o mesmo
+    // contorno de baixo, ao contrário: superusuário do PGlite, gatilhos desligados só nesta sessão). O clique é escolhido pela hora
+    // da página (ocorrido_em), que não muda.
+    const adiantados = await naFila(async () => {
+      await db.exec(`set session_replication_role = replica`);
+      try {
+        return (await db.query(`update public.eventos e set gravado_em = pg_catalog.now() - interval '20 seconds' + x.ordem * interval '1 second'
+          from (select id_evento, row_number() over (order by gravado_em, id_evento) as ordem from public.eventos
+                 where tipo = 'fim_quiz' and gravado_em > pg_catalog.now() - interval '1 hour'
+                   and id_pessoa in (select id_pessoa from public.pessoas where email like '%@teste.invalid')) x
+          where e.id_evento = x.id_evento`)).affectedRows;
+      } finally { await db.exec(`set session_replication_role = origin`); }
+    });
+    conferir(adiantados === 4, 'v16 · os 4 fins de quiz novos de teste trazidos para os últimos 20 segundos, na mesma ordem, para a primeira busca provar a margem de 1 minuto (o tempo mínimo de 20 segundos alongou o caminho de cada pessoa)');
+  }
   p = await planilha.pedir('buscar');
   est = (await planilha.pedir('estado')).resultado;
   conferir(p.ok && p.resultado.situacao === 'ok' && p.resultado.codigo === 200 && p.resultado.acrescentadas === 3 && JSON.stringify(est.linhas.map(l => l[0])) === JSON.stringify(idsDeAntes),
@@ -1319,10 +1404,10 @@ async function principal() {
   conferir(x.status === 200 && corpo.leads.length === 5 && corpo.leads.some(l => l.id_pessoa === pa.id_pessoa) && !!corpo.cursor_seguinte && /Z$/.test(corpo.cursor_seguinte.depois_de_gravado_em) && corpo.pode_ter_mais === false,
     'garçom · porta privada com a chave certa: 200, 5 leads, cursor_seguinte com fuso em Z');
 
-  const antes = supabase.registro.length;
+  const antes = chamadasAoBanco().length;
   const pessoasAntes = await contar(`select count(*) as n from public.pessoas`);
   x = await postFimQuiz(pacoteDeTeste(PESSOA_SEM_CONSENTIMENTO, { whatsapp: 'nao', email: 'nao' }));
-  conferir(x.status === 422 && supabase.registro.length === antes, 'garçom · pacote sem consentimento: 422 e o banco nem é chamado (' + x.status + ')');
+  conferir(x.status === 422 && chamadasAoBanco().length === antes, 'garçom · pacote sem consentimento: 422 e o banco nem é chamado (só a contagem da recusa; ' + x.status + ')');
   r = await direto('/rest/v1/rpc/registrar_fim_quiz', { chave: CHAVE_PUBLICAVEL, corpo: { pacote: pacoteDeTeste(PESSOA_SEM_CONSENTIMENTO, { whatsapp: 'nao', email: 'nao' }) } });
   conferir(r.status === 400 && /"code":"23514"/.test(r.texto), 'banco · registrar_fim_quiz chamado direto com a publicável, sem consentimento: recusado pela restrição (400, 23514)');
   conferir(await contar(`select count(*) as n from public.pessoas`) === pessoasAntes, 'e nenhuma pessoa nova entrou');
@@ -1331,9 +1416,9 @@ async function principal() {
   u = ultimaDoBanco();
   conferir(x.status === 422 && u.rota === '/rest/v1/rpc/registrar_evento' && u.status === 400 && await contar(`select count(*) as n from public.eventos`) === eventosAntes,
     'garçom · clique numa sessão sem fim do quiz: o banco recusa (22023) e o garçom responde 422, nada gravado (32.2)');
-  const antesIntrusa = supabase.registro.length;
+  const antesIntrusa = chamadasAoBanco().length;
   x = await postEvento({ pessoa: { nome: 'TESTE Intrusa' }, evento: eventoDeTeste('visita').evento });
-  conferir(x.status === 422 && supabase.registro.length === antesIntrusa, 'garçom · /api/evento com pessoa no pacote: 422 e o banco nem é chamado (' + x.status + ')');
+  conferir(x.status === 422 && chamadasAoBanco().length === antesIntrusa, 'garçom · /api/evento com pessoa no pacote: 422 e o banco nem é chamado (só a contagem da recusa; ' + x.status + ')');
 
   // A mesma pessoa, dois envios ao mesmo tempo (sessões diferentes). O PGlite atende um de cada vez.
   const [d1, d2] = await Promise.all([
@@ -1794,7 +1879,7 @@ async function principal() {
     // Todo pedido desta seção feito pelo Node, sem seguir redirecionamento, anotado para a conferência do noindex
     const vistas = [];
     const pedir = async (base, caminho, { metodo = 'GET', cabecalhos = {}, corpo } = {}) => {
-      const resp = await fetch(base + caminho, { method: metodo, headers: cabecalhos, body: corpo === undefined ? undefined : JSON.stringify(corpo), redirect: 'manual' });
+      const resp = await fetch(base + caminho, { method: metodo, headers: Object.assign({ 'CF-Connecting-IP': ipNovo() }, cabecalhos), body: corpo === undefined ? undefined : JSON.stringify(corpo), redirect: 'manual' });
       const visto = { status: resp.status, local: resp.headers.get('location'), noindex: resp.headers.get('x-robots-tag') === 'noindex',
         cors: [...resp.headers.keys()].some(k => k.toLowerCase().startsWith('access-control-')), texto: await resp.text() };
       vistas.push(visto);
@@ -1858,14 +1943,14 @@ async function principal() {
       // As origens que uma aba aberta no endereço antigo mandaria: a do nome de mentira (com https e com http) e a do endereço antigo
       // de verdade, lida do wrangler.toml só para ser o valor do cabeçalho. Em cada rota, pelo endereço novo e pelo antigo.
       const origens = [ENDERECO_ANTIGO, 'http://' + NOME_ANTIGO, ORIGEM_ANTIGA_DE_VERDADE];
-      const chamadasAntes = supabase.registro.length, recusas = [];
+      const chamadasAntes = chamadasAoBanco().length, recusas = [];
       for (const base of [BASE, ANTIGO]) for (const origem of origens) {
         recusas.push(await post(base, '/api/evento', origem, eventoDeTeste('visita')));
         recusas.push(await post(base, '/api/fim-quiz', origem, pacoteDeTeste(PESSOA_ORIGEM_ANTIGA)));
       }
       const semPessoa = (await linhaPessoa(PESSOA_ORIGEM_ANTIGA.email)).length === 0;
       conferir(origens.every(o => /^https?:\/\/[^/]+$/.test(o)) && new Set(origens).size === 3 && recusas.length === 12 &&
-        recusas.every(v => v.status === 403 && v.noindex && !v.cors && !v.local) && supabase.registro.length === chamadasAntes && semPessoa,
+        recusas.every(v => v.status === 403 && v.noindex && !v.cors && !v.local) && chamadasAoBanco().length === chamadasAntes && semPessoa,
         'porta pública · a origem do endereço antigo é recusada: 403 na visita e no fim do quiz, com as três origens antigas (o nome de mentira com https e com http, e o endereço antigo de verdade, só como texto do cabeçalho), ' +
         'pedidas pelo endereço novo e pelo antigo; o banco nem é chamado e nenhuma pessoa entra (' + recusas.map(v => v.status).join(', ') + ')');
       const sessaoPeloNovo = novaSessao(), sessaoPeloAntigo = novaSessao();
@@ -2070,6 +2155,74 @@ async function principal() {
     }
   }
 
+  // ═══ 12b. Proteção e recusas (v16; pedido 24, item 2) ═══
+  secao('12b. A armadilha, o tempo mínimo, o limite de pedidos por IP e a contagem das recusas (garçom v7; migração 004)');
+  {
+    const recusasAgora = async () => Object.fromEntries((await naFila(() => db.query(`select porta || '/' || motivo as k, quantas from public.recusas`))).rows.map(l => [l.k, Number(l.quantas)]));
+    // a contagem roda depois da resposta (waitUntil): espera as chamadas ao banco pararem de chegar
+    const assentar = async () => { let a = -1; for (let i = 0; i < 60; i++) { const b = supabase.registro.length; if (b === a) return; a = b; await esperar(250); } };
+    const saidaAntes = saidaGarcom.join('').length;
+    const antes12b = await recusasAgora();
+    const delta = (k, depois) => (depois[k] || 0) - (antes12b[k] || 0);
+    const pessoasAntes12b = await contar(`select count(*) as n from public.pessoas`);
+
+    // A armadilha, o tempo mínimo e o bloco: recusa 422, nada no banco
+    const comProtecao = (pr) => { const p = pacoteDeTeste(PESSOA_ROBO); if (pr === undefined) delete p.protecao; else p.protecao = pr; return p; };
+    const robo = [
+      ['armadilha', { armadilha: 'https://spam.example', duracao_s: 300 }, 'a armadilha preenchida'],
+      ['rapido-demais', { armadilha: '', duracao_s: 5 }, '5 segundos entre abrir a página e mandar'],
+      ['protecao-faltando', undefined, 'sem o bloco protecao'],
+      ['protecao-formato', { armadilha: 1, duracao_s: 'muito' }, 'o bloco fora do formato']
+    ];
+    for (const [motivo, pr, rotulo] of robo) {
+      x = await postFimQuiz(comProtecao(pr));
+      conferir(x.status === 422, 'proteção · ' + rotulo + ': 422 (' + x.status + '; motivo ' + motivo + ')');
+    }
+    conferir(await contar(`select count(*) as n from public.pessoas where email = $1`, [PESSOA_ROBO.email]) === 0 && await contar(`select count(*) as n from public.pessoas`) === pessoasAntes12b,
+      'proteção · nenhum dos quatro pacotes do robô chegou ao banco');
+    x = await postFimQuiz(Object.assign(pacoteDeTeste(PESSOA_TEMPO_MINIMO), { protecao: { armadilha: '', duracao_s: 20 } }));
+    const [pt] = await linhaPessoa(PESSOA_TEMPO_MINIMO.email);
+    const semBloco = await contar(`select count(*) as n from public.eventos e where to_jsonb(e)::text like '%duracao_s%' or to_jsonb(e)::text like '%armadilha%'`);
+    conferir(x.status === 201 && !!pt && semBloco === 0, 'proteção · com os 20 segundos exatos do tempo mínimo, gravado (' + x.status + '), e o bloco protecao não chega ao banco (nenhum evento com armadilha ou duracao_s)');
+
+    // O limite de pedidos por IP: 10 fins de quiz por minuto e 60 eventos por minuto (wrangler.toml v15), com um IP fixo.
+    // Pacotes fora do formato (422), para nada ser gravado: o limitador conta o pedido antes de qualquer conferência.
+    let naoContadas = 0, limiteOk = modo === 'wrangler';
+    if (modo === 'wrangler') {
+      const IP_FIM = '2001:db8:ffff::1', IP_EVENTO = '2001:db8:ffff::2';
+      const fins = [];
+      for (let i = 0; i < 11; i++) fins.push(await postFimQuiz('{"x":1}', BASE, IP_FIM));
+      const outroIp = await postFimQuiz('{"x":1}', BASE, '2001:db8:ffff::3');
+      conferir(fins.slice(0, 10).every(r => r.status === 422) && fins[10].status === 429 && fins[10].headers.get('retry-after') === '60' && fins[10].headers.get('x-robots-tag') === 'noindex',
+        'limite · /api/fim-quiz: 10 pedidos do mesmo IP no minuto passam pelo limitador (422, fora do formato), o 11º leva 429 com Retry-After 60 (' + fins.map(r => r.status).join(' ') + ')');
+      conferir(outroIp.status === 422, 'limite · /api/fim-quiz: no mesmo minuto, outro IP não é barrado (' + outroIp.status + ')');
+      const evs = [];
+      for (let i = 0; i < 61; i++) evs.push(await postEvento('{"x":1}', BASE, IP_EVENTO));
+      conferir(evs.slice(0, 60).every(r => r.status === 422) && evs[60].status === 429 && evs[60].headers.get('retry-after') === '60',
+        'limite · /api/evento: 60 pedidos do mesmo IP no minuto passam, o 61º leva 429 com Retry-After 60 (' + evs.filter(r => r.status === 422).length + ' de 422 e ' + evs.filter(r => r.status === 429).length + ' de 429)');
+      for (const r of [...fins, outroIp, ...evs]) await r.arrayBuffer();
+    } else {
+      informar('contorno (servidor Node): sem o limitador da Cloudflare, o garçom deixa passar (falha aberta); o limite não é ensaiado aqui');
+    }
+
+    await assentar();
+    const depois = await recusasAgora();
+    const saida12b = saidaGarcom.join('').slice(saidaAntes);
+    naoContadas = (saida12b.match(/evento: recusa-nao-contada: formato/g) || []).length;
+    const esperado = { 'fim-quiz/armadilha': 1, 'fim-quiz/rapido-demais': 1, 'fim-quiz/protecao-faltando': 1, 'fim-quiz/protecao-formato': 1 };
+    if (limiteOk) Object.assign(esperado, { 'fim-quiz/formato': 11, 'fim-quiz/limite': 1, 'evento/limite': 1 });
+    const erradas = Object.entries(esperado).filter(([k, n]) => delta(k, depois) !== n).map(([k, n]) => k + ' ' + delta(k, depois) + ' (esperado ' + n + ')');
+    conferir(erradas.length === 0, 'recusas · cada recusa desta seção somou 1 na tabela recusas, pela porta e pelo motivo (' + Object.keys(esperado).map(k => k + ' +' + delta(k, depois)).join('; ') + ')' + (erradas.length ? ', mas: ' + erradas.join(' | ') : ''));
+    if (limiteOk) {
+      const ev = delta('evento/formato', depois);
+      // o freio da contagem (LIMITE_REGISTRO, 30 por minuto por porta e motivo): das 60 recusas iguais, as primeiras somam, o resto fica
+      // só no registro da Cloudflare como recusa-nao-contada; as duas juntas dão as 60, e nenhuma some
+      conferir(ev >= 25 && ev <= 30 && ev + naoContadas === 60,
+        'recusas · o freio da contagem: das 60 recusas iguais em /api/evento, ' + ev + ' somaram na tabela e ' + naoContadas + ' ficaram no registro como recusa-nao-contada (juntas, 60; nenhuma recusa em silêncio)');
+    }
+    conferir(!/2001:db8|127\.0\.0\.1/.test(saida12b.split('\n').filter(l => l.includes('[garcom]')).join('\n')), 'recusas · o registro do garçom não escreve o IP de ninguém');
+  }
+
   // ═══ 13. Fechamento ═══
   secao('13. Fechamento');
   await rodarConferir('no fim');
@@ -2080,9 +2233,17 @@ async function principal() {
   conferir(!DADO_PESSOAL.test(textoGarcom) && !SEGREDOS.some(s => textoGarcom.includes(s)) && !textoGarcom.includes(pa.id_pessoa),
     'saída do garçom (' + (modo === 'wrangler' ? 'wrangler dev' : 'servidor Node') + ', ' + doGarcom.length + ' linhas [garcom]) sem dado pessoal, sem id_pessoa e sem chave');
   const porPapel = supabase.registro.filter(l => l.origem === 'garcom');
-  const PORTAS = { '/rest/v1/rpc/registrar_fim_quiz': 'anon', '/rest/v1/rpc/registrar_evento': 'anon', '/rest/v1/rpc/leads_para_planilha': 'service_role' };
+  const PORTAS = { '/rest/v1/rpc/registrar_fim_quiz': 'anon', '/rest/v1/rpc/registrar_evento': 'anon', '/rest/v1/rpc/registrar_recusa': 'anon', '/rest/v1/rpc/leads_para_planilha': 'service_role' };
   conferir(porPapel.length > 0 && porPapel.every(l => PORTAS[l.rota] === l.papel),
-    'o garçom só chamou registrar_fim_quiz e registrar_evento com a publicável (anon) e leads_para_planilha com a secreta (service_role) (' + porPapel.length + ' chamadas)');
+    'o garçom só chamou registrar_fim_quiz, registrar_evento e registrar_recusa (v16) com a publicável (anon) e leads_para_planilha com a secreta (service_role) (' + porPapel.length + ' chamadas)');
+  {
+    // v16: a tabela recusas, no fim, só com números: nenhuma coluna além de dia, porta, motivo, quantas e as duas horas
+    const col = (await naFila(() => db.query(`select string_agg(column_name, ',' order by ordinal_position) as c from information_schema.columns where table_schema = 'public' and table_name = 'recusas'`))).rows[0].c;
+    const linhas = (await naFila(() => db.query(`select porta, motivo, quantas from public.recusas order by porta, motivo`))).rows;
+    const texto = JSON.stringify(linhas);
+    conferir(col === 'dia,porta,motivo,quantas,primeira_em,ultima_em' && !DADO_PESSOAL.test(texto) && !/@|sessao-|2001:db8|127\.0\.0\.1/.test(texto),
+      'recusas · no fim do ensaio, só dia, porta, motivo, quantas e as horas, sem dado pessoal, sessão nem IP (' + linhas.map(l => l.porta + '/' + l.motivo + ' ' + l.quantas).join('; ') + ')');
+  }
   // v6: nos contextos que aceitaram o aviso de cookies, o gtm.js do Google é anotado à parte (9) e não entra aqui
   conferir(fora.length === 0, 'navegador · páginas: nenhum pedido para fora de 127.0.0.1, nem fonte do Google (10.7; ' + (fora.length ? [...new Set(fora)].join(', ') : 'nenhum') + '); nos contextos que aceitaram, só o gtm.js, conferido em 9');
   // O registro de rede do Chromium: só existe inteiro depois de o navegador fechar
