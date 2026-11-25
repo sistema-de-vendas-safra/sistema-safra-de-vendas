@@ -1,6 +1,6 @@
 ---
 id: landing-page-02
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,17 +8,23 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: garcom
-    versao: 6
+    versao: 7
   - id: planta-do-banco
-    versao: 5
+    versao: 6
   - id: banco-catalogo-prototipo
     versao: 3
   - id: decisoes
-    versao: 11
+    versao: 15
+  - id: ficha-de-fatos
+    versao: 7
+  - id: quiz-01-copy
+    versao: 6
 desatualizado: true
 ---
 
 # Landing-page-02 · página de vendas do Sistema de Vendas Safra
+
+**Versão 7 (25/11/2026, #124; pedido 24, item 3).** "Decisão do Otavio em 25/11/2026: a Análise Estratégica é sempre gratuita." Sai da página toda menção a promoção, a prazo da gratuidade e a cobrança depois (ficha-de-fatos#analise-gratuidade, v7). No programa (assets/index-BSwcbsoR.js), quatro textos, cada um nas duas versões da página (computador e celular), na forma da ficha, como proposta do mentor para o Otávio aprovar: "Gratuito por pouco tempo!" vira "Sem custo, sem prazo"; o selo "Gratuito por pouco tempo" do cartão da oferta vira "Sempre gratuita"; "Gratuita na promoção de lançamento." vira "Gratuita agora e depois."; e "Quando a promoção de lançamento acabar, a Análise passa a custar R$ 497." vira "A Análise não tem custo, nem hoje nem depois.". No index.html, uma regra de estilo esconde, sem mexer no programa, as 16 barras de escassez ("81% das Análises gratuitas já foram resgatadas", "Restam 19%" e a barra; ficha-de-fatos#barra-de-resgates, sem objeto desde a #124) e o preço riscado "R$ 497" do cartão da oferta, nas duas versões (nós 411:326, 411:329, 473:5299 e 473:5303); o botão e a nota do cartão ficam. **Não mudou:** o nome da Análise ("Análise Estratégica do Sistema de Vendas"; a lista de onde cada nome aparece está em prompts/24-correcoes-antes-dos-anuncios-resposta.md, para o Otávio decidir); o "O seu mês vira em [X] dias e [Y] horas." do cartão da oferta, que é da implementação e continua com os marcadores (pergunta 20.3.4); e o resto da página. Conferido no site montado, num navegador sem tela, em 1440 e 375: nenhum "resgatadas", "Restam", "pouco tempo", "promoção" ou "R$ 497" à vista, e os quatro textos novos no lugar; o ensaio (v16) e os prints novos topo e oferta, abaixo. Vai ao ar pelo roteiro entregas/prototipo-funil-01/APLICAR-24.md.
 
 **Versão 6 (18/11/2026, #121).** O programa do fim (no index.html) repassa ao /analise/ também o fbclid, além das cinco utm e do id_sessao, para o quiz gravar a origem do anúncio. Nada mais mudou; nada fica guardado no navegador. A visita com utm_source=meta-ads passa a ser gravada com meta-ads (garçom v6 e migração 003).
 
@@ -254,10 +260,10 @@ Cada imagem é um recorte da janela, na largura inteira, com 2 pixels por ponto 
 | faq-respostas-375.png | 375 por 1320 | O FAQ no celular, com as mesmas três respostas abertas e inteiras |
 | demonstracao-gestor-1440.png | 1440 por 1500 | A demonstração do produto no computador, no perfil "Para quem gere o time", com a tela "Painel de Safras" aberta: o menu com os cinco itens (Painel de Safras, Onde a safra trava, Nunca disseram não, Reunião de safra e Avaliação de calls), sem "Agentes de IA", o título da janela e as cinco bolinhas do indicador |
 | demonstracao-gestor-375.png | 375 por 1800 | A demonstração no celular, no mesmo perfil e na mesma tela: o menu com os cinco itens em duas colunas, de 3 e de 2, com a casa de baixo da direita vazia (pergunta 20.2.3). Embaixo da janela aparece só a dica "Toque numa tela do menu para ver funcionando": as seis bolinhas do indicador existem no programa, mas ficam inteiras fora do bloco da dica, que corta o que passa dele, e não aparecem na página, antes e depois da v4 (pergunta 20.3.3) |
-| oferta-1440.png | 1440 por 900 | O cartão da oferta (seção 08) no computador, com a chamada "Faça uma Análise Estratégica do seu Sistema de Vendas", que agora leva ao quiz. O cartão mostra, como veio, "O seu mês vira em [X] dias e [Y] horas." (pergunta 20.3.4) |
-| oferta-375.png | 375 por 812 | O cartão da oferta no celular, com a mesma chamada, que agora leva ao quiz, e o mesmo texto com [X] e [Y] |
-| topo-1440.png | 1440 por 1100 | O topo da página no computador, como abre, sem rolar, até o fim da seção 01: o cabeçalho, com o "Fazer a Análise", e a chamada do topo, que já levava ao quiz. O cartão "Ao vivo" passa 61 px da borda direita da janela, e o número aparece cortado (pergunta 20.3.4) |
-| topo-375.png | 375 por 1400 | O topo da página no celular, como abre, sem rolar, até o fim da seção 01: o cabeçalho e a chamada do topo, que agora leva ao quiz em vez de só rolar a tela |
+| oferta-1440.png | 1440 por 900 | **Refeito na v7 (25/11/2026).** O cartão da oferta (seção 08) no computador: o selo "Sempre gratuita", "Gratuita" e "agora e depois.", sem o R$ 497 riscado, a chamada "Faça uma Análise Estratégica do seu Sistema de Vendas", que leva ao quiz, e embaixo dela "A Análise não tem custo, nem hoje nem depois.", sem a barra de escassez. O cartão mostra, como veio, "O seu mês vira em [X] dias e [Y] horas." (pergunta 20.3.4) |
+| oferta-375.png | 375 por 812 | **Refeito na v7.** O cartão da oferta no celular, com os mesmos textos, sem a barra e sem o preço riscado, e o mesmo texto com [X] e [Y] |
+| topo-1440.png | 1440 por 1100 (refeito na v7, sem a barra de escassez embaixo da chamada) | O topo da página no computador, como abre, sem rolar, até o fim da seção 01: o cabeçalho, com o "Fazer a Análise", e a chamada do topo, que já levava ao quiz. O cartão "Ao vivo" passa 61 px da borda direita da janela, e o número aparece cortado (pergunta 20.3.4) |
+| topo-375.png | 375 por 1400 (refeito na v7) | O topo da página no celular, como abre, sem rolar, até o fim da seção 01: o cabeçalho e a chamada do topo, que agora leva ao quiz em vez de só rolar a tela |
 
 As fotos e os nomes que aparecem nos prints (o Júnior e o Euclides, no topo, e o Júnior, no cartão das Sessões de Comando) são da própria página; nenhum print tem dado de lead. Os prints mostram a página do repositório na versão 4 e foram tirados do site montado, antes da publicação. A v4 foi ao ar em 13/11/2026, 16h35 (entregas/prototipo-funil-01/README.md, "Publicações"); a v3 não chegou a ser publicada sozinha.
 

@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 13
+versao: 14
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,31 +8,33 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 5
+    versao: 6
   - id: quiz-01-briefing
-    versao: 3
+    versao: 4
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
-    versao: 5
-  - id: planta-do-banco
-    versao: 5
-  - id: funil-01
-    versao: 4
-  - id: lacunas
     versao: 7
-  - id: garcom
+  - id: planta-do-banco
     versao: 6
+  - id: funil-01
+    versao: 5
+  - id: lacunas
+    versao: 8
+  - id: garcom
+    versao: 7
   - id: decisoes
-    versao: 14
+    versao: 15
   - id: landing-page-02
-    versao: 2
+    versao: 7
   - id: politica-de-privacidade
     versao: 7
 desatualizado: true
 ---
 
 # Quiz-01 · página
+
+**Versão 14 (25/11/2026, #124 e #125; pedido 24, itens 1 a 4).** (1) **Quem não lembra dos números** (respondeu "Não") vê o relatório pelas metas do método (telaRelatorioMetas e hasteMetas): as quatro etapas de cada 100 leads de referência, com as metas de ficha-de-fatos#metas-por-etapa (50% · 50% · 75% · 20%; cerca de 4 vendas de cada 100 leads), ditas como metas e nunca como números dela; nenhum volume, taxa ou valor em reais inventado; da pessoa, só o que ela respondeu: a ficha do topo, os selos das respostas (nenhum selo de taxa), o CRM, o valor médio ("Sai com os seus números.", no lugar do dinheiro na mesa) e a estimativa dela do comparecimento ("Sua estimativa: ..."), com o bloco do comparecimento abaixo da meta só quando ela chutou abaixo de 75%. Na conversa gratuita, o painel mostra o funil das metas, rotulado "metas do método", e o perfil "Sem os seus números", sem perfil inventado. O exemplo CENARIOS.chute saiu. Textos: copy v6, "Relatório de quem não lembra", proposta do mentor. (2) **Sem empresa, o topo diz "sua empresa"**, pelo caminho do quiz e pelo painel "Telas"; "Empresa Exemplo" saiu da página. (3) **A armadilha e o tempo mínimo** (garçom v7): no formulário de contato, um campo "Site" fora da tela, com tabindex -1, autocomplete off e escondido do leitor de tela, que pessoa nenhuma vê nem preenche; o pacote do fim do quiz leva o bloco protecao, com a armadilha (até 200 caracteres) e duracao_s, os segundos entre abrir a página e mandar o contato, medidos com performance.now (que não depende da hora do aparelho). Nada fica guardado no navegador; o garçom tira o bloco antes de gravar. Recusado, a pessoa vê o aviso de falha com "Tentar de novo", como em qualquer falha. (4) **O início do quiz** (/api/evento) leva também utm_medium, utm_content e utm_term, lidas do endereço e saneadas como no fim (migração 004). (5) **A gratuidade da abertura** é "Sempre gratuita" (ficha-de-fatos#analise-gratuidade, #124), no lugar de "Sem custo na promoção de lançamento". versao_entrega continua 2. Teste do quiz: **851 conferências, todas certas** (eram 719): o relatório pelas metas e os três perfis do pedido, com print de cada um (perfil-qualificado, perfil-faixa-c-sem-numeros e perfil-nao-qualificado, em 375 e 1440); "sua empresa" em todos os relatórios, também pelo painel "Telas"; a armadilha vazia, fora da tela e fora do Tab; o bloco protecao com os segundos conferidos contra o relógio do teste; o robô que preenche a armadilha vê o aviso; as utm no início e no fim; "Sempre gratuita". Com quatro erros postos de propósito ("Empresa Exemplo", a promoção, a armadilha no Tab e o início sem utm_content), 48 conferências falharam só em 375 e no começo de 360; o arquivo voltou igual. Prints refeitos todos; relatorio-exemplo passa a mostrar o relatório pelas metas.
 
 **Versão 13 (25/11/2026, pedido do Otávio).** Na abertura, o logo do Safra sai do cabeçalho e, no lugar dele, entra a headline "Você já pagou pelas suas próximas vendas" (copy v5, seção 2), em texto: Geist 600, 22 pixels no computador, 18 até 899 e 16 até 599, na cor do logo (#e5ece7). No computador ela cabe numa linha e o cabeçalho continua com 87 pixels; no celular, quebra em três linhas ao lado do botão (87 a 90 pixels). O botão "Fazer a Análise" do cabeçalho fica, e nas outras telas o cabeçalho do quiz não muda. O código do logo (a constante LOGO_SAFRA e o estilo .logo-safra) saiu, porque só o cabeçalho o usava; ele fica no histórico do Git. versao_entrega continua 2: a página não muda o fim do quiz nem o aceite (regra das etiquetas). Teste do quiz: a conferência do cabeçalho passa a pedir a headline inteira dentro dele e nenhum logo, nas três larguras: **719 de 719**; com a headline trocada de propósito por uma longa, ela falha nas três larguras (e duas conferências de layout junto), e o arquivo voltou igual. Prints novos: abertura-375 e abertura-1440.
 
@@ -347,8 +349,8 @@ Tudo certo: todas as conferências passaram
 - Decidir os conflitos 16 a 19 e o nome da Análise (conflito-02) e da agência (conflito-07).
 - Conferir o texto da caixa de aceite (31.1) e decidir o que acontece com quem desmarca (30.3, 31.2) e a volta do percentual (31.3).
 - O link da política de privacidade no consentimento; o número do WhatsApp.
-- A migração 001, o catalogo-prototipo.sql v2 e o garçom v4 no Supabase e na Cloudflare (roteiro da etapa 35), para o início do quiz, o clique e a versão 2 gravarem de verdade; antes de tráfego real, a proteção contra robô e o limite de pedidos (log.md, Pendências).
-- O relatório usar os números da pessoa no lugar dos cenários de exemplo do protótipo (14.7: fica para a versão que for ao ar).
+- A migração 004, o garçom v7 e esta página v14 no ar, juntos, pelo roteiro entregas/prototipo-funil-01/APLICAR-24.md (a proteção contra robô e o limite de pedidos entram com eles).
+- Os textos novos do relatório de quem não lembra e "Sempre gratuita" aprovados (copy v6). O relatório já usa os números da pessoa (v12) e as metas para quem não lembra (v14): a 14.7 está resolvida no repositório e só falta ir ao ar.
 - A montagem tirar os comentários de cabeçalho dos HTML antes de ir ao ar com gente de verdade (23.9: fica para a versão que for ao ar).
 - Revisão jurídica fica com a empresa que assina a política, fora do sistema (#103).
 
