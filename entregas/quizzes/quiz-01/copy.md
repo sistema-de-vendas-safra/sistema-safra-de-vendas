@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Copy · quiz-01
+
+**Versão 6 (25/11/2026, #124 e #125; pedido 24).** Três mudanças, com os textos novos como proposta do mentor, para o Otávio aprovar. (1) A gratuidade (M6 e o fato curto da abertura): "Sempre gratuita", no lugar de "Sem custo na promoção de lançamento" (#124: a Análise é sempre gratuita, sem número e sem cobrança depois). A fala 3 da oferta do plano (M20, que saiu da página na v8 da página) fica registrada como sem valor. (2) O bloco "Relatório de quem não lembra" passa a mostrar o funil pelas metas do método, dito como metas, no lugar do funil de exemplo (#125, que revê a #123). (3) Sem empresa, o olho do relatório diz "sua empresa" (#125). Nada mais neste documento mudou.
 
 **Versão 5 (25/11/2026, pedido do Otávio).** Só a abertura (seção 2) muda: no cabeçalho, o logo do Safra sai e, no lugar dele, entra a headline "Você já pagou pelas suas próximas vendas", texto do Otávio. O botão "Fazer a Análise" do cabeçalho fica. Nada mais neste documento mudou.
 
@@ -92,11 +94,11 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
 - **Olho:** "diagnóstico de vendas" (no mockup, com um travessão na frente) vira {{BLOQUEADO: ficha-de-fatos#analise-nome-publico}} (muda, M4)
 - **Título:** "Descubra onde sua equipe de vendas está perdendo performance" (fica)
 - **Apoio:** "Diagnóstico completo das 4 etapas do funil de vendas: **pré-qualificação**, **agendamento**, **comparecimento** e **fechamento**." (muda, M5)
-- **Fatos curtos:** "8 minutos" · "Sem custo na promoção de lançamento" {{ficha-de-fatos#analise-gratuidade}} (muda, M6)
+- **Fatos curtos:** "8 minutos" · "Sempre gratuita" {{ficha-de-fatos#analise-gratuidade}} (muda, M6; v6: #124, a forma de escrever da ficha, proposta do mentor a aprovar)
 - **Botão:** "Começar diagnóstico →" (fica)
 - **Letra miúda:** "Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: [política de privacidade]({{a definir: link da politica de privacidade}})." (muda, M7)
 
-**Notas.** "8 minutos" é do próprio quiz, não da ficha; fica até o teste da etapa 14 (pergunta 13.12). A gratuidade segue ficha-de-fatos#analise-gratuidade, com o fim real em ficha-de-fatos#analises-gratuitas, na mesma forma da landing (pergunta 9.3), sem o número. O olho da abertura no mockup começa com um travessão; a regra da casa não deixa (regra 5).
+**Notas.** "8 minutos" é do próprio quiz, não da ficha; fica até o teste da etapa 14 (pergunta 13.12). A gratuidade segue ficha-de-fatos#analise-gratuidade: desde a #124, sempre gratuita, sem número, sem promoção e sem cobrança depois (v6). O olho da abertura no mockup começa com um travessão; a regra da casa não deixa (regra 5).
 
 ---
 
@@ -297,7 +299,7 @@ A faixa nunca aparece para o lead. Nenhum texto promete prazo de ligação (perg
 
 - **Fala 1:** "Olha só, [nome]: [pela sua estimativa / pelos números que você informou], se as etapas fracas chegassem na meta, a conta daria **[cerca de] [n] vendas a mais por mês, uns [R$] mil**. É conta, não promessa: é dinheiro que hoje fica na mesa." (muda, M18)
 - **Fala 2:** "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." (fica, por exceção decidida pelo Otávio, #110; a M19 foi desfeita). O [X] é o do quiz do Júnior: 70% do dinheiro na mesa por mês dividido pelo que o funil fatura hoje, arredondado para baixo (conflito-19, lado 1).
-- **Fala 3:** "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." (muda, M20)
+- **Fala 3:** sem valor desde a #124 (v6): a Análise não é cobrada, e a oferta do plano saiu da página na v8 dela. Era: "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." (M20)
 - **Pergunta:** "Quer receber o seu plano de ação de 90 dias?" (fica)
 - **Opções:** "Sim, eu quero" · "Quero ver como é" (fica)
 - **Depois:** "Fechou, [nome]." ou, para quem viu o exemplo e voltou, "Agora você já viu como ele é, [nome]." (fica)
@@ -328,8 +330,8 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **Apoio, com a pré-qualificação abaixo:** "[...], a perda começa na entrada: menos da metade dos leads tem perfil de compra." (fica)
 - **Título, funil saudável:** "[nome], seu funil bate a meta nas 4 etapas." (fica)
 - **Apoio, funil saudável:** "Pelos números que você informou, todas as etapas estão na meta ou acima. O processo comercial funciona. O limite agora é quantas sementes entram." (fica)
-- **Selo de confiança:** "confiança alta · números que você informou" (fica); para quem não lembra, o selo do bloco "Relatório de quem não lembra" (v4, #123), no lugar de "estimativa · respostas por chute" (escolha provisória a aprovar)
-- **Olho, sem empresa:** sem o nome da empresa, só o nome da Análise e o mês (v4, #123; antes, "Empresa Exemplo")
+- **Selo de confiança:** "confiança alta · números que você informou" (fica); para quem não lembra, o selo do bloco "Relatório de quem não lembra" (v6, #125), no lugar de "estimativa · respostas por chute" (proposta a aprovar)
+- **Olho, sem empresa:** "[nome da Análise] · sua empresa · [mês de ano]" (v6, #125; na v4, sem o nome da empresa; antes, "Empresa Exemplo")
 - **Cópia, com a caixa marcada:** "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." (fica, M21)
 - **Cópia, com a caixa desmarcada:** "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." (muda, M21) [PENDENTE: 30.3]
 
@@ -359,17 +361,30 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **O que já funciona:** "**O que já funciona:** [etapas]. Metade dos seus leads tem perfil de compra, então o marketing está trazendo gente certa." (fica)
 - **Saudável:** "pontos fracos" · "Nenhuma etapa ficou abaixo da meta" · "Onde crescer": "Mais leads com perfil. Com as suas taxas, cada lead novo tem a mesma chance de virar venda." · "Venda de maior valor. O mesmo trabalho do time rende mais por cliente." · "Leads antigos. Quem não fechou meses atrás pode estar pronto agora." · "O que manter": "Continue contando os cinco números todo mês, num lugar só. É isso que permite ver uma etapa cair antes de ela pesar no faturamento." (fica)
 
-**Relatório de quem não lembra (#123)** (novo, proposta do mentor, a aprovar)
+**Relatório de quem não lembra (#125; v6)** (proposta do mentor, a aprovar; substitui o funil de exemplo da v4, #123)
 
-Quem respondeu "Não" em "Lembra dos números?" continua com a conta de exemplo, e o relatório diz com todas as letras que é um funil de exemplo, não o dela. Os números entre colchetes vêm do cenário de exemplo no código, nunca escritos à mão. Nada que vem do exemplo é dito como da pessoa ou do time dela; o que sai das respostas dela (CRM, quem marca, origem dos leads, primeiro contato, tentativas, lead sem contato) continua dela.
-- **Selo:** "exemplo · sem os seus números" (no lugar de "estimativa · respostas por chute"; escolha provisória a aprovar)
-- **Título:** "[nome], sem os seus números, este é um funil de exemplo."
-- **Abertura:** "Um funil comum, com [400] leads por mês e R$ [15 mil] por venda, para mostrar onde as vendas costumam escapar. Não é o diagnóstico da sua empresa. Com os cinco números do seu funil, a conta passa a ser a sua."
-- **Título do funil:** "As 4 etapas do exemplo contra as metas" (no lugar de "Suas 4 etapas contra as metas")
-- **Título dos pontos fracos:** "Onde um funil como este perde performance" (no lugar de "Onde sua equipe perde performance")
-- **Dinheiro na mesa, abaixo do valor:** "por mês · no exemplo"
-- **Dinheiro na mesa, frase:** "No exemplo, são cerca de [n] vendas a mais por mês se as [n] etapas fracas chegassem na meta."
-- **Dinheiro na mesa, nota:** "Conta de exemplo, não é a sua nem é promessa: um funil de [400] leads por mês e valor médio de R$ [15.000]. Com os seus números, a conta fica sua."
+Quem respondeu "Não" em "Lembra dos números?" vê o funil pelas metas do método (ficha-de-fatos#metas-por-etapa), de cada 100 leads, dito como metas e nunca como números dela. Nenhum volume, taxa ou valor em reais inventado. Da pessoa, só o que ela respondeu: os selos das respostas (CRM, quem marca, origem dos leads, primeiro contato), o CRM nos quadros, o valor médio na nota do dinheiro na mesa e a estimativa do comparecimento (5.3). As metas entre colchetes vêm da ficha, nunca escritas à mão.
+- **Olho:** "[nome da Análise] · [empresa ou sua empresa] · [mês de ano]"
+- **Título:** "[nome], sem os seus números, este é o funil pelas metas do método."
+- **Abertura:** "Cada etapa aparece com a meta do método, não com números da sua empresa. Com os cinco números de um mês, a leitura passa a ser a sua."
+- **Selo:** "metas do método · sem os seus números" (sem o selo do perfil do funil: sem números, não há perfil)
+- **Funil, olho e título:** "da semente ao fruto" · "As 4 etapas pelas metas do método"
+- **Funil, pontas:** "100 · leads de referência · as sementes" · "≈ [4] · vendas de cada 100 leads, pelas metas · os frutos"
+- **Funil, etapas:** "[etapa] · meta [n]%", com a régua só com a marca da meta, e embaixo "meta do método"; no comparecimento, se ela estimou: "Sua estimativa: [o que ela respondeu]"
+- **Funil, geral:** "**[3,75]%** dos leads viram venda quando as 4 etapas batem a meta."
+- **Selos:** "selos · [n] de 8" · "O que o seu time já faz bem", só os das respostas (sem "Mede o funil" e sem os das taxas)
+- **Quadros, título:** "O resumo do seu comercial, sem os números"
+- **Forças:** com o CRM em dia: "Com o CRM em dia, os cinco números do funil saem de lá." (sem CRM em dia: o quadro vazio)
+- **Fraquezas:** com a estimativa abaixo da meta: "Pela sua estimativa, o comparecimento fica abaixo da meta de [75]%."; sem: "Sem os seus números, não dá para ver quais etapas ficam abaixo da meta."
+- **Oportunidades:** "Contar os cinco números de um mês mostra em que etapa as vendas escapam e quanto dinheiro fica na mesa."
+- **Alertas:** sem CRM em dia: "Sem CRM atualizado todo dia, fica difícil ver onde cada lead para."
+- **Por onde começar, olho e título:** "por onde começar" · "Antes de consertar, contar"
+- **Com a estimativa abaixo da meta:** o comparecimento com a marca "pela sua estimativa", "[o que ela respondeu] · meta [75]%", a causa provável e o que fazer do comparecimento (os mesmos dos pontos fracos)
+- **O que contar num mês:** "Quantos leads chegaram." · "Quantos tinham perfil para comprar." · "Quantos marcaram a conversa de venda e quantas conversas aconteceram." · "Quantos viraram venda."
+- **Dinheiro na mesa:** "dinheiro na mesa" · "Sai com os seus números." · "A conta precisa de quantos leads chegam e de quantos passam por cada etapa. O valor médio da venda você já informou: R$ [n]." · nota: "Sem os cinco números, nenhum valor aparece aqui: um número inventado não ajuda a decidir nada."
+- **Painel, durante e depois do quiz:** a seção do funil com a marca "metas do método"; antes do contato: "Pronto, [nome]! Sem os seus números, o painel mostra o funil pelas metas do método."; o perfil do funil: "Sem os seus números" · "Com os cinco números de um mês, o perfil do seu funil aparece."
+
+**Relatório de quem não lembra, versão 4 (#123; sai na v6, pela #125):** o funil de exemplo de [400] leads e R$ [15 mil] por venda, avisado como exemplo (selo "exemplo · sem os seus números", título "[nome], sem os seus números, este é um funil de exemplo.", "As 4 etapas do exemplo contra as metas", "Onde um funil como este perde performance" e a conta de exemplo no dinheiro na mesa).
 
 **Dinheiro na mesa** (fica)
 - **Com etapa fraca:** "dinheiro na mesa" · "[≈] [R$] mil por mês [· estimativa]" · "São [cerca de] [n] vendas a mais por mês se as [n] etapas fracas chegassem na meta. Frutos que hoje ficam no pé." · fatias por etapa "[R$] mil · ≈ [n] vendas"
@@ -435,7 +450,7 @@ Toda alteração feita no texto do mockup (fontes/quiz-01-repositorio-2026-11-08
 | M3 | Capa, rodapé | "Triad" · "Diagnóstico de vendas para empresas que vendem por reunião." · "© 2026 Triad Marketing USA LLC" | {{BLOQUEADO: ficha-de-fatos#nome-agencia}} · "Diagnóstico de vendas para empresas que vendem por conversa de venda." · {{BLOQUEADO: ficha-de-fatos#nome-agencia}} | Nome e empresa em conflito (conflito-07); "reunião" é palavra queimada para a persona (13.1) |
 | M4 | Título da aba, abertura (olho e folha de exemplo), painel (topo e título), relatório (olho), erro | "Quiz Diagnóstico de Vendas" (título da aba); "diagnóstico de vendas" (com um travessão na frente) e "Diagnóstico de vendas" como nome; "outubro 2026" | {{BLOQUEADO: ficha-de-fatos#analise-nome-publico}}; mês e ano do preenchimento | "Diagnóstico de vendas" é um dos nomes em conflito (conflito-02); travessão proibido (regra 5); a data do protótipo era fixa |
 | M5 | Abertura, apoio | "Diagnóstico completo e gratuito nas 4 etapas do funil de vendas: ..." | "Diagnóstico completo das 4 etapas do funil de vendas: ..." | "Diagnóstico gratuito" é frase gasta (`tom-de-voz`); a gratuidade vai para a linha de baixo, pela ficha |
-| M6 | Abertura, fatos curtos | "100% gratuito" | "Sem custo na promoção de lançamento" ({{ficha-de-fatos#analise-gratuidade}}) | Gratuidade pela ficha, com fim real (ficha-de-fatos#analises-gratuitas), na forma da landing (9.3) |
+| M6 | Abertura, fatos curtos | "100% gratuito" | "Sempre gratuita" ({{ficha-de-fatos#analise-gratuidade}}; v6, #124) | Gratuidade pela ficha; desde a #124, sem fim e sem cobrança depois (antes da v6: "Sem custo na promoção de lançamento") |
 | M7 | Abertura, letra miúda | "Suas respostas servem só para montar o seu diagnóstico e para a equipe da Triad falar com você." | "Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: [política de privacidade]." | Nome da agência em conflito; link da política pedido pela LGPD (`provas-e-conformidade`) |
 | M8 | Conversa, fala 1 | "Oi! Sou o Junior, da Triad, e vou guiar você neste diagnóstico." | "Oi! Sou o Junior Neves e vou guiar você neste diagnóstico." | Nome da agência em conflito; grafia pública "Junior Neves" (ficha-de-fatos#grafia-junior) |
 | M9 | Pergunta dos vendedores | "Quantos vendedores fazem reunião de vendas com clientes?" | "Quantos vendedores conduzem conversas de venda com clientes?" | "Reunião" queimada (13.1); a ajuda dele já dizia "conduz a conversa"; opções iguais, como o lead score pontua |
@@ -449,7 +464,7 @@ Toda alteração feita no texto do mockup (fontes/quiz-01-repositorio-2026-11-08
 | M17 | Perfis do funil | "Lead com perfil demora a virar reunião." · "Agenda furada · Reunião marcada não vira reunião feita." · "Reunião sem fechamento · O cliente vem para a reunião e sai sem comprar." | "... demora a virar conversa de venda." · "Agenda furada · Conversa marcada não vira conversa feita." · "Conversa sem fechamento · O cliente vem para a conversa e sai sem comprar." | "Reunião" queimada (13.1) |
 | M18 | Oferta do plano, fala 1 | "... uns R$ [n] mil. É dinheiro que hoje fica na mesa." | "... uns [R$] mil. É conta, não promessa: é dinheiro que hoje fica na mesa." | O manual dele manda dizer o dinheiro na mesa como conta, nunca como promessa (MANUAL, seção 5); a tela não tinha a ressalva que o relatório tem |
 | M19 | Oferta do plano, fala 2 | "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa. Não só para resgatar parte desse dinheiro, mas para instalar um sistema de vendas que pode aumentar seu faturamento em até **[X]%**." | Desfeita: fica o texto do mockup. (Na v1 da copy: "Por isso, quero preparar um plano de ação de 90 dias para a sua empresa: o que fazer, etapa por etapa, para ir atrás desse dinheiro e instalar um sistema de vendas no seu comercial.") | O Otávio mantém o quiz como está, com a promessa de percentual, como exceção às regras de prova e conformidade (#110). Na v1, o motivo da troca era o percentual proibido antes de caso comprovado (#39; CONAR; CDC, art. 30; conflito-19) |
-| M20 | Oferta do plano, fala 3 | "Agora ele é gratuito. Em breve, vai custar [o valor que hoje está em ficha-de-fatos#analise-valor]." | "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." | Valor e gratuidade só pela ficha; "em breve" sugere data que não existe (a cobrança começa depois de ficha-de-fatos#analises-gratuitas); plano e Análise a confirmar (conflito-10; 13.3) |
+| M20 | Oferta do plano, fala 3 | "Agora ele é gratuito. Em breve, vai custar [o valor que hoje está em ficha-de-fatos#analise-valor]." | "Na promoção de lançamento, ele sai sem custo ({{ficha-de-fatos#analise-gratuidade}}). Depois, vai custar {{ficha-de-fatos#analise-valor}}." | Valor e gratuidade só pela ficha; "em breve" sugere data que não existe (a cobrança começa depois de ficha-de-fatos#analises-gratuitas); plano e Análise a confirmar (conflito-10; 13.3) Sem valor desde a #124 (v6): a Análise não é cobrada. |
 | M21 | Relatório, cópia | "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." | Com a caixa marcada, fica o texto do mockup; com a caixa desmarcada, "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." [PENDENTE: 30.3] | A caixa é única (#104): não há mais canal aceito e canal recusado; quem desmarca não recebe cópia (30.3) |
 | M22 | Relatório, etapas do funil | "marcaram reunião" · "vieram para a reunião" · base "reuniões" | "marcaram a conversa de venda" · "vieram para a conversa de venda" · base "conversas" | "Reunião" queimada (13.1) |
 | M23 | Relatório, conversão geral | "A meta geral é cerca de 4%." | "Somando as quatro metas, dá {{ficha-de-fatos#metas-por-etapa:geral}}." | Fato pela ficha, que registra o valor exato; os 4% não podem soar como métrica de mercado (`tom-de-voz`) (13.11) |

@@ -1,6 +1,6 @@
 ---
 id: lacunas
-versao: 7
+versao: 8
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -121,6 +121,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** ver conflito-02.
 - **O que destrava:** a seção da Análise da landing-page-01 e a fala final do quiz-01.
 - **Resolvido em parte (#92, 08/11/2026):** valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas). Continuam em aberto o nome público, a duração e quem conduz a reunião com o Júnior (conflito-02).
+- **Revisto pela #124 (25/11/2026):** a Análise é sempre gratuita, sem número de análises gratuitas e sem cobrança depois (ficha-de-fatos#analise-gratuidade); ficha-de-fatos#analise-valor e #analises-gratuitas deixam de valer.
 - **Resolvido em parte (#107, 09/11/2026):** a reunião com o Júnior é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração de ficha-de-fatos#duracao-call-de-venda e o condutor de ficha-de-fatos#quem-faz-a-reuniao; é nela que fica a demonstração com os números do cliente (4.5, #114). Continua em aberto só o nome público da Análise (ficha-de-fatos#analise-nome-publico; prompts/11-fila-perguntas.md, 30.1).
 - **Ver também:** conflito-02.
 
@@ -260,6 +261,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **Quem decide:** o Otávio (#59 a #62 são dele); o Doc Mestre online põe o valor entre as decisões do Júnior e do Euclides (decisão 4), então o plano aprovado recomenda levar aos dois.
 - **O que destrava:** a seção da Análise, o cartão da oferta e o passo 3 da landing-page-01; a fala final e o nome do quiz-01.
 - **Resolvido em parte (#92, 08/11/2026):** a Análise passa a ser o diagnóstico do quiz (ficha-de-fatos#analise-conteudo); valor e gratuidade decididos (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade, ficha-de-fatos#analises-gratuitas); a reunião com o Júnior é a conversa de venda, sem preço. O Júnior e o Euclides devem ser informados na pauta de aprovação.
+- **Revisto pela #124 (25/11/2026):** a Análise é sempre gratuita, sem número de análises gratuitas e sem cobrança depois (ficha-de-fatos#analise-gratuidade); ficha-de-fatos#analise-valor e #analises-gratuitas deixam de valer.
 - **Resolvido em parte (#117, 13/11/2026):** o nome público é o de ficha-de-fatos#analise-nome-publico, decidido pelo Otávio.
 - **Continua em aberto:** o que a #92 não define sobre a reunião com o Júnior: a duração (ficha-de-fatos#analise-duracao) e quem conduz (ficha-de-fatos#analise-quem-conduz).
 - **Resolvido em parte (#107, 09/11/2026):** a conversa de venda com o Júnior passa a ser a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração em ficha-de-fatos#duracao-call-de-venda e o condutor em ficha-de-fatos#quem-faz-a-reuniao; nela fica a demonstração com os números do cliente (4.5, #114). Os campos ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha, com observação que aponta para a #107 (prompts/11-fila-perguntas.md, 30.6). Continua em aberto o nome público da Análise (ficha-de-fatos#analise-nome-publico; 30.1).
@@ -282,6 +284,7 @@ Cada item traz: **o que é**, **valores e fontes**, **quem decide** e **o que de
 - **O que destrava:** a barra embaixo dos botões e o contador do hero da landing-page-01.
 - **Resolvido em parte (#93, 08/11/2026):** o contador de escassez segue a regra de ficha-de-fatos#barra-de-resgates (contagem real, a partir do banco de dados, visível só acima do limite da regra). O contador "Total gerado" continua no conflito de credenciais, com o Júnior e o Euclides (conflito-05).
 - **Situação em 09/11/2026 (#114):** conta uma análise gratuita por pessoa que recebeu o diagnóstico, sem recontar quem refaz, e o contador nunca aparece no topo da página (5.7); a página diz "sem custo na promoção de lançamento", sem o número, até o contador aparecer (9.3); a cobrança da Análise depois das gratuitas fica para a segunda versão do funil, e o valor só aparece na página quando a cobrança existir (5.9).
+- **Sem objeto desde a #124 (25/11/2026):** a Análise é sempre gratuita e não tem número de análises: nenhum contador de escassez, porcentagem de resgate ou barra de vagas da Análise (ficha-de-fatos#barra-de-resgates). O contador "Total gerado" continua no conflito-05, que é outra coisa.
 - **Ver também:** conflito-02, conflito-14.
 
 ### conflito-05

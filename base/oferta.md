@@ -1,6 +1,6 @@
 ---
 id: oferta
-versao: 2
+versao: 3
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-09
@@ -49,7 +49,7 @@ A oferta montada: a oferta em uma página, a equação de valor, os obstáculos 
 | Preço | ficha-de-fatos#preco-avancada; depois, ficha-de-fatos#preco-avancada-depois, cobrado de verdade | #57; #19 |
 | Pagamento | ficha-de-fatos#meio-de-pagamento. Parcelamento: ficha-de-fatos#parcelamento, **campo em conflito · bloqueado para entrega até a decisão**. Taxa: ficha-de-fatos#taxa-hotmart (em aberto) | #54; conflito-15, lacuna-19 |
 | Vagas | ficha-de-fatos#vagas; só vendas da Avançada contam (ficha-de-fatos#vendas-que-contam); início de cada cliente em aberto (ficha-de-fatos#inicio-de-cada-cliente) | #63, #64, #65 |
-| Porta de entrada | A Análise, o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), gratuita até ficha-de-fatos#analises-gratuitas e depois cobrada por ficha-de-fatos#analise-valor (ficha-de-fatos#analise-gratuidade); a cobrança fica para a segunda versão do funil (5.9). O nome público está em ficha-de-fatos#analise-nome-publico, **em conflito · bloqueado para entrega até a decisão**. Depois dela, a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), sem custo para o lead (15.14), com a demonstração. Abatimento: ficha-de-fatos#analise-abatimento (proposta) | #49, #59, #61, #62, #66, #92, #93, #107, #114; lacuna-11, conflito-02 |
+| Porta de entrada | A Análise, o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), sempre gratuita, sem número de análises e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124). O nome público está em ficha-de-fatos#analise-nome-publico, **em conflito · bloqueado para entrega até a decisão**. Depois dela, a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), sem custo para o lead (15.14), com a demonstração. Sem abatimento: a Análise não é cobrada (ficha-de-fatos#analise-abatimento) | #49, #59, #61, #62, #66, #92, #93, #107, #114, #124; lacuna-11, conflito-02 |
 | Garantia | ficha-de-fatos#garantia. Reembolso pela Hotmart: ficha-de-fatos#arrependimento | #39; #91; outros-18 |
 | Continuidade | O GSAAS, opcional, oferecido no Relatório de Produtividade: ficha-de-fatos#gsaas (para depois) | #38, #58, #84; lacuna-06 |
 | Downsell | A Implementação Essencial, só depois do não à Avançada: ficha-de-fatos#downsell-nome, ficha-de-fatos#downsell-preco (**em conflito · bloqueado para entrega até a decisão**) e ficha-de-fatos#downsell-desenho (em revisão) | #37, #42, #60; lacuna-03 |
@@ -217,7 +217,7 @@ O risco: se a entrega não couber, a escassez é verdadeira, mas os primeiros cl
 4. As quatro etapas e o que ele recebe.
 5. É para você / não é para você: o corte está em ficha-de-fatos#criterio-de-qualificacao, **em conflito · bloqueado para entrega até a decisão**.
 6. O que a Triad não promete.
-7. A chamada para a Análise, que hoje é o diagnóstico do quiz (#92). Na página, a gratuidade é dita como "sem custo na promoção de lançamento", sem o número, até o contador aparecer (9.3, #114); o valor da Análise só aparece na página quando a cobrança existir (5.9, #114). "O preço da implementação fica para a call."
+7. A chamada para a Análise, que hoje é o diagnóstico do quiz (#92). Na página, a gratuidade é dita na forma de ficha-de-fatos#analise-gratuidade (sempre gratuita; #124), sem promoção, sem prazo e sem valor depois. "O preço da implementação fica para a call."
 
 Fonte: Oferta online ("Como apresentar a oferta na call e na página"). "A voz final de todas as peças passa pela skill junior-neves-voice." Na primeira etapa do funil não se fala de GSAAS, de gerente nem da entrega (#68), com a exceção de "gerente comercial" na página (#86).
 
@@ -225,7 +225,7 @@ Fonte: Oferta online ("Como apresentar a oferta na call e na página"). "A voz f
 
 ## A porta de entrada: a Análise
 
-O que está decidido: a Análise da porta é o diagnóstico do quiz, a mesma para todos os públicos (ficha-de-fatos#analise-conteudo; #92, que revê a #59 e a #61). É gratuita até ficha-de-fatos#analises-gratuitas e depois cobrada por ficha-de-fatos#analise-valor (ficha-de-fatos#analise-gratuidade; #92, #93); a cobrança fica para a segunda versão do funil, e o valor só aparece na página quando ela existir (5.9, #114). A Análise completa, com documento e painel, é a entrega 1 (`entregas-do-servico`). Quem agenda a conversa de venda é o SDR (ficha-de-fatos#quem-agenda; #67).
+O que está decidido: a Análise da porta é o diagnóstico do quiz, a mesma para todos os públicos (ficha-de-fatos#analise-conteudo; #92, que revê a #59 e a #61). É sempre gratuita, sem número de análises e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124, que revê a #92 e deixa a #93 sem objeto). A Análise completa, com documento e painel, é a entrega 1 (`entregas-do-servico`). Quem agenda a conversa de venda é o SDR (ficha-de-fatos#quem-agenda; #67).
 
 **A conversa de venda** é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração de ficha-de-fatos#duracao-call-de-venda e o condutor de ficha-de-fatos#quem-faz-a-reuniao (#107). Não tem custo para o lead: quem liga pode dizer "a conversa não tem custo" (15.14, #114). É nela que fica a demonstração com os números do prospect (4.5, #114).
 
@@ -233,7 +233,7 @@ O que está decidido: a Análise da porta é o diagnóstico do quiz, a mesma par
 - O nome público da Análise: ficha-de-fatos#analise-nome-publico (continua a definir, #107; pergunta 30.1).
 - ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha; com a #92, a pergunta deles passou a ser a da conversa de venda, que a #107 decidiu nos campos da Call (pergunta 30.6).
 
-Por que o valor apresentado só vale se for cobrado depois: CTX §8 (CDC e CONAR) e ficha-de-fatos#analise-valor. Proposta em aberto: ficha-de-fatos#analise-abatimento. O plano de ação de 90 dias (PDV-90) como saída da Análise está sem decisão (lacuna-22, conflito-10).
+A Análise não tem valor apresentado: é sempre gratuita (#124; ficha-de-fatos#analise-valor e ficha-de-fatos#analise-abatimento, os dois sem objeto). O plano de ação de 90 dias (PDV-90) como saída da Análise está sem decisão (lacuna-22, conflito-10).
 
 **Hipótese a validar** (Oferta online): "A Análise Estratégica antes da compra compensa a falta de garantia (indicativa)." Hoje, a demonstração na Call de Direcionamento (4.5).
 

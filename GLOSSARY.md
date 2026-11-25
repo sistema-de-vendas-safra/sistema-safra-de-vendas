@@ -1,9 +1,9 @@
 ---
 id: glossario
-versao: 4
+versao: 5
 status: decidido
 aprovado_por:
-  otavio: 2026-11-09
+  otavio: 2026-11-25
 depende_de:
   - id: ficha-de-fatos
     versao: 4
@@ -181,7 +181,7 @@ _Avoid_: turma
 _Fonte_: #65; ficha-de-fatos#vagas
 
 **Análise Estratégica do seu Comercial**:
-A porta de entrada: desde a #92, é o diagnóstico do quiz, gratuito nas análises de ficha-de-fatos#analises-gratuitas e cobrado depois (ficha-de-fatos#analise-valor). A conversa de venda que vem depois é a Call de Direcionamento (ver abaixo). O nome público da Análise continua a definir, em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico; #107).
+A porta de entrada: desde a #92, é o diagnóstico do quiz, sempre gratuito (ficha-de-fatos#analise-gratuidade; #124, que tirou o número de análises gratuitas e a cobrança depois). A conversa de venda que vem depois é a Call de Direcionamento (ver abaixo). O nome público da Análise continua a definir, em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico; #107).
 _Avoid_: "Análise" para a conversa de venda
 _Fonte_: #66; #92; #107; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
 
@@ -335,5 +335,5 @@ A escala de frio, morno e quente do público do funil; mede só se a pessoa já 
 _Fonte_: F22 ("Temperatura")
 
 **Barra de resgates**:
-O contador de escassez da página: conta as análises gratuitas reais, a partir do banco de dados, e só aparece acima do limite da regra (ficha-de-fatos#barra-de-resgates). Até lá, nada de porcentagem de resgate nem de barra de vagas. Não é o contador "Total gerado" das credenciais, que segue em conflito (conflito-05).
+O contador de escassez da página: contava as análises gratuitas reais, a partir do banco de dados, e só aparecia acima do limite da regra. Sem objeto desde a #124: a Análise é sempre gratuita, e nenhuma peça mostra porcentagem de resgate, barra de vagas nem contador da Análise (ficha-de-fatos#barra-de-resgates). Não é o contador "Total gerado" das credenciais, que segue em conflito (conflito-05).
 _Fonte_: #93; landing; ficha-de-fatos#barra-de-resgates

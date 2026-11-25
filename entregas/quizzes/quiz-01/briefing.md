@@ -1,6 +1,6 @@
 ---
 id: quiz-01-briefing
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -54,7 +54,7 @@ O ponto de partida do quiz-01 do funil-01: para que ele serve, para quem, o que 
 
 O quiz-01 é o passo 2 do caminho do lead no funil-01 (`funil-01`, "Caminho do lead"): o lead chega da landing-page-01 com a etiqueta do link, responde, deixa o contato com consentimento e recebe o diagnóstico.
 
-- O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), com a gratuidade de ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analises-gratuitas, cobrada depois pelo valor de ficha-de-fatos#analise-valor. O nome público continua a definir (ficha-de-fatos#analise-nome-publico; conflito-02; #107; pergunta 30.1). A conversa de venda com o Júnior, que vem depois, é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; #107).
+- O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), sempre gratuita, sem número e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124, v4 deste briefing). O nome público continua a definir (ficha-de-fatos#analise-nome-publico; conflito-02; #107; pergunta 30.1). A conversa de venda com o Júnior, que vem depois, é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; #107).
 - Todo lead que termina o quiz recebe o diagnóstico, inclusive quem não entra na fila do SDR (`lead-score`, "Eliminatórios"; fonte do quiz, CLAUDE.md, "Não qualificado").
 - No fim, o quiz calcula a nota e a faixa do lead score e monta o pacote de dados no formato da planta do banco (`planta-do-banco`). No protótipo de teste, o pacote vai ao garçom (#101); o destino dos contatos continua em conflito (conflito-17).
 - Até a reunião com o Júnior e o Euclides, o final usa o mais restritivo dos dois cortes, o do Júnior e o da nota (14.2, #114): qualificado só quem passa nos dois. A nota é calculada e guardada também para quem cai num eliminatório (14.8).
@@ -147,7 +147,7 @@ Qual coluna decide está em conflito (conflito-16): **bloqueado para entrega at�
 - **Voz:** a do Júnior em primeira pessoa, porque o formato da conversa é o Júnior guiando (REA, T4 e T6; decisão do quiz). Passou pela skill junior-neves-voice; onde chocou com a base, venceu a base: sem gíria, sem autoridade autodeclarada, sem "mentoria" nem "curso" (tom-de-voz; pergunta 9.4). Quem assina segue em conflito (pauta, item 8; pergunta 13.8).
 - **Nome da agência:** onde o mockup diz "Triad", a copy diz "a nossa equipe" ou leva {{BLOQUEADO: ficha-de-fatos#nome-agencia}} (conflito-07).
 - **Nome da Análise:** "Diagnóstico de vendas" como nome e o selo "Teste gratuito" são valores de ficha-de-fatos#analise-nome-publico e ficam bloqueados; "diagnóstico" como palavra comum fica (pergunta 13.2). Sem "diagnóstico gratuito", que é frase gasta (`tom-de-voz`).
-- **Gratuidade e valor:** só pela ficha, na forma da landing ("Sem custo na promoção de lançamento"; pergunta 9.3).
+- **Gratuidade:** só pela ficha, na forma dela (ficha-de-fatos#analise-gratuidade, "Sempre gratuita"; #124). Nunca promoção, prazo ou valor depois.
 - **"Reunião":** palavra queimada para a persona; vira "conversa de venda" ou "conversa", como na landing (pergunta 9.6; pergunta 13.1).
 - **Etapas:** pré-qualificação, agendamento, comparecimento e fechamento (ficha-de-fatos#metas-por-etapa; `glossario`, Etapas).
 - **Sem promessa:** sem "vai dobrar", dinheiro na mesa como conta. Exceção decidida pelo Otávio: a promessa "até X%" do plano de 90 dias fica, como no quiz do Júnior (#110).

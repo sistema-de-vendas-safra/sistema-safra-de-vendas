@@ -1,9 +1,9 @@
 ---
 id: ficha-de-fatos
-versao: 6
+versao: 7
 status: decidido
 aprovado_por:
-  otavio: 2026-11-18
+  otavio: 2026-11-25
 depende_de: []
 desatualizado: false
 ---
@@ -67,7 +67,7 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Valor:** a única urgência é o preço até a 10ª venda. Nenhuma data, nenhum prazo.
 - **Fonte:** #57, #65; CTX §6 ("Nunca dizer: ... prazo ou data para as 10 vagas"); Ficha do Serviço online; Doc Mestre online (regra 3).
 - **Status:** decidido.
-- **Obs.:** vale para a oferta da Implementação Avançada. A escassez da Análise gratuita é outra regra: ficha-de-fatos#barra-de-resgates (#93).
+- **Obs.:** vale para a oferta da Implementação Avançada. A Análise não tem escassez: é sempre gratuita (ficha-de-fatos#analise-gratuidade; #124).
 
 ### inicio-de-cada-cliente
 - **Valor:** em aberto. Propostas na fonte, nenhuma confirmada: venda com data de início marcada, em janelas de até 3 clientes a cada duas semanas (Engenharia reversa online, caminho A); duas datas fixas por mês para os inícios, sem criar turma (CTX §13, "Janela de início"); teto de 4 a 5 inícios por mês, em duas janelas fixas (Oferta online, "O que as 10 vagas exigem").
@@ -261,21 +261,23 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público ficou em conflito de 08/11 a 13/11/2026 (Otávio, 08/11/2026; #117). A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise: o nome público da Análise continua a definir.
 
 ### analise-valor
-- **Valor:** R$ 497 por Análise, cobrado depois das análises gratuitas de ficha-de-fatos#analises-gratuitas.
-- **Fonte:** #92 (substitui a #62 no valor).
-- **Status:** decidido (otavio: 2026-11-08). O Júnior e o Euclides devem ser informados na pauta de aprovação (#92; o Doc Mestre online punha o valor entre as decisões dos dois, decisão 4).
-- **Histórico (não é valor):** R$ 4.997 (#59, #62; CTX §3; Ficha do Serviço online; Oferta online; Doc Mestre online), superado pela #92. A landing (cartão da oferta e rodapé da seção 08) e o quiz ("Agora ele é gratuito. Em breve, vai custar R$ 497.", dito do plano de ação de 90 dias) já traziam o valor novo, sem decisão registrada até a #92.
+- **Valor:** não se aplica. A Análise não é cobrada: é sempre gratuita (ficha-de-fatos#analise-gratuidade; #124).
+- **Fonte:** #124 (revê a #92 no valor).
+- **Status:** decidido (otavio: 2026-11-25). O Júnior e o Euclides devem ser informados (#124).
+- **Histórico (não é valor):** R$ 497 por Análise, cobrado depois das análises gratuitas (#92, de 08/11 a 25/11/2026; a landing dizia "Quando a promoção de lançamento acabar, a Análise passa a custar R$ 497."). R$ 4.997 (#59, #62; CTX §3; Ficha do Serviço online; Oferta online; Doc Mestre online), superado pela #92. A landing (cartão da oferta e rodapé da seção 08) e o quiz ("Agora ele é gratuito. Em breve, vai custar R$ 497.", dito do plano de ação de 90 dias) já traziam o valor novo, sem decisão registrada até a #92.
 
 ### analise-gratuidade
-- **Valor:** gratuita nas primeiras análises, até completar o número de ficha-de-fatos#analises-gratuitas; depois, cobrada pelo valor de ficha-de-fatos#analise-valor.
-- **Fonte:** #92 (revisa a #49 e a #59 na gratuidade).
-- **Status:** decidido (otavio: 2026-11-08); informar o Júnior e o Euclides na pauta de aprovação (#92).
-- **Histórico (não é valor):** gratuita nas 10 primeiras vendas da Avançada (#49, #59, #62; CTX §3; Ficha do Serviço online; Oferta online); gratuita "na promoção de lançamento", sem citar o fim (landing; pedido do Otávio de 03/11, fora do registro numerado).
+- **Valor:** sempre gratuita, para todos: sem número de análises gratuitas, sem promoção e sem cobrança depois.
+- **Forma de escrever nas peças (proposta do mentor, a aprovar; quiz-01-copy v6, M6):** "Sempre gratuita". Nunca "na promoção de lançamento", "por pouco tempo", "por enquanto" nem o valor de uma cobrança futura.
+- **Fonte:** #124 (substitui a #92 na gratuidade e na cobrança).
+- **Status:** decidido (otavio: 2026-11-25); informar o Júnior e o Euclides (#124).
+- **Histórico (não é valor):** gratuita nas primeiras 100 análises e cobrada depois (#92, de 08/11 a 25/11/2026); gratuita nas 10 primeiras vendas da Avançada (#49, #59, #62; CTX §3; Ficha do Serviço online; Oferta online); gratuita "na promoção de lançamento", sem citar o fim (landing; pedido do Otávio de 03/11, fora do registro numerado).
 
 ### analises-gratuitas
-- **Valor:** 100 análises gratuitas.
-- **Fonte:** #92.
-- **Status:** decidido (otavio: 2026-11-08). A contagem sai do banco de dados (#93; ficha-de-fatos#barra-de-resgates).
+- **Valor:** não se aplica. Sem número de análises gratuitas: a Análise é sempre gratuita (ficha-de-fatos#analise-gratuidade; #124).
+- **Fonte:** #124 (revê a #92).
+- **Status:** decidido (otavio: 2026-11-25).
+- **Histórico (não é valor):** 100 análises gratuitas (#92, de 08/11 a 25/11/2026), contadas pelo banco de dados (#93).
 
 ### analise-duracao
 - **Em conflito · bloqueado para entrega até a decisão.**
@@ -302,15 +304,18 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 - **Histórico (não é valor):** "a versão da call, sobre a última safra do prospect, a mesma para todos os públicos (orgânico e pago; frio, morno e quente)" (#59, #61; Ficha do Serviço online; Oferta online), revista pela #92.
 
 ### analise-abatimento
-- **Valor:** se o valor pago pela Análise depois da 10ª venda é abatido na implementação.
+- **Valor:** não se aplica. A Análise não é cobrada, então não há o que abater (#124).
+- **Status desde 25/11/2026:** sem objeto (#124). O que vem abaixo é o histórico da proposta.
+- **Proposta antiga (não é valor):** se o valor pago pela Análise depois da 10ª venda é abatido na implementação.
 - **Fonte:** Ficha do Serviço online ("O que ainda falta decidir": "(proposta)"); PAINEL ("a F17 mantém, como proposta, o abatimento da Análise paga depois da 10ª venda; a #62 deixa essa proposta onde já estiver"). Para as 10 primeiras vendas, a Oferta online registra "sem versão paga nem abatimento" (decisão de 01/11).
 - **Status:** proposta.
 - **Obs.:** com a #92, a Análise paga é a que vem depois de ficha-de-fatos#analises-gratuitas, não mais depois da 10ª venda. A proposta não foi revista.
 
 ### barra-de-resgates
-- **Valor (regra):** o contador de escassez conta as análises gratuitas reais já usadas, a partir do banco de dados, e só aparece na página quando mais de 60 das análises de ficha-de-fatos#analises-gratuitas já tiverem sido usadas. Até lá, nenhuma porcentagem de resgate e nenhuma barra de vagas.
-- **Fonte:** #93; CTX §7, §8 e Doc Mestre online, regra 3 (contagem real, número fixo de Análises gratuitas e promoção com fim real).
-- **Status:** decidido (otavio: 2026-11-08). A contagem real depende do banco de dados do funil-01 (#90, pendente-aprovacao).
+- **Valor (regra):** sem objeto desde a #124. A Análise é sempre gratuita e não tem número de análises gratuitas: nenhuma porcentagem de resgate, nenhuma barra de vagas e nenhum contador de escassez da Análise, em nenhuma peça.
+- **Regra antiga (não é valor):** o contador de escassez contava as análises gratuitas reais já usadas, a partir do banco de dados, e só aparecia na página quando mais de 60 das análises gratuitas já tivessem sido usadas (#93, de 08/11 a 25/11/2026).
+- **Fonte:** #93; #124; CTX §7, §8 e Doc Mestre online, regra 3 (contagem real, número fixo de Análises gratuitas e promoção com fim real).
+- **Status:** decidido (otavio: 2026-11-25).
 - **Não vale para** o contador "Total gerado" do hero, que segue no conflito de credenciais com o Júnior e o Euclides (ficha-de-fatos#total-dos-dois; conflito-05).
 - **Histórico de exemplo da landing (não é valor):** "Restam 19%" e "81% das Análises gratuitas já foram resgatadas" (landing; pedido do Otávio de 03/11, "para FOMO"; a landing marca o número como de exemplo).
 

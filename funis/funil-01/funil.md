@@ -1,6 +1,6 @@
 ---
 id: funil-01
-versao: 4
+versao: 5
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-18
@@ -45,7 +45,7 @@ O caminho do lead e do dado no funil que a #90 propõe: landing-page-01, quiz-01
 ## Caminho do lead
 
 1. **landing-page-01.** O lead chega por um link etiquetado (ver "Origens e links") e é levado ao quiz. A landing não pede contato: o contato é pedido só no quiz, atendendo o pedido do Júnior de 03/11 (8.14; #114).
-2. **quiz-01.** Responde o quiz e deixa o contato, com o consentimento (ver "Caminho do dado"). O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), gratuita segundo ficha-de-fatos#analise-gratuidade e ficha-de-fatos#analises-gratuitas, e depois cobrada pelo valor de ficha-de-fatos#analise-valor. A cobrança depois das gratuitas fica para a versão 2 deste funil, e o valor só aparece na página quando a cobrança existir (5.9; #114). Todo lead que termina o quiz recebe o diagnóstico, inclusive quem não entra na fila do SDR (`lead-score`, "Eliminatórios").
+2. **quiz-01.** Responde o quiz e deixa o contato, com o consentimento (ver "Caminho do dado"). O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), sempre gratuita, sem número de análises e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124). Todo lead que termina o quiz recebe o diagnóstico, inclusive quem não entra na fila do SDR (`lead-score`, "Eliminatórios").
 3. **Contato do SDR.** O SDR liga e agenda (#67; ficha-de-fatos#quem-agenda; quem é o SDR está em aberto). Quem aceitou a caixa do quiz pode ser contatado por WhatsApp, por ligação e por e-mail (#105); no primeiro contato, ligação primeiro e, sem resposta, WhatsApp no mesmo dia (15.10; #114). O que ele faz depende da faixa do lead (ver "Porta de qualificação").
 4. **Call de Direcionamento.** É a conversa de venda, sem custo para o lead (#92; 15.14): nome em ficha-de-fatos#nome-call-de-venda, duração em ficha-de-fatos#duracao-call-de-venda e condutor em ficha-de-fatos#quem-faz-a-reuniao (decisão do Otávio, 09/11/2026, 7.9; base/decisoes.md, #107). É nela que fica a demonstração com os números do cliente (4.5; #114). Quem fecha no começo: ficha-de-fatos#quem-faz-a-reuniao (#51).
 5. **Venda da IASV Safra, ou não.** O que a IASV é e entrega está em `produto` e `entregas-do-servico`. Só estas vendas contam para as vagas (ficha-de-fatos#vendas-que-contam; ficha-de-fatos#vagas).
@@ -165,7 +165,7 @@ Forma do link: `[endereço da landing-page-01]?utm_source=stories&utm_campaign=f
 
 ## Contador de escassez
 
-Segue a regra de ficha-de-fatos#barra-de-resgates (#93), sem repeti-la aqui: a contagem é real, sai do Supabase, e o contador só aparece na página acima do limite registrado no campo. Até lá, nenhuma porcentagem de resgate e nenhuma barra de vagas.
+Sem objeto desde a #124 (ficha-de-fatos#barra-de-resgates): a Análise é sempre gratuita e não tem número de análises, então nenhuma peça do funil mostra contador de escassez, porcentagem de resgate ou barra de vagas da Análise.
 
 - A contagem real depende deste funil, que está pendente (#90; conflito-04).
 - Conta uma análise gratuita por pessoa que terminou o quiz e recebeu o diagnóstico, inclusive eliminatórios e faixa C, sem contar de novo quem refaz o quiz; e o contador nunca aparece no topo da página (5.7; #114). Quem desmarca a caixa de aceite não entra na contagem, porque nada vai ao banco (30.3).

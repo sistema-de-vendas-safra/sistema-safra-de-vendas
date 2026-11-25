@@ -1,6 +1,6 @@
 ---
 id: planta-do-banco
-versao: 5
+versao: 6
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -211,13 +211,15 @@ Se a Meta entrar, a tabela de origens e esta gaveta talvez precisem de uma etiqu
 
 ## Contagem das análises gratuitas
 
-O número de análises gratuitas está em ficha-de-fatos#analises-gratuitas, e a regra do contador, em ficha-de-fatos#barra-de-resgates (#93): a contagem é real e sai do banco. Esta planta não escreve nenhum dos dois números.
+**Sem objeto desde a #124 (25/11/2026):** a Análise é sempre gratuita, sem número de análises gratuitas e sem cobrança depois (ficha-de-fatos#analise-gratuidade; ficha-de-fatos#barra-de-resgates). Nenhuma peça mostra o contador. A visão contagem_analises_gratuitas continua no banco (esquema.sql) e não é usada por ninguém; tirar é decisão do Otávio (pedido 24, perguntas). O que vem abaixo é a regra de antes, como registro.
+
+O número de análises gratuitas estava em ficha-de-fatos#analises-gratuitas, e a regra do contador, em ficha-de-fatos#barra-de-resgates (#93): a contagem era real e saía do banco. Esta planta não escreve nenhum dos dois números.
 
 - **De onde sai.** Da gaveta eventos: é uma conta feita sobre os eventos fim_quiz, porque o diagnóstico do quiz é a própria Análise (#92; funil-01, "Caminho do lead", passo 2). Não há campo guardado com a contagem; ela é refeita a cada leitura, a partir dos eventos.
 - **O que conta como usada** (5.7, com 6.7; #114): uma por pessoa que terminou o quiz e recebeu o diagnóstico, inclusive eliminatórios e faixa C, sem contar de novo quem refaz o quiz; a planta permite essa conta porque a pessoa repetida é reconhecida (6.3). Quem desmarca a caixa de aceite não gera fim_quiz e não conta (30.3).
 - **Quem lê.** Só o contador, com a chave que lê só esse número, e o painel. Nenhum dos dois vê quem foram as pessoas.
 - **Onde aparece.** O contador só aparece acima do limite de ficha-de-fatos#barra-de-resgates e nunca no topo da página (5.7, com 10.11; #114).
-- **Depois da última gratuita.** A cobrança da Análise fica para a versão 2 do funil, e o valor só aparece na página quando a cobrança existir (5.9; #114); quando for desenhada, a planta ganha o que for preciso para saber se a Análise de cada pessoa foi gratuita ou paga.
+- **Depois da última gratuita (regra de antes; sem objeto desde a #124, porque a Análise não é cobrada).** A cobrança da Análise ficava para a versão 2 do funil, e o valor só apareceria na página quando a cobrança existisse (5.9; #114); quando for desenhada, a planta ganha o que for preciso para saber se a Análise de cada pessoa foi gratuita ou paga.
 
 ---
 

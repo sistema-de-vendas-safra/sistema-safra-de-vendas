@@ -1,9 +1,9 @@
 ---
 id: provas-e-conformidade
-versao: 4
+versao: 5
 status: decidido
 aprovado_por:
-  otavio: 2026-11-09
+  otavio: 2026-11-25
 depende_de:
   - id: ficha-de-fatos
     versao: 4
@@ -119,10 +119,10 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 |---|---|
 | A promessa integra o contrato: pelo art. 30 do CDC, "a publicidade suficientemente precisa obriga quem a faz e passa a integrar o contrato, quando a relação for de consumo"; o CONAR "exige que toda alegação possa ser comprovada" | Oferta online ("As opções estudadas em 22/10", "Um cuidado jurídico") |
 | A promessa só vai a público "com prova do primeiro caso e revisão de advogado"; a de 08/11 (#85, que vale por decisão do Otávio, #108) torna vinculante a liderança do Júnior e do Euclides durante o serviço (CDC, art. 30; duração em ficha-de-fatos#duracao). A revisão jurídica fica fora do sistema (#103); o título com "lucro" é exceção (ver "Exceções decididas pelo Otávio") | CTX §8; ver `promessa` |
-| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19) e ficha-de-fatos#analise-valor (#92; a Análise precisa passar a ser cobrada de verdade depois das gratuitas) | CTX §8 |
+| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19). A Análise não tem preço "depois": é sempre gratuita (#124; ficha-de-fatos#analise-gratuidade), e nenhuma peça promete cobrança futura dela | CTX §8; #124 |
 | Credencial anunciada precisa de comprovante (ver a lista acima) | CTX §8; Doc Mestre online, regra 2 |
-| Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR). A regra do contador de escassez está em ficha-de-fatos#barra-de-resgates (#93) | CTX §8; landing ("Regras de conformidade"); #93 |
-| A promoção precisa de um fim real, e a Análise precisa passar a ser cobrada de verdade depois. Com a #92, o fim real é o número de ficha-de-fatos#analises-gratuitas, e o valor depois está em ficha-de-fatos#analise-valor | landing ("Regras de conformidade"); #92 |
+| Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR). Da Análise, nenhum contador nem barra: ela é sempre gratuita e não tem número de análises (ficha-de-fatos#barra-de-resgates, sem objeto desde a #124) | CTX §8; landing ("Regras de conformidade"); #93; #124 |
+| A Análise não é promoção: é sempre gratuita (#124). Nenhuma peça diz "promoção de lançamento", "por pouco tempo" nem um valor depois, porque não há fim nem cobrança (ficha-de-fatos#analise-gratuidade) | landing ("Regras de conformidade"); #92; #124 |
 | Escassez só a verdadeira, sem prazo nem data: ficha-de-fatos#urgencia, ficha-de-fatos#vagas, ficha-de-fatos#vendas-que-contam | Doc Mestre online, regra 3; CTX §8 |
 | "todo o dinheiro" é alegação absoluta. O texto da promessa mantido pela #108 traz a expressão: conflito registrado em `promessa`, bloqueado para ir ao ar até a resposta | CTX §8 |
 | Nenhum percentual de melhora antes de caso comprovado | Mecanismo único online; Promessa central online ("Conformidade"). Exceção decidida: a promessa de percentual no fim do quiz (#110; ver "Exceções decididas pelo Otávio") |
@@ -192,7 +192,7 @@ O Doc Mestre online tem nove Regras do funil; "as três primeiras são jurídica
 
 1. **Preço.** A forma de escrever o preço registrada em ficha-de-fatos#preco-avancada; nunca "de [preço depois] por [preço das vagas]" enquanto o preço depois não for praticado (ficha-de-fatos#preco-avancada-depois).
 2. **Prova.** "Credenciais (... e cada nome citado) só com comprovante guardado." Os números de credencial que a regra cita estão em ficha-de-fatos#total-dos-dois e ficha-de-fatos#lancamento-finch, **em conflito**. Vale também "para a linha 'você não me conhece, mas conhece o que eu fiz' e para o vídeo da página. Nenhum depoimento, caso ou número inventado."
-3. **Escassez.** "Só a verdadeira": ficha-de-fatos#vagas e ficha-de-fatos#urgencia ("Nenhuma peça cita prazo nem data"); vendas da Essencial não contam (ficha-de-fatos#vendas-que-contam). A regra traz também o valor e a gratuidade da Análise, hoje decididos pela #92 (ficha-de-fatos#analise-valor, ficha-de-fatos#analise-gratuidade).
+3. **Escassez.** "Só a verdadeira": ficha-de-fatos#vagas e ficha-de-fatos#urgencia ("Nenhuma peça cita prazo nem data"); vendas da Essencial não contam (ficha-de-fatos#vendas-que-contam). A Análise fica fora da escassez: é sempre gratuita, sem número e sem cobrança depois (#124; ficha-de-fatos#analise-gratuidade).
 8. **Dados.** Ver LGPD, acima.
 
 Fonte: Doc Mestre online ("Regras do funil"). O Doc Mestre é o funil antigo e pode ser substituído pela #90, pendente de aprovação do Júnior e do Euclides (plano aprovado, parte 6; conflito-06, conflito-14). As regras de vocabulário e de marca (7 e 9) estão em `tom-de-voz`.
