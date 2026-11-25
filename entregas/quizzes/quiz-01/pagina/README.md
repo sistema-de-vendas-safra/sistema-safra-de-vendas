@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 11
+versao: 12
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,9 +8,9 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 3
+    versao: 4
   - id: quiz-01-briefing
-    versao: 2
+    versao: 3
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
@@ -24,7 +24,7 @@ depende_de:
   - id: garcom
     versao: 6
   - id: decisoes
-    versao: 12
+    versao: 14
   - id: landing-page-02
     versao: 2
   - id: politica-de-privacidade
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Quiz-01 · página
+
+**Versão 12 (25/11/2026, #123, pedido 23).** A tela dos cinco números do funil fica só em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botão "%" e sem a troca de unidade (a de pré-qualificados, que começava em "%", começa em "nº" como as outras). A conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior. Confere esse número?", que continua só aviso; saem o "≈ [n] [etapa]" e o "Acima de 100%". O botão de seguir só acende com os cinco preenchidos, leads, pré-qualificados, agendados e conversas maiores que zero; vendas pode ser zero (numerosCompletos, a mesma condição que o lead score usa em dinheiroNaMesaInformado). Com o botão apagado, a dica nova aparece perto dele. Saiu o que a porcentagem deixava sem uso (o ramo "%" de volumesDe, de atualizarLivro e de resumoNumeros, e o estilo da troca de unidade). O pacote do fim do quiz mantém o formato: cada linha de respostas.numeros continua com unidade, agora sempre "nº"; o garçom, o banco e a planilha continuam aceitando o "%" das respostas antigas. A tela do chute não muda. versao_entrega continua 2 (log.md, entrada da Etapa 3, pergunta 1: sobe só quando muda o fim do quiz ou o aceite).
 
 **Versão 11 (18/11/2026, #122).** O texto de aceite e o rótulo da caixa da copy v3 (M16), que cobrem também a medição dos anúncios da Meta pelo nosso sistema. A frase "Tudo explicado na política de privacidade." continua vindo depois do texto, com o link, como antes. O consentimento_texto gravado no banco passa a ser o texto novo, a frase da política e a caixa nova (conferido no ensaio v14, no banco de mentira). O aviso com a caixa desmarcada não mudou. versao_entrega continua 2 (ver log.md, entrada da Etapa 3, pergunta 1).
 

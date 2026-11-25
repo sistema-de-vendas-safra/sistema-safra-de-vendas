@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 11
+versao: 12
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -11,9 +11,9 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 3
+    versao: 4
   - id: quiz-01-briefing
-    versao: 2
+    versao: 3
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
@@ -27,7 +27,7 @@ depende_de:
   - id: garcom
     versao: 6
   - id: decisoes
-    versao: 12
+    versao: 14
   - id: landing-page-02
     versao: 2
   - id: politica-de-privacidade
@@ -40,6 +40,7 @@ Abertura (v4): a primeira tela do quiz, com o cabecalho e o botao da landing-pag
 Envio: o fim do quiz vai ao garcom por POST em /api/fim-quiz, so com a caixa de aceite marcada (13.4); o inicio do quiz e o clique no fim vao por /api/evento (18.4, 18.5, 10.6). Aberta direto do arquivo (file://), nao envia nada. Detalhes em README.md nesta pasta.
 Origem, ids e avisos ao GTM (v10; #121, 18/11/2026): o pacote do fim do quiz leva tambem utm_medium, utm_content, utm_term e fbclid, lidos do endereco e saneados, e id_lead, id_qualificado e qualificado (pela regra do fim, CRITERIO_DO_FIM). Nada fica guardado no navegador. Depois do 201 do garcom, a pagina avisa o GTM pelo dataLayer (quiz_enviado e, se qualificado, quiz_qualificado), so com os ids; quiz_iniciado vai na primeira resposta. Nenhuma resposta nem dado da pessoa vai ao dataLayer. Nada da Meta.
 Aceite (v11; #122, 18/11/2026): o texto de aceite e o rotulo da caixa da copy v3 (M16), que cobrem tambem a medicao dos anuncios da Meta pelo nosso sistema. consentimento_texto gravado no banco passa a ser o texto novo, a frase da politica e a caixa nova.
+Numeros (v12; #123, pedido 23, 25/11/2026): a tela dos cinco numeros do funil fica so em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botao "%" e sem a troca de unidade; a conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior" (so aviso). O botao de seguir so acende com os cinco preenchidos, leads, pre-qualificados, agendados e conversas maiores que zero, vendas podendo ser zero (numerosCompletos, a mesma condicao do lead score); com o botao apagado, a dica nova aparece perto dele. O pacote continua com a unidade em cada linha, agora sempre "nº". A tela do chute nao muda. versao_entrega continua 2.
 -->
 <title>Análise Estratégica do Sistema de Vendas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -396,9 +397,6 @@ body[data-largura="abertura"] .cab-safra{display:block}
 .livro__campo{display:flex;align-items:center;gap:8px}
 .livro__campo .entrada{padding:0 12px;border-radius:10px}
 .livro__campo input{width:84px;flex:none;padding:10px 0;font-size:1.05rem}
-.alterna{display:inline-flex;border:1px solid var(--linha);border-radius:9px;overflow:hidden;background:var(--superficie)}
-.alterna button{border:0;background:transparent;padding:10px 11px;font-family:var(--f-dado);font-size:13px;color:var(--ardosia);cursor:pointer;min-width:40px}
-.alterna button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
 .alterna--fixa{padding:10px 12px;font-family:var(--f-dado);font-size:13px;color:var(--ardosia)}
 .livro__calc{grid-column:2 / -1;margin:0;font-family:var(--f-dado);font-size:12px;color:var(--folha);min-height:1em}
 .livro__calc.is-aviso{color:var(--tomate)}
@@ -840,7 +838,7 @@ const ETAPAS = [
 ];
 
 /* ··· Respostas: o que a pessoa marcou, com exemplo quando pula ··· */
-const R = {nome:'', origem:[], ticket:'', nums:[{v:'',u:'n'},{v:'',u:'p'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null, consentimento:{aceite:true, em:null}};
+const R = {nome:'', origem:[], ticket:'', nums:[{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'},{v:'',u:'n'}], chuteN:'', contato:{nome:'',email:'',pais:'BR',tel:'',empresa:''}, interesse:false, dia:null, hora:null, consentimento:{aceite:true, em:null}};
 const EX = {nome:'Marina', ramo:'Serviços para empresas', faturamento:'R$ 150 mil a R$ 500 mil', vendedores:'2 ou 3', 'quem-marca':'Sim. O vendedor faz tudo', 'valor-medio':'15.000', origem:['Anúncios pagos (Meta, Google)','Indicação de clientes'], crm:'Sim, mas pouca gente atualiza', cargo:'Dono(a) ou sócio(a)', lembra:'Sim', chute:'Menos de ' + METAS[2] + '%', causa:'No mesmo dia', causa2:'Depende do vendedor', causa3:'Alguns'};
 const val = k => { const v = R[k]; if (Array.isArray(v)) return v.length ? v : EX[k]; return (typeof v === 'string' ? v.trim() : v) || EX[k]; };
 const qualificado = () => val('faturamento') !== 'Menos de R$ 50 mil' && val('vendedores') !== 'Nenhum por enquanto';
@@ -868,7 +866,7 @@ const respostaDe = p => p.tipo === 'dinheiro' ? 'R$ ' + (R.ticket || EX[p.id]) :
 const FALAS = {
   nome:{q:'Para começar: como você se chama?'},
   lembra:{q:'Agora o funil. Você lembra, mais ou menos, dos números do seu funil?', a:'Leads, conversas de venda e vendas de um mês normal. Se não lembrar, tudo bem: dá para responder por estimativa.'},
-  numeros:{q:'Pense em um mês normal e escreva cada número como lembrar, em quantidade ou em porcentagem.', a:'Na porcentagem, conte assim: de cada 100 que chegam na etapa, quantos passam para a próxima.'},
+  numeros:{q:'Pense em um mês normal e escreva cada número como lembrar.', a:'Em quantidade, não em porcentagem: quantos leads chegaram, quantos marcaram a conversa, quantos compraram. Número aproximado já serve.'},
   chute:{q:'Se fosse chutar, quantos dos agendados vêm para a conversa de venda?', a:'De cada 100 conversas marcadas, quantas acontecem de verdade.'},
   causa:{q:'Em quanto tempo o lead recebe o primeiro contato?'},
   causa2:{q:'Quantas vezes vocês tentam falar com o lead antes de desistir?', a:'Conte ligações e mensagens.'},
@@ -919,13 +917,14 @@ function respondido(id){
 }
 
 /* ··· Funil ao vivo (painel e selos) ··· */
+// v12 (#123): os cinco números são sempre em quantidade
 function volumesDe(nums){
-  const abs = [];
-  nums.forEach((n, i) => {
-    const v = lerNum(n.v);
-    abs[i] = v === null ? null : (i === 0 || n.u === 'n') ? v : (abs[i - 1] === null ? null : abs[i - 1] * v / 100);
-  });
-  return abs;
+  return nums.map(n => lerNum(n.v));
+}
+// Os cinco preenchidos, os quatro primeiros maiores que zero; vendas pode ser zero (a mesma condição de dinheiroNaMesaInformado)
+function numerosCompletos(){
+  const vol = volumesDe(R.nums);
+  return !vol.some(v => v === null) && vol.slice(0, 4).every(v => v > 0);
 }
 function taxasDe(nums){
   const abs = volumesDe(nums);
@@ -1149,7 +1148,7 @@ function antes(id){
 }
 function resumoNumeros(){
   const rot = ['leads', 'com perfil', 'agendados', 'conversas', 'vendas'];
-  return R.nums.map((n, i) => (String(n.v).trim() ? n.v + (n.u === 'p' ? '%' : '') : '·') + ' ' + rot[i]).join(' · ');
+  return R.nums.map((n, i) => (String(n.v).trim() ? n.v : '·') + ' ' + rot[i]).join(' · ');
 }
 function resumoContato(){
   const c = R.contato, p = pais(c.pais);
@@ -1181,13 +1180,15 @@ const CORPO = {
   numeros: () => '<ol class="livro recuo">' + LIVRO.map((l, i) => {
       const n = R.nums[i];
       const no = i === 0 ? SEMENTE : i === 4 ? FRUTO : '<i></i>';
-      const alterna = i === 0 ? '<span class="alterna--fixa">nº</span>' :
-        '<span class="alterna" role="group" aria-label="Unidade de ' + l.rot + '"><button type="button" data-unidade="n" data-linha="' + i + '" aria-pressed="' + (n.u === 'n') + '">nº</button><button type="button" data-unidade="p" data-linha="' + i + '" aria-pressed="' + (n.u === 'p') + '">%</button></span>';
+      const alterna = '<span class="alterna--fixa">nº</span>';
       return '<li><span class="no" aria-hidden="true">' + no + '</span>' +
         '<label class="livro__rotulo" for="num' + i + '"><b>' + l.rot + '</b><small>' + l.sub + '</small></label>' +
         '<span class="livro__campo"><span class="entrada"><input id="num' + i + '" data-linha="' + i + '" inputmode="decimal" autocomplete="off" placeholder="·" value="' + esc(n.v) + '"></span>' + alterna + '</span>' +
         '<p class="livro__calc" id="calc' + i + '" aria-live="polite"></p></li>';
-    }).join('') + '</ol>' + nav(),
+    }).join('') + '</ol>' +
+    // v12 (#123): os cinco obrigatórios; com o botão apagado, a dica (copy v4, 5.2)
+    '<p class="dica recuo" id="numsDica" role="status"' + (numerosCompletos() ? ' hidden' : '') + '>Preencha os cinco números para seguir. Só as vendas podem ser zero. Se não lembrar de algum, toque no ✎ da pergunta anterior e responda “Não”.</p>' +
+    nav({id:'seguirNums', desligado:!numerosCompletos()}),
   chute: () => opcoes('chute', ['Mais de ' + METAS[2] + '%', 'Menos de ' + METAS[2] + '%', 'Realmente não faço ideia'], {auto:false}) +
     '<div class="recuo"><p class="ou">ou chute um número</p>' +
     '<label class="entrada chute"><input id="chuteN" inputmode="decimal" autocomplete="off" placeholder="ex.: 60" value="' + esc(R.chuteN) + '" aria-label="Seu chute, em porcentagem"><span class="entrada__pos">%</span></label></div>' + nav(),
@@ -1302,11 +1303,7 @@ function atualizarLivro(){
     const v = lerNum(n.v);
     let txt = '', aviso = false, abs = null;
     if (i === 0) { abs = v; txt = v ? 'base de todas as contas' : ''; }
-    else if (v !== null && n.u === 'p') {
-      abs = base !== null ? base * v / 100 : null;
-      if (v > 100) { txt = 'Acima de 100%. Confere esse número?'; aviso = true; }
-      else txt = abs !== null ? '≈ ' + num(abs, 0) + ' ' + LIVRO[i].rot.toLowerCase() : '';
-    } else if (v !== null) {
+    else if (v !== null) {
       abs = v;
       if (base !== null && v > base) { txt = 'Maior que a etapa anterior. Confere esse número?'; aviso = true; }
       else txt = base ? '= ' + pct(v / base * 100) + ' de ' + LIVRO[i - 1].rot.toLowerCase() : '';
@@ -1317,6 +1314,10 @@ function atualizarLivro(){
   });
   const box = $('#painelFunil');
   if (box) box.innerHTML = graficoBarras(volumesDe(R.nums), {fixo:true});
+  // v12 (#123): o botão só acende com os cinco; a dica aparece com ele apagado
+  const ok = numerosCompletos(), bt = $('#seguirNums'), dica = $('#numsDica');
+  if (bt) bt.disabled = !ok;
+  if (dica) dica.hidden = ok;
 }
 
 /* ··· Contato: telefone por país e e-mail ··· */
@@ -1642,7 +1643,7 @@ function respostasDoQuiz(){
     if (v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && !v.length)) r[p.id] = p.tipo === 'dinheiro' ? 'R$ ' + v : v;
   });
   if (R.lembra) r.lembra = R.lembra;
-  if (R.lembra === 'Sim') r.numeros = R.nums.map((n, i) => ({linha:LIVRO[i].rot, valor:String(n.v).trim(), unidade:n.u === 'p' ? '%' : 'nº'}));
+  if (R.lembra === 'Sim') r.numeros = R.nums.map((n, i) => ({linha:LIVRO[i].rot, valor:String(n.v).trim(), unidade:'nº'}));
   if (R.lembra === 'Não') r.chute = R.chuteN ? R.chuteN + '%' : (R.chute || '');
   ['causa', 'causa2', 'causa3'].forEach(id => { if (R[id]) r[id] = R[id]; });
   return r;
@@ -1987,12 +1988,6 @@ palco.addEventListener('click', e => {
       if ('auto' in op.dataset) { clearTimeout(tAuto); tAuto = setTimeout(avancar, 380); }
     }
     return;
-  }
-  const un = e.target.closest('[data-unidade]');
-  if (un) {
-    const i = +un.dataset.linha; R.nums[i].u = un.dataset.unidade;
-    un.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === un));
-    atualizarLivro(); return;
   }
   const fi = e.target.closest('[data-ficha]');
   if (fi) {
