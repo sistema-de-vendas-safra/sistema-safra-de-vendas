@@ -1,14 +1,14 @@
 ---
 id: prototipo-funil-01-aplicar-23
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: quiz-01-pagina
-    versao: 12
+    versao: 13
   - id: quiz-01-copy
-    versao: 4
+    versao: 5
   - id: decisoes
     versao: 14
   - id: prototipo-funil-01
@@ -20,12 +20,13 @@ desatualizado: true
 
 # APLICAR-23 · o relatório com os números da pessoa e a tela dos números só em quantidade, no ar
 
-Roteiro único do Otávio para levar ao ar a página do quiz v12 (decisão #123; prompts/23-relatorio-com-os-numeros-da-pessoa.md):
+Roteiro único do Otávio para levar ao ar a página do quiz v13 (decisão #123; prompts/23-relatorio-com-os-numeros-da-pessoa.md; e, na v13, a headline do cabeçalho pedida pelo Otávio em 25/11/2026):
 
 - a tela dos cinco números do funil só em quantidade, sem a opção de porcentagem, e o botão de seguir só aceso com os cinco preenchidos (vendas pode ser zero);
 - o relatório e a conversa gratuita com os números que a pessoa escreveu e o valor médio que ela informou, no lugar dos cenários fixos (400 leads, R$ 15 mil por venda, "R$ 120 mil na mesa");
 - sem empresa, o topo do relatório sem nome de empresa (some o "Empresa Exemplo");
-- quem respondeu "Não" continua com a conta de exemplo, mas o relatório diz com todas as letras que é um funil de exemplo.
+- quem respondeu "Não" continua com a conta de exemplo, mas o relatório diz com todas as letras que é um funil de exemplo;
+- na abertura, a headline "Você já pagou pelas suas próximas vendas" no cabeçalho, no lugar do logo do Safra (v13).
 
 Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". Este roteiro não pede chave nenhuma no chat nem em arquivo.
 
@@ -35,7 +36,7 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". E
 
 | Peça | Muda? |
 |---|---|
-| A página do quiz (/analise/) | **Sim**: vai da v11 para a v12. |
+| A página do quiz (/analise/) | **Sim**: vai da v11 para a v13 (a v12, do pedido 23, e a v13, com a headline do cabeçalho). |
 | A landing (/) e a política (/politica-de-privacidade/) | Não. São montadas de novo, iguais. |
 | O garçom (/api/) | Não. O código é o mesmo; ele sobe junto só porque mora no mesmo Worker e um comando publica tudo. O pacote do fim do quiz tem o mesmo formato (cada número com a unidade, agora sempre "nº"), e o formato antigo, com "%", continua aceito. |
 | O banco (Supabase) | Não. Nenhum SQL antes de publicar. versao_entrega continua 2. |
@@ -62,7 +63,7 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". E
 
 **Faça:** peça ao Claude: **"pode publicar pelo APLICAR-23"**. Antes de publicar, ele roda, da main:
 
-1. `node nucleo/ferramentas/prints/testar-quiz-01.js` (o quiz em 375, 360 e 1440, com as conferências novas da v12);
+1. `node nucleo/ferramentas/prints/testar-quiz-01.js` (o quiz em 375, 360 e 1440, com as conferências novas da v12 e a da headline da v13);
 2. `node nucleo/ferramentas/ensaio/ensaio.mjs` (o ensaio inteiro: banco de mentira, garçom, site montado, planilha);
 3. o teste do garçom, o das migrações e o da planilha, como no APLICAR-22;
 4. `git checkout -- entregas/quizzes/quiz-01/prints`, porque o teste do quiz grava os prints de novo e deixaria a main suja (os prints são os mesmos do commit, só regravados), e depois `git status`.
@@ -119,7 +120,8 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". E
 
 | O que olhar | Certo é |
 |---|---|
-| A página nova está no ar | https://svsafra.gotriad.com.br/analise/ abre, e o HTML diz `versao: 12` no cabeçalho de comentário |
+| A página nova está no ar | https://svsafra.gotriad.com.br/analise/ abre, e o HTML diz `versao: 13` no cabeçalho de comentário |
+| O cabeçalho da abertura | Em /analise/, antes de responder: no lugar do logo do Safra, a frase "Você já pagou pelas suas próximas vendas", inteira, ao lado do botão "Fazer a Análise", no computador e no celular |
 | A tela dos números | Respondendo "Sim" em "Você lembra...", a tela diz "Pense em um mês normal e escreva cada número como lembrar." e "Em quantidade, não em porcentagem: ...", as cinco linhas com o "nº" fixo e **nenhum botão "%"**; o botão de seguir apagado com um campo vazio ou com zero nos quatro primeiros, com a dica "Preencha os cinco números para seguir. ..." perto dele; aceso com os cinco e vendas zero |
 | Envio que **passa** no corte | As respostas do envio A do APLICAR-22 (passo 5.2), com os números **200, 100, 50, 40 e 2** (pré-qualificados agora em quantidade), nome **TESTE Passa Corte**, e-mail **passa.corte@teste.invalid**, sem empresa. Vai à conversa gratuita; o painel mostra o perfil "Conversa sem fechamento"; "Ver meu diagnóstico" abre o relatório com **200** leads, as taxas 50% · 50% · 80% · 5%, **2** vendas hoje, **8** na meta e **R$ 60 mil** na mesa; o topo sem nome de empresa; nenhum "400", "R$ 120 mil", "Empresa Exemplo" ou "Marina" |
 | Envio que **não passa** | As respostas do envio B do APLICAR-22 (passo 5.3), com os números **30, 15, 5, 4 e 1**, nome **TESTE Nao Passa**, e-mail **nao.passa@teste.invalid**. Vai ao relatório de quem não se qualifica, com **30** leads, 1 venda hoje e 1 na meta, dinheiro na mesa **R$ 0** e a frase "Com o volume de hoje, levar a etapa fraca até a meta ainda não soma uma venda inteira a mais por mês..." |
@@ -171,6 +173,6 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". E
 ## Fontes
 
 - Decisão #123 (base/decisoes.md v14); prompts/23-relatorio-com-os-numeros-da-pessoa.md; log.md, entrada de 25/11/2026.
-- entregas/quizzes/quiz-01/pagina/index.html v12 e copy.md v4; nucleo/ferramentas/prints/testar-quiz-01.js e nucleo/ferramentas/ensaio/ensaio.mjs (as pessoas de teste e as contas).
+- entregas/quizzes/quiz-01/pagina/index.html v13 e copy.md v5 (a v13 e a copy v5: log.md, entrada de 25/11/2026, "headline no cabeçalho da abertura"); nucleo/ferramentas/prints/testar-quiz-01.js e nucleo/ferramentas/ensaio/ensaio.mjs (as pessoas de teste e as contas).
 - entregas/prototipo-funil-01/APLICAR-21.md (o `deployments` com a mesma `--config`, para ver a versão no ar); entregas/prototipo-funil-01/APLICAR-22.md v4 (passos 2.1, 2.2, 5.2, 5.3 e 5.4) e log.md, entrada de 18/11/2026, "publicação pelo APLICAR-22" (a chave na variável de ambiente, o Version ID cacf72e8).
 - dados/banco/limpar-leads-de-teste.sql v1.

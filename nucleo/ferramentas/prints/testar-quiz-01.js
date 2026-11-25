@@ -1,4 +1,4 @@
-// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v12), sem rede de verdade.
+// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v13), sem rede de verdade.
 // Uso: node nucleo/ferramentas/prints/testar-quiz-01.js
 // A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /analise/ (como no site
 // do protótipo, desde a decisão #120; antes, em /quiz/), com as fontes em /analise/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
@@ -29,6 +29,8 @@
 // título, promessa e botão ficam parados enquanto o relatório de exemplo rola; no celular, o texto vem antes e o botão fica fixo
 // no rodapé quando o da página sai da tela. A entrada no quiz é pelo botão da abertura, pelo do cabeçalho (eliminatório) e,
 // no celular, pelo do rodapé (corte).
+// Cabeçalho (v13; pedido do Otávio, 25/11/2026): na abertura, a headline "Você já pagou pelas suas próximas vendas" no lugar do
+// logo do Safra, inteira dentro do cabeçalho nas três larguras, e nenhum logo sobrando nele.
 // Em todos: o console não mostra o pacote nem nenhum dado de pessoa, e nenhuma requisição sai para outro endereço.
 // Medição (v9 do protótipo, pedido 17, 17.2; decisão #116): a página é servida com o bloco que a montagem acrescenta
 // (entregas/prototipo-funil-01/medicao.mjs), salvo no caso 6, que abre a entrega crua. Os casos 1 a 6 rodam em 375, 360 (com 640
@@ -464,7 +466,10 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     const ab = await t.page.evaluate(() => {
       const vis = s => { const e = document.querySelector(s); return !!e && getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0; };
       return { hash: location.hash, num: document.getElementById('protoNum').textContent, capa: !!document.querySelector('[data-ir="capa"]'),
-        cab: vis('#cabSafra'), topo: vis('#topo'), logo: !!document.querySelector('#cabSafra .logo-safra svg'),
+        cab: vis('#cabSafra'), topo: vis('#topo'), logo: !!document.querySelector('#cabSafra .logo-safra, #cabSafra [role="img"]'),
+        titulo: (() => { const e = document.querySelector('#cabSafra .cab-safra__titulo'), c = document.getElementById('cabSafra'); if (!e) return null;
+          const r = e.getBoundingClientRect(), k = c.getBoundingClientRect();
+          return { texto: e.textContent, alt: Math.round(k.height), dentro: r.left >= k.left && r.right <= k.right && r.top >= k.top && r.bottom <= k.bottom && e.scrollWidth <= e.clientWidth + 1 }; })(),
         botoes: [...document.querySelectorAll('#cabSafra .btn-safra, .abertura__copy .btn-safra')].map(b => b.textContent.trim()),
         comecar: document.body.textContent.includes('Começar diagnóstico'),
         telas: [...document.querySelectorAll('#protoLista [data-ir]')].map(b => b.dataset.ir + ':' + b.textContent.replace(/^\d+/, '').trim()) };
@@ -474,7 +479,8 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
       'painel "Telas" (v8): "Conversa gratuita com o Junior" logo depois de "Montando o diagnóstico", sem as telas da oferta do plano, do exemplo do plano e do vídeo do time');
     conferir(await t.page.evaluate(() => { const v = document.querySelector('.previa'); return !!v && v.textContent.includes('Marina Souza') && v.textContent.includes('valor calculado no final'); }),
       'abertura (v12): o relatório de vitrine continua o de exemplo (Marina Souza), como antes');
-    conferir(ab.cab && !ab.topo && ab.logo, 'abertura: cabeçalho da landing-page-02 com o logo do Safra, no lugar do cabeçalho do quiz');
+    conferir(ab.cab && !ab.topo && !ab.logo && !!ab.titulo && ab.titulo.texto === 'Você já pagou pelas suas próximas vendas' && ab.titulo.dentro,
+      'abertura (v13): cabeçalho da landing-page-02 com a headline "Você já pagou pelas suas próximas vendas" no lugar do logo do Safra, inteira dentro do cabeçalho (' + (ab.titulo ? ab.titulo.alt + ' pixels de altura' : 'sem headline') + '), no lugar do cabeçalho do quiz');
     conferir(ab.botoes.join('|') === 'Fazer a Análise|Fazer a Análise' && !ab.comecar, 'abertura: botões do cabeçalho e da página dizem "Fazer a Análise" (' + ab.botoes.join(' | ') + ')');
     await t.page.waitForTimeout(200);
     const rb = await regraDaBarra(t.page);

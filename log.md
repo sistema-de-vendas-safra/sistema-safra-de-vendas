@@ -2,6 +2,26 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-25 · headline no cabeçalho da abertura do quiz (página v13)
+
+Pedido do Otávio (25/11/2026, 12h56, na conversa com o Claude, com o print do cabeçalho da abertura): "Eu quero que você substitua o logo do topo da página de análise por uma headline curta: Você já pagou pelas suas próximas vendas." Feito direto na main do Mac, depois do pedido 23 (8a66a32). Nenhum documento da base mudou; nada rodou no Supabase; nada foi publicado.
+
+- entregas/quizzes/quiz-01/pagina/index.html e README.md v12 para v13 (quiz-01-pagina), rascunho, desatualizado. Na abertura, o cabeçalho da landing-page-02 troca o logo do Safra pela headline, em texto (Geist 600; 22, 18 e 16 pixels conforme a largura; a cor do logo). O botão "Fazer a Análise" do cabeçalho fica; nas outras telas, nada muda. O código do logo saiu, porque só o cabeçalho o usava; ele fica no histórico do Git. versao_entrega continua 2: a página não muda o fim do quiz nem o aceite.
+- entregas/quizzes/quiz-01/copy.md v4 para v5 (quiz-01-copy), rascunho: a seção 2 ganha o cabeçalho com a headline. Texto do Otávio; como toda a copy do quiz, aguarda o Júnior e o Euclides.
+- nucleo/ferramentas/prints/testar-quiz-01.js: a conferência do cabeçalho passa a pedir a headline inteira dentro dele e nenhum logo, nas três larguras. **719 de 719.** Prova de que ela pega o erro: com a headline trocada de propósito por uma longa, falharam as três conferências da headline e duas de layout da abertura; o arquivo voltou igual.
+- O ensaio não rodou: ele não olha o cabeçalho da abertura (conferido por busca em ensaio.mjs), e a página só mudou ali. O APLICAR-23 roda o ensaio inteiro antes de publicar.
+- entregas/quizzes/quiz-01/prints/: abertura-375 e abertura-1440 novos; os outros prints ficaram os de antes.
+- entregas/prototipo-funil-01/APLICAR-23.md v1 para v2: publica a v13 (com a v12 do pedido 23), confere `versao: 13` no ar e ganha a linha do cabeçalho na conferência.
+- index.md: a página v13, a copy v5 e o APLICAR-23 v2.
+- Cascata: o que depende de quiz-01-pagina e de quiz-01-copy já está com desatualizado: true; nada muda.
+- Onde rodou: o teste do quiz rodou numa cópia da pasta na nuvem, com o Chrome de lá posto no caminho do Mac que print.js procura (fora do Git), como em sessões anteriores.
+
+Perguntas para o Otávio:
+
+1. **Ponto final.** Dúvida: a headline entrou sem ponto final, como o título da abertura ("Descubra onde sua equipe de vendas está perdendo performance"). O que foi feito: sem ponto. Recomendação: manter. Se decidir diferente: um caractere a mais, na página e na copy.
+2. **A marca na página do quiz.** Dúvida: sem o logo, o nome Safra não aparece mais na abertura; ficam o olho "Análise Estratégica do Sistema de Vendas" e o título da aba. O que foi feito: o logo saiu, como pedido. Recomendação: manter, se os anúncios levam à landing (que tem o logo) antes do quiz; se algum anúncio for direto a /analise/, levar a marca para outro ponto da abertura. Se decidir diferente: o logo volta numa versão nova, em outro lugar.
+3. **A headline no celular.** Dúvida: em 375 e 360 pixels, ela quebra em três linhas ao lado do botão "Fazer a Análise". O que foi feito: três linhas, com o cabeçalho praticamente da mesma altura (87 a 90 pixels). Recomendação: manter. Alternativa: tirar o botão do cabeçalho só no celular (o botão grande vem logo abaixo do título, e a barra do rodapé aparece ao rolar), e a headline ganha a largura toda, em duas linhas maiores. Se decidir pela alternativa: versão nova da página, com o teste da barra ajustado.
+
 ## 2026-11-25 · pedido 23 · 23.2 a 23.4: a página do quiz v12, os testes e o APLICAR-23
 
 Pedido do Otávio (25/11/2026), prompts/23-relatorio-com-os-numeros-da-pessoa.md, partes 23.2 a 23.4. Cada parte foi escrita por um subagente e revisada por outro, que não viu a escrita. Nada publicado; o site no ar não foi aberto. Nenhum dado de pessoa; nenhuma chave. Resposta completa, com a tabela dos textos e as perguntas: prompts/23-relatorio-com-os-numeros-da-pessoa-resposta.md.

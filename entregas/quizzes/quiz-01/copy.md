@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Copy · quiz-01
+
+**Versão 5 (25/11/2026, pedido do Otávio).** Só a abertura (seção 2) muda: no cabeçalho, o logo do Safra sai e, no lugar dele, entra a headline "Você já pagou pelas suas próximas vendas", texto do Otávio. O botão "Fazer a Análise" do cabeçalho fica. Nada mais neste documento mudou.
 
 **Versão 4 (25/11/2026, #123).** Mudam a 5.2 e o relatório de quem não lembra, com textos que são proposta do mentor, para o Otávio aprovar (prompts/23-relatorio-com-os-numeros-da-pessoa.md, "Os textos"). Na 5.2, as cinco linhas ficam só em quantidade e os cinco números são obrigatórios: a pergunta e a ajuda novas, a dica do botão apagado, e saem o "%" das linhas, a conta "≈ [n] [etapa]" e o aviso "Acima de 100%". No relatório (10.2 e 10.3), o bloco novo "Relatório de quem não lembra": o selo, o título, a abertura, os títulos do funil e dos pontos fracos e o dinheiro na mesa dizem que é um funil de exemplo. O chute (5.3) não muda. Nada mais neste documento mudou.
 
@@ -85,6 +87,7 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
 
 ## 2. Abertura do teste
 
+- **Cabeçalho:** o logo do Safra sai; no lugar dele, a headline "Você já pagou pelas suas próximas vendas" (muda, v5: pedido do Otávio, 25/11/2026). O botão "Fazer a Análise" do cabeçalho fica.
 - **Prévia:** folha de relatório de exemplo (Marina Souza, Dona, Serviços para empresas, R$ 150 a 500 mil por mês), com funil, perfil do funil, selos, leitura em 4 quadros e "dinheiro na mesa · valor calculado no final" (fica; título da folha muda, M4; a faixa de faturamento muda, M30; o gráfico muda, M29).
 - **Olho:** "diagnóstico de vendas" (no mockup, com um travessão na frente) vira {{BLOQUEADO: ficha-de-fatos#analise-nome-publico}} (muda, M4)
 - **Título:** "Descubra onde sua equipe de vendas está perdendo performance" (fica)

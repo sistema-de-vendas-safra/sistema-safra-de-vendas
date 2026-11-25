@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 12
+versao: 13
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 4
+    versao: 5
   - id: quiz-01-briefing
     versao: 3
   - id: lead-score
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Quiz-01 · página
+
+**Versão 13 (25/11/2026, pedido do Otávio).** Na abertura, o logo do Safra sai do cabeçalho e, no lugar dele, entra a headline "Você já pagou pelas suas próximas vendas" (copy v5, seção 2), em texto: Geist 600, 22 pixels no computador, 18 até 899 e 16 até 599, na cor do logo (#e5ece7). No computador ela cabe numa linha e o cabeçalho continua com 87 pixels; no celular, quebra em três linhas ao lado do botão (87 a 90 pixels). O botão "Fazer a Análise" do cabeçalho fica, e nas outras telas o cabeçalho do quiz não muda. O código do logo (a constante LOGO_SAFRA e o estilo .logo-safra) saiu, porque só o cabeçalho o usava; ele fica no histórico do Git. versao_entrega continua 2: a página não muda o fim do quiz nem o aceite (regra das etiquetas). Teste do quiz: a conferência do cabeçalho passa a pedir a headline inteira dentro dele e nenhum logo, nas três larguras: **719 de 719**; com a headline trocada de propósito por uma longa, ela falha nas três larguras (e duas conferências de layout junto), e o arquivo voltou igual. Prints novos: abertura-375 e abertura-1440.
 
 **Versão 12 (25/11/2026, #123, pedido 23).** A tela dos cinco números do funil fica só em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botão "%" e sem a troca de unidade (a de pré-qualificados, que começava em "%", começa em "nº" como as outras). A conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior. Confere esse número?", que continua só aviso; saem o "≈ [n] [etapa]" e o "Acima de 100%". O botão de seguir só acende com os cinco preenchidos, leads, pré-qualificados, agendados e conversas maiores que zero; vendas pode ser zero (numerosCompletos, a mesma condição que o lead score usa em dinheiroNaMesaInformado). Com o botão apagado, a dica nova aparece perto dele. Saiu o que a porcentagem deixava sem uso (o ramo "%" de volumesDe, de atualizarLivro e de resumoNumeros, e o estilo da troca de unidade). O pacote do fim do quiz mantém o formato: cada linha de respostas.numeros continua com unidade, agora sempre "nº"; o garçom, o banco e a planilha continuam aceitando o "%" das respostas antigas. A tela do chute não muda. versao_entrega continua 2 (log.md, entrada da Etapa 3, pergunta 1: sobe só quando muda o fim do quiz ou o aceite).
 
