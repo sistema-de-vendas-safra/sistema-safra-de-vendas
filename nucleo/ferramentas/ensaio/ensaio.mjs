@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 16 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 17 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -62,6 +62,11 @@
 //  testando. A seção 12b testa o limite de verdade, com um IP fixo, e a contagem das recusas na tabela recusas. Toda pessoa de
 //  teste que manda o contato no navegador espera os 20 segundos do tempo mínimo (gente leva minutos); o pacote do Node leva o
 //  bloco protecao. O início do quiz grava utm_medium, utm_content e utm_term (q3 e q4).
+//  (v17; respostas do Otávio ao pedido 24, 25/11/2026; #126 a #131) Seção 12c, o site como vai ao ar: a página /analise/ servida
+//  com a meta que desliga o painel "Telas"; o programa da landing sem os marcadores da contagem e sem o nome antigo da Análise; e, no
+//  navegador, em 1440, 375 e 360: a landing sem o logo do Safra, com o R$ 497 riscado, as chamadas com o nome único e a contagem do
+//  mês com os números de agora (conferida contra uma conta feita aqui, pela hora de Brasília); o quiz sem o painel e /analise/#relatorio
+//  abrindo na abertura. Nada dessa seção chega ao banco: as portas respondem no próprio navegador.
 //
 // Só valores de mentira, gerados em tempo de execução. Só 127.0.0.1. Dados de pessoa de teste,
 // marcados (#102): nome começando por TESTE, e-mail @teste.invalid. Nada é gravado no repositório:
@@ -2221,6 +2226,69 @@ async function principal() {
         'recusas · o freio da contagem: das 60 recusas iguais em /api/evento, ' + ev + ' somaram na tabela e ' + naoContadas + ' ficaram no registro como recusa-nao-contada (juntas, 60; nenhuma recusa em silêncio)');
     }
     conferir(!/2001:db8|127\.0\.0\.1/.test(saida12b.split('\n').filter(l => l.includes('[garcom]')).join('\n')), 'recusas · o registro do garçom não escreve o IP de ninguém');
+  }
+
+  // ═══ 12c. No ar (v17; respostas do Otávio ao pedido 24, #126 a #131) ═══
+  secao('12c. O site como vai ao ar: sem o painel "Telas", sem o logo, com o R$ 497 riscado, o nome único e a contagem do mês (#126 a #131)');
+  {
+    const META_REVISAO = '<meta name="safra-revisao" content="desligada">';
+    const htmlQuiz = await (await fetch(BASE + '/analise/', { headers: { 'CF-Connecting-IP': ipNovo() } })).text();
+    conferir(htmlQuiz.includes(META_REVISAO), 'no ar (#130): a página /analise/ servida pelo garçom traz a meta safra-revisao = desligada, posta pela montagem');
+    const htmlLanding = await (await fetch(BASE + '/', { headers: { 'CF-Connecting-IP': ipNovo() } })).text();
+    const nomeDoPrograma = (htmlLanding.match(/src="\/?(assets\/index-[^"]+\.js)"/) || [])[1];
+    const programa = nomeDoPrograma ? await (await fetch(BASE + '/' + nomeDoPrograma, { headers: { 'CF-Connecting-IP': ipNovo() } })).text() : '';
+    conferir(!!programa && !/O seu mês vira em \[/.test(programa) && programa.includes('safraMesVira') && !programa.includes('Análise Estratégica do seu Sistema de Vendas'),
+      'no ar (#127 e #131): o programa da landing servido sem os marcadores da contagem, com a conta do mês, e sem "Análise Estratégica do seu Sistema de Vendas" (' + (nomeDoPrograma || 'programa não achado') + ')');
+    conferir(/\[data-name="Logo Safra"\]\s*\{\s*display:\s*none\s*!important/.test(htmlLanding), 'no ar (#129): a landing servida esconde as peças "Logo Safra"');
+    // A conta à parte da contagem, pela hora de Brasília (UTC-3); a hora pode virar entre a conta e a leitura, então vale a de antes ou a de depois
+    const contaDoMes = (agora) => {
+      const z = 3 * 3600e3, b = new Date(agora - z), vira = Date.UTC(b.getUTCFullYear(), b.getUTCMonth() + 1, 1) + z;
+      const falta = vira - agora, d = Math.floor(falta / 864e5), h = Math.floor((falta % 864e5) / 36e5);
+      const D = d + (d === 1 ? ' dia' : ' dias'), H = h + (h === 1 ? ' hora' : ' horas');
+      return 'O seu mês vira em ' + (d > 0 ? (h > 0 ? D + ' e ' + H : D) : (h > 0 ? H : 'menos de 1 hora')) + '.';
+    };
+    for (const largura of [1440, 375, 360]) {
+      const ctx = await novoContexto(largura);
+      // nada desta seção chega ao banco: as portas respondem aqui (a rota mais nova vale primeiro)
+      await ctx.route(BASE + '/api/**', (rota) => { seguradasPeloEnsaio.add(rota.request()); return rota.fulfill({ status: 201, contentType: 'application/json', body: '{"ok":true}' }); });
+      await ctx.addInitScript((k) => { try { localStorage.setItem(k[0], k[1]); } catch (e) {} }, [MEDICAO.CHAVE_ESCOLHA, MEDICAO.ESCOLHAS.recusar]);
+      const page = await ctx.newPage();
+      // A landing: logo, preço riscado, nome e contagem
+      const antes = Date.now();
+      await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+      const alto = await page.evaluate(() => document.documentElement.scrollHeight);
+      for (let y = 0; y <= alto + 900; y += 900) { await page.evaluate((v) => window.scrollTo(0, v), y); await page.waitForTimeout(40); }
+      const depois = Date.now();
+      const v = await page.evaluate(() => {
+        const vis = (e) => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return r.width > 0 && r.height > 0 && c.visibility !== 'hidden' && c.display !== 'none'; };
+        const textos = [...document.querySelectorAll('p,span,button')].filter(vis).map((e) => e.textContent.trim());
+        return {
+          logos: [...document.querySelectorAll('[data-name="Logo Safra"]')].filter(vis).length,
+          riscado: [...document.querySelectorAll('p,span')].filter((e) => e.textContent.trim() === 'R$ 497' && vis(e)).map((e) => [e, e.parentElement].some((x) => getComputedStyle(x).textDecorationLine.includes('line-through'))),
+          nome: textos.filter((t) => t === 'Faça uma Análise Estratégica do Sistema de Vendas').length,
+          doSeu: textos.filter((t) => /Análise Estratégica do seu/i.test(t)).length,
+          mes: [...new Set(textos.filter((t) => /^O seu mês vira em/.test(t)).map((t) => t.match(/O seu mês vira em [^.]*\./)[0]))],
+          marcadores: /\[X\]|\[Y\]|vira em \[/.test(document.body.innerText)
+        };
+      });
+      const certas = [contaDoMes(antes), contaDoMes(depois)];
+      conferir(v.logos === 0 && v.riscado.length === 1 && v.riscado[0] && v.nome >= 1 && v.doSeu === 0,
+        'no ar · ' + largura + ' · a landing sem o logo do Safra (#129), com o R$ 497 riscado no cartão da oferta (#126) e as chamadas com o nome único (#127; ' + v.nome + ' à vista)');
+      conferir(v.mes.length === 1 && certas.includes(v.mes[0]) && !v.marcadores,
+        'no ar · ' + largura + ' · a contagem do mês com os números de agora, pela hora de Brasília (#131): "' + (v.mes[0] || 'nenhuma') + '", e nenhum marcador [X] ou [Y]');
+      // O quiz: o painel "Telas" escondido e o endereço com a tela no fim abrindo na abertura
+      // uma página nova para cada endereço: na mesma página, trocar só o que vem depois do # não abre a página de novo
+      const vistos = [];
+      for (const id of ['relatorio', 'conversa']) {
+        const pq = await ctx.newPage();
+        await pq.goto(BASE + '/analise/?utm_source=ensaio#' + id);
+        await pq.waitForTimeout(800);
+        vistos.push('#' + id + ' → ' + await pq.evaluate(() => { const p = document.getElementById('proto'); return location.hash + (p && p.hidden && getComputedStyle(p).display === 'none' ? ' sem painel' : ' com painel'); }));
+        await pq.close();
+      }
+      conferir(vistos.every((x) => / → #abertura sem painel$/.test(x)), 'no ar · ' + largura + ' · o quiz sem o painel "Telas", e /analise/#relatorio e #conversa abrem na abertura (#130; ' + vistos.join(', ') + ')');
+      await ctx.close();
+    }
   }
 
   // ═══ 13. Fechamento ═══

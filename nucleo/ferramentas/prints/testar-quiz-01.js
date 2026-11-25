@@ -1,4 +1,4 @@
-// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v14), sem rede de verdade.
+// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v15), sem rede de verdade.
 // Uso: node nucleo/ferramentas/prints/testar-quiz-01.js
 // A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /analise/ (como no site
 // do protótipo, desde a decisão #120; antes, em /quiz/), com as fontes em /analise/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
@@ -63,6 +63,12 @@
 // (armadilha vazia e os segundos desde a abertura, conferidos contra o relógio do teste); um robô que preenche a armadilha leva a
 // recusa do garçom (422) e vê o aviso, sem recusa em silêncio. (24.3) a abertura diz "Sempre gratuita". (24.4) o início do quiz
 // leva utm_medium, utm_content e utm_term do endereço, saneadas como no fim.
+// v15 da página (25/11/2026, #130; respostas do Otávio ao pedido 24): no ar, o botão "Telas" some. A montagem
+// (entregas/prototipo-funil-01/montar-site.mjs) põe na página do site a meta safra-revisao = desligada; aqui ela é posta do mesmo
+// jeito (a mesma linha, conferida contra a do montador) numa rodada à parte, nas três larguras: o painel "Telas" escondido e fora do
+// Tab; o endereço com #relatorio, #relatorio-chute, #conversa ou #contato abre na abertura; a rodada inteira funciona (o fim do quiz
+// gravado, a conversa e o relatório); e recarregar no relatório volta à abertura. Sem a meta (a entrega crua, para revisão), o painel
+// e o #relatorio continuam como antes.
 const { chromium } = require('playwright-core');
 const path = require('path');
 const fs = require('fs');
@@ -246,11 +252,18 @@ async function abrir(browser, largura, endereco, fim, evento, opcoes = {}) {
     t.pedidos.push(u);
     if (!u.startsWith('file://') && !u.startsWith('data:') && !u.startsWith(BASE)) t.externas.push(u);
   });
+  // v15 (#130): a página com a meta que a montagem põe no site (o painel "Telas" desligado), como no ar
+  if (opcoes.semRevisao) await page.route(u => u.pathname === '/analise/', async rota => {
+    const resp = await rota.fetch();
+    await rota.fulfill({ response: resp, body: (await resp.text()).replace(/<title[\s>]/i, m => META_REVISAO + '\n' + m) });
+  });
   t.abertoEm = Date.now();
   await page.goto(endereco, opcoes.referer ? { referer: opcoes.referer } : undefined);
   return t;
 }
 let BASE = '';
+// v15 (#130): a mesma linha que a montagem põe na página do site (conferida contra montar-site.mjs no começo da rodada)
+const META_REVISAO = '<meta name="safra-revisao" content="desligada">';
 const semDadoNoConsole = t => t.consoleTexto.every(x => !DADO_PESSOAL.test(x));
 const naTela = (page, id) => page.waitForFunction(i => location.hash === '#' + i, id, { timeout: 15000 });
 const opcao = (page, valor) => page.locator('[data-corpo] .opcao[data-valor="' + valor + '"]').click();
@@ -1188,6 +1201,65 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     m = await lerMedicao(t.page);
     conferir(!m.aviso && m.escolha === medicao.ESCOLHAS.recusar && t.externas.filter(u => u === ALVO_GTM).length === gtmAntes && consentimentos(m, 'update').length === 0,
       rotulo + ' · de aceito para recusado: na página seguinte, o aviso não volta e nada do Google carrega');
+    await t.ctx.close();
+  }
+
+  // ··· v15 da página (#130): no ar, sem o painel "Telas" ···
+  const MONTADOR = fs.readFileSync(path.join(RAIZ, 'entregas/prototipo-funil-01/montar-site.mjs'), 'utf8');
+  conferir(MONTADOR.includes("const META_REVISAO = '" + META_REVISAO + "'"), 'no ar (#130): a meta posta aqui é a mesma que a montagem põe na página do site (' + META_REVISAO + ')');
+  const painelTelas = page => page.evaluate(() => {
+    const p = document.getElementById('proto'), b = document.getElementById('protoBotao');
+    const r = b && b.getBoundingClientRect();
+    return { escondido: !!p && p.hidden && getComputedStyle(p).display === 'none', botaoVisivel: !!r && r.width > 0 && r.height > 0, meta: (document.querySelector('meta[name="safra-revisao"]') || {}).content || '' };
+  });
+  for (const largura of [375, 360, 1440]) {
+    const rotulo = 'no ar (#130) · ' + largura;
+    // 1. Abrindo pela landing: o painel "Telas" escondido e fora do Tab
+    let t = await abrir(browser, largura, BASE + 'analise/' + BUSCA, [201], 201, { semRevisao: true });
+    await naTela(t.page, 'abertura');
+    await t.page.waitForTimeout(300);
+    let pt = await painelTelas(t.page);
+    const focaveis = [];
+    for (let k = 0; k < 40; k++) { await t.page.keyboard.press('Tab'); focaveis.push(await t.page.evaluate(() => !!document.activeElement.closest('#proto'))); }
+    conferir(pt.meta === 'desligada' && pt.escondido && !pt.botaoVisivel && !focaveis.some(Boolean), rotulo + ' · o painel "Telas" não aparece nem recebe o foco pelo Tab');
+    await t.ctx.close();
+    // 2. O endereço com a tela no fim (#relatorio e as outras) abre na abertura, sem nada enviado além do início do quiz
+    const abriram = [];
+    for (const id of ['relatorio', 'relatorio-chute', 'conversa', 'contato']) {
+      t = await abrir(browser, largura, BASE + 'analise/' + BUSCA + '#' + id, [201], 201, { semRevisao: true });
+      await t.page.waitForTimeout(800);
+      const h = await t.page.evaluate(() => location.hash);
+      abriram.push('#' + id + ' → ' + h + (t.envios.length ? ' (com envio)' : ''));
+      await t.ctx.close();
+    }
+    conferir(abriram.every(x => / → #abertura$/.test(x)), rotulo + ' · o endereço com a tela no fim abre na abertura (' + abriram.join('; ') + ')');
+    // 3. A rodada inteira funciona sem o painel: do botão da abertura ao relatório, com o fim do quiz gravado; recarregar no relatório volta à abertura
+    t = await abrir(browser, largura, BASE + 'analise/' + BUSCA, [201], 201, { semRevisao: true });
+    await naTela(t.page, 'abertura');
+    await ateContato(t.page, EXEMPLO, largura, false);
+    await t.page.click('#enviar');
+    await naTela(t.page, 'conversa');
+    await opcao(t.page, 'Sim, eu quero');
+    await t.page.locator('[data-corpo] [data-acao="ver-diagnostico"]').click({ timeout: 15000 });
+    await naTela(t.page, 'relatorio');
+    await t.page.waitForTimeout(500);
+    pt = await painelTelas(t.page);
+    conferir(t.pacotes.length === 1 && t.pacotes[0] && garcom.conferirPacote(t.pacotes[0]) === null && doTipo(t, 'inicio_quiz').length === 1 && pt.escondido && !pt.botaoVisivel,
+      rotulo + ' · a rodada inteira funciona sem o painel: o fim do quiz gravado (' + t.pacotes.length + ' pacote), a conversa e o relatório, e o painel escondido até o fim');
+    await t.page.reload();
+    await t.page.waitForTimeout(800);
+    const depois = await t.page.evaluate(() => location.hash);
+    conferir(depois === '#abertura' && t.pacotes.length === 1, rotulo + ' · recarregar no relatório volta à abertura (' + depois + '), sem reenviar o fim do quiz');
+    conferir(t.externas.length === 0 && semDadoNoConsole(t), rotulo + ' · nenhuma requisição para outro endereço e o console sem dado de pessoa');
+    await t.ctx.close();
+  }
+  // Sem a meta (a entrega crua, para revisão), o painel e o #relatorio continuam como antes
+  {
+    const t = await abrir(browser, 1440, BASE + 'analise/' + BUSCA + '#relatorio', [201], 201);
+    await t.page.waitForTimeout(800);
+    const pt = await painelTelas(t.page);
+    const h = await t.page.evaluate(() => location.hash);
+    conferir(pt.meta === '' && !pt.escondido && pt.botaoVisivel && h === '#relatorio', 'revisão (#130): sem a meta, o painel "Telas" aparece e o #relatorio abre o relatório, como antes');
     await t.ctx.close();
   }
 

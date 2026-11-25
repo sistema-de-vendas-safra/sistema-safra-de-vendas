@@ -1,14 +1,14 @@
 ---
 id: prototipo-funil-01-aplicar-24
-versao: 1
+versao: 2
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: quiz-01-pagina
-    versao: 14
+    versao: 15
   - id: quiz-01-copy
-    versao: 6
+    versao: 7
   - id: garcom
     versao: 7
   - id: banco-migracao-004
@@ -16,13 +16,13 @@ depende_de:
   - id: banco-limpar-leads-de-teste
     versao: 2
   - id: landing-page-02
-    versao: 7
+    versao: 8
   - id: ficha-de-fatos
-    versao: 7
+    versao: 8
   - id: decisoes
-    versao: 15
+    versao: 16
   - id: prototipo-funil-01
-    versao: 21
+    versao: 22
 desatualizado: true
 ---
 
@@ -30,17 +30,22 @@ desatualizado: true
 
 Roteiro único do Otávio para levar ao ar, antes dos anúncios da Meta de 30/11/2026 (que vão direto para https://svsafra.gotriad.com.br/analise/), as cinco correções do pedido 24 (prompts/24-correcoes-antes-dos-anuncios.md):
 
-1. o relatório com os números da pessoa e, para quem não lembra, o funil pelas metas do método, dito como metas; "sua empresa" no lugar de "Empresa Exemplo" (página do quiz v14, que leva junto a v12 e a v13 do pedido 23);
+1. o relatório com os números da pessoa e, para quem não lembra, o funil pelas metas do método, dito como metas; "sua empresa" no lugar de "Empresa Exemplo" (página do quiz v15, que leva junto a v12 e a v13 do pedido 23 e a v14 do pedido 24);
 2. a proteção contra robô e o limite de pedidos no garçom v7, com a contagem das recusas no banco;
-3. a Análise sempre gratuita (#124): "Sempre gratuita" na abertura do quiz e, na landing, nenhuma barra de escassez, preço riscado ou promoção;
+3. a Análise sempre gratuita (#124): "Sempre gratuita" na abertura do quiz e, na landing, nenhuma barra de escassez nem promoção (o R$ 497 riscado fica: #126, abaixo);
 4. o início do quiz com utm_medium, utm_content e utm_term (migração 004);
-5. a limpeza dos leads de teste e da sua linha real de 09/11/2026, no banco e nas duas abas da planilha, contada antes e depois.
+5. a limpeza dos leads de teste e da sua linha real de 09/11/2026, no banco e nas duas abas da planilha, contada antes e depois;
+6. (v2) as suas respostas ao pedido 24, de 25/11/2026 (prompts/24-decisoes-do-otavio.md; #126 a #131), que vão na mesma publicação: o R$ 497 riscado de volta na landing (#126); "Análise Estratégica do Sistema de Vendas" em tudo, também nas chamadas da landing (#127); o logo do Safra fora de todas as páginas (#129); o botão "Telas" escondido no ar (#130); e a contagem "O seu mês vira em N dias e H horas." com os números calculados pela data de verdade (#131).
 
 **Substitui o APLICAR-23**, que não chegou a rodar: tudo o que ele levava ao ar vai junto aqui.
 
 Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". **A chave da Cloudflare nunca vem para a conversa:** ela entra pela variável de ambiente (passo 4), e no fim você apaga a variável e revoga a chave (passo 8).
 
-**Status.** Rascunho. Os textos novos (o relatório de quem não lembra, "Sempre gratuita" e as frases da landing) são proposta do mentor e continuam rascunho até você aprovar (quiz-01-copy v6; lista em prompts/24-correcoes-antes-dos-anuncios-resposta.md). Publicar antes da aprovação dos textos é decisão sua.
+**Status.** Rascunho. Os textos novos (o relatório de quem não lembra, "Sempre gratuita" e as frases da landing) foram aprovados por você em 25/11/2026, com a exceção do R$ 497 riscado, que volta (quiz-01-copy v7; #126).
+
+**Versão 2 (25/11/2026).** Entram as suas respostas ao pedido 24 (item 6 acima): na tabela abaixo, a página do quiz passa a v15 e a landing a v8; o passo 1 sobe também os commits 24.6 a 24.8; o passo 2 roda também o teste novo da landing; o passo 5 só começa depois da sua resposta sobre a landing sem JavaScript (abaixo); e o passo 6 confere no ar as cinco respostas.
+
+**Antes de publicar, uma resposta sua (pergunta 1 de prompts/24-decisoes-do-otavio-resposta.md, seção 4).** A contagem nunca mostra [X] nem [Y]: os marcadores saíram do programa, e com o programa lento o cartão só aparece quando ele chega, já com os números. Mas com o JavaScript desligado ela também não mostra números: a landing inteira fica em branco, porque é um programa React (sempre foi assim, desde que chegou do Vercel). Você pediu para ser avisado antes de publicar se isso não desse para garantir. O Claude só faz o passo 5 depois de você responder no chat se publica assim.
 
 ## O que muda no ar e o que não muda
 
@@ -48,8 +53,8 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 |---|---|
 | O banco (Supabase) | **Sim, antes de tudo:** a migração 004 (passo 3). Cria a tabela recusas, vazia, e refaz registrar_evento para gravar as três utm do início do quiz. Nenhuma linha que já existe muda. |
 | O garçom (/api/) | **Sim:** v7. Limite de pedidos por IP, armadilha e tempo mínimo no fim do quiz, contagem das recusas. O pacote do fim do quiz sem o bloco de proteção passa a ser recusado: por isso a página e o garçom vão juntos, num comando só. |
-| A página do quiz (/analise/) | **Sim:** da v11 para a v14 (o relatório, a headline do cabeçalho, a armadilha, as utm no início, "Sempre gratuita"). |
-| A landing (/) | **Sim:** landing-page-02 v7, sem a barra de escassez, sem o preço riscado e com os textos da gratuidade. |
+| A página do quiz (/analise/) | **Sim:** da v11 para a v15 (o relatório, a headline do cabeçalho, a armadilha, as utm no início, "Sempre gratuita" e, na v15, sem o painel "Telas" e sem abrir a tela do fim do endereço). |
+| A landing (/) | **Sim:** landing-page-02 v8, sem a barra de escassez, com o R$ 497 riscado, com os textos da gratuidade, sem o logo do Safra (cabeçalho, rodapé e demonstração), com o nome único nas chamadas e a contagem do mês com números. |
 | A política (/politica-de-privacidade/) | Não. |
 | O painel da Cloudflare | Nada para o limite: os três limitadores (LIMITE_FIM_QUIZ, LIMITE_EVENTO e LIMITE_REGISTRO) estão no wrangler.toml v15 e nascem com a publicação. Do painel, só a chave (passo 4) e a revogação dela (passo 8). |
 | A planilha do SDR | Não muda o programa. Só a limpeza das linhas de teste e da sua linha de 09/11 (passo 7). |
@@ -61,11 +66,11 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 ## Passo 1 · O push da main (você, 1 min)
 
-**Por quê.** A publicação sai sempre da main (CLAUDE.md, regra 7). Os commits do pedido 24 (24.1 a 24.5) estão na main do Mac, junto com os do pedido 23 que ainda não subiram.
+**Por quê.** A publicação sai sempre da main (CLAUDE.md, regra 7). Os commits do pedido 24 (24.1 a 24.8; do 24.6 em diante, as suas respostas) estão na main do Mac, junto com os do pedido 23 que ainda não subiram.
 
 **Faça:** no GitHub Desktop, confira que o branch é **main** e clique em **Push origin**.
 
-**Deu certo se:** no GitHub, a main mostra o último commit do pedido 24 ("24.5 · ...").
+**Deu certo se:** no GitHub, a main mostra o último commit do pedido 24 ("24.8 · ...").
 
 **Se der errado:** se o GitHub Desktop pedir **Pull** antes, faça o Pull e depois o Push. Se aparecer conflito, não resolva no site: avise o Claude.
 
@@ -77,10 +82,11 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 **Faça:** peça ao Claude: **"pode publicar pelo APLICAR-24"**. Antes de publicar, ele roda, da main:
 
-1. `node nucleo/ferramentas/prints/testar-quiz-01.js` (o quiz em 375, 360 e 1440, com os três perfis, a armadilha, as utm no início e "Sempre gratuita");
-2. `node nucleo/ferramentas/ensaio/ensaio.mjs` (o ensaio inteiro, com a migração 004, o limite de pedidos de verdade do wrangler dev e a contagem das recusas);
-3. `node entregas/garcom/teste/testar-garcom.mjs`, `node dados/banco/testar-migracao.mjs` e o teste da planilha;
-4. `git checkout -- entregas/quizzes/quiz-01/prints entregas/prototipo-funil-01/prints`, porque os testes gravam os prints de novo, e depois `git status`.
+1. `node nucleo/ferramentas/prints/testar-quiz-01.js` (o quiz em 375, 360 e 1440, com os três perfis, a armadilha, as utm no início, "Sempre gratuita" e, na v15, o site sem o painel "Telas");
+2. `node nucleo/ferramentas/prints/testar-landing-02.js` (novo na v2 deste roteiro; a landing montada em 1440, 375 e 360: sem o logo, com o R$ 497 riscado, o nome único e a contagem em seis datas e três fusos, também com o programa lento e com o JavaScript desligado);
+3. `node nucleo/ferramentas/ensaio/ensaio.mjs` (o ensaio inteiro, com a migração 004, o limite de pedidos de verdade do wrangler dev, a contagem das recusas e, na v17, o site como vai ao ar);
+4. `node entregas/garcom/teste/testar-garcom.mjs`, `node dados/banco/testar-migracao.mjs` e o teste da planilha;
+5. `git checkout -- entregas/quizzes/quiz-01/prints entregas/prototipo-funil-01/prints entregas/landings/landing-page-02/prints`, porque os testes gravam os prints de novo, e depois `git status`.
 
 **Deu certo se:** tudo passa ("Tudo certo") e a main fica limpa. O Claude anota as contagens no log.md.
 
@@ -124,7 +130,7 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 **Por quê.** O mesmo jeito do APLICAR-22 (log.md, entrada de 18/11/2026). Um comando publica o site e o garçom juntos.
 
-**O que precisa existir:** o passo 3 com 21 de 21, a chave no ambiente (passo 4) e o wrangler do repositório (`nucleo/ferramentas/prototipo/node_modules/.bin/wrangler`, 4.158.0; os limitadores pedem 4.36.0 ou mais novo). O Claude nunca mostra o valor da chave.
+**O que precisa existir:** a sua resposta sobre a landing sem JavaScript (no começo deste roteiro), o passo 3 com 21 de 21, a chave no ambiente (passo 4) e o wrangler do repositório (`nucleo/ferramentas/prototipo/node_modules/.bin/wrangler`, 4.158.0; os limitadores pedem 4.36.0 ou mais novo). O Claude nunca mostra o valor da chave.
 
 **Faça (o Claude, na ordem):**
 
@@ -146,9 +152,13 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 | O que olhar | Certo é |
 |---|---|
-| A página nova | https://svsafra.gotriad.com.br/analise/ abre, e o HTML diz `versao: 14` no comentário do cabeçalho |
+| A página nova | https://svsafra.gotriad.com.br/analise/ abre, e o HTML diz `versao: 15` no comentário do cabeçalho e traz a meta `safra-revisao` com `desligada` |
+| Sem o painel "Telas" (#130) | Nenhuma tela do quiz mostra o botão "Telas" no canto, no computador e no celular; https://svsafra.gotriad.com.br/analise/#relatorio abre na abertura |
 | A abertura | A headline "Você já pagou pelas suas próximas vendas" no lugar do logo; na lista curta, **Sempre gratuita**; em lugar nenhum "promoção", "por pouco tempo" ou um valor da Análise |
-| A landing (/) | Sem a barra "resgatadas / Restam", sem o R$ 497 riscado; no cartão da oferta, "Sempre gratuita" e "A Análise não tem custo, nem hoje nem depois." |
+| A landing (/) | Sem a barra "resgatadas / Restam"; no cartão da oferta, "Sempre gratuita", **o R$ 497 riscado** ao lado de "Gratuita" (#126) e "A Análise não tem custo, nem hoje nem depois." |
+| O nome (#127) | As chamadas da landing dizem "Faça uma Análise Estratégica do Sistema de Vendas"; nenhuma diz "do seu Sistema de Vendas" |
+| Sem o logo (#129) | O logo do Safra não aparece no cabeçalho da landing (só o "Fazer a Análise", à direita), no fim da página (o rodapé saiu), na janela da demonstração do produto, no quiz, na política nem no aviso de cookies; a aba do navegador não mostra ícone do Safra |
+| A contagem (#131) | No cartão da oferta, "O seu mês vira em N dias e H horas." com os números de agora: o Claude faz a conta à parte pela hora de Brasília, até a 0h do dia 1 do mês seguinte, e confere; nunca [X] ou [Y] |
 | **Perfil 1 · qualificado com números** | As respostas do envio A do APLICAR-22 (passo 5.2), com 200, 100, 50, 40 e 2; nome **TESTE Passa Corte**, e-mail **passa.corte@teste.invalid**, sem empresa. Conversa gratuita, perfil "Conversa sem fechamento"; "Ver meu diagnóstico": 200 leads, 50% · 50% · 80% · 5%, 2 vendas hoje, 8 na meta, **R$ 60 mil** na mesa; o topo com **sua empresa** |
 | **Perfil 2 · faixa c sem números** | As respostas do envio B do APLICAR-22 (passo 5.3), mas "Não" em "Você lembra..." e **60** no campo do chute; nome **TESTE Faixa C**, e-mail **faixa.c@teste.invalid**. Direto ao relatório de quem não se qualifica: "metas do método · sem os seus números", 100 leads de referência e as metas 50% · 50% · 75% · 20%, "Sua estimativa: 60%" no comparecimento, o bloco do comparecimento abaixo da meta pela estimativa, "Sai com os seus números." no dinheiro na mesa, nenhum outro valor em reais além do valor médio |
 | **Perfil 3 · não qualificado** | As respostas do envio A com o faturamento "Menos de R$ 50 mil"; nome **TESTE Nao Passa**, e-mail **nao.passa@teste.invalid**. Direto ao relatório de quem não se qualifica, com os números dele (200 leads, R$ 60 mil na mesa) e "Tenho interesse" |
@@ -260,7 +270,7 @@ select
 
 ## Fontes
 
-- prompts/24-correcoes-antes-dos-anuncios.md (o pedido); decisões #124 e #125 (base/decisoes.md v15); log.md, entrada de 25/11/2026, pedido 24.
-- entregas/quizzes/quiz-01/pagina/index.html v14; entregas/garcom/garcom.mjs v7; entregas/prototipo-funil-01/wrangler.toml v15 (os três limitadores e a documentação da Cloudflare lida em 25/11/2026: Workers Rate Limiting, período de 10 ou 60 segundos, por local e aproximado, wrangler 4.36.0 ou mais novo); dados/banco/migracoes/004-utm-na-abertura-e-recusas.sql; dados/banco/conferir.sql v5; dados/banco/limpar-leads-de-teste.sql v2.
+- prompts/24-correcoes-antes-dos-anuncios.md (o pedido) e prompts/24-decisoes-do-otavio.md (as suas respostas); decisões #124 a #131 (base/decisoes.md v16); log.md, entradas de 25/11/2026, pedido 24.
+- entregas/quizzes/quiz-01/pagina/index.html v15; entregas/landings/landing-page-02 v8; entregas/prototipo-funil-01/montar-site.mjs v22; nucleo/ferramentas/prints/testar-landing-02.js; entregas/garcom/garcom.mjs v7; entregas/prototipo-funil-01/wrangler.toml v15 (os três limitadores e a documentação da Cloudflare lida em 25/11/2026: Workers Rate Limiting, período de 10 ou 60 segundos, por local e aproximado, wrangler 4.36.0 ou mais novo); dados/banco/migracoes/004-utm-na-abertura-e-recusas.sql; dados/banco/conferir.sql v5; dados/banco/limpar-leads-de-teste.sql v2.
 - entregas/prototipo-funil-01/APLICAR-22.md v4 (passos 2.1, 5.2, 5.3 e 5.4) e APLICAR-23.md (o jeito de publicar e de voltar, que este roteiro repete).
 - log.md, Pendências: "Chaves antigas do Supabase (JWT)", "Rastreamento (#121) e os textos do Pixel (#122) no ar" (a chave de 12/11/2026) e "Dados de teste do protótipo (#102)".

@@ -31,6 +31,10 @@ const linha = readmeQuiz.split('\n').find(l => l.trim().startsWith('pacote do ex
 const PACOTE_EXEMPLO = JSON.parse(linha.slice(linha.indexOf('{')));
 // o exemplo do README já vem marcado como teste (22.9); v3 tirou a troca que o teste fazia (23.4)
 if (!PACOTE_EXEMPLO.pessoa.nome.startsWith('TESTE ') || !PACOTE_EXEMPLO.pessoa.email.endsWith('@teste.invalid')) throw new Error('o exemplo do README do quiz não está marcado como teste (#102)');
+// v7 (pedido 24; corrigido nas respostas do Otávio, 25/11/2026): o pacote do README é o de um teste de antes da página v14 e não
+// traz o bloco protecao, que a página manda desde a v14; sem ele, o garçom v7 recusa o exemplo (protecao-faltando) e o teste parava
+// logo no começo. O teste põe o bloco como uma pessoa o mandaria: armadilha vazia e 312 segundos entre abrir a página e mandar.
+if (!PACOTE_EXEMPLO.protecao) PACOTE_EXEMPLO.protecao = { armadilha: '', duracao_s: 312 };
 const copia = () => structuredClone(PACOTE_EXEMPLO);
 
 // ··· Ambiente de mentira ···

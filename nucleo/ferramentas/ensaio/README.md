@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 16
+versao: 17
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -20,17 +20,17 @@ depende_de:
   - id: garcom
     versao: 7
   - id: prototipo-funil-01
-    versao: 21
+    versao: 22
   - id: quiz-01-pagina
-    versao: 14
+    versao: 15
   - id: landing-page-02
-    versao: 7
+    versao: 8
   - id: planilha-sdr-funil-01
     versao: 3
   - id: lead-score
     versao: 3
   - id: decisoes
-    versao: 15
+    versao: 16
   - id: regra-seguranca
     versao: 3
   - id: aviso-de-cookies
@@ -41,6 +41,8 @@ desatualizado: true
 ---
 
 # Ensaio geral do protótipo do funil-01
+
+**Versão 17 (25/11/2026, respostas do Otávio ao pedido 24, #126 a #131; quiz-01-pagina v15, landing-page-02 v8, montar-site v22).** Seção nova, **12c, o site como vai ao ar**, antes do fechamento. Pelo Node, no garçom do wrangler dev: a página /analise/ traz a meta safra-revisao = desligada, que a montagem põe (#130); o programa da landing servido não tem a contagem com os marcadores, tem a conta do mês (safraMesVira) e não tem "Análise Estratégica do seu Sistema de Vendas" (#127 e #131); a landing servida tem a regra que esconde o logo (#129). No navegador, em 1440, 375 e 360, com o aviso de cookies já recusado: a landing sem nenhuma peça "Logo Safra" à vista, com o R$ 497 riscado no cartão da oferta (#126), as chamadas com o nome único e a contagem do mês com os números de agora, comparada com uma conta feita no ensaio pela hora de Brasília (a de antes ou a de depois de abrir a página, para o caso de a hora virar no meio), sem [X] nem [Y]; e o quiz sem o painel "Telas", com /analise/#relatorio e /analise/#conversa, cada um numa página nova, abrindo na abertura. Nada dessa seção chega ao banco: as portas /api/ respondem no próprio navegador, e essas respostas ficam fora da conta do noindex. Rodado inteiro em 25/11/2026, sozinho, com o wrangler dev e WRANGLER_SEND_METRICS=false, numa máquina Linux na nuvem: **330 de 330** (eram 318; 12 novas, na 12c), em 296 segundos, com o código de saída 0. Uma primeira rodada, junto com o teste do quiz, perdeu o minuto do limitador por causa da máquina cheia (3 falhas na seção 12b, o 61º evento sem o 429 e o freio somando mais de 30) e achou um erro do próprio ensaio na 12c (trocar só o # na mesma página não abre a página de novo; agora, uma página nova para cada endereço): por isso o ensaio roda sozinho, como já dizia a v11.
 
 **Versão 16 (25/11/2026, pedido 24; garçom v7, migração 004, quiz-01-pagina v14, landing-page-02 v7).** (1) A **migração 004** roda duas vezes depois da 003, com os dados de antes iguais; o conferir.sql v5 avisa nas linhas 4, 8 e 21 entre a 003 e a 004 ("18 de 21") e dá "21 de 21" depois; a chave publicável executa registrar_recusa e ninguém lê a tabela recusas; um motivo fora do formato (um nome) é recusado pela restrição. (2) **O limite por IP:** no wrangler dev, o limitador é o do workerd, e a chave é o cabeçalho CF-Connecting-IP, que no wrangler dev é aceito como vier (na Cloudflare, quem põe é ela). Para o ensaio não esbarrar no limite que ele não está testando, cada contexto do navegador e cada pedido do Node levam um IP de documentação novo (2001:db8::/32, que não existe na internet). (3) **Seção 12b, nova:** a armadilha, os 5 segundos, o pacote sem o bloco e o bloco fora do formato dão 422 e nada chega ao banco; com os 20 segundos exatos, grava, sem o bloco no banco; com um IP fixo, 10 fins de quiz passam pelo limitador e o 11º leva 429 com Retry-After 60, e outro IP não é barrado; 60 eventos passam e o 61º leva 429; cada recusa soma 1 na tabela recusas, pela porta e pelo motivo, e das 60 recusas iguais 30 somam e 30 ficam no registro como recusa-nao-contada (o freio); o registro do garçom não escreve IP. No fechamento, a tabela recusas só com dia, porta, motivo, quantas e as horas. (4) **O tempo mínimo:** cada pessoa de teste que manda o contato no navegador espera os 20 segundos desde abrir o quiz (no relógio da página); o pacote do Node leva o bloco protecao. Com isso, o caminho de cada pessoa ficou mais longo, e o primeiro fim de quiz novo pode passar de 1 minuto antes da primeira busca da planilha: no modo padrão, os 4 fins de quiz novos vão para os últimos 20 segundos, na mesma ordem, antes da primeira busca (o mesmo contorno da margem, ao contrário). (5) **As utm na abertura:** o início do quiz da faixa b (vinda do anúncio, com utm_medium CPC) grava "cpc" e "teste"; o do corte, "teste"; o do lead A, vazias. (6) As conferências "o banco nem é chamado" olham só as portas de gravação, porque toda recusa agora chama registrar_recusa depois da resposta. Rodado inteiro em 25/11/2026, com o wrangler dev e WRANGLER_SEND_METRICS=false, numa máquina Linux na nuvem: **318 de 318** (eram 288), em 251 segundos, com o código de saída 0.
 
@@ -135,6 +137,7 @@ Opções:
    - **O quiz do começo ao fim em /analise/, nos três desfechos** (1): a conversa gratuita com o Junior e o relatório que o botão dela abre (o lead A; até a v10, a oferta do plano), o relatório de quem não se qualifica (o eliminatório e a faixa c do corte) e o relatório do funil saudável (a faixa b e a caixa desmarcada); nas cinco pessoas, as 17 telas na ordem, da abertura ao fim (no lead A, 18), e em todas o caminho da página é /analise/ (86 telas).
 
    Grava no banco só visitas e inícios do quiz, sem pessoa.
+12b e 12c. **A proteção e as recusas** (v16; ver "Versão 16") e **o site como vai ao ar** (v17; ver "Versão 17"): a meta que esconde o painel "Telas", a landing sem o logo, com o R$ 497 riscado, o nome único e a contagem do mês com os números de agora, e o quiz abrindo sempre na abertura.
 13. **Fechamento.** conferir.sql de novo (19 de 19 desde a v12); os dados de antes iguais no fim; a saída do garçom sem dado pessoal, sem id_pessoa e sem chave; o garçom tendo usado só a publicável em registrar_fim_quiz e registrar_evento e só a secreta em leads_para_planilha; e a rede (abaixo).
 
 No fim, e também se algo falhar no meio ou se o ensaio for interrompido (Ctrl+C), fecha o navegador, o wrangler e o workerd (o grupo de processos inteiro), o processo da planilha, os servidores e o banco, e apaga a pasta temporária. O navegador é aberto sem os tratadores de sinal do Playwright (handleSIGINT, handleSIGTERM e handleSIGHUP desligados), senão ele encerraria o processo antes da limpeza.
