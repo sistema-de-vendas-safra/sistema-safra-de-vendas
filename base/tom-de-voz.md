@@ -1,6 +1,6 @@
 ---
 id: tom-de-voz
-versao: 4
+versao: 5
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-09
@@ -58,7 +58,7 @@ Como as peças do Safra falam: a voz, a grafia, a regra de vocabulário, a postu
 | Aprovação que falta | "pendente de aprovação do Júnior e do Euclides", nunca "pendente dos sócios" | PAINEL, regra 13 (Otávio, 23/10/2026) |
 | Metas | "metas aprovadas pelo dono", nunca "metas assinadas" | PAINEL, regra 4 |
 | Os nomes das entregas | Como em ficha-de-fatos#nomes-das-entregas, "exatamente assim"; a horta fica na descrição, nunca no nome | #56; DS (seção das entregas); PAINEL, regra 16 |
-| A conversa de venda com o Júnior | Como em ficha-de-fatos#nome-call-de-venda; em público, nunca "reunião com o Júnior". A Análise é o diagnóstico do quiz, com nome público a definir (ficha-de-fatos#analise-nome-publico) | #92; #107 |
+| A conversa de venda com o Júnior | Como em ficha-de-fatos#nome-call-de-venda; em público, nunca "reunião com o Júnior". A Análise é o diagnóstico do quiz, com o nome público de ficha-de-fatos#analise-nome-publico, o mesmo em todo lugar (#127) | #92; #107 |
 | O rito semanal em grupo | Pelo nome de ficha-de-fatos#calls-em-grupo e da análise de calls (ficha-de-fatos#analise-de-calls), nunca "reunião de safra"; a tela do painel com as prioridades se chama "Prioridade da semana" | 8.12 com 9.6 (Otávio, 09/11/2026; #114) |
 
 ---

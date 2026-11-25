@@ -1,6 +1,6 @@
 ---
 id: quiz-01-briefing
-versao: 4
+versao: 5
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -34,6 +34,8 @@ desatualizado: true
 
 # Briefing · quiz-01
 
+**Versão 5 (25/11/2026, #127).** O nome público da Análise deixa de aparecer como ponto em aberto: é "Análise Estratégica do Sistema de Vendas", o mesmo em todo lugar (#117, confirmado pela #127). Saem a menção ao conflito-02 em "Outros pontos em aberto" e a linha do nome em "Bloqueios". Nada mais mudou.
+
 **Versão 3 (25/11/2026, #123).** Muda só o item "Números ou chute": a tela dos números fica só em quantidade, com os cinco obrigatórios, e quem não lembra vê a conta de exemplo, avisado. Nada mais mudou.
 
 O ponto de partida do quiz-01 do funil-01: para que ele serve, para quem, o que se espera de quem responde, o roteiro de telas herdado da cópia nova do quiz, o que dessa cópia vale como fonte, o que está em conflito e o que fica bloqueado. O texto tela por tela está em `quiz-01-copy` (entregas/quizzes/quiz-01/copy.md); o código é a etapa 14.
@@ -54,7 +56,7 @@ O ponto de partida do quiz-01 do funil-01: para que ele serve, para quem, o que 
 
 O quiz-01 é o passo 2 do caminho do lead no funil-01 (`funil-01`, "Caminho do lead"): o lead chega da landing-page-01 com a etiqueta do link, responde, deixa o contato com consentimento e recebe o diagnóstico.
 
-- O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), sempre gratuita, sem número e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124, v4 deste briefing). O nome público continua a definir (ficha-de-fatos#analise-nome-publico; conflito-02; #107; pergunta 30.1). A conversa de venda com o Júnior, que vem depois, é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; #107).
+- O diagnóstico do quiz é a própria Análise (#92; ficha-de-fatos#analise-conteudo), sempre gratuita, sem número e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124, v4 deste briefing). O nome público é "Análise Estratégica do Sistema de Vendas", o mesmo em todo lugar (ficha-de-fatos#analise-nome-publico; #117; #127). A conversa de venda com o Júnior, que vem depois, é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda; #107).
 - Todo lead que termina o quiz recebe o diagnóstico, inclusive quem não entra na fila do SDR (`lead-score`, "Eliminatórios"; fonte do quiz, CLAUDE.md, "Não qualificado").
 - No fim, o quiz calcula a nota e a faixa do lead score e monta o pacote de dados no formato da planta do banco (`planta-do-banco`). No protótipo de teste, o pacote vai ao garçom (#101); o destino dos contatos continua em conflito (conflito-17).
 - Até a reunião com o Júnior e o Euclides, o final usa o mais restritivo dos dois cortes, o do Júnior e o da nota (14.2, #114): qualificado só quem passa nos dois. A nota é calculada e guardada também para quem cai num eliminatório (14.8).
@@ -104,7 +106,7 @@ Ficam fora deste briefing, porque não são texto do quiz: a publicação na Clo
 | Identidade visual | Triad escura com verde neon | DS v1.0 e paleta branco e verde (#81) | conflito-18, conflito-08 | Sem decisão de visual; o mockup fica como está |
 | Promessa "até X%" | Plano de 90 dias com percentual | #39 e conformidade | conflito-19, conflito-09 | O quiz fica como está, com o percentual, por exceção decidida pelo Otávio (#110) |
 
-Outros pontos em aberto que tocam o quiz: nome público da Análise (conflito-02), quem assina e nome da agência (conflito-07; ficha-de-fatos#nome-agencia), plano de ação de 90 dias como saída (conflito-10), portas e funil (conflito-06, conflito-14). O prazo de guarda dos dados está decidido (ficha-de-fatos#prazo-de-guarda; #106) e entra pela política de privacidade.
+Outros pontos em aberto que tocam o quiz: quem assina e nome da agência (conflito-07; ficha-de-fatos#nome-agencia), plano de ação de 90 dias como saída (conflito-10), portas e funil (conflito-06, conflito-14). O prazo de guarda dos dados está decidido (ficha-de-fatos#prazo-de-guarda; #106) e entra pela política de privacidade.
 
 ---
 
@@ -168,7 +170,6 @@ Conflito-18 e conflito-08. O visual do mockup fica como está até a decisão (p
 
 | O quê | Por quê | Como fica |
 |---|---|---|
-| Nome da Análise ("Diagnóstico de vendas", "Teste gratuito") | ficha-de-fatos#analise-nome-publico; conflito-02 | Placeholder marcado |
 | "Triad", marca e rodapé "© 2026 Triad Marketing USA LLC" | ficha-de-fatos#nome-agencia; conflito-07 | Placeholder marcado; "a nossa equipe" no corpo |
 | Caminho do fim do quiz | conflito-16 | Os dois lados escritos, bloqueado |
 | Envio e destino dos contatos | conflito-17; #90 | Envio só no protótipo de teste (#101); nenhum destino no texto |

@@ -1,6 +1,6 @@
 ---
 id: provas-e-conformidade
-versao: 5
+versao: 6
 status: decidido
 aprovado_por:
   otavio: 2026-11-25
@@ -119,7 +119,7 @@ Nenhum destes itens pode ir a público antes do comprovante ou da autorização.
 |---|---|
 | A promessa integra o contrato: pelo art. 30 do CDC, "a publicidade suficientemente precisa obriga quem a faz e passa a integrar o contrato, quando a relação for de consumo"; o CONAR "exige que toda alegação possa ser comprovada" | Oferta online ("As opções estudadas em 22/10", "Um cuidado jurídico") |
 | A promessa só vai a público "com prova do primeiro caso e revisão de advogado"; a de 08/11 (#85, que vale por decisão do Otávio, #108) torna vinculante a liderança do Júnior e do Euclides durante o serviço (CDC, art. 30; duração em ficha-de-fatos#duracao). A revisão jurídica fica fora do sistema (#103); o título com "lucro" é exceção (ver "Exceções decididas pelo Otávio") | CTX §8; ver `promessa` |
-| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19). A Análise não tem preço "depois": é sempre gratuita (#124; ficha-de-fatos#analise-gratuidade), e nenhuma peça promete cobrança futura dela | CTX §8; #124 |
+| Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade: ficha-de-fatos#preco-avancada-depois (#19). A Análise não tem preço "depois": é sempre gratuita (#124; ficha-de-fatos#analise-gratuidade), e nenhuma peça promete cobrança futura dela. O R$ 497 riscado do cartão da oferta da landing é exceção decidida pelo Otávio (#126; ver "Exceções decididas pelo Otávio") | CTX §8; #124; #126 |
 | Credencial anunciada precisa de comprovante (ver a lista acima) | CTX §8; Doc Mestre online, regra 2 |
 | Contador e barra de vagas só com contagem real; um percentual parado é escassez falsa (CDC, art. 37, e CONAR). Da Análise, nenhum contador nem barra: ela é sempre gratuita e não tem número de análises (ficha-de-fatos#barra-de-resgates, sem objeto desde a #124) | CTX §8; landing ("Regras de conformidade"); #93; #124 |
 | A Análise não é promoção: é sempre gratuita (#124). Nenhuma peça diz "promoção de lançamento", "por pouco tempo" nem um valor depois, porque não há fim nem cobrança (ficha-de-fatos#analise-gratuidade) | landing ("Regras de conformidade"); #92; #124 |
@@ -173,6 +173,7 @@ Cada linha é uma exceção às regras acima, decidida pelo Otávio e registrada
 | O quiz fica como está: a posição do aceite em relação ao pedido de contato não muda, e a promessa de percentual no fim do quiz fica. As outras decisões que mexem no quiz valem (14.2, 13.4, 14.4, 14.5, 18.4, 18.5, 09.1, 10.7). O item 29 da pauta continua com o Júnior e o Euclides | Consentimento antes do pedido de contato; nenhum percentual de melhora antes de caso comprovado | Otávio, 09/11/2026, 7.5; #110 |
 | A caixa de aceite do quiz já vem marcada; quem quiser, desmarca | "Consentimento explícito" (Doc Mestre online, regra 8) | Otávio, 09/11/2026, 13.4; #104 (registrada como exceção pela recomendação da pergunta 30.9, que continua aberta) |
 | O título "Resgate o lucro que está oculto no seu negócio" vai com "lucro", sem esperar caso documentado | Benefício só com prova; "lucro" pede a margem do cliente (lacuna-09) | Otávio, 09/11/2026, 9.14; #109 |
+| O R$ 497 riscado volta ao cartão da oferta da landing, ao lado de "Gratuita", como estava antes do pedido 24 (ficha-de-fatos#analise-preco-riscado). Só ali; nenhuma peça promete cobrança, prazo ou promoção da Análise. Risco registrado: a Análise nunca foi cobrada, e um preço riscado que nunca foi praticado pode ser lido como preço de referência sem lastro (CDC, art. 37; CONAR) | Preço "depois" e "valor de" só valem se passarem a ser preço praticado de verdade (#19) | Otávio, 25/11/2026: "O R$ 497 riscado volta para a landing como estava antes. Não aprovo a retirada." (#126) |
 
 ### Nome e marca
 

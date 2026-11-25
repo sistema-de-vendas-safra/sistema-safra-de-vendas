@@ -1,6 +1,6 @@
 ---
 id: oferta
-versao: 3
+versao: 4
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-09
@@ -49,7 +49,7 @@ A oferta montada: a oferta em uma página, a equação de valor, os obstáculos 
 | Preço | ficha-de-fatos#preco-avancada; depois, ficha-de-fatos#preco-avancada-depois, cobrado de verdade | #57; #19 |
 | Pagamento | ficha-de-fatos#meio-de-pagamento. Parcelamento: ficha-de-fatos#parcelamento, **campo em conflito · bloqueado para entrega até a decisão**. Taxa: ficha-de-fatos#taxa-hotmart (em aberto) | #54; conflito-15, lacuna-19 |
 | Vagas | ficha-de-fatos#vagas; só vendas da Avançada contam (ficha-de-fatos#vendas-que-contam); início de cada cliente em aberto (ficha-de-fatos#inicio-de-cada-cliente) | #63, #64, #65 |
-| Porta de entrada | A Análise, o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), sempre gratuita, sem número de análises e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124). O nome público está em ficha-de-fatos#analise-nome-publico, **em conflito · bloqueado para entrega até a decisão**. Depois dela, a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), sem custo para o lead (15.14), com a demonstração. Sem abatimento: a Análise não é cobrada (ficha-de-fatos#analise-abatimento) | #49, #59, #61, #62, #66, #92, #93, #107, #114, #124; lacuna-11, conflito-02 |
+| Porta de entrada | A Análise, o diagnóstico do quiz (ficha-de-fatos#analise-conteudo), sempre gratuita, sem número de análises e sem cobrança depois (ficha-de-fatos#analise-gratuidade; #124). O nome público é o de ficha-de-fatos#analise-nome-publico, decidido (#117; #127). Depois dela, a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), sem custo para o lead (15.14), com a demonstração. Sem abatimento: a Análise não é cobrada (ficha-de-fatos#analise-abatimento) | #49, #59, #61, #62, #66, #92, #93, #107, #114, #124; lacuna-11, conflito-02 |
 | Garantia | ficha-de-fatos#garantia. Reembolso pela Hotmart: ficha-de-fatos#arrependimento | #39; #91; outros-18 |
 | Continuidade | O GSAAS, opcional, oferecido no Relatório de Produtividade: ficha-de-fatos#gsaas (para depois) | #38, #58, #84; lacuna-06 |
 | Downsell | A Implementação Essencial, só depois do não à Avançada: ficha-de-fatos#downsell-nome, ficha-de-fatos#downsell-preco (**em conflito · bloqueado para entrega até a decisão**) e ficha-de-fatos#downsell-desenho (em revisão) | #37, #42, #60; lacuna-03 |
@@ -230,10 +230,9 @@ O que está decidido: a Análise da porta é o diagnóstico do quiz, a mesma par
 **A conversa de venda** é a Call de Direcionamento (ficha-de-fatos#nome-call-de-venda), com a duração de ficha-de-fatos#duracao-call-de-venda e o condutor de ficha-de-fatos#quem-faz-a-reuniao (#107). Não tem custo para o lead: quem liga pode dizer "a conversa não tem custo" (15.14, #114). É nela que fica a demonstração com os números do prospect (4.5, #114).
 
 **Em conflito · bloqueado para entrega até a decisão** (ficha de fatos; conflito-02, lacuna-11):
-- O nome público da Análise: ficha-de-fatos#analise-nome-publico (continua a definir, #107; pergunta 30.1).
 - ficha-de-fatos#analise-duracao e ficha-de-fatos#analise-quem-conduz continuam em conflito na ficha; com a #92, a pergunta deles passou a ser a da conversa de venda, que a #107 decidiu nos campos da Call (pergunta 30.6).
 
-A Análise não tem valor apresentado: é sempre gratuita (#124; ficha-de-fatos#analise-valor e ficha-de-fatos#analise-abatimento, os dois sem objeto). O plano de ação de 90 dias (PDV-90) como saída da Análise está sem decisão (lacuna-22, conflito-10).
+A Análise não tem valor de cobrança: é sempre gratuita (#124; ficha-de-fatos#analise-valor e ficha-de-fatos#analise-abatimento, os dois sem objeto). Na landing, o R$ 497 riscado do cartão da oferta volta, por decisão do Otávio (ficha-de-fatos#analise-preco-riscado; #126), só como referência, sem promessa de cobrança. O plano de ação de 90 dias (PDV-90) como saída da Análise está sem decisão (lacuna-22, conflito-10).
 
 **Hipótese a validar** (Oferta online): "A Análise Estratégica antes da compra compensa a falta de garantia (indicativa)." Hoje, a demonstração na Call de Direcionamento (4.5).
 
@@ -260,7 +259,7 @@ Da Oferta online ("Decisões do cliente"), com o que já foi decidido depois mar
 | 1 | Regra de vocabulário depois da promessa decidida: continua para colheita, plantio e relógio em títulos e chamadas? | Resolvida: continua (Otávio, 08/11/2026, resposta 3 às perguntas da etapa 3) | `tom-de-voz` |
 | 2 | Pagamento e parcelas | Aberta | ficha-de-fatos#parcelamento; conflito-15 |
 | 3 | Bônus pela troca | Aprovado com os bônus (#48) | ficha-de-fatos#bonus-caso |
-| 4 | A Análise da call e o seu valor | Resolvida pela #92 e pela #93 (a Análise é o diagnóstico do quiz; valor e gratuidade decididos) e pela #107 (a conversa de venda é a Call de Direcionamento); continua aberto só o nome público da Análise | ficha-de-fatos#analise-nome-publico; conflito-02 |
+| 4 | A Análise da call e o seu valor | Resolvida pela #92 e pela #93 (a Análise é o diagnóstico do quiz; valor e gratuidade decididos) e pela #107 (a conversa de venda é a Call de Direcionamento); o nome público da Análise foi decidido pela #117 e confirmado pela #127 | ficha-de-fatos#analise-nome-publico; conflito-02 |
 | 5 | Data de início de cada cliente | Aberta | ficha-de-fatos#inicio-de-cada-cliente |
 | 6 | Capacidade das vagas | Vagas não diminuem (#64); capacidade a preparar | lacuna-01, lacuna-04 |
 | 7 | Contrato só com o escopo, revisão de advogado, incluindo a promessa de 08/11 | Aberta, como questão da empresa; a revisão jurídica fica fora do sistema (#103) | lacuna-10, outros-18 |

@@ -1,6 +1,6 @@
 ---
 id: glossario
-versao: 5
+versao: 6
 status: decidido
 aprovado_por:
   otavio: 2026-11-25
@@ -180,10 +180,10 @@ A forma aceita de falar da escassez: vagas sem início comum. Número e regra em
 _Avoid_: turma
 _Fonte_: #65; ficha-de-fatos#vagas
 
-**Análise Estratégica do seu Comercial**:
-A porta de entrada: desde a #92, é o diagnóstico do quiz, sempre gratuito (ficha-de-fatos#analise-gratuidade; #124, que tirou o número de análises gratuitas e a cobrança depois). A conversa de venda que vem depois é a Call de Direcionamento (ver abaixo). O nome público da Análise continua a definir, em conflito, ver lacunas (conflito-02; ficha-de-fatos#analise-nome-publico; #107).
-_Avoid_: "Análise" para a conversa de venda
-_Fonte_: #66; #92; #107; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
+**Análise Estratégica do Sistema de Vendas**:
+A porta de entrada: desde a #92, é o diagnóstico do quiz, sempre gratuito (ficha-de-fatos#analise-gratuidade; #124, que tirou o número de análises gratuitas e a cobrança depois). A conversa de venda que vem depois é a Call de Direcionamento (ver abaixo). É o nome público da Análise, o mesmo em todo lugar, inclusive no botão da landing (ficha-de-fatos#analise-nome-publico; #117; #127).
+_Avoid_: "Análise" para a conversa de venda; "Análise Estratégica do seu Comercial" e "Análise Estratégica do seu Sistema de Vendas", nomes antigos (#66; até a #127)
+_Fonte_: #66; #92; #107; #117; #127; ficha-de-fatos#analise-conteudo; ficha-de-fatos#analise-nome-publico
 
 **Call de Direcionamento**:
 A conversa de venda com o Júnior, depois do diagnóstico do quiz, sem custo para o lead. É nela que fica a demonstração com os números do cliente. Nome em ficha-de-fatos#nome-call-de-venda; duração em ficha-de-fatos#duracao-call-de-venda; quem conduz em ficha-de-fatos#quem-faz-a-reuniao.

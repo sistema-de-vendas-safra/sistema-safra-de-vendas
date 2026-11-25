@@ -1,6 +1,6 @@
 ---
 id: ficha-de-fatos
-versao: 7
+versao: 8
 status: decidido
 aprovado_por:
   otavio: 2026-11-25
@@ -251,24 +251,32 @@ Aqui moram os fatos do Safra: preço, vagas, prazos, número de entregas, bônus
 
 ### analise-nome-publico
 - **Valor:** Análise Estratégica do Sistema de Vendas.
-- **Fonte:** decisão do Otávio, 13/11/2026 (#117).
+- **Fonte:** decisão do Otávio, 13/11/2026 (#117), confirmada em 25/11/2026 (#127): "'Análise Estratégica do Sistema de Vendas' em tudo."
+- **Onde vale (#127):** em todo lugar: a página do quiz, o botão e os rótulos da landing ("Faça uma Análise Estratégica do Sistema de Vendas"), a base e o glossário. Os OKRs, fora do repositório, o Otávio ajusta.
 - **Valores que concorriam (histórico):**
   - "Análise Estratégica do seu Comercial", ou "do seu Sistema de Vendas" (#66; CTX §3, §6, §13; Doc Mestre online).
   - "Análise Estratégica das Safras, na versão da call" (Ficha do Serviço online, "Porta de entrada"; Oferta online; One pager online). É também o nome da entrega 1.
-  - Botão "Faça uma Análise Estratégica do seu Sistema de Vendas" (landing, decidido pelo Otávio).
+  - Botão "Faça uma Análise Estratégica do seu Sistema de Vendas" (landing, decidido pelo Otávio; até a #127, 25/11/2026).
   - "Diagnóstico de vendas" e o selo "Teste gratuito" (quiz).
-- **Status:** decidido (otavio: 2026-11-13, #117). O conflito-02 é do Otávio; o Júnior e o Euclides ficam sabendo pela pauta de aprovação.
-- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público ficou em conflito de 08/11 a 13/11/2026 (Otávio, 08/11/2026; #117). A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise: o nome público da Análise continua a definir.
+- **Status:** decidido (otavio: 2026-11-13, #117; 2026-11-25, #127). O conflito-02 é do Otávio; o Júnior e o Euclides ficam sabendo pela pauta de aprovação.
+- **Obs.:** com a #92, a Análise passa a ser o diagnóstico do quiz. O nome público ficou em conflito de 08/11 a 13/11/2026 (Otávio, 08/11/2026; #117) e está decidido desde então. A #107 (09/11/2026) deu nome à conversa de venda (ficha-de-fatos#nome-call-de-venda), não à Análise.
 
 ### analise-valor
 - **Valor:** não se aplica. A Análise não é cobrada: é sempre gratuita (ficha-de-fatos#analise-gratuidade; #124).
+- **O R$ 497 riscado da landing (#126)** não é valor de cobrança: é ficha-de-fatos#analise-preco-riscado.
 - **Fonte:** #124 (revê a #92 no valor).
 - **Status:** decidido (otavio: 2026-11-25). O Júnior e o Euclides devem ser informados (#124).
 - **Histórico (não é valor):** R$ 497 por Análise, cobrado depois das análises gratuitas (#92, de 08/11 a 25/11/2026; a landing dizia "Quando a promoção de lançamento acabar, a Análise passa a custar R$ 497."). R$ 4.997 (#59, #62; CTX §3; Ficha do Serviço online; Oferta online; Doc Mestre online), superado pela #92. A landing (cartão da oferta e rodapé da seção 08) e o quiz ("Agora ele é gratuito. Em breve, vai custar R$ 497.", dito do plano de ação de 90 dias) já traziam o valor novo, sem decisão registrada até a #92.
 
+### analise-preco-riscado
+- **Valor:** R$ 497, riscado, ao lado de "Gratuita" no cartão da oferta da landing-page-02, nas duas versões da página (computador e celular), como estava antes do pedido 24.
+- **Fonte:** decisão do Otávio, 25/11/2026 (#126): "O R$ 497 riscado volta para a landing como estava antes. Não aprovo a retirada."
+- **Status:** decidido (otavio: 2026-11-25). Exceção decidida pelo Otávio à regra do preço "de" (provas-e-conformidade, "Preço 'depois' e 'valor de'"; #19): a Análise nunca foi cobrada e é sempre gratuita (ficha-de-fatos#analise-gratuidade; #124), e o valor riscado não pode virar promessa de cobrança, prazo ou promoção em peça nenhuma.
+- **Obs.:** só no cartão da oferta da landing, onde já estava. Nenhuma outra peça leva o valor.
+
 ### analise-gratuidade
 - **Valor:** sempre gratuita, para todos: sem número de análises gratuitas, sem promoção e sem cobrança depois.
-- **Forma de escrever nas peças (proposta do mentor, a aprovar; quiz-01-copy v6, M6):** "Sempre gratuita". Nunca "na promoção de lançamento", "por pouco tempo", "por enquanto" nem o valor de uma cobrança futura.
+- **Forma de escrever nas peças (aprovada pelo Otávio em 25/11/2026, #126; quiz-01-copy v6, M6):** "Sempre gratuita". Nunca "na promoção de lançamento", "por pouco tempo", "por enquanto" nem o valor de uma cobrança futura.
 - **Fonte:** #124 (substitui a #92 na gratuidade e na cobrança).
 - **Status:** decidido (otavio: 2026-11-25); informar o Júnior e o Euclides (#124).
 - **Histórico (não é valor):** gratuita nas primeiras 100 análises e cobrada depois (#92, de 08/11 a 25/11/2026); gratuita nas 10 primeiras vendas da Avançada (#49, #59, #62; CTX §3; Ficha do Serviço online; Oferta online); gratuita "na promoção de lançamento", sem citar o fim (landing; pedido do Otávio de 03/11, fora do registro numerado).

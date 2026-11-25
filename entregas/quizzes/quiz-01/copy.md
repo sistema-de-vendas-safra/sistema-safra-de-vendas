@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Copy · quiz-01
+
+**Versão 7 (25/11/2026, #126).** O Otávio aprovou os textos novos da v6: "Textos novos: aprovados, com uma exceção." (a exceção é da landing, o R$ 497 riscado, #126). Passam a aprovados pelo Otávio o "Sempre gratuita" (M6) e o relatório de quem não lembra (#125); continuam pendentes do Júnior e do Euclides, como o resto da copy. Os textos da v4 (a 5.2, #123) não estavam nessa lista e continuam a aprovar. Nenhum texto mudou.
 
 **Versão 6 (25/11/2026, #124 e #125; pedido 24).** Três mudanças, com os textos novos como proposta do mentor, para o Otávio aprovar. (1) A gratuidade (M6 e o fato curto da abertura): "Sempre gratuita", no lugar de "Sem custo na promoção de lançamento" (#124: a Análise é sempre gratuita, sem número e sem cobrança depois). A fala 3 da oferta do plano (M20, que saiu da página na v8 da página) fica registrada como sem valor. (2) O bloco "Relatório de quem não lembra" passa a mostrar o funil pelas metas do método, dito como metas, no lugar do funil de exemplo (#125, que revê a #123). (3) Sem empresa, o olho do relatório diz "sua empresa" (#125). Nada mais neste documento mudou.
 
@@ -94,7 +96,7 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
 - **Olho:** "diagnóstico de vendas" (no mockup, com um travessão na frente) vira {{BLOQUEADO: ficha-de-fatos#analise-nome-publico}} (muda, M4)
 - **Título:** "Descubra onde sua equipe de vendas está perdendo performance" (fica)
 - **Apoio:** "Diagnóstico completo das 4 etapas do funil de vendas: **pré-qualificação**, **agendamento**, **comparecimento** e **fechamento**." (muda, M5)
-- **Fatos curtos:** "8 minutos" · "Sempre gratuita" {{ficha-de-fatos#analise-gratuidade}} (muda, M6; v6: #124, a forma de escrever da ficha, proposta do mentor a aprovar)
+- **Fatos curtos:** "8 minutos" · "Sempre gratuita" {{ficha-de-fatos#analise-gratuidade}} (muda, M6; v6: #124, a forma de escrever da ficha, aprovada pelo Otávio em 25/11/2026, v7; antes, proposta do mentor a aprovar)
 - **Botão:** "Começar diagnóstico →" (fica)
 - **Letra miúda:** "Suas respostas servem só para montar o seu diagnóstico e para a nossa equipe falar com você. Como a gente cuida dos seus dados: [política de privacidade]({{a definir: link da politica de privacidade}})." (muda, M7)
 
@@ -361,7 +363,7 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **O que já funciona:** "**O que já funciona:** [etapas]. Metade dos seus leads tem perfil de compra, então o marketing está trazendo gente certa." (fica)
 - **Saudável:** "pontos fracos" · "Nenhuma etapa ficou abaixo da meta" · "Onde crescer": "Mais leads com perfil. Com as suas taxas, cada lead novo tem a mesma chance de virar venda." · "Venda de maior valor. O mesmo trabalho do time rende mais por cliente." · "Leads antigos. Quem não fechou meses atrás pode estar pronto agora." · "O que manter": "Continue contando os cinco números todo mês, num lugar só. É isso que permite ver uma etapa cair antes de ela pesar no faturamento." (fica)
 
-**Relatório de quem não lembra (#125; v6)** (proposta do mentor, a aprovar; substitui o funil de exemplo da v4, #123)
+**Relatório de quem não lembra (#125; v6)** (proposta do mentor, aprovada pelo Otávio em 25/11/2026, v7; substitui o funil de exemplo da v4, #123)
 
 Quem respondeu "Não" em "Lembra dos números?" vê o funil pelas metas do método (ficha-de-fatos#metas-por-etapa), de cada 100 leads, dito como metas e nunca como números dela. Nenhum volume, taxa ou valor em reais inventado. Da pessoa, só o que ela respondeu: os selos das respostas (CRM, quem marca, origem dos leads, primeiro contato), o CRM nos quadros, o valor médio na nota do dinheiro na mesa e a estimativa do comparecimento (5.3). As metas entre colchetes vêm da ficha, nunca escritas à mão.
 - **Olho:** "[nome da Análise] · [empresa ou sua empresa] · [mês de ano]"

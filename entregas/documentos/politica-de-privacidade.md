@@ -1,6 +1,6 @@
 ---
 id: politica-de-privacidade
-versao: 8
+versao: 9
 status: pendente-aprovacao
 aprovado_por:
   otavio: 2026-11-18
@@ -57,6 +57,14 @@ Revisão jurídica fica com a empresa que assina a política, fora do sistema (d
 **Versão 7 (18/11/2026, #122).** O Pixel da Meta, pelo pacote v7 (seção 2), aprovado pelo Otávio e pelo jurídico, inclusive os trechos que o pacote marcava para o jurídico conferir (o primeiro parágrafo do item 6 e "O que a Meta faz com esses dados", no item 7), aplicados sem as marcas. Mudam, no texto para o lead: o item 2 (a visita também pelo Pixel); o item 3 (a finalidade 6, medir os anúncios no Facebook e no Instagram); o item 4 (a caixa cobre também a medição na Meta pelo nosso sistema, e a base legal da medição pela página com o Google e com a Meta); o item 5 (os dados da medição com o Google e com a Meta); o item 6 (o primeiro parágrafo e a linha da Meta na tabela); o item 7 (antes da escolha, os cookies do Pixel, "Se você aceitar", o bloco novo do Pixel com o que a Meta faz e o envio pelo nosso sistema, o código da visita fora também da Meta, "Se você recusar", "Como mudar a sua escolha" e o título da linha da base legal, que continua com o marcador, agora para as duas medições e a transferência); o item 8 (os dados na Meta e os 90 dias dos cookies do Pixel); e o direito 8 do item 9. O resto do texto para o lead não mudou, nem os marcadores "a definir". O que o pacote v7 pede conferir depois de ligar o Pixel: os nomes e a validade dos cookies que o Pixel gravar de fato em svsafra.gotriad.com.br (ferramentas do desenvolvedor, Aplicativo, Cookies); se a validade for outra, os itens 7 e 8 mudam antes de publicar o Pixel (log.md, Pendências). O envio pelo nosso sistema (API de Conversões) é descrito como possível ("pode avisar"): ele ainda não existe e, quando for ligado, é pedido novo. depende_de: quiz-01-copy 3 e decisoes 12; o documento continua marcado.
 
 **Versão 8 (18/11/2026, #122).** Pedido do Otávio, antes do merge: no item 7, "O que fica guardado no seu navegador", a frase "para a página saber se pode carregar a medição do Google" passa a "para a página saber se pode carregar a medição do Google e a da Meta". É o mesmo sentido aprovado na #122 (um "Aceitar" só cobre as duas medições), sem nova rodada no jurídico, nas palavras do Otávio; o status e as datas em aprovado_por continuam os da v7. Nas "Fontes", as páginas da Meta passam a constar como conferidas pelo Claude do projeto de estratégia em 18/11/2026. Sobe de 7 para 8 pela regra de versionamento (toda alteração de conteúdo sobe a versão); o resto do texto é o da v7.
+
+**Versão 9 (25/11/2026, #128).** Só esta seção, "Para a equipe": entra a frase pronta sobre o limite de envios por endereço IP (garçom v7, pedido 24), que o Otávio decidiu incluir "na mesma versão em que entrarem os dados da empresa. Deixe a frase pronta." O texto para o lead não mudou, a página publicada não muda e a aprovação do Otávio da versão 8 continua valendo para ele.
+
+**Frase pronta, para a versão em que entrarem os dados da empresa (#128).** Entra no item 10, "Como a gente protege os seus dados", como o segundo item da lista:
+
+> - Para barrar envios automáticos, o serviço que hospeda as nossas páginas, a Cloudflare, usa o endereço IP de quem envia o diagnóstico ou abre o quiz para contar quantos envios saem do mesmo endereço em um minuto. O nosso sistema não guarda esse endereço: ele não vai para o sistema de gestão de contatos nem para a planilha de quem faz o contato.
+
+Na mesma versão: no item 6, a linha "Hospedagem das páginas..." recebe o nome do serviço com o fim "e o limite de envios por endereço IP (ver item 10)"; e o jurídico confere a base legal desse uso (proposta para ele avaliar: legítimo interesse, na prevenção de fraude e na segurança). Fonte do que a frase diz: entregas/garcom/README.md, versão 7 (o IP é a chave do limitador da Cloudflare e não vai ao banco nem ao registro do garçom; período de 60 segundos, no wrangler.toml v15).
 
 **O que muda na operação, fora do texto para o lead.** Quem retira o aceite depois de entrar na planilha do SDR: o Otávio apaga a linha à mão, até existir o caminho automático, que entra com a volta do status (21.10, #114). A planilha do SDR fica no Drive do Safra, como exceção registrada à regra 4 de segurança, com acesso só do Otávio e de quem liga (nucleo/regras/seguranca.md v3, regra 4; 5.4, #114). O caminho de apagamento no fim do prazo de guarda é pendência com prazo (#106; log.md, Pendências).
 
