@@ -1,14 +1,14 @@
 ---
 id: banco-rascunho
-versao: 6
+versao: 7
 status: rascunho
 aprovado_por:
   otavio: pendente
 depende_de:
   - id: planta-do-banco
-    versao: 5
+    versao: 6
   - id: decisoes
-    versao: 11
+    versao: 15
   - id: funil-01
     versao: 3
   - id: lead-score
@@ -25,6 +25,13 @@ desatualizado: true
 ---
 
 # Banco · rascunho
+
+**Versão 7 (25/11/2026, pedido 24, itens 2, 4 e 5).** Três arquivos:
+- **migracoes/004-utm-na-abertura-e-recusas.sql** (banco-migracao-004 v1): registrar_evento v2 grava também utm_medium, utm_content e utm_term na visita, no início do quiz e no clique, opcionais e saneadas pelo garçom (fora do formato da restrição da 003, gravadas vazias; nunca recusam o evento); e a tabela **recusas**, com a função **registrar_recusa**, a contagem das recusas do garçom nas duas portas públicas, por dia (horário de Brasília), porta e motivo, só números. A chave publicável (anon) executa registrar_recusa e ninguém lê a tabela pela API: o Otávio lê no SQL Editor. Ver "As recusas do garçom". Numa transação só; pode rodar de novo; nenhuma linha que já existe muda.
+- **conferir.sql v5**: a linha 21, da 004; as linhas 4 e 8 contam a porta nova. "21 de 21" depois da 004; com a 003 e sem a 004, "18 de 21" (linhas 4, 8 e 21).
+- **limpar-leads-de-teste.sql v2**: sai também a linha real do Otávio de 09/11/2026, pelo código que o banco deu a ela (f794c36d-7116-4ab3-aec3-54a147de97bc), com os eventos dela; a tabela do fim tem 7 linhas. Ver "A limpeza dos leads de teste".
+
+Ordem: esquema.sql, 001, 002, 003, 004, conferir.sql. testar-migracao.mjs: **144 de 144** (eram 120), com a 004 duas vezes sobre os dados, as fechaduras da porta nova, o formato do motivo e a limpeza v2 (a linha de 09/11 sai pelo código; com o código numa pessoa de outra data, nada sai). Roteiro: entregas/prototipo-funil-01/APLICAR-24.md, passos 3 e 7.
 
 **Versão 6 (18/11/2026, #121).** Entra a migração 003 (migracoes/003-origem-e-ids.sql): nove colunas novas na gaveta eventos (utm_medium, utm_content, utm_term, fbclid, fbp, fbc, id_lead, id_qualificado e qualificado), meta-ads nas listas de utm_source, registrar_fim_quiz v4 (os campos novos opcionais; o mesmo id_lead de novo não grava outra linha) e leads_para_planilha v5 (as onze colunas da origem e dos ids no fim). Nenhuma mudança de RLS: as tabelas continuam sem acesso direto e só as três funções são portas. conferir.sql v4 ganha a linha 20 ("20 de 20" depois da 003). Ordem: esquema.sql, 001, 002, 003, conferir.sql. testar-migracao.mjs: 120 de 120 (eram 85), com a 003 duas vezes sobre os dados e a seção 8, que confere o pacote antigo, o novo, o reenvio, as recusas do banco e a planilha.
 
@@ -51,8 +58,10 @@ O banco de dados dos leads do funil-01, escrito a partir de dados/planta/planta.
 | esquema.sql | O esquema v2: as tabelas, as restrições, as duas funções das portas do garçom, a visão do painel, a contagem das análises gratuitas e as fechaduras, em Postgres para o Supabase. Comentários em português. Já rodou no projeto do Safra; o SQL não muda (21.11). A versão 3 do arquivo só ganhou o aviso do topo, com a ordem dos arquivos |
 | migracoes/001-v3.sql | A migração do banco v2 para o v3, sobre os dados que já existem, sem apagar nada e numa transação só. Pode rodar de novo e dá o mesmo resultado. Ver "O que muda na versão 3". Rodou no Supabase em 09/11/2026 |
 | migracoes/002-respostas-na-planilha.sql | A migração das respostas completas na função da planilha (v5 deste rascunho). Só troca a função e refaz as fechaduras, numa transação só; pode rodar de novo. Ver "O que muda com a migração 002" |
-| limpar-leads-de-teste.sql | Apaga do banco só os leads de teste e os eventos ligados a eles, numa transação só, conferindo antes do commit. **Não dá para desfazer.** Ver "A limpeza dos leads de teste" |
-| conferir.sql | Uma consulta só de leitura que confere, linha por linha, se o banco ficou como devia depois das migrações: tabelas, RLS, quem pode o quê, funções, trava, índices, visões e o que as migrações puseram. Cada linha diz o esperado e dá ok verdadeiro ou falso (v3: 19 linhas, mais a 99) |
+| limpar-leads-de-teste.sql | Apaga do banco só os leads de teste e, desde a v2, a linha real do Otávio de 09/11/2026 (pelo código dela), com os eventos ligados a eles, numa transação só, conferindo antes do commit. **Não dá para desfazer.** Ver "A limpeza dos leads de teste" |
+| migracoes/003-origem-e-ids.sql | A origem completa e os ids do lead (v6 deste rascunho; #121) |
+| migracoes/004-utm-na-abertura-e-recusas.sql | As três utm de texto livre na abertura do quiz e a contagem das recusas do garçom (v7 deste rascunho; pedido 24). Ver "As recusas do garçom" |
+| conferir.sql | Uma consulta só de leitura que confere, linha por linha, se o banco ficou como devia depois das migrações: tabelas, RLS, quem pode o quê, funções, trava, índices, visões e o que as migrações puseram. Cada linha diz o esperado e dá ok verdadeiro ou falso (v5: 21 linhas, mais a 99) |
 | catalogo-prototipo.sql | As linhas do catálogo de entregas que o protótipo precisa para o banco aceitar os eventos das páginas (23.10; 32.4): quiz-01 versão 1 (a página v2, que já gravou dados de teste), quiz-01 versão 2 (a página v3) e landing-page-01 versão 1 (a visita, igual nas duas variantes; pergunta 34.4). v2: só acrescenta, com `on conflict do nothing`; não apaga nem muda linha. Rodado depois do conferir.sql (25.3) |
 | testar-migracao.mjs | O teste local das migrações 001 e 002 e da limpeza dos leads de teste, num Postgres dentro do Node (PGlite, o do ensaio), sem rede. Ver "Conferido nesta máquina" |
 
@@ -95,6 +104,22 @@ dados/banco/limpar-leads-de-teste.sql, para o Otávio rodar no SQL Editor do Sup
 - **Como:** numa transação só. Guarda quem vai sair e as contagens (só números); desliga a trava dos eventos (eventos_sem_mudanca, que não deixa apagar evento) só dentro da transação; apaga os eventos dessas pessoas e depois as pessoas (o evento aponta para a pessoa); liga a trava de novo; confere que nenhuma pessoa de teste nem evento delas sobrou, que as outras pessoas, os eventos delas e os eventos sem pessoa ficaram com o mesmo número e que a trava está ligada. Se algo não bater, dá erro e nada é apagado. No fim, uma tabela com 6 linhas (antes, depois e ok), sem nome, e-mail ou telefone.
 - **Rodar de novo:** não acha ninguém e não apaga nada.
 - Não é o caminho de apagamento do #106 (prazo de guarda, pedido de quem retira o consentimento): é a limpeza de propósito dos dados de teste que "O que falta para ir ao ar", item 3, pedia.
+- **v2 (pedido 24, item 5):** sai também a linha real do Otávio de 09/11/2026, que não tem as duas marcas, com os eventos dela. Ela é achada só pelo id_pessoa que o Otávio passou no pedido (f794c36d-7116-4ab3-aec3-54a147de97bc), nunca por nome, e-mail ou telefone; o código é interno do banco e não identifica ninguém fora dele. Trava a mais: se esse código existir numa pessoa que não foi criada em 09/11/2026 (horário de Brasília), a limpeza para no passo 0 e nada sai. A tabela do fim ganha a linha 2 (a linha de 09/11, de 1 para 0). O roteiro conta antes e depois o banco e as duas abas da planilha, fila e respostas (APLICAR-24, passo 7), e manda apagar as linhas da planilha depois do banco.
+
+## As recusas do garçom
+
+Desde a migração 004 e o garçom v7 (pedido 24, item 2): "Nenhum lead verdadeiro pode ser recusado em silêncio: registre a contagem de recusas, sem dado pessoal."
+
+- **A tabela recusas:** uma linha por dia (no horário de Brasília), porta (fim-quiz ou evento) e motivo (um código fixo do garçom, em letras minúsculas e hífen), com quantas recusas houve, a primeira e a última. Nenhum nome, e-mail, telefone, IP, sessão, resposta ou endereço. As restrições não deixam entrar outra porta nem um motivo fora do formato.
+- **Quem grava:** só a função registrar_recusa, pela chave publicável (o garçom, depois de responder a quem foi recusado). Para uma enxurrada não virar uma enxurrada de gravações, o garçom soma até 30 por minuto para cada porta e motivo; as outras ficam no registro da Cloudflare como recusa-nao-contada.
+- **Quem lê:** o Otávio, no SQL Editor (papel postgres). Ninguém lê pela API.
+
+```
+select dia, porta, motivo, quantas, primeira_em, ultima_em
+  from public.recusas order by dia desc, porta, motivo;
+```
+
+Os motivos mais comuns: `limite` (passou do limite de pedidos por IP), `armadilha` (o campo escondido veio preenchido), `rapido-demais` (menos de 20 segundos entre abrir a página e mandar o contato), `protecao-faltando` (pacote sem o bloco de proteção, como o da página antiga), `origem` (outro site), `formato`, `campo-desconhecido`, `dado-de-pessoa` e `banco-recusou`. Quem é recusado vê na página o aviso de falha com "Tentar de novo"; a contagem é o que mostra à equipe que isso aconteceu.
 
 ## O que mudou da versão 1 para a 2
 
@@ -167,18 +192,18 @@ A migração não mexe no garçom: o garçom v3, que está no ar, continua chama
 
 ## Como conferir
 
-conferir.sql (v3) devolve uma tabela com 20 linhas: as conferências de 1 a 19 e a linha 99, "tudo certo". **Deu certo quando todas as linhas têm ok = true**, e a linha 99 diz "19 de 19". Com a 001 e sem a 002, só a linha 19 dá false, e a linha 99 diz "18 de 19": é o aviso de que falta rodar a 002. Num banco só com o esquema v2, sem as migrações, as linhas 4, 8 e 14 a 19 dão false, e a linha 99 diz "11 de 19". Em resumo, o esperado:
+conferir.sql (v5) devolve uma tabela com 22 linhas: as conferências de 1 a 21 e a linha 99, "tudo certo". **Deu certo quando todas as linhas têm ok = true**, e a linha 99 diz "21 de 21". Com a 003 e sem a 004, as linhas 4, 8 e 21 dão false, e a linha 99 diz "18 de 21": é o aviso de que falta rodar a 004 (as linhas 4 e 8 esperam a porta registrar_recusa, que só a 004 cria). Com a 001 e sem a 002, as linhas 4, 8 e 19 a 21 dão false ("16 de 21"). Num banco só com o esquema v2, sem as migrações, as linhas 4, 8 e 14 a 21 dão false ("11 de 21"). Até a v4, o mesmo valia com 20 linhas. Em resumo, o esperado:
 
 | n | Conferência | Esperado |
 |---|---|---|
 | 1 | tabelas existem | entregas, eventos, investimento, pessoas |
 | 2 | RLS ligada em todas, sem FORCE | nenhuma fora da regra |
 | 3 | nenhuma política de RLS | 0 políticas |
-| 4 | anon pode só isto | funcao registrar_evento, funcao registrar_fim_quiz |
+| 4 | anon pode só isto | funcao registrar_evento, funcao registrar_fim_quiz, funcao registrar_recusa (v5) |
 | 5 | authenticated pode só isto | nada |
 | 6 | service_role pode só isto | funcao leads_para_planilha |
 | 7 | PUBLIC não tem nada | nada |
-| 8 | funções das portas | as três com definer=true e search_path="" |
+| 8 | funções das portas | as quatro (desde a v5, com registrar_recusa) com definer=true e search_path="" |
 | 9 | função da trava | definer=false e search_path="" |
 | 10 | trava dos eventos ligada | eventos_sem_mudanca (estado O) |
 | 11 | índices únicos e parciais | pessoas_email_unico, pessoas_telefone_unico, os dois com WHERE |
@@ -190,6 +215,8 @@ conferir.sql (v3) devolve uma tabela com 20 linhas: as conferências de 1 a 19 e
 | 17 | valores novos nas listas | interesse_pos_relatorio, nutricao, iasv e essencial |
 | 18 | função da planilha v3 | leads_para_planilha com clique_fim_quiz e o histórico |
 | 19 | função da planilha v4 (respostas), da migração 002 | leads_para_planilha (com a coluna respostas no fim) |
+| 20 | origem e ids do lead, da migração 003 | 9 colunas, 6 restrições, meta-ads nas 2 listas, planilha v5 |
+| 21 | recusas e utm na abertura, da migração 004 | tabela recusas com chave e 3 restrições, registrar_recusa, registrar_evento v2 |
 
 Se alguma linha der false, não use as chaves: anote o número da linha e o que apareceu em "encontrado" e rode a migração de novo. Se continuar false, traga a linha para o repositório.
 

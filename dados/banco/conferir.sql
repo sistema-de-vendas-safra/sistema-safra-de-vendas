@@ -1,7 +1,14 @@
--- Conferência do banco do funil-01, depois de esquema.sql e das migrações 001, 002 e 003 (Postgres, no Supabase)
--- id: banco-conferir · versao 4 · rascunho · otavio: pendente
--- depende_de: banco-rascunho v6, banco-migracao-001 v1, banco-migracao-002 v1, banco-migracao-003 v1, planta-do-banco v5, decisoes v11
--- desatualizado: true (banco-rascunho, banco-migracao-001, banco-migracao-002 e banco-migracao-003 continuam marcados; regra 11.1)
+-- Conferência do banco do funil-01, depois de esquema.sql e das migrações 001 a 004 (Postgres, no Supabase)
+-- id: banco-conferir · versao 5 · rascunho · otavio: pendente
+-- depende_de: banco-rascunho v6, banco-migracao-001 v1, banco-migracao-002 v1, banco-migracao-003 v1, banco-migracao-004 v1, planta-do-banco v5, decisoes v15
+-- desatualizado: true (banco-rascunho e as migrações 001 a 004 continuam marcados; regra 11.1)
+--
+-- Versão 5 (25/11/2026, pedido 24): entra a linha 21, da migração 004
+-- (dados/banco/migracoes/004-utm-na-abertura-e-recusas.sql): a tabela recusas, com a chave e as três
+-- restrições, a função registrar_recusa e o registrar_evento v2, com as três utm de texto livre. As
+-- linhas 4 e 8 passam a contar a porta nova (anon executa registrar_recusa; quatro funções das portas
+-- com definer). Num banco com a 003 e sem a 004, as linhas 4, 8 e 21 dão false ("18 de 21"): é o aviso
+-- de que falta rodar a 004.
 --
 -- Versão 4 (18/11/2026, #121): entra a linha 20, da migração 003
 -- (dados/banco/migracoes/003-origem-e-ids.sql): as nove colunas novas da gaveta eventos, as
@@ -36,9 +43,9 @@
 -- padrão desse papel.
 
 with
--- nomes que o esquema v2 e as migrações 001, 002 e 003 criam
+-- nomes que o esquema v2 e as migrações 001 a 004 criam
 tabelas(nome) as (values ('entregas'), ('pessoas'), ('eventos'), ('investimento')),
-funcoes(nome) as (values ('registrar_fim_quiz'), ('registrar_evento'), ('leads_para_planilha')),
+funcoes(nome) as (values ('registrar_fim_quiz'), ('registrar_evento'), ('leads_para_planilha'), ('registrar_recusa')),
 
 -- as restrições da gaveta eventos que a migração 001 põe, com nome (001-v3.sql, passo 2)
 restricoes_v3(nome) as (values ('eventos_tipo_lista'), ('eventos_quem_grava'), ('eventos_estado_lista'),
@@ -111,15 +118,15 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
          (select pg_catalog.count(*) || ' políticas' from pg_catalog.pg_policies where schemaname = 'public'),
          (select pg_catalog.count(*) = 0 from pg_catalog.pg_policies where schemaname = 'public')
 
-  -- 4. anon (a chave publicável) só executa as duas funções de gravação: o fim do quiz e,
-  --    desde a migração 001, a visita, o início do quiz e o clique. Nada de tabela, visão
-  --    nem outra função.
+  -- 4. anon (a chave publicável) só executa as funções de gravação: o fim do quiz, desde a
+  --    migração 001 a visita, o início do quiz e o clique, e desde a 004 a contagem das recusas.
+  --    Nada de tabela (nem a recusas), visão nem outra função.
   union all
   select 4, 'anon pode só isto',
-         'funcao registrar_evento, funcao registrar_fim_quiz',
+         'funcao registrar_evento, funcao registrar_fim_quiz, funcao registrar_recusa',
          coalesce((select pg_catalog.string_agg(objeto, ', ' order by objeto) from pode where papel = 'anon'), 'nada'),
          coalesce((select pg_catalog.array_agg(objeto order by objeto) from pode where papel = 'anon')
-                  = array['funcao registrar_evento', 'funcao registrar_fim_quiz'], false)
+                  = array['funcao registrar_evento', 'funcao registrar_fim_quiz', 'funcao registrar_recusa'], false)
 
   -- 5. authenticated (login de usuário, que a casa não usa) não pode nada.
   union all
@@ -146,17 +153,17 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
                      from objetos o, pg_catalog.aclexplode(o.acl) a where a.grantee = 0), 'nada'),
          not exists (select 1 from objetos o, pg_catalog.aclexplode(o.acl) a where a.grantee = 0)
 
-  -- 8. As três funções das portas rodam com os direitos do dono (SECURITY DEFINER) e com
-  --    search_path vazio.
+  -- 8. As quatro funções das portas rodam com os direitos do dono (SECURITY DEFINER) e com
+  --    search_path vazio (a quarta, registrar_recusa, desde a 004).
   union all
   select 8, 'funções das portas: SECURITY DEFINER e search_path vazio',
-         'leads_para_planilha, registrar_evento e registrar_fim_quiz, as três com definer e search_path=""',
+         'leads_para_planilha, registrar_evento, registrar_fim_quiz e registrar_recusa, as quatro com definer e search_path=""',
          coalesce((select pg_catalog.string_agg(p.proname || ' (definer=' || p.prosecdef || ', '
                             || coalesce(pg_catalog.array_to_string(p.proconfig, ' '), 'sem config') || ')',
                             ', ' order by p.proname)
                      from pg_catalog.pg_proc p join funcoes f on f.nome = p.proname
                     where p.pronamespace = 'public'::regnamespace), 'nenhuma'),
-         (select pg_catalog.count(*) = 3
+         (select pg_catalog.count(*) = 4
             from pg_catalog.pg_proc p join funcoes f on f.nome = p.proname
            where p.pronamespace = 'public'::regnamespace
              and p.prosecdef and p.proconfig = array['search_path=""'])
@@ -354,6 +361,30 @@ conferencias(n, conferencia, esperado, encontrado, ok) as (
          and exists (select 1 from pg_catalog.pg_proc p
                       where p.pronamespace = 'public'::regnamespace and p.proname = 'leads_para_planilha'
                         and pg_catalog.pg_get_function_result(p.oid) like '%, qualificado boolean)')
+
+  -- 21. Migração 004 · as recusas do garçom e as utm na abertura (pedido 24): a tabela recusas com a
+  --     chave (dia, porta, motivo) e as três restrições conferidas, a função registrar_recusa(text, text)
+  --     e o registrar_evento v2, que aceita utm_medium, utm_content e utm_term.
+  union all
+  select 21, 'recusas e utm na abertura (migração 004)',
+         'tabela recusas com chave e 3 restrições, registrar_recusa, registrar_evento v2',
+         (case when pg_catalog.to_regclass('public.recusas') is null then 'sem a tabela recusas, '
+               else 'tabela recusas com ' || (select pg_catalog.count(*) from pg_catalog.pg_constraint c
+                                                 where c.conrelid = pg_catalog.to_regclass('public.recusas') and c.convalidated
+                                                   and c.conname in ('recusas_chave', 'recusas_porta_lista', 'recusas_motivo_formato', 'recusas_quantas_positiva'))
+                    || ' de 4 restrições, ' end)
+         || case when pg_catalog.to_regprocedure('public.registrar_recusa(text, text)') is null then 'sem registrar_recusa, ' else 'registrar_recusa, ' end
+         || coalesce((select 'registrar_evento ' || case when p.prosrc like '%''utm_content''%' then 'v2' else 'antigo' end
+                        from pg_catalog.pg_proc p
+                       where p.pronamespace = 'public'::regnamespace and p.proname = 'registrar_evento'), 'sem registrar_evento'),
+         pg_catalog.to_regclass('public.recusas') is not null
+         and (select pg_catalog.count(*) = 4 from pg_catalog.pg_constraint c
+               where c.conrelid = pg_catalog.to_regclass('public.recusas') and c.convalidated
+                 and c.conname in ('recusas_chave', 'recusas_porta_lista', 'recusas_motivo_formato', 'recusas_quantas_positiva'))
+         and pg_catalog.to_regprocedure('public.registrar_recusa(text, text)') is not null
+         and exists (select 1 from pg_catalog.pg_proc p
+                      where p.pronamespace = 'public'::regnamespace and p.proname = 'registrar_evento'
+                        and p.prosrc like '%''utm_content''%')
 )
 
 select n, conferencia, esperado, encontrado, ok from conferencias

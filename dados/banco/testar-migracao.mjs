@@ -1,6 +1,7 @@
-// Teste das migrações 001 (banco v2 para v3), 002 (as respostas na planilha) e 003 (a origem e os ids
-// do lead; #121, 18/11/2026) e da limpeza dos leads de teste num Postgres local, sem rede e sem serviço
-// real (etapa 32; planilha do SDR v3, 15/11/2026)
+// Teste das migrações 001 (banco v2 para v3), 002 (as respostas na planilha), 003 (a origem e os ids
+// do lead; #121, 18/11/2026) e 004 (as utm na abertura e a contagem das recusas; pedido 24, 25/11/2026)
+// e da limpeza dos leads de teste (v2, com a linha real de 09/11) num Postgres local, sem rede e sem
+// serviço real (etapa 32; planilha do SDR v3, 15/11/2026)
 // Parte de dados/banco/ (ver README.md desta pasta, "Conferido nesta máquina"). Confere
 // dados/banco/migracoes/001-v3.sql, dados/banco/migracoes/002-respostas-na-planilha.sql,
 // dados/banco/migracoes/003-origem-e-ids.sql (seção 8), dados/banco/conferir.sql (v4),
@@ -24,6 +25,7 @@
 //      entre a 002 e a 003). A 003 roda duas vezes logo depois da 002, sobre os mesmos dados.
 //   6. As funções novas e alteradas, trocando de papel (SET ROLE anon, service_role, authenticated),
 //      com a coluna respostas da função da planilha.
+//   9. (pedido 24) A migração 004: as três utm no início do quiz e a contagem das recusas, trocando de papel.
 //   7. A limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes: só quem tem o nome TESTE
 //      e o e-mail @teste.invalid sai, com os eventos dele; quem tem só uma das marcas, a pessoa de
 //      mentira "de verdade" e os eventos sem pessoa ficam; a trava continua ligada.
@@ -45,6 +47,9 @@ const ESQUEMA = ler('dados/banco/esquema.sql');
 const MIGRACAO = ler('dados/banco/migracoes/001-v3.sql');
 const MIGRACAO_002 = ler('dados/banco/migracoes/002-respostas-na-planilha.sql');
 const MIGRACAO_003 = ler('dados/banco/migracoes/003-origem-e-ids.sql');
+const MIGRACAO_004 = ler('dados/banco/migracoes/004-utm-na-abertura-e-recusas.sql');
+// o código da linha real do Otávio de 09/11/2026 (pedido 24, item 5); no teste, uma pessoa de mentira com esse código
+const ID_LINHA_DE_09_11 = 'f794c36d-7116-4ab3-aec3-54a147de97bc';
 const LIMPEZA = ler('dados/banco/limpar-leads-de-teste.sql');
 const CONFERIR = ler('dados/banco/conferir.sql');
 const CATALOGO = ler('dados/banco/catalogo-prototipo.sql');
@@ -173,7 +178,7 @@ console.log('INFO   · ' + versao + ', papéis anon, authenticated, service_role
   const linhas = await rodarConferir();
   const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
   const final = linhas.find(l => l.n === 99);
-  conferir(final.ok === false && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19, 20]),
+  conferir(final.ok === false && JSON.stringify(falsas) === JSON.stringify([4, 8, 14, 15, 16, 17, 18, 19, 20, 21]),
     'conferir.sql v3 num banco só v2 avisa que faltam as migrações: false nas linhas ' + falsas.join(', ') + ' (' + final.encontrado + ')');
 }
 
@@ -228,12 +233,12 @@ for (const vez of ['primeira', 'segunda']) {
 }
 
 {
-  // entre a 001 e a 002, o conferir.sql v4 avisa nas linhas 19 e 20
+  // entre a 001 e a 002, o conferir.sql v5 avisa nas linhas 19 a 21 e nas 4 e 8 (a porta da 004)
   const linhas = await rodarConferir();
   const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
   const final = linhas.find(l => l.n === 99);
-  conferir(JSON.stringify(falsas) === '[19,20]' && final.encontrado === '18 de 20',
-    'conferir.sql v4 com a 001 e sem a 002: false só nas linhas 19 e 20 (' + final.encontrado + ')');
+  conferir(JSON.stringify(falsas) === '[4,8,19,20,21]' && final.encontrado === '16 de 21',
+    'conferir.sql v5 com a 001 e sem a 002: false só nas linhas 4, 8, 19, 20 e 21 (' + final.encontrado + ')');
 }
 
 // ═══ 4b. Migração 002 duas vezes ═══
@@ -265,12 +270,12 @@ for (const vez of ['primeira', 'segunda']) {
   await so2.close();
 }
 {
-  // entre a 002 e a 003, o conferir.sql v4 avisa só na linha 20
+  // entre a 002 e a 003, o conferir.sql v5 avisa nas linhas 20 e 21 e nas 4 e 8
   const linhas = await rodarConferir();
   const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
   const final = linhas.find(l => l.n === 99);
-  conferir(JSON.stringify(falsas) === '[20]' && final.encontrado === '19 de 20',
-    'conferir.sql v4 com a 002 e sem a 003: false só na linha 20 (' + final.encontrado + ')');
+  conferir(JSON.stringify(falsas) === '[4,8,20,21]' && final.encontrado === '17 de 21',
+    'conferir.sql v5 com a 002 e sem a 003: false só nas linhas 4, 8, 20 e 21 (' + final.encontrado + ')');
 }
 
 // ═══ 4c. Migração 003 duas vezes ═══
@@ -310,6 +315,46 @@ for (const vez of ['primeira', 'segunda']) {
     'num banco sem a migração 002, a 003 para no passo 0 e não cria coluna nenhuma');
   await so1.close();
 }
+{
+  // entre a 003 e a 004, o conferir.sql v5 avisa nas linhas 4, 8 e 21
+  const linhas = await rodarConferir();
+  const falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
+  const final = linhas.find(l => l.n === 99);
+  conferir(JSON.stringify(falsas) === '[4,8,21]' && final.encontrado === '18 de 21',
+    'conferir.sql v5 com a 003 e sem a 004: false só nas linhas 4, 8 e 21 (' + final.encontrado + ')');
+}
+
+// ═══ 4d. Migração 004 duas vezes ═══
+secao('3d. Migração 004 duas vezes, sobre os dados');
+let depoisDa004 = null;
+{
+  const antes004 = await fotografia();
+  for (const vez of ['primeira', 'segunda']) {
+    let erro = null;
+    try { await comoDono(MIGRACAO_004); } catch (e) { erro = e; }
+    conferir(!erro, 'migracoes/004-utm-na-abertura-e-recusas.sql aplicada pelo dono, ' + vez + ' vez, sem erro' + (erro ? ' (' + erro.message + ')' : ''));
+    const depois = await fotografia();
+    conferir(JSON.stringify(depois) === JSON.stringify(antes004),
+      vez + ' vez: os dados que já existiam não mudaram (' + depois.pessoas + ' pessoas e ' + depois.eventos + ' eventos, cada linha igual)');
+    const h = await esquemaAtual();
+    if (vez === 'primeira') depoisDa004 = h;
+    else conferir(h === depoisDa004, 'segunda vez: restrições, colunas, funções e permissões iguais às da primeira');
+  }
+  const r = await umaLinha(`select count(*)::int as n from public.recusas`);
+  conferir(r.n === 0, 'a tabela recusas nasce vazia');
+}
+{
+  // a 004 recusa rodar num banco com a 002 e sem a 003, e não muda nada
+  const so2 = new PGlite();
+  await so2.exec(PAPEIS_DE_MENTIRA);
+  await so2.exec('set role dono'); await so2.exec(ESQUEMA); await so2.exec(MIGRACAO); await so2.exec(MIGRACAO_002); await so2.exec('reset role');
+  let erro = null;
+  try { await so2.exec(MIGRACAO_004); } catch (e) { erro = e; }
+  await so2.exec('rollback');
+  const tabela = (await so2.query(`select to_regclass('public.recusas') is null as sem`)).rows[0].sem;
+  conferir(erro && /migração 003/.test(erro.message) && tabela, 'num banco sem a migração 003, a 004 para no passo 0 e não cria a tabela recusas');
+  await so2.close();
+}
 
 // ═══ 5. conferir.sql ═══
 secao('4. conferir.sql v3 depois das migrações');
@@ -319,7 +364,7 @@ let totalConferir = '';
   for (const l of linhas.filter(l => l.n !== 99 && !l.ok)) conferir(false, 'conferir.sql ' + l.n + ' (' + l.conferencia + '): encontrado ' + l.encontrado);
   const final = linhas.find(l => l.n === 99);
   totalConferir = final.encontrado;
-  conferir(final.ok === true && final.encontrado === '20 de 20', 'conferir.sql: linha "tudo certo" = ' + final.ok + ' (' + final.encontrado + ')');
+  conferir(final.ok === true && final.encontrado === '21 de 21', 'conferir.sql: linha "tudo certo" = ' + final.ok + ' (' + final.encontrado + ')');
 }
 
 // ═══ 6. Funções, trocando de papel ═══
@@ -472,13 +517,15 @@ conferir(await sdr(`update public.eventos set clique_fim_quiz = 'agora-nao' wher
   await comoDono(MIGRACAO);
   linhas = await rodarConferir();
   falsas = linhas.filter(l => l.n !== 99 && !l.ok).map(l => l.n);
-  conferir(JSON.stringify(falsas) === '[19,20]',
-    'só a 001 de novo: conferir.sql avisa nas linhas 19 e 20 (faltam a 002 e a 003)');
+  // a função registrar_recusa (004) continua lá, com definer: só perde a permissão do anon (linha 4)
+  conferir(JSON.stringify(falsas) === '[4,19,20,21]',
+    'só a 001 de novo: conferir.sql avisa nas linhas 4 e 19 a 21 (faltam a 002, a 003 e a 004; veio ' + falsas.join(', ') + ')');
   await comoDono(MIGRACAO_002);
   await comoDono(MIGRACAO_003);
+  await comoDono(MIGRACAO_004);
   const depois = await fotografia();
-  conferir(JSON.stringify(depois) === JSON.stringify(antesDeNovo) && (await esquemaAtual()) === depoisDa003,
-    'a 002 e a 003 de novo deixam o esquema igual ao de antes, sem mudar nenhum dado');
+  conferir(JSON.stringify(depois) === JSON.stringify(antesDeNovo) && (await esquemaAtual()) === depoisDa004,
+    'a 002, a 003 e a 004 de novo deixam o esquema igual ao de antes, sem mudar nenhum dado');
 }
 
 // e o conferir.sql no fim, de novo
@@ -519,28 +566,40 @@ secao('7. Limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes');
   }
   // e uma visita sem pessoa (sessão sem fim do quiz)
   await gravarEvento('anon', evento('visita', 'sessao-limpeza-5'));
+  // v2 (pedido 24, item 5): a linha "real" de 09/11, de mentira, com o código da linha do Otávio, criada em 09/11/2026 às
+  // 08h56 de Brasília e sem as duas marcas; o fim do quiz dela entra pela porta, achado pelo e-mail
+  await comoDono(`insert into public.pessoas (id_pessoa, nome, telefone, email, consentimento_whatsapp, consentimento_email,
+      consentimento_texto, consentimento_em, primeira_utm_source, primeira_utm_campaign, criado_em)
+    values ('${ID_LINHA_DE_09_11}', 'Pessoa Linha De Nove', '+55 (00) 90000-0099', 'linha.nove@exemplo.invalid', 'sim', 'sim',
+      'Texto do consentimento do teste (mentira).', '2026-11-09 11:56:00+00', 'stories', 'funil-01', '2026-11-09 11:56:00+00')`);
+  await gravarEvento('anon', evento('visita', 'sessao-limpeza-9'));
+  await gravarFim(pessoaFora(29, 'Pessoa Linha De Nove', 'linha.nove@exemplo.invalid', 'sessao-limpeza-9'));
 
+  // "fora" = quem fica: sem as duas marcas e sem o código da linha de 09/11
+  const N = `'${ID_LINHA_DE_09_11}'::uuid`;
   const contagem = async () => umaLinha(`
     select (select count(*)::int from public.pessoas where nome ilike 'TESTE%' and lower(email) like '%@teste.invalid') as pessoas_teste,
            (select count(*)::int from public.eventos e join public.pessoas p using (id_pessoa)
              where p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid') as eventos_teste,
-           (select count(*)::int from public.pessoas where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid')) as pessoas_fora,
+           (select count(*)::int from public.pessoas where id_pessoa = ${N}) as linha_nove,
+           (select count(*)::int from public.eventos where id_pessoa = ${N}) as eventos_nove,
+           (select count(*)::int from public.pessoas where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid') and id_pessoa <> ${N}) as pessoas_fora,
            (select count(*)::int from public.eventos e join public.pessoas p using (id_pessoa)
-             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid')) as eventos_fora,
+             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid') and p.id_pessoa <> ${N}) as eventos_fora,
            (select count(*)::int from public.eventos where id_pessoa is null) as sem_pessoa,
            (select md5(coalesce(string_agg(to_jsonb(p)::text, '|' order by p.id_pessoa), '')) from public.pessoas p
-             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid')) as h_pessoas_fora,
+             where not (p.nome ilike 'TESTE%' and lower(p.email) like '%@teste.invalid') and p.id_pessoa <> ${N}) as h_pessoas_fora,
            (select md5(coalesce(string_agg(to_jsonb(e)::text, '|' order by e.id_evento), '')) from public.eventos e
              where e.id_pessoa is null or e.id_pessoa in (select id_pessoa from public.pessoas
-                                                          where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid'))) as h_eventos_fora`);
+                                                          where not (nome ilike 'TESTE%' and lower(email) like '%@teste.invalid') and id_pessoa <> ${N})) as h_eventos_fora`);
   // os fins de quiz novos passam da margem de 1 minuto da planilha (o mesmo contorno de antes)
   await db.exec(`set session_replication_role = replica;
     update public.eventos set gravado_em = gravado_em - interval '2 minutes' where tipo = 'fim_quiz' and gravado_em > now() - interval '1 minute';
     set session_replication_role = origin;`);
   const antesDaLimpeza = await contagem();
-  conferir(antesDaLimpeza.pessoas_teste === 6 && antesDaLimpeza.pessoas_fora === 3 && antesDaLimpeza.eventos_fora === 10 && antesDaLimpeza.sem_pessoa >= 2,
+  conferir(antesDaLimpeza.pessoas_teste === 6 && antesDaLimpeza.linha_nove === 1 && antesDaLimpeza.eventos_nove === 2 && antesDaLimpeza.pessoas_fora === 3 && antesDaLimpeza.eventos_fora === 10 && antesDaLimpeza.sem_pessoa >= 2,
     'antes da limpeza: ' + antesDaLimpeza.pessoas_teste + ' pessoas de teste com ' + antesDaLimpeza.eventos_teste + ' eventos; ' + antesDaLimpeza.pessoas_fora +
-    ' pessoas que ficam (só o nome TESTE, só o e-mail de teste, a "de verdade" de mentira) com ' + antesDaLimpeza.eventos_fora + ' eventos; ' + antesDaLimpeza.sem_pessoa + ' eventos sem pessoa');
+    ' pessoas que ficam (só o nome TESTE, só o e-mail de teste, a "de verdade" de mentira) com ' + antesDaLimpeza.eventos_fora + ' eventos; ' + antesDaLimpeza.sem_pessoa + ' eventos sem pessoa; a linha de 09/11 com ' + antesDaLimpeza.eventos_nove + ' eventos (v2)');
 
   const rodarLimpeza = async () => {
     const saidas = await comoDono(LIMPEZA);
@@ -549,15 +608,17 @@ secao('7. Limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes');
   };
   let tabela = null, erro = null;
   try { tabela = await rodarLimpeza(); } catch (e) { erro = e; }
-  conferir(!erro && tabela && tabela.length === 6 && tabela.every(l => l.ok === true),
-    'limpar-leads-de-teste.sql pelo dono, primeira vez: a tabela do fim com 6 linhas, todas ok' + (erro ? ' (' + erro.message + ')' : ''));
+  conferir(!erro && tabela && tabela.length === 7 && tabela.every(l => l.ok === true),
+    'limpar-leads-de-teste.sql (v2) pelo dono, primeira vez: a tabela do fim com 7 linhas, todas ok' + (erro ? ' (' + erro.message + ')' : ''));
   const porN = Object.fromEntries((tabela || []).map(l => [l.n, l]));
-  conferir(porN[1] && porN[1].antes === '6' && porN[1].depois === '0' && porN[2].antes === String(antesDaLimpeza.eventos_teste) && porN[2].depois === '0',
-    'a tabela do fim mostra o que saiu, só em números: pessoas de teste 6 para 0, eventos delas ' + (porN[2] && porN[2].antes) + ' para 0');
+  conferir(porN[1] && porN[1].antes === '6' && porN[1].depois === '0' && porN[2].antes === '1' && porN[2].depois === '0'
+      && porN[3].antes === String(antesDaLimpeza.eventos_teste + antesDaLimpeza.eventos_nove) && porN[3].depois === '0',
+    'a tabela do fim mostra o que saiu, só em números: pessoas de teste 6 para 0, a linha de 09/11 1 para 0, eventos delas ' + (porN[3] && porN[3].antes) + ' para 0');
   conferir(!JSON.stringify(tabela || []).match(/TESTE |teste\.invalid|exemplo\.invalid|90000/),
     'a tabela do fim não tem nome, e-mail nem telefone');
   const depoisDaLimpeza = await contagem();
   conferir(depoisDaLimpeza.pessoas_teste === 0 && depoisDaLimpeza.eventos_teste === 0, 'nenhuma pessoa de teste e nenhum evento delas sobrou');
+  conferir(depoisDaLimpeza.linha_nove === 0 && depoisDaLimpeza.eventos_nove === 0, 'a linha de 09/11 e os eventos dela saíram, achados só pelo código (v2)');
   conferir(depoisDaLimpeza.pessoas_fora === 3 && depoisDaLimpeza.h_pessoas_fora === antesDaLimpeza.h_pessoas_fora,
     'ficaram as 3 pessoas que não têm as duas marcas (só o nome TESTE, só o e-mail de teste e a "de verdade" de mentira), cada linha igual');
   conferir(depoisDaLimpeza.eventos_fora === antesDaLimpeza.eventos_fora && depoisDaLimpeza.sem_pessoa === antesDaLimpeza.sem_pessoa && depoisDaLimpeza.h_eventos_fora === antesDaLimpeza.h_eventos_fora,
@@ -572,7 +633,7 @@ secao('7. Limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes');
   erro = null;
   try { tabela = await rodarLimpeza(); } catch (e) { erro = e; }
   const p2 = Object.fromEntries((tabela || []).map(l => [l.n, l]));
-  conferir(!erro && tabela.every(l => l.ok === true) && p2[1].antes === '0' && p2[2].antes === '0' && JSON.stringify(await contagem()) === JSON.stringify(depoisDaLimpeza),
+  conferir(!erro && tabela.every(l => l.ok === true) && p2[1].antes === '0' && p2[2].antes === '0' && p2[3].antes === '0' && JSON.stringify(await contagem()) === JSON.stringify(depoisDaLimpeza),
     'segunda vez: não acha ninguém, não apaga nada, mostra zero, e o banco fica igual' + (erro ? ' (' + erro.message + ')' : ''));
   const linhas = await rodarConferir();
   conferir(linhas.find(l => l.n === 99).ok === true, 'conferir.sql depois da limpeza: ' + linhas.find(l => l.n === 99).encontrado);
@@ -590,6 +651,24 @@ secao('7. Limpeza dos leads de teste (limpar-leads-de-teste.sql), duas vezes');
   await comoDono('alter table public.eventos enable trigger eventos_sem_mudanca');
   const r = await umaLinha(`select count(*)::int as n from public.pessoas where email = 'migracao30@teste.invalid'`);
   conferir(erro && /trava/.test(erro.message) && r.n === 1, 'com a trava desligada antes, a limpeza para no passo 0 e não apaga nada');
+}
+{
+  // v2: o código da linha de 09/11 numa pessoa criada em outro dia é código errado: a limpeza para no passo 0 e não apaga nada
+  await comoDono(`insert into public.pessoas (id_pessoa, nome, telefone, email, consentimento_whatsapp, consentimento_email,
+      consentimento_texto, consentimento_em, criado_em)
+    values ('${ID_LINHA_DE_09_11}', 'Pessoa Outro Dia', '+55 (00) 90000-0098', 'outro.dia@exemplo.invalid', 'sim', 'sim',
+      'Texto do consentimento do teste (mentira).', '2026-11-10 12:00:00+00', '2026-11-10 12:00:00+00')`);
+  const testesAntes = await umaLinha(`select count(*)::int as n from public.pessoas where nome ilike 'TESTE%' and lower(email) like '%@teste.invalid'`);
+  let erro = null;
+  await db.exec('set role dono');
+  try { await db.exec(LIMPEZA); } catch (e) { erro = e; }
+  await db.exec('rollback');
+  await db.exec('reset role');
+  const r = await umaLinha(`select (select count(*)::int from public.pessoas where id_pessoa = '${ID_LINHA_DE_09_11}') as nove,
+                                   (select count(*)::int from public.pessoas where nome ilike 'TESTE%' and lower(email) like '%@teste.invalid') as testes`);
+  conferir(erro && /código errado/.test(erro.message) && r.nove === 1 && r.testes === testesAntes.n && testesAntes.n > 0,
+    'código da linha de 09/11 numa pessoa criada em outro dia: a limpeza para no passo 0 e não apaga nada, nem os ' + testesAntes.n + ' de teste (v2)');
+  await comoDono(`delete from public.pessoas where id_pessoa = '${ID_LINHA_DE_09_11}'`);
 }
 
 // ═══ 8. Migração 003 · a origem e os ids do lead (#121) ═══
@@ -685,6 +764,42 @@ secao('8. Migração 003 · a origem e os ids, pela porta do fim do quiz');
     'sem mudança de permissão: authenticated não grava, anon não lê a tabela');
   const linhas = await rodarConferir();
   conferir(linhas.find(l => l.n === 99).ok === true, 'conferir.sql no fim da seção 8: ' + linhas.find(l => l.n === 99).encontrado);
+}
+
+// ═══ 9. Migração 004 · as utm na abertura e a contagem das recusas (pedido 24) ═══
+secao('9. Migração 004 · as utm de texto livre no início do quiz e a contagem das recusas, trocando de papel');
+{
+  const S = 'sessao-utm-abertura';
+  const ultimoInicio = (sessao) => umaLinha(`select utm_medium, utm_content, utm_term from public.eventos where id_sessao = $1 and tipo = 'inicio_quiz' order by id_evento desc limit 1`, [sessao]);
+  conferir(await gravarEvento('anon', evento('inicio_quiz', S, { utm_medium: 'cpc', utm_content: 'criativo-07', utm_term: 'donos_de_agencia' })) === 'ok',
+    'anon grava o início do quiz com utm_medium, utm_content e utm_term');
+  let r = await ultimoInicio(S);
+  conferir(r && r.utm_medium === 'cpc' && r.utm_content === 'criativo-07' && r.utm_term === 'donos_de_agencia', 'as três utm gravadas como vieram');
+  conferir(await gravarEvento('anon', evento('inicio_quiz', S + '-2', { utm_medium: 'COM ESPAÇO', utm_content: 'x'.repeat(101), utm_term: 'ok_1' })) === 'ok',
+    'utm fora do formato não recusa o início do quiz');
+  r = await ultimoInicio(S + '-2');
+  conferir(r && r.utm_medium === '' && r.utm_content === '' && r.utm_term === 'ok_1', 'fora do formato, a utm é gravada vazia; a que está no formato fica');
+  conferir(await gravarEvento('anon', evento('inicio_quiz', S + '-3')) === 'ok', 'o pacote antigo, sem as três, continua gravando');
+  r = await ultimoInicio(S + '-3');
+  conferir(r && r.utm_medium === '' && r.utm_content === '' && r.utm_term === '', 'sem as três, gravadas vazias');
+  conferir(await gravarEvento('anon', evento('inicio_quiz', S + '-4', { fbclid: 'IwAR0abc' })) === '22023', 'o fbclid continua fora desta porta (22023)');
+
+  // a contagem das recusas: só registrar_recusa grava, e só número
+  const recusar = (papel, porta, motivo) => codigoComo(papel, 'select public.registrar_recusa($1, $2)', [porta, motivo]);
+  conferir(await recusar('anon', 'fim-quiz', 'armadilha') === 'ok' && await recusar('anon', 'fim-quiz', 'armadilha') === 'ok' && await recusar('anon', 'evento', 'limite') === 'ok',
+    'anon soma recusas pela registrar_recusa');
+  const linhas = (await db.query(`select porta, motivo, quantas, dia = (now() at time zone 'America/Sao_Paulo')::date as hoje from public.recusas order by porta, motivo`)).rows;
+  conferir(JSON.stringify(linhas.map(l => [l.porta, l.motivo, l.quantas, l.hoje])) === JSON.stringify([['evento', 'limite', 1, true], ['fim-quiz', 'armadilha', 2, true]]),
+    'uma linha por dia (Brasília), porta e motivo, com quantas: ' + linhas.map(l => l.porta + '/' + l.motivo + '=' + l.quantas).join(', '));
+  conferir(await recusar('anon', 'planilha', 'limite') === '23514', 'porta fora da lista é recusada pela restrição (23514)');
+  conferir(await recusar('anon', 'fim-quiz', 'fulano@exemplo.invalid') === '23514' && await recusar('anon', 'fim-quiz', 'banco 400') === '23514' && await recusar('anon', 'fim-quiz', 'x'.repeat(41)) === '23514',
+    'motivo fora do formato (e-mail, número, espaço, longo demais) é recusado: dado pessoal não entra (23514)');
+  conferir(await codigoComo('anon', 'select * from public.recusas') === '42501' && await codigoComo('anon', `insert into public.recusas (dia, porta, motivo, quantas) values (current_date, 'evento', 'limite', 99)`) === '42501',
+    'anon não lê nem grava a tabela recusas direto (42501)');
+  conferir(await recusar('authenticated', 'evento', 'limite') === '42501' && await recusar('service_role', 'evento', 'limite') === '42501' && await recusar('outro_papel', 'evento', 'limite') === '42501',
+    'authenticated, service_role e um papel qualquer não executam registrar_recusa (42501)');
+  const c = await rodarConferir();
+  conferir(c.find(l => l.n === 99).ok === true, 'conferir.sql no fim da seção 9: ' + c.find(l => l.n === 99).encontrado);
 }
 
 await db.close();
