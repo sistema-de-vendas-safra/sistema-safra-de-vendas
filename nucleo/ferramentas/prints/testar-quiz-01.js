@@ -1,4 +1,4 @@
-// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v4), sem rede de verdade.
+// Teste do quiz-01 (entregas/quizzes/quiz-01/pagina/index.html, v12), sem rede de verdade.
 // Uso: node nucleo/ferramentas/prints/testar-quiz-01.js
 // A página é servida por um servidorzinho em 127.0.0.1, só durante o teste, em /analise/ (como no site
 // do protótipo, desde a decisão #120; antes, em /quiz/), com as fontes em /analise/fontes/ tiradas de nucleo/ferramentas/fontes/ (como faz o montador).
@@ -13,6 +13,10 @@
 // 5. Envio que falha: aviso visível, diagnóstico na tela, "Tentar de novo" reenvia o mesmo pacote;
 //    no eliminatório, o clique feito durante a falha só sai depois de o reenvio gravar (32.2).
 // 6. Aberta direto do arquivo (file://): percorre tudo e nada é enviado.
+// 7. (v12) Vendas zero, com o nome da empresa: a conta aguenta e o topo mostra a empresa.
+// 8. (v12) Quem não lembra dos números: o relatório e a conversa com o aviso de exemplo.
+// 9. (v12) Funil saudável, qualificado e não qualificado: a tabela de crescimento com os números da pessoa.
+// 10. (v12) Números fora de ordem: o aviso, o botão aceso e o relatório sem conta quebrada.
 // Conversa gratuita (quiz-01-pagina v8; pedido do Otávio, 15/11/2026): o qualificado com etapa abaixo da meta vai, depois do
 // contato, à tela "conversa" (no lugar da oferta do plano de 90 dias): as falas e as opções com o texto aprovado; "Sim, eu quero"
 // (exemplo) e "Agora não" (falha) dão cada um a sua resposta e mandam os cliques quero-conversa e agora-nao; o botão
@@ -41,6 +45,14 @@
 // contêiner não é publicado, e anotado como requisição para outro endereço: nenhum pedido ao Google sai da máquina.
 // Tira prints em 375 e 1440 pixels em entregas/quizzes/quiz-01/prints/ (e os do aviso, aviso-375 e aviso-1440); em 360, nenhum.
 // Dados de pessoa de teste, marcados (#102): nome começando por TESTE, e-mail @teste.invalid.
+// v12 da página (25/11/2026, #123; pedido 23, parte 23.4): a tela dos números só em quantidade (os textos novos, nenhum "%" além do
+// "= n% de", o botão que só acende com os cinco e vendas podendo ser zero, a dica); as pessoas de teste escrevem a linha de
+// pré-qualificados em número (200 · 100 e 30 · 15, os mesmos funis de antes, as mesmas notas); a pessoa de teste se chama Joana, não
+// Marina, o nome do exemplo da página. O relatório de cada pessoa com os números dela, conferidos contra uma conta feita aqui à parte
+// (contaAParte) e contra o perfil do painel da conversa gratuita, e o dinheiro na mesa igual ao que o lead score usou; sem empresa, o
+// topo sem nome de empresa; casos novos: vendas zero (com empresa) e quem não lembra (o aviso de exemplo e nenhuma frase que dê o
+// exemplo como dela); o funil pequeno da faixa c sem venda a mais; nada de NaN, Infinity, undefined ou negativo; o painel "Telas" e a
+// abertura continuam com o exemplo. Prints novos: numeros, relatorio-pessoa e relatorio-exemplo, em 375 e 1440.
 const { chromium } = require('playwright-core');
 const path = require('path');
 const fs = require('fs');
@@ -55,18 +67,20 @@ const LISTA_FONTES = JSON.parse(fs.readFileSync(path.join(FONTES, 'fontes.json')
 const BUSCA = '?utm_source=bio&utm_campaign=funil-01';
 const ARQUIVO = 'file://' + path.join(PASTA, 'index.html') + BUSCA;
 const PRINTS = path.join(RAIZ, 'entregas/quizzes/quiz-01/prints');
-const PESSOA = { nome: 'TESTE Marina', email: 'marina@teste.invalid', tel: '00900000000' };
+// v12 da página (#123): a pessoa de teste não se chama mais Marina, o nome do exemplo da página, para a conferência
+// "nenhum valor de exemplo no relatório de quem fez o quiz" valer
+const PESSOA = { nome: 'TESTE Joana', email: 'joana@teste.invalid', tel: '00900000000' };
 const SESSAO_DA_LANDING = 'sessao-landing-teste-0001';
 // copy v3 (M16; #122, 18/11/2026): a caixa cobre também o uso do e-mail e do WhatsApp, em código, para medir os anúncios da Meta
 const CAIXA = 'Aceito receber o meu diagnóstico e o contato da equipe por WhatsApp, por mensagem ou ligação, e por e-mail, e o uso do meu e-mail e do meu WhatsApp, em código, para medir os anúncios da Meta.';
 const NOTA_LEAD_SCORE = 'Anotado. Seu interesse fica registrado com o seu diagnóstico.';
-// A conversa gratuita com o Junior (v8): os textos aprovados pelo Otávio, letra por letra, com o nome do teste (Marina)
+// A conversa gratuita com o Junior (v8): os textos aprovados pelo Otávio, letra por letra, com o nome do teste (Joana)
 const CONVERSA = {
-  fala: 'Antes de abrir o seu diagnóstico, uma pergunta, Marina.',
+  fala: 'Antes de abrir o seu diagnóstico, uma pergunta, Joana.',
   pergunta: 'Quer uma conversa gratuita comigo? Eu te apresento um plano de ação de 90 dias para aumentar a eficácia do sistema de vendas da sua empresa.',
   opcoes: ['Sim, eu quero', 'Agora não'],
-  sim: 'Fechou, Marina. Em alguns minutos alguém do meu time chama você no WhatsApp para marcar.',
-  nao: 'Tudo bem, Marina. O seu diagnóstico está pronto.',
+  sim: 'Fechou, Joana. Em alguns minutos alguém do meu time chama você no WhatsApp para marcar.',
+  nao: 'Tudo bem, Joana. O seu diagnóstico está pronto.',
   botao: 'Ver meu diagnóstico'
 };
 // Textos da oferta antiga do plano de 90 dias (até a v7), que não podem sobrar
@@ -105,22 +119,74 @@ function servir() {
 // Exemplo de conferência de base/lead-score.md (v3, mesmos pontos da v2):
 // faturamento R$ 500 mil a R$ 1,5 milhão (15) · venda média R$ 10 mil (15) · 2 ou 3 vendedores (10) · 200 leads (10)
 // CRM em dia (10) · dono (15) · dinheiro na mesa de 4 vezes o custo mensal (15) · tentativas "1 ou 2" e sobra "Alguns" (6) = 96
-// O funil 200 · 50% · 50 · 40 · 2, com venda de R$ 10 mil, deixa 6 vendas na mesa: R$ 60 mil = 4 × (R$ 45 mil ÷ 3).
+// O funil 200 · 100 · 50 · 40 · 2 (até a v11 da página, 200 · 50% · 50 · 40 · 2), com venda de R$ 10 mil, deixa 6 vendas na mesa: R$ 60 mil = 4 × (R$ 45 mil ÷ 3).
 // Primeiro contato "Em até 1 hora" vale 0, para os sinais somarem os 6 do exemplo.
 const EXEMPLO = {
   ramo: 'Serviços para empresas', faturamento: 'R$ 500 mil a R$ 1,5 milhão', vendedores: '2 ou 3',
   'quem-marca': 'Sim. O vendedor faz tudo', ticket: '10000', origem: 'Indicação de clientes',
   crm: 'Sim, e o time atualiza todo dia', cargo: 'Dono(a) ou sócio(a)',
-  numeros: ['200', '50', '50', '40', '2'], causa: 'Em até 1 hora', causa2: '1 ou 2', causa3: 'Alguns'
+  numeros: ['200', '100', '50', '40', '2'], causa: 'Em até 1 hora', causa2: '1 ou 2', causa3: 'Alguns'
 };
 const ELIMINATORIO = Object.assign({}, EXEMPLO, { faturamento: 'Menos de R$ 50 mil' });
 // Faixa c que passa no corte do Júnior (fatura a partir de R$ 50 mil e tem vendedor):
-// faturamento 5 · venda de R$ 6 mil 5 · 1 vendedor 3 · 30 leads 0 · sem CRM 0 · vendedor 2 · funil 30 · 50% · 5 · 4 · 1,
+// faturamento 5 · venda de R$ 6 mil 5 · 1 vendedor 3 · 30 leads 0 · sem CRM 0 · vendedor 2 · funil 30 · 15 · 5 · 4 · 1 (até a v11, 30 · 50% · 5 · 4 · 1),
 // que na meta continua com 1 venda (dinheiro na mesa zero, "menos de 0,5": 3) · sinais 6 = 24, faixa c.
 const FAIXA_C = Object.assign({}, EXEMPLO, {
   faturamento: 'R$ 50 mil a R$ 150 mil', ticket: '6000', vendedores: '1', crm: 'Não. Fica no WhatsApp e na cabeça de cada um',
-  cargo: 'Vendedor(a)', numeros: ['30', '50', '5', '4', '1']
+  cargo: 'Vendedor(a)', numeros: ['30', '15', '5', '4', '1']
 });
+// v12 (#123): vendas zero, com o nome da empresa (o topo do relatório mostra a empresa); e quem não lembra dos números
+const VENDAS_ZERO = Object.assign({}, EXEMPLO, { numeros: ['200', '100', '50', '40', '0'], empresa: 'TESTE Padaria' });
+const NAO_LEMBRA = Object.assign({}, EXEMPLO, { lembra: 'Não', chute: 'Mais de 75%' });
+// v12: o funil saudável (o da faixa b do ensaio), qualificado e, com o faturamento do eliminatório, não qualificado; e números fora de ordem
+const SAUDAVEL = Object.assign({}, EXEMPLO, { numeros: ['200', '100', '50', '40', '10'] });
+const SAUDAVEL_NAO = Object.assign({}, SAUDAVEL, { faturamento: 'Menos de R$ 50 mil' });
+const FORA_DE_ORDEM = Object.assign({}, EXEMPLO, { numeros: ['200', '250', '50', '40', '2'], foraDeOrdem: true });
+// O dinheiro na mesa no lead score (base/lead-score.md v3): dinheiro na mesa por mês ÷ custo mensal (ficha-de-fatos#preco-avancada
+// R$ 45 mil ÷ 3 = R$ 15 mil): 1 ou mais vale 15, 0,5 ou mais vale 8, menos vale 3. A nota é a soma das outras partes (fixas para cada
+// pessoa de teste) com essa. A página não expõe a conta do lead score, então a nota recebida no pacote é a prova.
+const pontosMesaT = mesa => mesa / 15000 >= 1 ? 15 : mesa / 15000 >= 0.5 ? 8 : 3;
+// as outras partes: EXEMPLO e os que copiam dele 81 (96 menos os 15 do dinheiro na mesa); FAIXA_C 21 (24 menos 3); com o eliminatório, 15 a menos
+const notaT = (base, r) => base + pontosMesaT(contaAParte(r.numeros, r.ticket).extraR);
+
+// ··· v12 da página (#123, pedido 23): os números da pessoa no relatório ···
+// A conta do relatório refeita aqui, à parte (não usa a da página), com as metas de ficha-de-fatos#metas-por-etapa (50 · 50 · 75 · 20):
+// vendas de hoje, vendas com as etapas fracas na meta, dinheiro na mesa e a etapa que mais pesa (a de maior ln(meta ÷ taxa);
+// com taxa zero, ela leva tudo).
+const METAS_T = [50, 50, 75, 20];
+const PERFIS_T = ['Semente fraca', 'Lead esfriando na fila', 'Agenda furada', 'Conversa sem fechamento'];
+const pctT = n => n.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+const milT = n => 'R$ ' + Math.round(n / 1000).toLocaleString('pt-BR') + ' mil';
+function contaAParte(numeros, ticket) {
+  const v = numeros.map(Number), t = [1, 2, 3, 4].map(i => v[i] / v[i - 1] * 100);
+  const fracas = [0, 1, 2, 3].filter(i => t[i] < METAS_T[i]);
+  const hoje = Math.floor(v[4] + 1e-9);
+  const naMeta = Math.floor(v[0] * t.reduce((a, x, i) => a * (fracas.includes(i) ? METAS_T[i] : x) / 100, 1) + 1e-9);
+  const peso = i => t[i] === 0 ? Infinity : Math.log(METAS_T[i] / t[i]);
+  let principal = null;
+  fracas.forEach(i => { if (principal === null || peso(i) > peso(principal)) principal = i; });
+  return { leads: v[0], taxas: t, fracas, hoje, naMeta, extraV: naMeta - hoje, extraR: (naMeta - hoje) * Number(ticket),
+    perfil: principal === null ? 'Funil redondo, pouca semente' : PERFIS_T[principal] };
+}
+// Textos da tela dos números (copy v4, 5.2; proposta do mentor) e do relatório de quem não lembra (copy v4; #123)
+const NUMEROS_T = {
+  pergunta: 'Pense em um mês normal e escreva cada número como lembrar.',
+  ajuda: 'Em quantidade, não em porcentagem: quantos leads chegaram, quantos marcaram a conversa, quantos compraram. Número aproximado já serve.',
+  dica: 'Preencha os cinco números para seguir. Só as vendas podem ser zero. Se não lembrar de algum, toque no ✎ da pergunta anterior e responda “Não”.'
+};
+// o título leva o primeiro nome do contato (no teste, TESTE, de TESTE Joana)
+const EXEMPLO_T = ['exemplo · sem os seus números', 'TESTE, sem os seus números, este é um funil de exemplo.',
+  'Um funil comum, com 400 leads por mês e R$ 15 mil por venda, para mostrar onde as vendas costumam escapar. Não é o diagnóstico da sua empresa. Com os cinco números do seu funil, a conta passa a ser a sua.',
+  'As 4 etapas do exemplo contra as metas', 'Onde um funil como este perde performance', 'por mês · no exemplo', 'No exemplo, são cerca de ',
+  'Conta de exemplo, não é a sua nem é promessa: um funil de 400 leads por mês e valor médio de R$ 15.000. Com os seus números, a conta fica sua.'];
+// frases que dão um número do exemplo como da pessoa ou do time dela (23.3, item 4)
+const PROIBIDAS_NO_EXEMPLO = ['Suas 4 etapas', 'Onde sua equipe perde', 'Pela sua estimativa', 'Onde você respondeu', 'seus leads', 'você informou', 'estimativa · respostas por chute',
+  'O resumo do seu comercial', 'O que já funciona:', 'Dinheiro na mesa: ≈', 'Vocês sabem os números', 'confiança alta'];
+// valores de exemplo da página que não podem chegar a quem fez o quiz (23.3, itens 2 e 5)
+const EXEMPLO_DA_PAGINA = ['R$ 120 mil', 'Empresa Exemplo', 'Marina', 'empresaexemplo'];
+// e no histórico da conversa (as respostas que a página mostraria do exemplo se faltassem)
+const EXEMPLO_NO_HISTORICO = ['marina@empresaexemplo.com.br', 'Marina', 'Empresa Exemplo', '+55 (11) 98765-4321'];
+const QUEBRADO = /NaN|Infinity|undefined|(^|[\s(+])-\d/;
 
 // Altura da janela em cada largura: 375 e 1440 como sempre; 360 com 640, o celular pequeno (medição, v9 do protótipo)
 const ALTURA = { 375: 812, 360: 640, 1440: 900 };
@@ -198,6 +264,110 @@ const lerRelatorio = page => page.evaluate(([antigos, chamada, fimAntigo]) => {
 // v9: o relatório que está na tela termina no dinheiro na mesa ou na chamada, sem o vídeo, os botões e o rodapé
 const semFimAntigo = (rl, onde) => conferir(rl.tem && rl.fim.length === 0, 'fim do relatório (v9): ' + onde + ' sem o vídeo, sem "Compartilhar" e "Baixar PDF" e sem o rodapé' + (rl.fim.length ? ' (sobrou: ' + rl.fim.join(' | ') + ')' : ''));
 
+// v12 (#123): o que o relatório na tela mostra, peça por peça
+const lerNumerosDoRelatorio = page => page.evaluate(() => {
+  const q = s => document.querySelector('.relatorio ' + s), qs = s => [...document.querySelectorAll('.relatorio ' + s)];
+  const ponta = qs('.haste__ponta b').map(e => e.textContent.trim());
+  return { texto: (q('') || document.querySelector('.relatorio') || { textContent: '' }).textContent, olho: (q('.rel-topo .olho') || { textContent: '' }).textContent.trim(),
+    leads: ponta[0], vendas: ponta[ponta.length - 1], taxas: qs('.etapa__taxa').map(e => e.textContent.trim()),
+    mesa: (q('.mesa__valor') || { textContent: '' }).textContent.trim(), nota: (q('.mesa__nota') || { textContent: '' }).textContent,
+    tabela: qs('.tabela tbody tr').map(tr => tr.textContent.trim()),
+    chip: (q('.perfil-chip b') || { textContent: '' }).textContent.trim(), h1: (q('h1') || { textContent: '' }).textContent.trim() };
+});
+// O perfil do funil no painel da conversa gratuita (no celular o painel fica na outra aba: lido pelo texto, sem abrir)
+const lerPerfilDoPainel = page => page.evaluate(() => ({ volumes: [...document.querySelectorAll('#painelFunil .barras__eixo b')].map(e => e.textContent.trim()),
+  historico: (document.querySelector('.conversa') || {}).textContent || '', cab: (document.querySelector('.perfil-funil__cab') || {}).textContent || '',
+  nome: (document.querySelector('.perfil-funil__nome') || {}).textContent || '', sub: (document.querySelector('.perfil-funil__sub') || {}).textContent || '',
+  painel: (document.querySelector('.painel') || {}).textContent || '' }));
+// A conversa gratuita de quem respondeu "Sim": o perfil e os volumes do gráfico do painel são os dela, e o histórico sem valor de exemplo
+function conferirConversaDaPessoa(pf, r, rotulo) {
+  const k = contaAParte(r.numeros, r.ticket);
+  conferir(!!pf, rotulo + ': a pessoa passa pela conversa gratuita');
+  if (!pf) return;
+  const vol = r.numeros.map(n => Number(n).toLocaleString('pt-BR'));
+  conferir(pf.cab === 'Perfil do funil' && pf.nome === k.perfil, rotulo + ': o painel com o perfil do funil da pessoa, pela conta à parte (' + pf.cab + ': ' + pf.nome + ')');
+  conferir(JSON.stringify(pf.volumes) === JSON.stringify(vol), rotulo + ': os volumes do gráfico do painel são os digitados (' + pf.volumes.join(' · ') + ')');
+  const sobra = EXEMPLO_NO_HISTORICO.filter(x => pf.historico.includes(x));
+  conferir(sobra.length === 0, rotulo + ': o histórico da conversa sem valor de exemplo da página' + (sobra.length ? ' (sobrou: ' + sobra.join(' | ') + ')' : ''));
+}
+// O relatório de quem respondeu "Sim" com os números dela: confere contra a conta à parte, e nada do exemplo da página
+function conferirRelatorioDaPessoa(rl, r, rotulo, perfilNaConversa) {
+  const k = contaAParte(r.numeros, r.ticket);
+  const leads = k.leads.toLocaleString('pt-BR');
+  conferir(rl.leads === leads && rl.vendas === String(k.hoje), rotulo + ': a haste com os leads e as vendas da pessoa (' + rl.leads + ' leads, ' + rl.vendas + ' vendas; conta à parte ' + leads + ' e ' + k.hoje + ')');
+  conferir(JSON.stringify(rl.taxas) === JSON.stringify(k.taxas.map(pctT)), rotulo + ': as quatro taxas da pessoa (' + rl.taxas.join(' · ') + '; conta à parte ' + k.taxas.map(pctT).join(' · ') + ')');
+  if (!k.fracas.length) {
+    const linhas = [100, 200, 400].map(x => { const v = Math.floor(x * k.hoje / k.leads + 1e-9); return '+' + x + '+' + v + milT(v * Number(r.ticket)); });
+    conferir(JSON.stringify(rl.tabela) === JSON.stringify(linhas), rotulo + ': a tabela de crescimento com as taxas da pessoa (' + rl.tabela.join(' · ') + '; conta à parte ' + linhas.join(' · ') + ')');
+    const geral = pctT(k.hoje / k.leads * 100), valor = 'R$ ' + Number(r.ticket).toLocaleString('pt-BR');
+    conferir(rl.nota.includes(geral + ' dos leads viram venda') && rl.nota.includes('valor médio de ' + valor), rotulo + ': a nota com a taxa geral (' + geral + ') e o valor médio (' + valor + ') da pessoa');
+  }
+  if (k.fracas.length) {
+    const mesa = k.extraV > 0 ? milT(k.extraR) : 'R$ 0';
+    conferir(rl.mesa.startsWith(mesa + 'por mês') || rl.mesa.startsWith(mesa + ' por mês') || rl.mesa === mesa + 'por mês', rotulo + ': o dinheiro na mesa da conta à parte (' + mesa + '; na tela ' + rl.mesa + ')');
+    const vd = n => n + (n === 1 ? ' venda' : ' vendas');
+    conferir(rl.nota.includes('Hoje: ' + vd(k.hoje) + ',') && rl.nota.includes('Com as etapas na meta: ' + vd(k.naMeta) + ','), rotulo + ': a nota com as vendas de hoje e na meta (' + k.hoje + ' e ' + k.naMeta + ')');
+  }
+  conferir(rl.chip === k.perfil && (perfilNaConversa === undefined || perfilNaConversa === k.perfil), rotulo + ': o perfil do funil da conta à parte, o mesmo do painel da conversa gratuita (' + rl.chip + (perfilNaConversa !== undefined ? '; conversa ' + perfilNaConversa : '') + ')');
+  const sobras = EXEMPLO_DA_PAGINA.filter(x => rl.texto.includes(x)).concat(rl.leads === '400' ? ['400 leads'] : []);
+  conferir(sobras.length === 0, rotulo + ': nenhum valor de exemplo da página (400 leads, R$ 120 mil, Empresa Exemplo, Marina)' + (sobras.length ? ' (sobrou: ' + sobras.join(' | ') + ')' : ''));
+  const quebra = rl.texto.match(QUEBRADO);
+  conferir(!quebra, rotulo + ': o relatório inteiro sem NaN, Infinity, undefined nem número negativo' + (quebra ? ' (' + quebra[0] + ')' : ''));
+  const partes = rl.olho.split(' · ');
+  conferir(r.empresa ? partes.length === 3 && partes[1] === r.empresa : partes.length === 2, rotulo + ': o topo ' + (r.empresa ? 'com a empresa informada' : 'sem nome de empresa') + ' (' + rl.olho + ')');
+  return k;
+}
+// Depois do "Ver meu diagnóstico" do contato: com a conversa gratuita, lê o painel e responde "Agora não" para abrir o relatório
+async function ateORelatorio(t) {
+  await t.page.waitForFunction(() => ['#conversa', '#relatorio-nao', '#relatorio-saudavel', '#relatorio-saudavel-nao'].includes(location.hash), null, { timeout: 15000 });
+  let conversa = null;
+  if (await t.page.evaluate(() => location.hash) === '#conversa') {
+    await t.page.waitForTimeout(300);
+    conversa = { perfil: await lerPerfilDoPainel(t.page), texto: await t.page.evaluate(() => document.querySelector('.conversa').textContent) };
+    await opcao(t.page, 'Agora não');
+    await t.page.locator('[data-corpo] [data-acao="ver-diagnostico"]').click({ timeout: 15000 });
+    await naTela(t.page, 'relatorio');
+  }
+  await t.page.waitForTimeout(300);
+  return conversa;
+}
+// A tela dos números (v12; #123): só em quantidade, os textos novos, o botão que só acende com os cinco e a dica
+async function conferirTelaNumeros(page, largura) {
+  const rot = 'números (' + largura + ')';
+  const tela = () => page.evaluate(() => {
+    const bt = document.getElementById('seguirNums'), dica = document.getElementById('numsDica');
+    return { pergunta: (document.querySelector('.balao--atual .pergunta__q') || {}).textContent, ajuda: (document.querySelector('.balao--atual .ajuda') || {}).textContent,
+      livro: document.querySelector('.livro').textContent, botoesNoLivro: document.querySelectorAll('.livro button, [data-unidade]').length,
+      fixas: document.querySelectorAll('.livro .alterna--fixa').length, desligado: !!bt && bt.disabled,
+      dica: !!dica && !dica.hidden && dica.getBoundingClientRect().height > 0, dicaTexto: dica ? dica.textContent : '',
+      tela: [document.querySelector('.balao--atual'), document.querySelector('[data-corpo]')].filter(Boolean).map(e => e.textContent).join(' ') };
+  });
+  const encher = async v => { for (let i = 0; i < 5; i++) await page.fill('#num' + i, v[i]); };
+  let x = await tela();
+  conferir(x.pergunta === NUMEROS_T.pergunta && x.ajuda === NUMEROS_T.ajuda, rot + ': a pergunta e a ajuda novas (copy v4, 5.2)');
+  conferir(x.botoesNoLivro === 0 && x.fixas === 5 && !x.tela.includes('%'), rot + ': as cinco linhas só em quantidade, com o "nº" fixo, sem botão "%" e sem "%" em toda a pergunta (' + x.fixas + ' fixas, ' + x.botoesNoLivro + ' botões)');
+  conferir(x.desligado && x.dica && x.dicaTexto === NUMEROS_T.dica, rot + ': com os campos vazios, o botão apagado e a dica nova perto dele');
+  for (let i = 0; i < 5; i++) {
+    const v = ['200', '100', '50', '40', '2']; v[i] = '';
+    await encher(v); x = await tela();
+    conferir(x.desligado && x.dica, rot + ': com a linha ' + (i + 1) + ' vazia, o botão continua apagado e a dica aparece');
+  }
+  for (let i = 0; i < 4; i++) {
+    const v = ['200', '100', '50', '40', '2']; v[i] = '0';
+    await encher(v); x = await tela();
+    conferir(x.desligado && x.dica, rot + ': com zero na linha ' + (i + 1) + ', o botão apagado e a dica aparece');
+  }
+  await encher(['200', '100', '50', '40', '0']);
+  x = await tela();
+  conferir(!x.desligado && !x.dica, rot + ': com os cinco preenchidos e vendas zero, o botão aceso e a dica some');
+  const semConta = x.tela.replace(/= [\d.,]+% de/g, '');
+  conferir(!semConta.includes('%') && !x.tela.includes('≈') && !x.tela.includes('Acima de 100'), rot + ': em toda a pergunta, o "%" só no "= n% de [etapa anterior]"; sem "≈" e sem "Acima de 100%"');
+  await encher(FORA_DE_ORDEM.numeros);
+  x = await tela();
+  conferir(x.tela.includes('Maior que a etapa anterior') && !x.desligado && !x.dica, rot + ': fora de ordem (200 · 250 · 50 · 40 · 2), o aviso "Maior que a etapa anterior" aparece e o botão continua aceso (só aviso)');
+  await encher(['', '', '', '', '']);
+}
+
 // Percorre da abertura até a tela de contato; devolve o que viu dos campos de número e do valor médio.
 // entrada: 'botao' (o da abertura), 'cabecalho' (o do cabeçalho da landing-page-02) ou 'barra' (o fixo no rodapé, só no celular)
 async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
@@ -212,7 +382,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await page.locator(entrada === 'cabecalho' ? '#cabSafra [data-acao="proximo"]' : '.abertura__copy [data-acao="proximo"]').click();
   }
   await naTela(page, 'nome');
-  await page.fill('#nomeIn', 'Marina');
+  await page.fill('#nomeIn', 'Joana');
   await page.click('#seguir');
   await naTela(page, 'ramo'); await opcao(page, r.ramo);
   await naTela(page, 'faturamento');
@@ -228,11 +398,19 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
   await page.click('[data-corpo] [data-acao="proximo"]');
   await naTela(page, 'crm'); await opcao(page, r.crm);
   await naTela(page, 'cargo'); await opcao(page, r.cargo);
-  await naTela(page, 'lembra'); await opcao(page, 'Sim');
-  await naTela(page, 'numeros');
-  visto.numerosVazios = await page.evaluate(() => [0, 1, 2, 3, 4].every(i => document.getElementById('num' + i).value === ''));
-  for (let i = 0; i < 5; i++) await page.fill('#num' + i, r.numeros[i]);
-  await page.click('[data-corpo] [data-acao="proximo"]');
+  await naTela(page, 'lembra'); await opcao(page, r.lembra || 'Sim');
+  if (r.lembra === 'Não') {
+    await naTela(page, 'chute'); await opcao(page, r.chute);
+    await page.click('[data-corpo] [data-acao="proximo"]');
+  } else {
+    await naTela(page, 'numeros');
+    visto.numerosVazios = await page.evaluate(() => [0, 1, 2, 3, 4].every(i => document.getElementById('num' + i).value === ''));
+    if (comPrints) await conferirTelaNumeros(page, largura);
+    for (let i = 0; i < 5; i++) await page.fill('#num' + i, r.numeros[i]);
+    if (r.foraDeOrdem) visto.foraDeOrdem = await page.evaluate(() => ({ aviso: document.querySelector('[data-corpo]').textContent.includes('Maior que a etapa anterior'), aceso: !document.getElementById('seguirNums').disabled }));
+    if (comPrints) await print(page, 'numeros', largura);
+    await page.click('[data-corpo] [data-acao="proximo"]');
+  }
   await naTela(page, 'causa'); await opcao(page, r.causa);
   await naTela(page, 'causa2'); await opcao(page, r.causa2);
   await naTela(page, 'causa3'); await opcao(page, r.causa3);
@@ -240,6 +418,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
   await page.fill('#nome', PESSOA.nome);
   await page.fill('#email', PESSOA.email);
   await page.fill('#tel', PESSOA.tel);
+  if (r.empresa) await page.fill('#empresa', r.empresa);
   return visto;
 }
 
@@ -293,6 +472,8 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(ab.hash === '#abertura' && ab.num === '1/25' && !ab.capa, 'abertura: o quiz abre nela, sem a capa (tela 1 de 25; ' + ab.hash + ', ' + ab.num + ')');
     conferir(ab.telas.includes('conversa:Conversa gratuita com o Junior') && !ab.telas.some(x => /^(plano|plano-exemplo|video-time):/.test(x)) && ab.telas.indexOf('conversa:Conversa gratuita com o Junior') === ab.telas.findIndex(x => x.startsWith('montando:')) + 1,
       'painel "Telas" (v8): "Conversa gratuita com o Junior" logo depois de "Montando o diagnóstico", sem as telas da oferta do plano, do exemplo do plano e do vídeo do time');
+    conferir(await t.page.evaluate(() => { const v = document.querySelector('.previa'); return !!v && v.textContent.includes('Marina Souza') && v.textContent.includes('valor calculado no final'); }),
+      'abertura (v12): o relatório de vitrine continua o de exemplo (Marina Souza), como antes');
     conferir(ab.cab && !ab.topo && ab.logo, 'abertura: cabeçalho da landing-page-02 com o logo do Safra, no lugar do cabeçalho do quiz');
     conferir(ab.botoes.join('|') === 'Fazer a Análise|Fazer a Análise' && !ab.comecar, 'abertura: botões do cabeçalho e da página dizem "Fazer a Análise" (' + ab.botoes.join(' | ') + ')');
     await t.page.waitForTimeout(200);
@@ -334,6 +515,9 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.click('#enviar');
     await naTela(t.page, 'conversa');
     await t.page.waitForTimeout(300);
+    // v12 (#123): o perfil do funil no painel da conversa gratuita sai da mesma conta do relatório
+    const pfA = await lerPerfilDoPainel(t.page);
+    conferirConversaDaPessoa(pfA, EXEMPLO, 'conversa (v12)');
     // v8: a conversa gratuita com o Junior, antes da resposta
     let cv = await lerConversa(t.page);
     conferir(cv.falas[cv.falas.length - 1] === CONVERSA.fala, 'conversa (v8): a fala do Junior antes da pergunta, com o nome ("' + cv.falas[cv.falas.length - 1] + '")');
@@ -375,6 +559,11 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     conferir(rl.qualificado && rl.cta === 0 && !rl.chamada && rl.botoes.length === 0 && rl.sobras.length === 0,
       'conversa (v8): "Ver meu diagnóstico" abre o relatório do qualificado (#relatorio) sem o bloco de chamada (nem "' + RELATORIO_SEM_CHAMADA + '", nem os botões dele) e sem texto da oferta antiga');
     semFimAntigo(rl, 'o relatório aberto pelo "Ver meu diagnóstico"');
+    // v12 (#123): o relatório do qualificado com os números da pessoa, iguais aos da conta à parte e aos do painel da conversa;
+    // o dinheiro na mesa é o que o lead score usou: R$ 60 mil ÷ (R$ 45 mil ÷ 3) = 4 vezes o custo mensal, 15 pontos, que fecham os 96
+    const kA = conferirRelatorioDaPessoa(await lerNumerosDoRelatorio(t.page), EXEMPLO, 'relatório do qualificado (v12)', pfA.nome);
+    conferir(kA.extraR === 60000 && pontosMesaT(kA.extraR) === 15 && p && p.evento.lead_score_nota === notaT(81, EXEMPLO) && notaT(81, EXEMPLO) === 96, 'relatório do qualificado (v12): o dinheiro na mesa da tela (' + milT(kA.extraR) + ') é o do lead score: 4 vezes o custo mensal, 15 pontos, nota 96 (veio ' + (p && p.evento.lead_score_nota) + ')');
+    await print(t.page, 'relatorio-pessoa', largura);
     conferir(doTipo(t, 'interesse_pos_relatorio').length === 1, 'conversa (v8): abrir o relatório não manda clique nenhum');
     // pelo painel "Telas", o mesmo relatório continua com o bloco de chamada
     await t.page.click('#protoBotao');
@@ -389,6 +578,8 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
       await t.page.waitForTimeout(300);
       const r5 = await lerRelatorio(t.page);
       conferir(r5.hash === '#' + id && r5.cta === 1, 'relatório pelo painel "Telas" (v9): #' + id + ' abre com a chamada dele');
+      const n5 = await lerNumerosDoRelatorio(t.page);
+      conferir(n5.leads === '400' && n5.texto.includes('Empresa Exemplo') && (id !== 'relatorio-chute' || n5.texto.includes(EXEMPLO_T[0])), 'relatório pelo painel "Telas" (v12): #' + id + ' continua com o exemplo, para revisão (' + n5.leads + ' leads, Empresa Exemplo' + (id === 'relatorio-chute' ? ', com o aviso de exemplo' : '') + ')');
       semFimAntigo(r5, '#' + id + ' pelo painel');
     }
     conferir(semDadoNoConsole(t), 'exemplo: console sem o pacote e sem dado de pessoa');
@@ -404,6 +595,7 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-eliminatorio', largura);
     semFimAntigo(await lerRelatorio(t.page), 'o relatório do não qualificado pelo caminho do quiz');
+    conferirRelatorioDaPessoa(await lerNumerosDoRelatorio(t.page), ELIMINATORIO, 'relatório do não qualificado (v12)');
     p = t.pacotes[0];
     conferir(t.envios.length === 1, 'eliminatório: um envio');
     conferir(p && p.evento.lead_score_faixa === 'eliminatorio' && p.evento.lead_score_nota === 81, 'eliminatório: faixa eliminatorio, com a nota guardada (14.8; veio ' + (p && p.evento.lead_score_faixa) + ', nota ' + (p && p.evento.lead_score_nota) + ')');
@@ -431,7 +623,12 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.click('#enviar');
     await naTela(t.page, 'relatorio-nao');
     await print(t.page, 'resultado-faixa-c', largura);
+    // v12 (#123): o funil pequeno, com etapa fraca e nenhuma venda a mais depois do arredondamento: a conta dela, sem cair no exemplo
+    const rc = await lerNumerosDoRelatorio(t.page);
+    conferirRelatorioDaPessoa(rc, FAIXA_C, 'funil pequeno (v12)');
+    conferir(contaAParte(FAIXA_C.numeros, FAIXA_C.ticket).extraV === 0 && rc.mesa.startsWith('R$ 0') && !rc.texto.includes('R$ 0 mil'), 'funil pequeno (v12): sem venda a mais, o dinheiro na mesa é "R$ 0", sem as fatias de "R$ 0 mil"');
     p = t.pacotes[0];
+    conferir(p && p.evento.lead_score_nota === notaT(21, FAIXA_C) && notaT(21, FAIXA_C) === 24, 'funil pequeno (v12): o dinheiro na mesa da tela (R$ 0) é o do lead score: menos de 0,5 custo mensal, 3 pontos, nota 24 (veio ' + (p && p.evento.lead_score_nota) + ')');
     conferir(p && p.evento.lead_score_faixa === 'c', 'corte: faixa c (veio ' + (p && p.evento.lead_score_faixa) + ', nota ' + (p && p.evento.lead_score_nota) + ')');
     conferir(await t.page.evaluate(() => location.hash) === '#relatorio-nao', 'corte: quem passa no corte do Júnior e fica na faixa c vai para o relatório de não qualificado (14.2; antes ia para o plano)');
     await t.page.click('[data-acao="interesse"]');
@@ -508,6 +705,73 @@ async function ateContato(page, r, largura, comPrints, entrada = 'botao') {
     await t.page.waitForTimeout(400);
     cl = doTipo(t, 'interesse_pos_relatorio');
     conferir(cl.length === 1 && t.ordem.indexOf('fim:201') < t.ordem.indexOf('evento:interesse_pos_relatorio'), 'falha e clique: o clique sai depois do reenvio gravado, uma vez só');
+    await t.ctx.close();
+
+    // 7. (v12; #123) Vendas zero, com o nome da empresa: a conta aguenta (sem infinito) e o topo mostra a empresa
+    t = await abrir(browser, largura, PAGINA, [201], 201);
+    await ateContato(t.page, VENDAS_ZERO, largura, false);
+    await t.page.click('#enviar');
+    const cz = await ateORelatorio(t);
+    conferirConversaDaPessoa(cz && cz.perfil, VENDAS_ZERO, 'vendas zero (v12)');
+    const rz = await lerNumerosDoRelatorio(t.page);
+    conferirRelatorioDaPessoa(rz, VENDAS_ZERO, 'vendas zero (v12)', cz ? cz.perfil.nome : null);
+    p = t.pacotes[0];
+    conferir(p && p.evento.lead_score_nota === notaT(81, VENDAS_ZERO) && notaT(81, VENDAS_ZERO) === 96, 'vendas zero (v12): o dinheiro na mesa da tela (' + milT(contaAParte(VENDAS_ZERO.numeros, VENDAS_ZERO.ticket).extraR) + ') é o do lead score: 15 pontos, nota 96 (veio ' + (p && p.evento.lead_score_nota) + ')');
+    conferir(rz.texto.includes('Nenhuma conversa virou venda no mês.'), 'vendas zero (v12): a frase do fechamento sem venda, no lugar de "De cada Infinity conversas"');
+    await t.ctx.close();
+
+    // 8. (v12; #123) Quem não lembra dos números: a conta de exemplo, dita com todas as letras, e nada do exemplo dado como dela
+    t = await abrir(browser, largura, PAGINA, [201], 201);
+    await ateContato(t.page, NAO_LEMBRA, largura, false);
+    const falaContato = await t.page.evaluate(() => document.querySelector('.conversa').textContent);
+    conferir(falaContato.includes('Pronto, Joana! Sem os seus números, o painel mostra um funil de exemplo.') && !/já mostra \d de 4 etapas/.test(falaContato), 'quem não lembra (v12): antes do contato, a fala diz que o painel mostra um funil de exemplo');
+    await t.page.click('#enviar');
+    const cx = await ateORelatorio(t);
+    const rx = await lerNumerosDoRelatorio(t.page);
+    const faltam = EXEMPLO_T.filter(x => !rx.texto.includes(x));
+    conferir(faltam.length === 0, 'quem não lembra (v12): o relatório com o aviso de exemplo (selo, título, abertura, títulos, dinheiro na mesa e nota da copy v4)' + (faltam.length ? ' (faltou: ' + faltam.join(' | ') + ')' : ''));
+    // o relatório e o painel da conversa gratuita (o histórico da conversa tem as perguntas, como "De onde vêm os seus leads?", que são dela)
+    const textosX = rx.texto + (cx ? cx.perfil.painel : '');
+    const ditas = PROIBIDAS_NO_EXEMPLO.filter(x => textosX.includes(x)).concat(EXEMPLO_DA_PAGINA.filter(x => textosX.includes(x)));
+    conferir(ditas.length === 0, 'quem não lembra (v12): no relatório e na conversa, nenhuma frase que dê o exemplo como dela, nem valor de exemplo da página' + (ditas.length ? ' (sobrou: ' + ditas.join(' | ') + ')' : ''));
+    const selosX = await t.page.evaluate(() => [...document.querySelectorAll('.relatorio .selo-item.is-ganho')].map(e => e.textContent.trim()));
+    conferir(!selosX.some(x => ['Semente boa', 'Agenda que comparece', 'Fechador'].includes(x)), 'quem não lembra (v12): os selos que saem das taxas do exemplo não são dados como dela (' + (selosX.join(', ') || 'nenhum') + ')');
+    conferir(!!cx, 'quem não lembra (v12): passa pela conversa gratuita');
+    // sem os números, o lead score usa "não lembra" nos leads (5 em vez de 10) e "sem números" no dinheiro na mesa (7 em vez de 15): 96 menos 13
+    p = t.pacotes[0];
+    conferir(p && p.evento.lead_score_nota === 83 && p.evento.lead_score_faixa === 'a', 'quem não lembra (v12): nota 83, faixa a, como antes da v12 (veio ' + (p && p.evento.lead_score_nota) + ', faixa ' + (p && p.evento.lead_score_faixa) + ')');
+    const histX = EXEMPLO_NO_HISTORICO.filter(x => cx && cx.perfil.historico.includes(x));
+    conferir(!!cx && histX.length === 0, 'quem não lembra (v12): o histórico da conversa sem valor de exemplo da página' + (histX.length ? ' (sobrou: ' + histX.join(' | ') + ')' : ''));
+    conferir(!!cx && cx.perfil.cab === 'Perfil do exemplo' && cx.perfil.sub === 'Sem os seus números, este é o perfil de um funil de exemplo, não o seu.', 'quem não lembra (v12): na conversa gratuita, o painel diz que o perfil é do exemplo');
+    conferir(!QUEBRADO.test(rx.texto), 'quem não lembra (v12): o relatório sem NaN, Infinity, undefined nem número negativo');
+    await print(t.page, 'relatorio-exemplo', largura);
+    await t.ctx.close();
+
+    // 9. (v12) Funil saudável (200 · 100 · 50 · 40 · 10, as quatro etapas na meta): qualificado e não qualificado, a tabela de
+    // crescimento com as taxas dela, a nota com a taxa geral e o valor médio, e nada do exemplo
+    for (const [r, rot, tela, base] of [[SAUDAVEL, 'saudável qualificado (v12)', '#relatorio-saudavel', 81], [SAUDAVEL_NAO, 'saudável não qualificado (v12)', '#relatorio-saudavel-nao', 66]]) {
+      t = await abrir(browser, largura, PAGINA, [201], 201);
+      await ateContato(t.page, r, largura, false);
+      await t.page.click('#enviar');
+      const cs = await ateORelatorio(t);
+      conferir(cs === null && await t.page.evaluate(() => location.hash) === tela, rot + ': sem etapa fraca, vai direto ao relatório ' + tela + ', sem a conversa gratuita');
+      const rs = await lerNumerosDoRelatorio(t.page);
+      conferirRelatorioDaPessoa(rs, r, rot);
+      p = t.pacotes[0];
+      conferir(p && p.evento.lead_score_nota === notaT(base, r) && p.evento.lead_score_faixa === (r === SAUDAVEL ? 'a' : 'eliminatorio'), rot + ': sem dinheiro na mesa, 3 pontos no lead score, nota ' + notaT(base, r) + ' (veio ' + (p && p.evento.lead_score_nota) + ', faixa ' + (p && p.evento.lead_score_faixa) + ')');
+      await t.ctx.close();
+    }
+
+    // 10. (v12) Números fora de ordem (200 · 250 · 50 · 40 · 2): o aviso, o botão aceso e o relatório sem conta quebrada
+    t = await abrir(browser, largura, PAGINA, [201], 201);
+    const vf = await ateContato(t.page, FORA_DE_ORDEM, largura, false);
+    conferir(vf.foraDeOrdem && vf.foraDeOrdem.aviso && vf.foraDeOrdem.aceso, 'fora de ordem (v12): o aviso "Maior que a etapa anterior" aparece e o botão de seguir fica aceso');
+    await t.page.click('#enviar');
+    const cf = await ateORelatorio(t);
+    const rf = await lerNumerosDoRelatorio(t.page);
+    const qf = (rf.texto + (cf ? cf.perfil.painel : '')).match(QUEBRADO);
+    conferir(rf.texto.length > 0 && !qf, 'fora de ordem (v12): o relatório' + (cf ? ' e o painel da conversa' : '') + ' sem NaN, Infinity, undefined nem número negativo' + (qf ? ' (' + qf[0] + ')' : ''));
+    conferir(rf.leads === '200' && rf.vendas === '2', 'fora de ordem (v12): a haste com os números digitados (' + rf.leads + ' leads, ' + rf.vendas + ' vendas)');
     await t.ctx.close();
 
     // 6. Aberta direto do arquivo: revisão sem gravar

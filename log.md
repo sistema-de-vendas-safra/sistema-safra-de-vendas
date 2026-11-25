@@ -2,6 +2,43 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-25 · pedido 23 · 23.2 a 23.4: a página do quiz v12, os testes e o APLICAR-23
+
+Pedido do Otávio (25/11/2026), prompts/23-relatorio-com-os-numeros-da-pessoa.md, partes 23.2 a 23.4. Cada parte foi escrita por um subagente e revisada por outro, que não viu a escrita. Nada publicado; o site no ar não foi aberto. Nenhum dado de pessoa; nenhuma chave. Resposta completa, com a tabela dos textos e as perguntas: prompts/23-relatorio-com-os-numeros-da-pessoa-resposta.md.
+
+- **entregas/quizzes/quiz-01/pagina/index.html e README.md v11 para v12** (quiz-01-pagina), rascunho (otavio, junior e euclides: pendente), desatualizado. Motivo: #123.
+  - **23.2 (7426258):** a tela dos números só em quantidade, com o "nº" fixo nas cinco linhas; saem o botão "%", a troca de unidade, o "≈ [n] [etapa]" e o "Acima de 100%". O botão de seguir só acende com os cinco números e os quatro primeiros maiores que zero; vendas pode ser zero. Com o botão apagado, aparece a dica nova. O pacote continua no formato de antes, com a unidade sempre "nº".
+  - **23.3 (6320b83):** uma conta só para a pessoa (funilDaPessoa), usada pelo relatório, pela conversa gratuita e pelo dinheiro na mesa do lead score. A nota do lead score não mudou em nenhum caso.
+    - Pelo caminho do quiz, os cinco relatórios usam os números da pessoa; sem empresa, o topo fica sem nome de empresa.
+    - Quem respondeu "Não" vê a conta de exemplo, com o aviso.
+    - Vendas zero, funil pequeno e números fora de ordem não quebram a conta.
+    - O painel "Telas" e a vitrine da abertura continuam com o exemplo.
+  - depende_de: quiz-01-copy 4, quiz-01-briefing 3, decisoes 14. versao_entrega continua 2.
+- **nucleo/ferramentas/prints/testar-quiz-01.js** (v12): as pessoas de teste escrevem os pré-qualificados em número (200 · 100 e 30 · 15) e a pessoa do teste se chama "TESTE Joana". Conferências novas:
+  - a tela dos números em 375, 360 e 1440;
+  - o relatório e a conversa contra uma conta feita à parte no teste;
+  - vendas zero, quem não lembra, o funil saudável nos dois desfechos e números fora de ordem;
+  - o painel "Telas" e a vitrine da abertura.
+  - Resultado: **719 OK** (eram 425). Prova de que o teste pega o erro: com o CENARIOS.fraco de volta no relatório e o botão "%" numa linha, 39 falhas; desfeito, e a página voltou igual.
+- **nucleo/ferramentas/ensaio/ensaio.mjs e README.md v14 para v15:** as mesmas trocas de número; a planilha espera 100 nos pré-qualificados, no lugar de "50%"; os cinco números do lead A chegam ao banco com a unidade nº. Resultado: **288 de 288**. Os testes da planilha e da migração continuam com "%", porque provam o formato antigo.
+- **entregas/quizzes/quiz-01/prints/:** os prints regravados e seis novos (numeros-, relatorio-pessoa- e relatorio-exemplo-, em 375 e 1440).
+- **entregas/prototipo-funil-01/APLICAR-23.md v1** (prototipo-funil-01-aplicar-23), rascunho. É o roteiro para pôr a página v12 no ar, sem pedir chave nenhuma no texto:
+  - só a página do quiz muda; o garçom, o banco, a planilha e o Tag Manager ficam como estão;
+  - os testes na máquina;
+  - a chave na variável do ambiente do Mac;
+  - a publicação e a conferência no ar com três envios TESTE (um que passa no corte, um que não passa e um "Não");
+  - a limpeza por limpar-leads-de-teste.sql;
+  - como voltar atrás para cacf72e8 e como tirar a chave depois.
+- index.md: as linhas da página, dos prints, do teste do quiz, do ensaio e do protótipo.
+- Pendências: "Relatório do eliminatório com números que não batem (14.7)" continua com a nota da 23.1; fecha depois da publicação pelo APLICAR-23.
+
+Perguntas para o Otávio: as 13 de prompts/23-relatorio-com-os-numeros-da-pessoa-resposta.md. As principais:
+- o botão "Telas" no site no ar;
+- a divisão do dinheiro com vendas zero;
+- os textos provisórios;
+- a causa do comparecimento;
+- a resposta inventada no histórico do chute.
+
 ## 2026-11-25 · pedido 23 · 23.1: o relatório com os números da pessoa e o funil só em números (#123)
 
 Pedido do Otávio (25/11/2026, na conversa com o mentor), escrito pelo mentor em prompts/23-relatorio-com-os-numeros-da-pessoa.md, que entra neste commit como está. As quatro respostas do Otávio valem como a aprovação das mudanças de sentido que elas pedem ("decisão do Otávio, 25/11/2026"); os textos novos são proposta do mentor e continuam rascunho. Nada publicado; nada mudou no site, no banco, na planilha, no Google Tag Manager nem na Meta. Nenhum dado de pessoa; nenhuma chave.

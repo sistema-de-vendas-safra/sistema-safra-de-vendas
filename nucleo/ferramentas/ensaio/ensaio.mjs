@@ -1,5 +1,5 @@
 // Ensaio geral do protótipo do funil-01, ponta a ponta, sem serviço real (etapa 25)
-// id: ensaio-prototipo-funil-01 · versao 12 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: ensaio-prototipo-funil-01 · versao 15 · rascunho · otavio: pendente (ver README.md desta pasta)
 //
 // Um comando só, de dentro desta pasta:   npm run ensaio
 // ou da raiz do repositório:              node nucleo/ferramentas/ensaio/ensaio.mjs
@@ -147,22 +147,22 @@ const EXEMPLO = {
   ramo: 'Serviços para empresas', faturamento: 'R$ 500 mil a R$ 1,5 milhão', vendedores: '2 ou 3',
   'quem-marca': 'Sim. O vendedor faz tudo', ticket: '10000', origem: 'Indicação de clientes',
   crm: 'Sim, e o time atualiza todo dia', cargo: 'Dono(a) ou sócio(a)',
-  numeros: ['200', '50', '50', '40', '2'], causa: 'Em até 1 hora', causa2: '1 ou 2', causa3: 'Alguns'
+  numeros: ['200', '100', '50', '40', '2'], causa: 'Em até 1 hora', causa2: '1 ou 2', causa3: 'Alguns'
 };
 const ELIMINATORIO = Object.assign({}, EXEMPLO, { faturamento: 'Menos de R$ 50 mil' });
 // O corte mais restritivo (14.2; quiz-01-pagina v3): faixa c que passa no corte do Júnior. Até a v2 ia para o
 // plano; agora vai para o relatório de quem não se qualifica. Nota 24 (a conta está em testar-quiz-01.js, FAIXA_C).
 const FAIXA_C = Object.assign({}, EXEMPLO, {
   faturamento: 'R$ 50 mil a R$ 150 mil', ticket: '6000', vendedores: '1', crm: 'Não. Fica no WhatsApp e na cabeça de cada um',
-  cargo: 'Vendedor(a)', numeros: ['30', '50', '5', '4', '1']
+  cargo: 'Vendedor(a)', numeros: ['30', '15', '5', '4', '1']
 });
 // Faixa B com o funil todo na meta (relatório de funil saudável, que tem o botão "Quero marcar uma conversa"):
 // faturamento R$ 150 mil a R$ 500 mil 15 · venda de R$ 10 mil 15 · 2 ou 3 vendedores 10 · 200 leads 10 ·
-// CRM "pouca gente atualiza" 7 · vendedor(a) 2 · funil 200 · 50% · 50 · 40 · 10 na meta, dinheiro na mesa zero
+// CRM "pouca gente atualiza" 7 · vendedor(a) 2 · funil 200 · 100 · 50 · 40 · 10 na meta, dinheiro na mesa zero
 // ("menos de 0,5") 3 · tentativas "1 ou 2" 4, sobra "Alguns" 2, primeiro contato "Em até 1 hora" 0 = 68, faixa b.
 const FAIXA_B = Object.assign({}, EXEMPLO, {
   faturamento: 'R$ 150 mil a R$ 500 mil', crm: 'Sim, mas pouca gente atualiza', cargo: 'Vendedor(a)',
-  numeros: ['200', '50', '50', '40', '10']
+  numeros: ['200', '100', '50', '40', '10']
 });
 
 // v8 (pedido 18, parte 18.3; decisão #118; landing-page-02 v3): a seção "Como funciona" e duas respostas do FAQ.
@@ -1099,6 +1099,9 @@ async function principal() {
   conferir(ea.length === 2 && ea[0].funil === 'funil-01' && ea[0].entrega === 'quiz-01' && ea[0].versao_entrega === 2 && ea[0].utm_source === 'bio' && ea[0].utm_campaign === 'funil-01' && ea[0].gravado_por === 'garcom' && ea[0].id_sessao === q1.sessao,
     'banco · eventos: etiquetas funil-01, quiz-01 versão 2, utm bio e funil-01, gravado pelo garçom, com a sessão que veio da landing');
   conferir(ea.length === 2 && ea[0].respostas && ea[0].respostas.faturamento === EXEMPLO.faturamento && Array.isArray(ea[0].respostas.numeros), 'banco · eventos: as respostas do quiz gravadas');
+  // v15 (#123; quiz-01-pagina v12): a tela dos números é só em quantidade; as cinco linhas chegam ao banco com a unidade nº e os números digitados
+  conferir(ea[0] && Array.isArray(ea[0].respostas.numeros) && ea[0].respostas.numeros.length === 5 && ea[0].respostas.numeros.every((n, i) => n.unidade === 'nº' && n.valor === EXEMPLO.numeros[i]),
+    'banco · eventos (v15): os cinco números do lead A em quantidade, unidade nº, como foram digitados (' + (ea[0] && JSON.stringify(ea[0].respostas.numeros.map(n => n.valor + ' ' + n.unidade))) + ')');
   conferir(ea[1] && ea[1].tipo === 'interesse_pos_relatorio' && ea[1].clique_fim_quiz === 'quero-conversa' && ea[1].id_sessao === q1.sessao && ea[1].entrega === 'quiz-01' && ea[1].versao_entrega === 2,
     'banco · o clique do lead A na conversa gratuita: interesse_pos_relatorio, quero-conversa, ligado à pessoa pela sessão (v11; quiz-01-pagina v8)');
   {
@@ -1247,12 +1250,12 @@ async function principal() {
     'v12 · aba respostas: as mesmas ' + est.linhas_respostas.length + ' pessoas da fila, na mesma ordem, sem repetir');
   const linhaR = (id) => est.linhas_respostas.find(l => l[0] === id) || [];
   const esperadoR = (pessoa, faixa, nota, R) => [pessoa.nome, faixa, nota, R.ramo, R.faturamento, R.vendedores, R['quem-marca'], Number(R.ticket),
-    R.origem, R.crm, R.cargo, 'Sim', Number(R.numeros[0]), R.numeros[1] + '%', Number(R.numeros[2]), Number(R.numeros[3]), Number(R.numeros[4]),
+    R.origem, R.crm, R.cargo, 'Sim', Number(R.numeros[0]), Number(R.numeros[1]), Number(R.numeros[2]), Number(R.numeros[3]), Number(R.numeros[4]),
     '', R.causa, R.causa2, R.causa3, ''];
   const semHorario = (l) => [l[1], ...l.slice(3)];
   const rA = linhaR(pa.id_pessoa), rB = linhaR((pb || VAZIO).id_pessoa);
   conferir(JSON.stringify(semHorario(rA)) === JSON.stringify(esperadoR(PESSOA_A, 'a', 96, EXEMPLO)) && rA[2] === col(la, 'entrou_em'),
-    'v12 · aba respostas, lead A: as respostas do quiz, uma por coluna (ramo a causas; valor médio ' + rA[9] + ' e os números do funil como número, pré-qualificados ' + rA[15] + ' como no quiz)');
+    'v12 · aba respostas, lead A: as respostas do quiz, uma por coluna (ramo a causas; valor médio ' + rA[9] + ' e os números do funil como número, pré-qualificados ' + rA[15] + ' em quantidade, como no quiz desde a v12)');
   conferir(JSON.stringify(semHorario(rB)) === JSON.stringify(esperadoR(PESSOA_B, 'b', 68, FAIXA_B)) && rB[2] === col(lb, 'entrou_em'),
     'v12 · aba respostas, faixa b: as respostas do quiz, uma por coluna (faturamento ' + rB[6] + ', CRM ' + rB[11] + ', vendas fechadas ' + rB[18] + ')');
   const rO = linhaR(idsDeAntes[0]);

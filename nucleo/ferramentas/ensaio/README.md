@@ -1,6 +1,6 @@
 ---
 id: ensaio-prototipo-funil-01
-versao: 14
+versao: 15
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -20,7 +20,7 @@ depende_de:
   - id: prototipo-funil-01
     versao: 15
   - id: quiz-01-pagina
-    versao: 8
+    versao: 12
   - id: landing-page-02
     versao: 5
   - id: planilha-sdr-funil-01
@@ -39,6 +39,8 @@ desatualizado: true
 ---
 
 # Ensaio geral do protótipo do funil-01
+
+**Versão 15 (25/11/2026, #123; pedido 23, parte 23.4; quiz-01-pagina v12).** A tela dos números do quiz ficou só em quantidade: as pessoas de teste que escreviam a linha de pré-qualificados em porcentagem (o exemplo e a faixa b com 200 · 50%, a faixa c com 30 · 50%) passam a escrever o número equivalente (200 · 100 e 30 · 15), e o funil de cada uma continua o mesmo: as notas, as faixas e as telas finais não mudam. Na aba respostas da planilha, a coluna de pré-qualificados do lead A e da faixa b passa a esperar o número (100), e não mais "50%". Conferência nova no banco: os cinco números do lead A chegam com a unidade nº, como foram digitados. Os testes da planilha e da migração que usam "%" ficam como estão: provam que o formato antigo continua aceito. Rodado inteiro em 25/11/2026, no Mac, com o wrangler dev e WRANGLER_SEND_METRICS=false: **288 de 288**, em 117 segundos, com o código de saída 0.
 
 **Versão 14 (18/11/2026, #122).** Duas conferências novas. No banco: o consentimento_texto gravado é o texto de aceite novo (três usos, com a Meta) e termina com a caixa nova. Na medição, em 375, 360 e 1440: no quiz, com um Pixel de mentira (um fbq que só anota as chamadas e os cookies _fbp e _fbc), trocar de "Aceitar" para "Recusar" pelo link "Cookies" chama fbq('consent', 'revoke') uma vez e apaga os dois cookies. As conferências de antes que provam que o id_sessao sai do endereço antes do gtm.js e que o gtm.js é o único pedido para fora continuam de pé.
 
