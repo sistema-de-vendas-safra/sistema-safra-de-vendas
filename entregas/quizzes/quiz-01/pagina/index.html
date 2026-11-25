@@ -3,7 +3,7 @@
 <!--
 ---
 id: quiz-01-pagina
-versao: 14
+versao: 15
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -11,25 +11,25 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 6
+    versao: 7
   - id: quiz-01-briefing
-    versao: 4
+    versao: 5
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
-    versao: 7
+    versao: 8
   - id: planta-do-banco
     versao: 6
   - id: funil-01
     versao: 5
   - id: lacunas
-    versao: 8
+    versao: 9
   - id: garcom
     versao: 7
   - id: decisoes
-    versao: 15
+    versao: 16
   - id: landing-page-02
-    versao: 7
+    versao: 8
   - id: politica-de-privacidade
     versao: 7
 desatualizado: true
@@ -43,6 +43,7 @@ Aceite (v11; #122, 18/11/2026): o texto de aceite e o rotulo da caixa da copy v3
 Numeros (v12; #123, pedido 23, 25/11/2026): a tela dos cinco numeros do funil fica so em quantidade (copy v4, 5.2): as cinco linhas com o "nº" fixo, sem o botao "%" e sem a troca de unidade; a conta ao vivo fica com "base de todas as contas", "= [n]% de [etapa anterior]" e o aviso "Maior que a etapa anterior" (so aviso). O botao de seguir so acende com os cinco preenchidos, leads, pre-qualificados, agendados e conversas maiores que zero, vendas podendo ser zero (numerosCompletos, a mesma condicao do lead score); com o botao apagado, a dica nova aparece perto dele. O pacote continua com a unidade em cada linha, agora sempre "nº". A tela do chute nao muda. Relatorio (v12, 23.3): o relatorio e a conversa gratuita saem de uma conta so (funilDaPessoa: os cinco numeros e o valor medio da pessoa), tambem usada pelo lead score em dinheiroNaMesaInformado, sem mudar nota; pelo caminho do quiz, nenhum numero de CENARIOS chega a quem respondeu "Sim"; sem empresa, o topo fica sem nome de empresa; vendas zero e funil pequeno sem venda a mais tem conta e frase proprias; quem respondeu "Nao" ve o exemplo (CENARIOS.chute), avisado (copy v4); pelo painel "Telas" ou pelo endereco, os relatorios continuam com o exemplo, para revisao. versao_entrega continua 2.
 Cabecalho (v13; pedido do Otavio, 25/11/2026): na abertura, o logo do Safra sai do cabecalho e, no lugar dele, entra a headline "Voce ja pagou pelas suas proximas vendas" (copy v5, secao 2), em texto, nao em imagem. O botao "Fazer a Analise" do cabecalho fica. Nas outras telas, o cabecalho do quiz nao muda. O codigo do logo (a constante e o estilo do logo) saiu junto, porque so o cabecalho o usava.
 Pedido 24 (v14; #124 e #125, 25/11/2026). (1) Relatorio: quem respondeu "Nao" (nao lembra os numeros) ve o funil pelas metas do metodo (FUNIL_METAS, de ficha-de-fatos#metas-por-etapa), dito como metas e nao como numeros dela, com a estimativa dela do comparecimento ao lado (telaRelatorioMetas); o exemplo CENARIOS.chute saiu. Sem empresa, o topo diz "sua empresa", tambem pelo painel "Telas"; "Empresa Exemplo" saiu da pagina. (2) Protecao: o formulario de contato ganha um campo escondido (armadilha, id "site", fora da tela e fora da ordem do Tab) e o pacote do fim leva protecao (armadilha e duracao_s, os segundos desde a abertura da pagina, medidos no navegador); o garcom confere e tira esse bloco antes do banco. Nada fica guardado no navegador. (3) Gratuidade: o fato curto da abertura e "Sempre gratuita" (ficha-de-fatos#analise-gratuidade, #124). (4) O aviso de inicio do quiz (/api/evento) leva tambem utm_medium, utm_content e utm_term, lidos e saneados como no fim. versao_entrega continua 2.
+Respostas do Otavio ao pedido 24 (v15; #126 a #131, 25/11/2026). O painel "Telas" fica escondido no ar (#130): com a meta safra-revisao = desligada, que a montagem do site poe, o painel some e o endereco com #tela nao abre tela nenhuma (comeca sempre na abertura); sem a meta (o arquivo e os testes), tudo como antes. O comentario das pecas da landing-page-02 deixa de citar o logo do Safra (#129; o codigo do logo ja tinha saido na v13). Nada mais mudou; versao_entrega continua 2.
 -->
 <title>Análise Estratégica do Sistema de Vendas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -641,6 +642,8 @@ body[data-analisando] .esqueleto{animation:pisca 1.2s infinite}
 .erro p{margin:0 0 26px}
 
 /* ··· Navegação do protótipo ··· */
+/* v15 (#130): no site montado (meta safra-revisao = desligada), o painel "Telas" some */
+.proto[hidden]{display:none !important}
 .proto{position:fixed;z-index:50;right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .proto__botao{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--linha);background:var(--superficie);font-family:var(--f-dado);font-size:12px;color:var(--ardosia);cursor:pointer;box-shadow:0 6px 16px -10px var(--sombra)}
 .proto__botao:hover{color:var(--tinta);border-color:var(--ardosia)}
@@ -1074,8 +1077,8 @@ function graficoBarras(vol, o){
 }
 
 /* ··· Peças da landing-page-02 na abertura (v4; pedido do Otávio, 12/11/2026) ···
-   O logo do Safra e o botão "Fazer a Análise" (Botão/Primário), como na página de vendas. Os desenhos do logo e da seta vêm
-   da landing-page-02 (pagina/a/) e ficam embutidos aqui, sem pedir arquivo a ela. */
+   O botão "Fazer a Análise" (Botão/Primário), como na página de vendas. O desenho da seta vem da landing-page-02 (pagina/a/) e
+   fica embutido aqui, sem pedir arquivo a ela. O logo do Safra saiu na v13 (#129: ele não aparece em página nenhuma do site). */
 const SETA_SAFRA = '<svg class="btn-safra__seta" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.33333 10H15.8333M10.8333 15L15.8333 10L10.8333 5" fill="none" stroke="#0A100D" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const botaoSafra = (texto, classe, id) => '<button type="button" class="btn-safra' + (classe ? ' ' + classe : '') + '"' + (id ? ' id="' + id + '"' : '') + ' data-acao="proximo">' +
   '<span class="btn-safra__brilho" aria-hidden="true"></span><span class="btn-safra__faixa" aria-hidden="true"></span><span class="btn-safra__reflexo" aria-hidden="true"></span>' +
@@ -2072,7 +2075,12 @@ function topo(t){
   $('#passo').textContent = t.rel ? fato('analise_nome_publico') : '';
 }
 
-/* ··· Seletor de telas (só para revisão) ··· */
+/* ··· Seletor de telas (só para revisão) ···
+   v15 (#130): no ar, o painel "Telas" fica escondido. A montagem do site (entregas/prototipo-funil-01/montar-site.mjs) põe na página
+   a meta safra-revisao com "desligada": aí o painel some e o endereço (#relatorio e as outras telas) não abre tela nenhuma, a página
+   começa sempre na abertura. Fora do site (o arquivo aberto direto e os testes), sem a meta, o painel continua, para revisão. */
+const REVISAO = (document.querySelector('meta[name="safra-revisao"]') || {content:''}).content !== 'desligada';
+if (!REVISAO) $('#proto').hidden = true;
 const protoBotao = $('#protoBotao'), protoPainel = $('#protoPainel');
 $('#protoLista').innerHTML = TELAS.map((t, i) => '<li><button type="button" data-ir="' + t.id + '"><span>' + String(i + 1).padStart(2, '0') + '</span>' + t.rot + '</button></li>').join('');
 function protoMarcar(t){
@@ -2212,7 +2220,7 @@ $('#cabSafra').innerHTML = '<div class="cab-safra__linha"><p class="cab-safra__t
 $('#barraSafra').innerHTML = botaoSafra('Fazer a Análise');
 [$('#cabSafra'), $('#barraSafra')].forEach(el => el.addEventListener('click', e => { if (atual === 'abertura' && e.target.closest('[data-acao="proximo"]')) { clearTimeout(tAuto); avancar(); } }));
 // A capa saiu do funil (v4): o quiz abre na abertura
-mostrar(tela(h) ? h : 'abertura');
+mostrar(REVISAO && tela(h) ? h : 'abertura');
 // Início do quiz: registrado quando o quiz abre, com o mesmo código de sessão da landing (10.6; 18.5)
 registrarEvento('inicio_quiz');
 })();

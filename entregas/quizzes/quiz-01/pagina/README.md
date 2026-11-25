@@ -1,6 +1,6 @@
 ---
 id: quiz-01-pagina
-versao: 14
+versao: 15
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,31 +8,33 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-copy
-    versao: 6
+    versao: 7
   - id: quiz-01-briefing
-    versao: 4
+    versao: 5
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
-    versao: 7
+    versao: 8
   - id: planta-do-banco
     versao: 6
   - id: funil-01
     versao: 5
   - id: lacunas
-    versao: 8
+    versao: 9
   - id: garcom
     versao: 7
   - id: decisoes
-    versao: 15
+    versao: 16
   - id: landing-page-02
-    versao: 7
+    versao: 8
   - id: politica-de-privacidade
     versao: 7
 desatualizado: true
 ---
 
 # Quiz-01 · página
+
+**Versão 15 (25/11/2026, #130; respostas do Otávio ao pedido 24).** "Botão \"Telas\": esconder no ar." O painel "Telas" (o botão no canto, com a lista das telas) continua na entrega, para revisão, mas some na página que vai ao ar: a montagem (entregas/prototipo-funil-01/montar-site.mjs, v22) põe na página do site a linha `<meta name="safra-revisao" content="desligada">`, e a página, quando a encontra, esconde o painel (fica fora da tela e fora do Tab) e não abre mais a tela que vier no fim do endereço: /analise/#relatorio, #conversa ou #contato abrem na abertura, e recarregar no meio do quiz também volta à abertura. Aberta direto do arquivo ou servida sem a meta (como no teste), tudo fica como antes, com o painel e o endereço abrindo a tela, para revisão. Nenhum texto mudou; versao_entrega continua 2. Os textos da v14 (o relatório de quem não lembra e "Sempre gratuita") foram aprovados pelo Otávio (copy v7), e o nome da Análise, que a página já tirava da ficha de fatos, ficou decidido (#127). O cabeçalho do HTML acompanha as versões novas da base (decisoes 16, ficha-de-fatos 8, lacunas 9), da copy (7), do briefing (5) e da landing-page-02 (8). Teste do quiz: **871 conferências, todas certas** (eram 851): a seção nova "no ar (#130)", nas três larguras, com a meta posta do mesmo jeito que a montagem (conferida contra a linha de montar-site.mjs): o painel escondido e fora do Tab; #relatorio, #relatorio-chute, #conversa e #contato abrindo na abertura; a rodada inteira, do botão da abertura ao relatório pela conversa, com o fim do quiz gravado; e recarregar no relatório voltando à abertura sem reenviar nada; e, sem a meta, o painel e o #relatorio como antes. Os prints não mudam: o painel não aparece em nenhum deles.
 
 **Versão 14 (25/11/2026, #124 e #125; pedido 24, itens 1 a 4).** (1) **Quem não lembra dos números** (respondeu "Não") vê o relatório pelas metas do método (telaRelatorioMetas e hasteMetas): as quatro etapas de cada 100 leads de referência, com as metas de ficha-de-fatos#metas-por-etapa (50% · 50% · 75% · 20%; cerca de 4 vendas de cada 100 leads), ditas como metas e nunca como números dela; nenhum volume, taxa ou valor em reais inventado; da pessoa, só o que ela respondeu: a ficha do topo, os selos das respostas (nenhum selo de taxa), o CRM, o valor médio ("Sai com os seus números.", no lugar do dinheiro na mesa) e a estimativa dela do comparecimento ("Sua estimativa: ..."), com o bloco do comparecimento abaixo da meta só quando ela chutou abaixo de 75%. Na conversa gratuita, o painel mostra o funil das metas, rotulado "metas do método", e o perfil "Sem os seus números", sem perfil inventado. O exemplo CENARIOS.chute saiu. Textos: copy v6, "Relatório de quem não lembra", proposta do mentor. (2) **Sem empresa, o topo diz "sua empresa"**, pelo caminho do quiz e pelo painel "Telas"; "Empresa Exemplo" saiu da página. (3) **A armadilha e o tempo mínimo** (garçom v7): no formulário de contato, um campo "Site" fora da tela, com tabindex -1, autocomplete off e escondido do leitor de tela, que pessoa nenhuma vê nem preenche; o pacote do fim do quiz leva o bloco protecao, com a armadilha (até 200 caracteres) e duracao_s, os segundos entre abrir a página e mandar o contato, medidos com performance.now (que não depende da hora do aparelho). Nada fica guardado no navegador; o garçom tira o bloco antes de gravar. Recusado, a pessoa vê o aviso de falha com "Tentar de novo", como em qualquer falha. (4) **O início do quiz** (/api/evento) leva também utm_medium, utm_content e utm_term, lidas do endereço e saneadas como no fim (migração 004). (5) **A gratuidade da abertura** é "Sempre gratuita" (ficha-de-fatos#analise-gratuidade, #124), no lugar de "Sem custo na promoção de lançamento". versao_entrega continua 2. Teste do quiz: **851 conferências, todas certas** (eram 719): o relatório pelas metas e os três perfis do pedido, com print de cada um (perfil-qualificado, perfil-faixa-c-sem-numeros e perfil-nao-qualificado, em 375 e 1440); "sua empresa" em todos os relatórios, também pelo painel "Telas"; a armadilha vazia, fora da tela e fora do Tab; o bloco protecao com os segundos conferidos contra o relógio do teste; o robô que preenche a armadilha vê o aviso; as utm no início e no fim; "Sempre gratuita". Com quatro erros postos de propósito ("Empresa Exemplo", a promoção, a armadilha no Tab e o início sem utm_content), 48 conferências falharam só em 375 e no começo de 360; o arquivo voltou igual. Prints refeitos todos; relatorio-exemplo passa a mostrar o relatório pelas metas.
 
@@ -167,7 +169,7 @@ Abrir entregas/quizzes/quiz-01/pagina/index.html no navegador: tudo funciona par
 
 No site do protótipo (entregas/prototipo-funil-01/), o quiz fica em /analise/, com as fontes em /analise/fontes/ (desde a decisão #120; até 14/11/2026, em /quiz/, que passa a levar a /analise/), e envia ao garçom em /api/fim-quiz e /api/evento.
 
-O botão "Telas", no canto, é do protótipo: pula direto para qualquer tela, para revisão.
+O botão "Telas", no canto, é do protótipo: pula direto para qualquer tela, para revisão. Desde a v15 (#130), ele não aparece no site: a montagem põe na página a meta safra-revisao = desligada, e com ela o painel some e o endereço com a tela no fim (#relatorio e as outras) abre na abertura.
 
 ## Como testar
 
@@ -346,11 +348,11 @@ Tudo certo: todas as conferências passaram
 
 ## O que ainda falta para ir ao ar
 
-- Decidir os conflitos 16 a 19 e o nome da Análise (conflito-02) e da agência (conflito-07).
+- Decidir os conflitos 16 a 19 e o nome da agência (conflito-07). O nome da Análise ficou decidido em 25/11/2026: "Análise Estratégica do Sistema de Vendas" em tudo (#127).
 - Conferir o texto da caixa de aceite (31.1) e decidir o que acontece com quem desmarca (30.3, 31.2) e a volta do percentual (31.3).
 - O link da política de privacidade no consentimento; o número do WhatsApp.
-- A migração 004, o garçom v7 e esta página v14 no ar, juntos, pelo roteiro entregas/prototipo-funil-01/APLICAR-24.md (a proteção contra robô e o limite de pedidos entram com eles).
-- Os textos novos do relatório de quem não lembra e "Sempre gratuita" aprovados (copy v6). O relatório já usa os números da pessoa (v12) e as metas para quem não lembra (v14): a 14.7 está resolvida no repositório e só falta ir ao ar.
+- A migração 004, o garçom v7 e esta página v15 no ar, juntos, pelo roteiro entregas/prototipo-funil-01/APLICAR-24.md, v2 (a proteção contra robô e o limite de pedidos entram com eles, e o painel "Telas" sai do ar).
+- Os textos novos do relatório de quem não lembra e "Sempre gratuita" foram aprovados pelo Otávio em 25/11/2026 (copy v7). O relatório já usa os números da pessoa (v12) e as metas para quem não lembra (v14): a 14.7 está resolvida no repositório e só falta ir ao ar.
 - A montagem tirar os comentários de cabeçalho dos HTML antes de ir ao ar com gente de verdade (23.9: fica para a versão que for ao ar).
 - Revisão jurídica fica com a empresa que assina a política, fora do sistema (#103).
 

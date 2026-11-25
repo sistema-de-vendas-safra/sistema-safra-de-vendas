@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01
-versao: 21
+versao: 22
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,13 +8,13 @@ depende_de:
   - id: garcom
     versao: 7
   - id: quiz-01-pagina
-    versao: 14
+    versao: 15
   - id: landing-page-02
-    versao: 7
+    versao: 8
   - id: banco-rascunho
     versao: 7
   - id: decisoes
-    versao: 15
+    versao: 16
   - id: regra-seguranca
     versao: 3
   - id: lacunas
@@ -27,6 +27,8 @@ desatualizado: true
 ---
 
 # Protótipo do funil-01 · site de teste
+
+**Versão 22 (25/11/2026, respostas do Otávio ao pedido 24; nada publicado).** montar-site.mjs v22: (1) #130: na página do quiz montada (/analise/), a meta `<meta name="safra-revisao" content="desligada">`, antes do título; com ela, o quiz v15 esconde o painel "Telas" e o endereço com a tela no fim abre na abertura. A entrega do quiz não muda: aberta direto, o painel continua, para revisão. (2) No fim, três conferências novas, que param a montagem se falharem: a meta está na página do quiz; nenhum programa do site tem mais a contagem com os marcadores ("O seu mês vira em [", #131); e a página da landing tem a regra que esconde o logo do Safra (#129). O site leva a landing-page-02 v8 e o quiz v15. O APLICAR-24.md passa à v2, com as conferências no ar dessas mudanças e o teste novo da landing (nucleo/ferramentas/prints/testar-landing-02.js). Nada mais muda: o wrangler.toml continua na v15.
 
 **Versão 21 (25/11/2026, pedido 24; nada publicado).** wrangler.toml v15: três limitadores de Workers Rate Limiting para o garçom v7, `LIMITE_FIM_QUIZ` (10 por minuto por IP), `LIMITE_EVENTO` (60 por minuto por IP) e `LIMITE_REGISTRO` (30 recusas contadas por minuto, por porta e motivo), com namespace_id 2401, 2402 e 2403, que nenhum outro Worker da conta pode usar. Nada no painel da Cloudflare: os limitadores nascem com a publicação (wrangler 4.36.0 ou mais novo; o daqui é o 4.158.0). O dry-run de 25/11/2026 lista os três (seção "Como conferir com o dry-run"). O site montado leva o quiz v14, a landing-page-02 v7 e o garçom v7. Roteiro novo: APLICAR-24.md, a publicação única do pedido 24, que substitui o APLICAR-23 (que não rodou). Ensaio v16: ver nucleo/ferramentas/ensaio/README.md.
 
@@ -125,10 +127,10 @@ O site de teste do funil-01 num Worker só da Cloudflare, o safra-prototipo-funi
 |---|---|
 | LIGAR.md | O roteiro para ligar o protótipo, para iniciante, passo a passo, com o tempo de cada passo e como saber que deu certo (id prototipo-funil-01-ligar) |
 | APLICAR-11.md | O roteiro para aplicar no protótipo que está no ar as mudanças das etapas 32 a 34, no mesmo padrão (id prototipo-funil-01-aplicar-11) |
-| APLICAR-24.md | (v21) O roteiro único do pedido 24: a migração 004, a publicação do quiz v14, do garçom v7 e da landing-page-02 v7, a conferência no ar com os três perfis, a limpeza v2 contada no banco e nas duas abas da planilha, a chave da Cloudflare tirada no fim e as duas pendências antigas (a chave de 12/11 e as chaves JWT do Supabase). Substitui o APLICAR-23.md, que fica como histórico |
+| APLICAR-24.md | (v21; v2 do roteiro na v22) O roteiro único do pedido 24: a migração 004, a publicação do quiz v15, do garçom v7 e da landing-page-02 v8, a conferência no ar com os três perfis, a limpeza v2 contada no banco e nas duas abas da planilha, a chave da Cloudflare tirada no fim e as duas pendências antigas (a chave de 12/11 e as chaves JWT do Supabase). Substitui o APLICAR-23.md, que fica como histórico |
 | APLICAR-21.md | (v15) O roteiro para levar o funil ao endereço novo, https://svsafra.gotriad.com.br, com o quiz em /analise/ (decisão #120): ver o domínio ativo, ligar o endereço ao Worker, publicar e conferir no ar pelos dois endereços, como voltar atrás e o que trocar depois (a planilha do SDR, o Google Analytics e o Tag Manager, o Search Console). Desde 14/11/2026, é só por ele que se publica (id prototipo-funil-01-aplicar-21) |
 | wrangler.toml | A configuração do Worker: nome, main apontando para ../garcom/garcom.mjs, arquivos pelo binding ASSETS com run_worker_first, preview_urls = false (sem links de prévia, #101), (v14) o Custom Domain svsafra.gotriad.com.br e workers_dev = true, as três variáveis comuns (SUPABASE_URL, ORIGEM_PERMITIDA e, na v14, ENDERECO_ANTIGO) e, só em comentário, o nome dos três segredos. Sem id de conta, sem id de zona e sem segredo |
-| montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro) |
+| montar-site.mjs | Monta a pasta site/ a partir das entregas. Node, sem dependências próprias; as fontes vêm de nucleo/ferramentas/fontes/ (`npm install` lá dentro). Desde a v22, põe no quiz montado a meta que esconde o painel "Telas" (#130) |
 | medicao.mjs | (v9) O bloco da medição que a montagem acrescenta em cada HTML: o consentimento padrão do Google com tudo negado, o aviso de cookies (texto de entregas/documentos/aviso-de-cookies.md) e o carregador do Google Tag Manager, que só roda depois do "Aceitar". Node, sem dependências. O teste do quiz usa o mesmo módulo |
 | medicao.json | (v9) O lugar único do código do contêiner do Tag Manager (GTM-T6L4QTB8, que não é segredo) e do nome da chave em que o navegador guarda a escolha (safra_cookies_v1) |
 | pagina-politica.mjs | (v11; #117) Monta a página da política de privacidade, /politica-de-privacidade/, a partir da seção "Texto para o lead" de entregas/documentos/politica-de-privacidade.md: os `{{a definir}}` aparecem como "[a definir: ...]", o marcador do conflito-17 não aparece, os fatos da ficha (o prazo de guarda) entram com o valor da ficha, e a seção "Para a equipe" e as "Fontes" ficam de fora. Recusa a política em rascunho. A montagem acrescenta o bloco da medição como nas outras páginas |

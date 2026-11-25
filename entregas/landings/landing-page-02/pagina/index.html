@@ -5,8 +5,8 @@
 <!--
 Landing-page-02 · página de vendas do Sistema de Vendas Safra (id landing-page-02, versão 1, rascunho; cabeçalho completo no README.md da pasta acima).
 Feita fora do sistema (React e Vite) e trazida do zip safra-pagina-vendas-git-preview-klyver.vercel.app, capturado em 12/11/2026.
-O estilo (assets/) e as imagens (a/) estão como vieram; o programa (assets/) tem as mudanças listadas no README.md (versões 2, 3, 4 e 7).
-Na versão 7 (pedido 24; #124), uma regra de estilo abaixo esconde o bloco de escassez da Análise em todas as seções.
+O estilo (assets/) e as imagens (a/) estão como vieram; o programa (assets/) tem as mudanças listadas no README.md (versões 2, 3, 4, 7 e 8).
+Na versão 7 (pedido 24; #124), uma regra de estilo abaixo esconde o bloco de escassez da Análise em todas as seções; na versão 8 (#129), outra esconde o logo do Safra.
 Este arquivo é o index.html original com três mudanças:
 a fonte Geist servida junto, de /fontes/, no lugar do Google (10.7); sem o script de comentários da Vercel; e o programa do fim,
 que registra a visita e leva os botões de Análise ao quiz.
@@ -27,8 +27,13 @@ Os caminhos começam na raiz (/assets/, /a/, /fontes/): a página só funciona s
    Análises gratuitas já foram resgatadas", "Restam 19%" e a barra) sai de todas as seções, sem mexer no programa. No cartão
    da oferta, só a parte da barra (411:329 e 473:5303): o botão e a nota do mesmo bloco ficam */
 [data-name="Barra de escassez"], [data-node-id="411:329"], [data-node-id="473:5303"] { display: none !important; }
-/* e o preço riscado (R$ 497) do cartão da oferta, nas duas versões: um preço que nunca vai ser cobrado não aparece */
-[data-node-id="411:326"], [data-node-id="473:5299"] { display: none !important; }
+/* v8 (#126): o preço riscado (R$ 497) do cartão da oferta volta a aparecer, como estava antes (a regra que o escondia saiu).
+   v8 (#129): o logo do Safra (o símbolo e o nome desenhados) não aparece em nenhuma página do site: sai do cabeçalho e do rodapé,
+   nas duas versões, e da janela da demonstração do produto. O nome Sistema de Vendas Safra, em texto, continua. Sem o logo, o
+   "Fazer a Análise" do cabeçalho fica onde estava, à direita (405:6 e 473:3), e o rodapé, que só tinha o logo, sai (412:204 e 473:5588) */
+[data-name="Logo Safra"] { display: none !important; }
+[data-node-id="405:6"], [data-node-id="473:3"] { justify-content: flex-end !important; }
+[data-node-id="412:204"], [data-node-id="473:5588"] { display: none !important; }
 </style>
 <script type="module" crossorigin src="/assets/index-BSwcbsoR.js"></script>
 <link rel="stylesheet" crossorigin href="/assets/index-Btrkg4Yg.css">

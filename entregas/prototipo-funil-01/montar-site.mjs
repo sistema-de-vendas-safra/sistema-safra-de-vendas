@@ -1,5 +1,9 @@
 // Monta a pasta do site do protótipo do funil-01 a partir das entregas · Node, sem dependências
-// id: prototipo-funil-01 · versao 19 · rascunho · otavio: pendente (ver README.md desta pasta)
+// id: prototipo-funil-01 · versao 22 · rascunho · otavio: pendente (ver README.md desta pasta)
+// v22 (25/11/2026, respostas do Otávio ao pedido 24): (1) #130: no quiz montado, a meta safra-revisao = desligada, que esconde o
+// painel "Telas" e faz o endereço com #tela abrir sempre a abertura (a entrega não muda: aberta direto, o painel continua).
+// (2) Confere que o programa da landing não tem mais a contagem com os marcadores de antes (#131) e que a regra de estilo que
+// esconde o logo do Safra está na página (#129).
 // v19 (#122, 18/11/2026): confere também que nada no site carrega o Pixel da Meta (connect.facebook.net, fbevents.js,
 // facebook.com/tr, fbq('init') ou fbq('track')): o Pixel entra só pelo Tag Manager. Fora do bloco da medição, nenhum fbq;
 // dentro dele, só fbq('consent', 'revoke'), na troca de "Aceitar" para "Recusar".
@@ -50,6 +54,8 @@ const QUIZ = 'entregas/quizzes/quiz-01/pagina';
 const META_ROBOTS = '<meta name="robots" content="noindex, nofollow">';
 // O quiz não tem viewport (vem do mockup): sem ela, o celular desenha a página com 980 pixels e encolhe (23.8)
 const META_VIEWPORT = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+// v22 (#130): só no quiz montado; esconde o painel "Telas" e desliga a abertura de telas pelo endereço
+const META_REVISAO = '<meta name="safra-revisao" content="desligada">';
 // O quiz não tem <meta charset> nem doctype (vem do mockup): sem o charset, o navegador o lia como
 // windows-1252 e os acentos quebravam (pedido 09). O navegador só procura o charset nos primeiros 1024 bytes,
 // e o comentário de cabeçalho do quiz passa disso; por isso a meta vai antes de tudo. O doctype não entra
@@ -117,6 +123,12 @@ for (const item of MAPA) {
     const v = garantirViewport(html, nomeNoSite);
     html = v.html;
     mudancas.push(v.acrescentou ? 'meta viewport acrescentada' : 'meta viewport já existia');
+    // v22 (#130): o quiz montado esconde o painel "Telas"
+    if (item.para === 'analise') {
+      if (/<meta\s+name=["']safra-revisao["']/i.test(html)) problema(nomeNoSite + ': a entrega já traz a meta safra-revisao (quem põe é a montagem)');
+      else if (!/<title[\s>]/i.test(html)) problema(nomeNoSite + ': sem <title> para pôr a meta safra-revisao antes');
+      else { html = html.replace(/<title[\s>]/i, m => META_REVISAO + '\n' + m); mudancas.push('painel "Telas" desligado (meta safra-revisao)'); }
+    }
     // Medição (v9; #116): o bloco de medicao.mjs logo depois da meta charset
     try {
       html = acrescentarMedicao(html);
@@ -295,6 +307,12 @@ for (const arquivo of arquivosDoSite) {
     if (!arquivosDoSite.includes(img.slice(1))) problema(arquivo + ': "' + img + '" não existe no site montado');
   }
 }
+// v22: o quiz montado com o painel "Telas" desligado (#130); a landing sem os marcadores da contagem (#131) e com o logo escondido (#129)
+if (arquivosDoSite.includes('analise/index.html') && !readFileSync(join(SITE, 'analise/index.html'), 'utf8').includes(META_REVISAO)) problema('analise/index.html: sem a meta safra-revisao = desligada (#130)');
+for (const arquivo of arquivosDoSite.filter(a => a.endsWith('.js'))) {
+  if (/O seu mês vira em \[/.test(readFileSync(join(SITE, arquivo), 'utf8'))) problema(arquivo + ': a contagem do mês ainda com os marcadores (#131)');
+}
+if (arquivosDoSite.includes('index.html') && !/\[data-name="Logo Safra"\]\s*\{\s*display:\s*none\s*!important/.test(readFileSync(join(SITE, 'index.html'), 'utf8'))) problema('index.html: sem a regra que esconde o logo do Safra (#129)');
 // As páginas do mapa de rotas existem (v11: e a política; v14: o quiz em analise/, e nada em quiz/)
 for (const p of ['index.html', 'analise/index.html', CAMINHO_DA_POLITICA]) if (!arquivosDoSite.includes(p)) problema('falta a página ' + p);
 if (arquivosDoSite.some(a => a.startsWith('quiz/'))) problema('sobrou a pasta quiz/ no site montado (o quiz fica em analise/; #120)');
