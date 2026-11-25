@@ -1,6 +1,6 @@
 ---
 id: quiz-01-copy
-versao: 3
+versao: 4
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: quiz-01-briefing
-    versao: 2
+    versao: 3
   - id: lead-score
     versao: 3
   - id: ficha-de-fatos
@@ -16,7 +16,7 @@ depende_de:
   - id: lacunas
     versao: 6
   - id: decisoes
-    versao: 12
+    versao: 14
   - id: tom-de-voz
     versao: 4
   - id: provas-e-conformidade
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Copy · quiz-01
+
+**Versão 4 (25/11/2026, #123).** Mudam a 5.2 e o relatório de quem não lembra, com textos que são proposta do mentor, para o Otávio aprovar (prompts/23-relatorio-com-os-numeros-da-pessoa.md, "Os textos"). Na 5.2, as cinco linhas ficam só em quantidade e os cinco números são obrigatórios: a pergunta e a ajuda novas, a dica do botão apagado, e saem o "%" das linhas, a conta "≈ [n] [etapa]" e o aviso "Acima de 100%". No relatório (10.2 e 10.3), o bloco novo "Relatório de quem não lembra": o selo, o título, a abertura, os títulos do funil e dos pontos fracos e o dinheiro na mesa dizem que é um funil de exemplo. O chute (5.3) não muda. Nada mais neste documento mudou.
 
 **Versão 3 (18/11/2026, #122).** Só o M16 muda: o texto de aceite e o rótulo da caixa passam a cobrir também a medição dos anúncios da Meta pelo nosso sistema, com o e-mail e o WhatsApp transformados em código (pacote v7, aprovado pelo Otávio e pelo jurídico; base/decisoes.md, #122). O aviso com a caixa desmarcada não muda. Nada mais neste documento mudou.
 
@@ -165,18 +167,20 @@ O texto do quiz-01, tela por tela e pergunta por pergunta, na ordem do roteiro d
 - **Depois, se Não:** "Sem problema. Não saber os números já é um sinal, e ele entra no diagnóstico." (fica)
 
 ### 5.2 Modo números · o primeiro número pontua
-- **Pergunta:** "Pense em um mês normal e escreva cada número como lembrar, em quantidade ou em porcentagem." (fica)
-- **Ajuda:** "Na porcentagem, conte assim: de cada 100 que chegam na etapa, quantos passam para a próxima." (fica)
-- **Linhas** (rótulo · explicação), cada uma com "nº" ou "%", menos a primeira, só "nº":
+- **Pergunta:** "Pense em um mês normal e escreva cada número como lembrar." (muda, proposta do mentor, #123, a aprovar)
+- **Ajuda:** "Em quantidade, não em porcentagem: quantos leads chegaram, quantos marcaram a conversa, quantos compraram. Número aproximado já serve." (muda, proposta do mentor, #123, a aprovar)
+- **Linhas** (rótulo · explicação), todas só em quantidade, cada uma com o "nº" fixo (muda, #123):
   1. Leads por mês · contatos novos que chegam (fica; é o número que o lead score pontua)
   2. Pré-qualificados · leads com perfil para comprar, pelo critério de vocês (fica)
   3. Agendados · marcaram a conversa de venda (muda, M12)
   4. Conversas realizadas · a conversa de venda aconteceu (muda, M12)
   5. Vendas fechadas · viraram cliente (fica)
-- **Contas ao vivo:** "base de todas as contas" · "≈ [n] [etapa]" · "= [n]% de [etapa anterior]" (fica)
+- **Contas ao vivo:** "base de todas as contas" · "= [n]% de [etapa anterior]" (fica; sai o "≈ [n] [etapa]", #123)
 - **Campo vazio:** marca de número ainda não escrito (muda, M30). Os cinco campos começam vazios, sem número de exemplo (14.4; #114).
 - **Resposta no histórico:** "[n] leads · [n] com perfil · [n] agendados · [n] conversas · [n] vendas" (muda, M29)
-- **Avisos:** "Acima de 100%. Confere esse número?" · "Maior que a etapa anterior. Confere esse número?" (fica)
+- **Aviso:** "Maior que a etapa anterior. Confere esse número?" (fica; continua só aviso; sai o "Acima de 100%. Confere esse número?", #123)
+- **Botão de seguir:** só acende com os cinco campos preenchidos, com leads, pré-qualificados, agendados e conversas maiores que zero; vendas pode ser zero (#123).
+- **Dica, com o botão apagado:** "Preencha os cinco números para seguir. Só as vendas podem ser zero. Se não lembrar de algum, toque no ✎ da pergunta anterior e responda “Não”." (novo, proposta do mentor, #123, a aprovar)
 
 ### 5.3 Modo chute · leads por mês vale "não lembra" no lead score
 - **Pergunta já respondida no histórico:** "Se fosse chutar, quantos dos leads com perfil marcam a conversa de venda?" com a resposta "Menos de {{ficha-de-fatos#metas-por-etapa:agendamento}}" (muda, M13)
@@ -321,7 +325,8 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **Apoio, com a pré-qualificação abaixo:** "[...], a perda começa na entrada: menos da metade dos leads tem perfil de compra." (fica)
 - **Título, funil saudável:** "[nome], seu funil bate a meta nas 4 etapas." (fica)
 - **Apoio, funil saudável:** "Pelos números que você informou, todas as etapas estão na meta ou acima. O processo comercial funciona. O limite agora é quantas sementes entram." (fica)
-- **Selo de confiança:** "confiança alta · números que você informou" ou "estimativa · respostas por chute" (fica)
+- **Selo de confiança:** "confiança alta · números que você informou" (fica); para quem não lembra, o selo do bloco "Relatório de quem não lembra" (v4, #123), no lugar de "estimativa · respostas por chute" (escolha provisória a aprovar)
+- **Olho, sem empresa:** sem o nome da empresa, só o nome da Análise e o mês (v4, #123; antes, "Empresa Exemplo")
 - **Cópia, com a caixa marcada:** "Uma cópia deste diagnóstico vai para o seu e-mail e WhatsApp." (fica, M21)
 - **Cópia, com a caixa desmarcada:** "Este diagnóstico fica só aqui na tela. Sem o aceite, nada foi enviado." (muda, M21) [PENDENTE: 30.3]
 
@@ -351,10 +356,22 @@ O relatório aparece para o funil saudável e para o não qualificado; para o qu
 - **O que já funciona:** "**O que já funciona:** [etapas]. Metade dos seus leads tem perfil de compra, então o marketing está trazendo gente certa." (fica)
 - **Saudável:** "pontos fracos" · "Nenhuma etapa ficou abaixo da meta" · "Onde crescer": "Mais leads com perfil. Com as suas taxas, cada lead novo tem a mesma chance de virar venda." · "Venda de maior valor. O mesmo trabalho do time rende mais por cliente." · "Leads antigos. Quem não fechou meses atrás pode estar pronto agora." · "O que manter": "Continue contando os cinco números todo mês, num lugar só. É isso que permite ver uma etapa cair antes de ela pesar no faturamento." (fica)
 
+**Relatório de quem não lembra (#123)** (novo, proposta do mentor, a aprovar)
+
+Quem respondeu "Não" em "Lembra dos números?" continua com a conta de exemplo, e o relatório diz com todas as letras que é um funil de exemplo, não o dela. Os números entre colchetes vêm do cenário de exemplo no código, nunca escritos à mão. Nada que vem do exemplo é dito como da pessoa ou do time dela; o que sai das respostas dela (CRM, quem marca, origem dos leads, primeiro contato, tentativas, lead sem contato) continua dela.
+- **Selo:** "exemplo · sem os seus números" (no lugar de "estimativa · respostas por chute"; escolha provisória a aprovar)
+- **Título:** "[nome], sem os seus números, este é um funil de exemplo."
+- **Abertura:** "Um funil comum, com [400] leads por mês e R$ [15 mil] por venda, para mostrar onde as vendas costumam escapar. Não é o diagnóstico da sua empresa. Com os cinco números do seu funil, a conta passa a ser a sua."
+- **Título do funil:** "As 4 etapas do exemplo contra as metas" (no lugar de "Suas 4 etapas contra as metas")
+- **Título dos pontos fracos:** "Onde um funil como este perde performance" (no lugar de "Onde sua equipe perde performance")
+- **Dinheiro na mesa, abaixo do valor:** "por mês · no exemplo"
+- **Dinheiro na mesa, frase:** "No exemplo, são cerca de [n] vendas a mais por mês se as [n] etapas fracas chegassem na meta."
+- **Dinheiro na mesa, nota:** "Conta de exemplo, não é a sua nem é promessa: um funil de [400] leads por mês e valor médio de R$ [15.000]. Com os seus números, a conta fica sua."
+
 **Dinheiro na mesa** (fica)
 - **Com etapa fraca:** "dinheiro na mesa" · "[≈] [R$] mil por mês [· estimativa]" · "São [cerca de] [n] vendas a mais por mês se as [n] etapas fracas chegassem na meta. Frutos que hoje ficam no pé." · fatias por etapa "[R$] mil · ≈ [n] vendas"
 - **Nota, com os números:** "Conta feita com os seus números, não é promessa. Hoje: [n] vendas, [R$] mil por mês. Com as etapas na meta: [n] vendas, [R$] mil. Valor médio da venda: R$ [n]."
-- **Nota, por estimativa:** "Conta por estimativa, não é promessa. Onde você respondeu “menos de X%”, a etapa entra como 70% da meta: [etapas]. Base: [n] leads por mês e valor médio de R$ [n]. Com os números exatos, a conta fica precisa."
+- **Nota, por estimativa** (sai na v4, escolha provisória a aprovar: quem não lembra vê a nota do exemplo, no bloco "Relatório de quem não lembra"; #123): "Conta por estimativa, não é promessa. Onde você respondeu “menos de X%”, a etapa entra como 70% da meta: [etapas]. Base: [n] leads por mês e valor médio de R$ [n]. Com os números exatos, a conta fica precisa."
 - **Saudável:** "Está em investir mais em marketing." · "Seu time converte bem. Cada lead com perfil que entra tem boa chance de virar venda, e hoje o que falta é semente." · tabela "Leads a mais por mês · Vendas a mais · Por mês" · "Conta feita com as suas taxas de hoje: [n]% dos leads viram venda, valor médio de R$ [n]. Não é promessa. Mais leads também pedem gente para atender."
 
 **Vídeo** (fica): "antes de decidir" · "1 minuto com o Junior sobre o seu diagnóstico" · selo "vídeo do Junior · cerca de 1 min". Placeholder até a gravação.

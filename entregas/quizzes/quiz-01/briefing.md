@@ -1,6 +1,6 @@
 ---
 id: quiz-01-briefing
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -8,7 +8,7 @@ aprovado_por:
   euclides: pendente
 depende_de:
   - id: decisoes
-    versao: 5
+    versao: 14
   - id: ficha-de-fatos
     versao: 4
   - id: lacunas
@@ -33,6 +33,8 @@ desatualizado: true
 ---
 
 # Briefing · quiz-01
+
+**Versão 3 (25/11/2026, #123).** Muda só o item "Números ou chute": a tela dos números fica só em quantidade, com os cinco obrigatórios, e quem não lembra vê a conta de exemplo, avisado. Nada mais mudou.
 
 O ponto de partida do quiz-01 do funil-01: para que ele serve, para quem, o que se espera de quem responde, o roteiro de telas herdado da cópia nova do quiz, o que dessa cópia vale como fonte, o que está em conflito e o que fica bloqueado. O texto tela por tela está em `quiz-01-copy` (entregas/quizzes/quiz-01/copy.md); o código é a etapa 14.
 
@@ -78,7 +80,7 @@ As decisões do CLAUDE.md do quiz que não conflitam com a base valem como fonte
 
 - **Metas do funil** (uma meta por etapa), cada etapa medida contra a anterior, valendo para qualquer valor de venda (CLAUDE.md, "Funil e metas"; MANUAL, M3). Batem com ficha-de-fatos#metas-por-etapa; na copy, entram pelo campo.
 - **Chamada pela dor**, sem nome de produto e sem a palavra "Safra": "Descubra onde sua equipe de vendas está perdendo performance" (CLAUDE.md, "Chamada da página"). Bate com a regra de 22/10 do `tom-de-voz`. O CLAUDE.md diz que "o Otávio, que é copywriter, ajusta o texto final".
-- **Números ou chute:** primeiro pergunta se a pessoa lembra dos números; lembra, escreve em número ou porcentagem; não lembra, modo chute ("Mais de X%", "Menos de X%", "Realmente não faço ideia" e campo para chutar). "Menos de X%" entra na conta como 70% da meta, marcado como estimativa (CLAUDE.md, "Números"; MANUAL, M6).
+- **Números ou chute:** primeiro pergunta se a pessoa lembra dos números; lembra, escreve os cinco números em quantidade, sem porcentagem (os cinco obrigatórios; vendas pode ser zero); não lembra, modo chute ("Mais de X%", "Menos de X%", "Realmente não faço ideia" e campo para chutar), que continua como está. "Menos de X%" entra na conta como 70% da meta, marcado como estimativa (CLAUDE.md, "Números"; MANUAL, M6). O relatório de quem lembra usa os números dela; quem não lembra vê o relatório com a conta de exemplo, avisado de que é um funil de exemplo, não o dela (decisão do Otávio, 25/11/2026; base/decisoes.md, #123).
 - **Quiz extenso** com perfil da empresa obrigatório: ramo, ticket médio, tamanho do comercial, origem dos leads, CRM, faturamento e vendedores (CLAUDE.md, "Quiz extenso").
 - **Contato antes do resultado:** nome, e-mail e WhatsApp (CLAUDE.md; LEIA PRIMEIRO, regra 4). Bate com o funil-01, que pede o consentimento nesse ponto.
 - **Regra fixa acha a etapa fraca; a IA escreve a explicação**, treinada no jeito do Júnior (CLAUDE.md; MANUAL, abertura). Na versão real; o protótipo usa textos fixos.
