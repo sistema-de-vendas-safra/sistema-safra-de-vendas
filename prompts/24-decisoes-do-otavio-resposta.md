@@ -60,8 +60,11 @@ Esconder foi por uma regra de estilo no index.html da landing, sem apagar os arq
 ## 4. Perguntas para o Otávio
 
 1. **A landing sem JavaScript (antes de publicar).** Dúvida: com o JavaScript desligado, a contagem não mostra números, porque a landing inteira fica em branco (seção 1). O que foi feito: nada publicado; o APLICAR-24 v2 só faz o passo 5 depois da sua resposta. Recomendação: publicar assim, porque marcador nenhum aparece em caso nenhum, quem chega pelo anúncio tem JavaScript, e a landing já era assim. Se decidir diferente: uma linha curta para quem está sem JavaScript ("Esta página precisa de JavaScript para abrir"), sem a contagem, entra no index.html da landing antes de publicar (pequeno); ou a contagem escrita pelo garçom na página, antes do navegador, que é uma mudança no garçom e mais um teste (maior, e a landing continuaria em branco sem JavaScript).
+   **Resposta do Otávio (25/11/2026, 17h16):** "Pode publicar com a landing em branco sem JavaScript. Os anúncios vão direto para o /analise/, que também depende de JavaScript, e os navegadores do Instagram e do Facebook rodam JavaScript."
 2. **A contagem pela hora de Brasília e parada depois de aberta.** Dúvida: você não disse de que fuso nem se ela anda. O que foi feito: a conta é pela hora de Brasília (UTC-3) para todo mundo, porque o mês que vira é o da empresa no Brasil, e o número é o da hora em que a página abre (quem deixa a página aberta horas vê o número de quando abriu). Recomendação: manter. Se decidir diferente: pelo fuso de quem abre, ou andando a cada minuto, é uma mudança pequena na função safraMesVira, com o teste acompanhando.
+   **Resposta do Otávio (25/11/2026, 17h16):** "Contagem: de acordo. Hora de Brasília para todo mundo, calculada no momento em que a página abre."
 3. **A frase da política.** Dúvida: a frase que eu tinha deixado no rascunho dizia que o endereço "fica só nessa contagem, na Cloudflare", e isso a gente não controla (a Cloudflare recebe o IP de todo pedido, por hospedar o site). O que foi feito: a frase pronta diz só o que o nosso sistema faz: não guarda o IP, que não vai ao sistema de contatos nem à planilha. Recomendação: o jurídico confere a frase e a base legal quando os dados da empresa entrarem. Se decidir diferente: a frase muda na mesma versão, antes de ir ao texto para o lead.
+   **Resposta do Otávio (25/11/2026, 17h16):** "Frase da política: de acordo com a versão sem o ‘fica só’. O jurídico confere junto com os dados da empresa."
 
 ## 5. Commits (na main do Mac, sem push)
 
@@ -69,12 +72,13 @@ Esconder foi por uma regra de estilo no index.html da landing, sem apagar os arq
 |---|---|
 | bf927e2 | 24.6 · as respostas e a base: decisões #126 a #131, ficha de fatos v8, GLOSSARY v6, persona, tom de voz, lacunas, oferta, provas, a copy v7, o briefing v5 e a política v9 |
 | 72445c0 | 24.7 · a landing-page-02 v8 (o programa, o index.html, o README e os prints topo e oferta), a página do quiz v15 e o montar-site v22 com o README do protótipo |
-| (o último) | 24.8 · os testes (o da landing, novo; o do quiz; o do garçom, corrigido; o ensaio v17), o README das ferramentas, o APLICAR-24 v2, o log, o index e esta resposta |
+| f7e57b2 | 24.8 · os testes (o da landing, novo; o do quiz; o do garçom, corrigido; o ensaio v17), o README das ferramentas, o APLICAR-24 v2, o log, o index e esta resposta |
+| (o último) | 24.9 · as suas respostas às três perguntas, no APLICAR-24 v3, no log, no index e aqui |
 
 ## 6. O que você faz agora, pelo APLICAR-24 v2
 
-1. **Responder a pergunta 1** (a landing sem JavaScript), no chat.
-2. **GitHub Desktop:** Push origin da main (os commits do pedido 23, da headline e do pedido 24, até o 24.8).
+1. ~~Responder a pergunta 1~~ (respondida às 17h16: pode publicar).
+2. **GitHub Desktop:** Push origin da main (os commits do pedido 23, da headline e do pedido 24, até o 24.9).
 3. **Supabase, SQL Editor:** a migração 004 e o conferir.sql; certo é **21 de 21**.
 4. **Cloudflare:** uma chave nova (Edit Cloudflare Workers, só a conta do Safra e a zona gotriad.com.br, prazo curto); no Terminal do Mac, `read -s CLOUDFLARE_API_TOKEN`, cole, Enter, `export CLOUDFLARE_API_TOKEN`, e abra o Claude Code nessa janela. A chave nunca vem para a conversa.
 5. **Claude Code, nessa janela:** "pode publicar pelo APLICAR-24". Ele roda os testes da main, confere a conta, anota a versão no ar, monta o site e publica.

@@ -2,6 +2,17 @@
 
 Toda alteração na base sobe a versão e ganha uma linha aqui, com o motivo. Entradas mais novas no topo.
 
+## 2026-11-25 · as três respostas do Otávio às perguntas das respostas do pedido 24
+
+Respostas do Otávio na conversa com o Claude, 25/11/2026, 17h16, às perguntas de prompts/24-decisoes-do-otavio-resposta.md, seção 4. Nenhum documento da base mudou; nada publicado.
+
+- **Pergunta 1, a landing sem JavaScript:** "Pode publicar com a landing em branco sem JavaScript. Os anúncios vão direto para o /analise/, que também depende de JavaScript, e os navegadores do Instagram e do Facebook rodam JavaScript." A trava do APLICAR-24 antes do passo 5 está respondida.
+- **Pergunta 2, a contagem:** "Contagem: de acordo. Hora de Brasília para todo mundo, calculada no momento em que a página abre." É como a landing-page-02 v8 já faz (#131); nada muda.
+- **Pergunta 3, a frase da política:** "Frase da política: de acordo com a versão sem o ‘fica só’. O jurídico confere junto com os dados da empresa." É a frase da politica-de-privacidade v9; nada muda.
+- **entregas/prototipo-funil-01/APLICAR-24.md v2 para v3:** a resposta à pergunta 1 registrada no começo e no passo 5; o passo 1 com o commit 24.9.
+- prompts/24-decisoes-do-otavio-resposta.md: as três respostas, cada uma na sua pergunta. index.md: o APLICAR-24 v3.
+- Pendências: "Rodar o APLICAR-24" sem a pergunta pendente.
+
 ## 2026-11-25 · respostas do Otávio ao pedido 24 (#126 a #131)
 
 Respostas do Otávio às 11 perguntas do pedido 24, coladas na conversa com o Claude em 25/11/2026, 15h32 (prompts/24-decisoes-do-otavio.md; resposta em prompts/24-decisoes-do-otavio-resposta.md). "Inclua os itens 1, 6, 7 e 8 nesta mesma publicação, rode todos os testes de novo e siga o APLICAR-24." Feito sobre a main do Mac em e58f107 (24.5), numa cópia na nuvem; os arquivos voltaram para a main do Mac em três commits (24.6 a 24.8), sem push. **Nada publicado; o site no ar não foi aberto.** Nenhuma chave, nenhum dado pessoal, nada em fontes/.
@@ -1328,7 +1339,7 @@ Pedido: prompts/04-decisoes-de-08-11-e-lead-score.md (decisões do Otávio de 08
 
 ## Pendências
 
-- [ ] **Rodar o APLICAR-24 antes dos anúncios de 30/11/2026 (pedido 24):** entregas/prototipo-funil-01/APLICAR-24.md (v2): a migração 004 (21 de 21), a publicação do quiz v15, do garçom v7 e da landing-page-02 v8, a conferência no ar (com as respostas #126 a #131), a limpeza v2, tirar a chave e as duas pendências antigas. Os textos novos foram aprovados em 25/11/2026 (#126). Antes da publicação (passo 5), a resposta do Otávio sobre a landing sem JavaScript (prompts/24-decisoes-do-otavio-resposta.md, pergunta 1).
+- [ ] **Rodar o APLICAR-24 antes dos anúncios de 30/11/2026 (pedido 24):** entregas/prototipo-funil-01/APLICAR-24.md (v2): a migração 004 (21 de 21), a publicação do quiz v15, do garçom v7 e da landing-page-02 v8, a conferência no ar (com as respostas #126 a #131), a limpeza v2, tirar a chave e as duas pendências antigas. Os textos novos foram aprovados em 25/11/2026 (#126). A pergunta da landing sem JavaScript foi respondida em 25/11/2026, 17h16: pode publicar (APLICAR-24 v3).
 - [ ] **A visão contagem_analises_gratuitas (resposta 10 do pedido 24):** sem leitor desde a #124; sai numa migração futura, quando o banco mudar por outro motivo, com o conferir.sql acompanhando.
 - [ ] **Política com os dados da empresa (#128):** quando a linha da hospedagem e os dados da empresa entrarem (conflito-17), entra na mesma versão a frase pronta sobre o IP que a Cloudflare usa para limitar os envios (politica-de-privacidade v9, "Para a equipe"), com a base legal conferida pelo jurídico.
 - [ ] **Garantia no /analise (pedido 24, "Não fazer agora"):** o bloco com as condições da garantia na página do quiz espera os termos por escrito do Júnior e do Euclides. Não foi feito no pedido 24, como pedido (25/11/2026).

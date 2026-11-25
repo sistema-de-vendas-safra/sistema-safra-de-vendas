@@ -1,6 +1,6 @@
 ---
 id: prototipo-funil-01-aplicar-24
-versao: 2
+versao: 3
 status: rascunho
 aprovado_por:
   otavio: pendente
@@ -43,9 +43,13 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 **Status.** Rascunho. Os textos novos (o relatório de quem não lembra, "Sempre gratuita" e as frases da landing) foram aprovados por você em 25/11/2026, com a exceção do R$ 497 riscado, que volta (quiz-01-copy v7; #126).
 
+**Versão 3 (25/11/2026, 17h16).** A sua resposta à pergunta 1 (a landing sem JavaScript: pode publicar) registrada abaixo, e o passo 1 com o commit 24.9. Nada mais muda.
+
 **Versão 2 (25/11/2026).** Entram as suas respostas ao pedido 24 (item 6 acima): na tabela abaixo, a página do quiz passa a v15 e a landing a v8; o passo 1 sobe também os commits 24.6 a 24.8; o passo 2 roda também o teste novo da landing; o passo 5 só começa depois da sua resposta sobre a landing sem JavaScript (abaixo); e o passo 6 confere no ar as cinco respostas.
 
 **Antes de publicar, uma resposta sua (pergunta 1 de prompts/24-decisoes-do-otavio-resposta.md, seção 4).** A contagem nunca mostra [X] nem [Y]: os marcadores saíram do programa, e com o programa lento o cartão só aparece quando ele chega, já com os números. Mas com o JavaScript desligado ela também não mostra números: a landing inteira fica em branco, porque é um programa React (sempre foi assim, desde que chegou do Vercel). Você pediu para ser avisado antes de publicar se isso não desse para garantir. O Claude só faz o passo 5 depois de você responder no chat se publica assim.
+
+**Respondida em 25/11/2026, 17h16:** "Pode publicar com a landing em branco sem JavaScript. Os anúncios vão direto para o /analise/, que também depende de JavaScript, e os navegadores do Instagram e do Facebook rodam JavaScript." O passo 5 pode seguir.
 
 ## O que muda no ar e o que não muda
 
@@ -66,11 +70,11 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 ## Passo 1 · O push da main (você, 1 min)
 
-**Por quê.** A publicação sai sempre da main (CLAUDE.md, regra 7). Os commits do pedido 24 (24.1 a 24.8; do 24.6 em diante, as suas respostas) estão na main do Mac, junto com os do pedido 23 que ainda não subiram.
+**Por quê.** A publicação sai sempre da main (CLAUDE.md, regra 7). Os commits do pedido 24 (24.1 a 24.9; do 24.6 em diante, as suas respostas) estão na main do Mac, junto com os do pedido 23 que ainda não subiram.
 
 **Faça:** no GitHub Desktop, confira que o branch é **main** e clique em **Push origin**.
 
-**Deu certo se:** no GitHub, a main mostra o último commit do pedido 24 ("24.8 · ...").
+**Deu certo se:** no GitHub, a main mostra o último commit do pedido 24 ("24.9 · ...").
 
 **Se der errado:** se o GitHub Desktop pedir **Pull** antes, faça o Pull e depois o Push. Se aparecer conflito, não resolva no site: avise o Claude.
 
@@ -130,7 +134,7 @@ Um passo por ação, com o porquê, "Faça", "Deu certo se" e "Se der errado". *
 
 **Por quê.** O mesmo jeito do APLICAR-22 (log.md, entrada de 18/11/2026). Um comando publica o site e o garçom juntos.
 
-**O que precisa existir:** a sua resposta sobre a landing sem JavaScript (no começo deste roteiro), o passo 3 com 21 de 21, a chave no ambiente (passo 4) e o wrangler do repositório (`nucleo/ferramentas/prototipo/node_modules/.bin/wrangler`, 4.158.0; os limitadores pedem 4.36.0 ou mais novo). O Claude nunca mostra o valor da chave.
+**O que precisa existir:** a sua resposta sobre a landing sem JavaScript (no começo deste roteiro; dada em 25/11/2026, 17h16: pode publicar), o passo 3 com 21 de 21, a chave no ambiente (passo 4) e o wrangler do repositório (`nucleo/ferramentas/prototipo/node_modules/.bin/wrangler`, 4.158.0; os limitadores pedem 4.36.0 ou mais novo). O Claude nunca mostra o valor da chave.
 
 **Faça (o Claude, na ordem):**
 
